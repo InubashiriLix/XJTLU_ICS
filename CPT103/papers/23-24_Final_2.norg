@@ -1,0 +1,55 @@
+** Question C
+   | Table_id | Order_time          | Customer_id | Customer_name | Dish_name         | Quantity |
+   | -------- | ------------------- | ----------- | ------------- | ----------------- | -------- |
+   | A03      | 2023-9-28 13:00:00  | 112233      | Peterson      | Mutton Masala     | 1        |
+   | A03      | 2024-9-28 13:00:00  | 112233      | Peterson      | Pea Salad         | 1        |
+   | B05      | 2023-9-11 12:00:00  | 778899      | Pei           | Vegetable Salad   | 1        |
+   | B07      | 2023-9-12 16:00:00  | 778899      | Pei           | Mixed Fruit Salad | 3        |
+   | A03      | 2023-10-12 13:00:00 | 112233      | Peterson      | Fish and chips    | 1        |
+   | B02      | 2023-10-12 13:00:00 | 445566      | Sam           | Mutton Soup       | 1        |
+
+*** Task1: find a suitable primary key for this table
+    primray key ->  B + C + E
+*** Task2: Identify all functional dependencies in this table
+    B, C, E -> A, D, F
+    C -> D
+    D -> C
+    B, C -> A, D
+    B, D -> A, C
+    A, B -> C, D
+    A, B, C -> D 
+    A, B, D -> C
+*** Task3: Normalise this table into 3NF and underline the primary keys of each table
+**** step1
+     B, C, E -> A
+     B, C, E -> D
+     B, C, E -> F
+     C -> D
+     D -> C
+     B, C -> A
+     B, C -> D
+     B, D -> A
+     B, D -> C
+     A, B -> C
+     A, B -> D
+     A, B, C -> D 
+     A, B, D -> C
+**** 1.1
+     B, C, E -> F
+     C -> D
+     D -> C
+     B, C -> A
+     B, D -> A
+     A, B -> D
+
+**** 2.1
+     R1 (B, C, E, F)
+     R2 (C, D)
+     R3 (D, C)
+     R4 (B, C, A)
+     R5 (B, D, A)
+     R6 (A, B, D)
+
+**** candidate validation
+     original candidate:  
+

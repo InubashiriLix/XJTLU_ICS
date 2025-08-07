@@ -1,0 +1,346 @@
+** 22-23 Resit 
+   You are hired by a software company to develop a database for managing developers and projects.
+   Each developer has an ID card with a unique ID number, a job position, a name, a phone number 
+   and an office location.
+   A job position is associated with a description and a salary level.
+   Many developers can have a same job position.
+   Developers form teams to develop projects. Each project is handled by a single team 
+   and each team can only work on one project at the same time.
+   A team has a team name, the date it was formed and a list of developers.
+   Each project has a project name, project start date, project end date and a description.
+   The database should have a record of historical projects handled by teams.
+   Task 1: Draw the entity relationship diagram for the port company's database. (25 marks)
+   Task 2: Write down the foreign keys of these tables. You must indicate referencing tables and referenced tables clearly. (5 marks)
+*** Task1
+**** Entity:: Developer
+***** Attributes
+      - developer_id:: int  ; PK
+      - name:: varchar
+      - phone:: varchar
+      - office_location:: varchar
+      - position_id:: int  ; FK → JobPosition
+***** Relationships
+      - M:1 → JobPosition             ; 多名开发者对应一个职位
+      - M:M → Team 《via》 TeamMember ; 通过桥接表加入多个团队
+
+**** Entity:: JobPosition
+***** Attributes
+      - position_id:: int  ; PK
+      - description:: varchar
+      - salary_level:: int
+***** Relationships
+      - 1:M ← Developer    ; 被多个开发者拥有
+
+**** Entity:: Team
+***** Attributes
+      - team_id:: int   ; PK
+      - team_name:: varchar
+      - formed_date:: date
+***** Relationships
+      - 1:M ← TeamMember ; 聚合成员
+      - 1:M → Project    ; 一个团队可负责多个项目（但业务上同一时间只能一个）
+**** Entity:: TeamMember  ; 桥接表
+***** Attributes
+      - team_id:: int  ; PK + FK → Team
+      - developer_id:: int ; PK + FK → Developer
+      - joined_date:: date? ; 可选加入时间
+
+**** Entity:: Project
+***** Attributes
+      - project_id:: int   ; PK
+      - project_name:: varchar
+      - start_date:: date
+      - end_date:: date
+      - description:: text
+      - team_id:: int  ; FK → Team
+***** Relationships
+      - M:1 ← Team ; 项目由单一团队负责
+
+      @code text
+      /* ========= JobPosition ========= */
+      CREATE TABLE JobPosition (
+      job_position_id INT NOT NULL,
+      description     TEXT        NOT NULL,
+      salary_level    INT         NOT NULL
+      );
+
+      ALTER TABLE JobPosition
+      ADD PRIMARY KEY (job_position_id);
+
+
+      /* ========= Developer ========= */
+      CREATE TABLE Developer (
+      developer_id     INT          NOT NULL,
+      name             VARCHAR(255) NOT NULL,
+      phone            VARCHAR(20)  NOT NULL,
+      office_location  VARCHAR(255) NOT NULL,
+      job_position_id  INT          NOT NULL
+      );
+
+      ALTER TABLE Developer
+      ADD PRIMARY KEY (developer_id);
+
+      ALTER TABLE Developer
+      ADD CONSTRAINT fk_developer_position
+      FOREIGN KEY (job_position_id)
+      REFERENCES JobPosition(job_position_id);
+
+
+      /* ========= Team ========= */
+      CREATE TABLE Team (
+      team_id     INT          NOT NULL,
+      team_name   VARCHAR(255) NOT NULL,
+      formed_date DATE         NOT NULL
+      );
+
+      ALTER TABLE Team
+      ADD PRIMARY KEY (team_id);
+
+
+      /* ========= TeamMember — 多对多桥接 ========= */
+      CREATE TABLE TeamMember (
+      team_id      INT NOT NULL,
+      developer_id INT NOT NULL,
+      joined_date  DATE
+      );
+
+      ALTER TABLE TeamMember
+      ADD PRIMARY KEY (team_id, developer_id);      -- 复合主键防止重复
+
+      ALTER TABLE TeamMember
+      ADD CONSTRAINT fk_teammember_team
+      FOREIGN KEY (team_id)
+      REFERENCES Team(team_id);
+
+      ALTER TABLE TeamMember
+      ADD CONSTRAINT fk_teammember_developer
+      FOREIGN KEY (developer_id)
+      REFERENCES Developer(developer_id);
+
+
+      /* ========= Project ========= */
+      CREATE TABLE Project (
+      project_id    INT          NOT NULL,
+      project_name  VARCHAR(255) NOT NULL,
+      start_date    DATE         NOT NULL,
+      end_date      DATE         NOT NULL,
+      description   TEXT         NOT NULL,
+      team_id       INT          NOT NULL
+      );
+
+      ALTER TABLE Project
+      ADD PRIMARY KEY (project_id);
+
+      ALTER TABLE Project
+      ADD CONSTRAINT fk_project_team
+      FOREIGN KEY (team_id)
+      REFERENCES Team(team_id);
+
+      @end
+
+** 22-23 Final
+*** Requirements
+    1. The whole reference library is managed using tags. Tags are up to 15 characters long.
+    1. Each reference can have zero or more tags.
+    2. A same tag can be added to one or more references.
+    3. Each tag can be described with some comments.
+    2. Each reference has a unique citation key, a list of authors, a publish year,
+       a title, the source of this reference (the name of the journal or conference),
+       the type of reference (journal article or conference paper) 
+       and optionally a file path if the user owns the document.
+    3. Each author has a unique ID called ORCID, 
+       a full name and the research institution he/she is currently working in.
+    4. ORCID is always 16 digits long, the last digit can be the letter ‘x’.
+    5. Sometimes a document contains a collection of articles.
+
+*** Tasks
+    - *Task 1*: Draw the entity relationship diagram. (20 marks)
+    - *Task 2*: Based on your solution to Task 1 above,
+      write the SQL code to create the tables for the database. You should include all the specified attributes and specify the appropriate primary and foreign keys. All primary keys and foreign keys must be added separately using ALTER statements. Minor syntactical errors in your SQL code will not be penalised in the marking of this answer. (10 marks)
+
+*** References
+    citation_key: varchar(20) primary
+    publish_year: year
+    title: text
+    source: text
+    type: enum('journal', 'conference')
+    file_path: text default null
+    relation:
+        M:M tags in the tag_owner table
+        M:M authors in the reference_author table
+*** Tag: 
+    tag_name: varchar(15) primary
+    description: text
+    relation:
+
+*** Author:
+    ORCID: char(16) primary
+    full_name: varchar(255) not null
+    research_institution: varchar(255) not null
+
+*** tag_owner:
+    tag: Tag, 
+    Reference: Reference
+    (tag, reference) primary
+
+*** reference_author
+    reference: reference not null
+    author: author not null
+    author, reference primary
+
+*** document
+    document_id: int primary
+
+*** document_article
+    document: document not null
+    reference: reference not null
+    document, reference primary
+
+@code sql
+    CREATE TABLE Citation (
+        citation_key VARCHAR(20) NOT NULL,
+        publish year YEAR NOT NULL,
+        title TEXT NOT NULL,
+        source TEXT NOT NULL,
+        type: ENUM('journal', 'conference') NOT NULL,
+        file_path TEXT DEFAULT NULL
+    );
+
+    ALTER TABLE Citation 
+    ADD PRIMARY KEY (citation_key);
+
+    CREATE TABLE Tag (
+        tag_name VARCAHR(15) NOT NULL,
+        description TEXT NOT NULL,
+    );
+
+    ALTER TABLE Tag
+    ADD PRIMARY KEY (tag_name);
+
+    CREATE TABLE Author (
+        ORCID CHAR(16) NOT NULL,
+        full_name VARCHAR(255) NOT NULL,
+        research_institution VARCHAR(255) NOT NULL
+    );
+
+    ALTER TABLE Author 
+    ADD PRIMARY KEY (ORCID);
+
+    CREATE TABLE CitationTag (
+        citation_key VARCHAR(20) NOT NULL,
+        tag_name VARCHAR(15) NOT NULL
+    );
+
+    ALTER TABLE CitationTag
+    ADD PRIAMRY KEY (citation_key, tag_nmae);
+
+    ALTER TABLE CitationTag
+    ADD CONSTRAINT fk_citation
+    FOREIGN KEY (citation_key)
+    REFERENCES Citation(citation_key);
+
+    ALTER TABLE CitationTag
+    ADD CONSTRAINT fk_tag
+    FOREIGN KEY (tag_name)
+    REFERENCES Tag(tag_name);
+
+    CREATE TABLE CitationAuthor (
+        citation_key VARCHAR(20) NOT NULL,
+        ORCID CHAR(16) NOT NULL
+    );
+
+    ALTER TABLE CitationAuthor
+    PRIMARY KEY (citation_key, ORCID);
+
+    ALTER TABLE CitationAuthor
+    ADD CONSTRAINT fk_citation_CA
+    FOREIGN KEY (citation_key)
+    REFERENCES Citation(citation_key);
+
+    ALTER TABLE CitationAuthor
+    ADD CONSTRAINT fk_author
+    FOREIGN KEY (ORCID)
+    REFERENCES Author(ORCID);
+
+    CREATE TABLE Document (
+        document_id INT NOT NULL
+    );
+
+    ALTER TABLE Document
+    ADD PRIAMRY KEY (document_id);
+
+    CREATE TABLE DocumentArticle (
+        document_id INT NOT NULL,
+        citation_key VARCHAR(20) NOT NULL,
+    );
+
+    ALTER TABLE DocumentArticle
+    ADD PRIMARY KEY (document_id, citation_key);
+
+    ALTER TABLE DocumentArticle
+    ADD CONSTRAINT fk_document
+    FOREIGN KEY (document_id)
+    REFERENCES Document(document_id);
+
+    ALTER TABLE DocumentArticle
+    ADD CONSTRAINT fk_reference
+    FOREIGN KEY (citation_key)
+    REFERENCES Citation(citation_key);
+
+    ALTER TABLE Author
+    ADD CONSTRAINT chk_orcid_format
+    CHECK (ORCID REGEXP '^[0-9]{15}[0-9xX]$');
+
+    @end
+
+** 23-24 Final
+   You are asked to develop a database that is used by a chip design company. The requirements for the database are provided below:
+   1. The company wants to support multiple product lines, each product line has a unique product line name, a target customer group and several chip models.
+       1. Valid values of target customer group are: “personal computers”, “server”, “workstation” and “gaming consoles”.
+   2. Each chip model has a unique model name, a release date, an associated die size measured in nano metres.
+   3. Each chip produced has a model name, a unique serial number, a production date and a manufacturer. (Manufacturers are not chip design companies. They only manufacture chips based on the designs provided by other companies.)
+       1. Chips of one model might be produced by multiple manufacturers.
+       2. Several chips could be produced in the same date by the same manufacturer.
+   4. Manufacturers are reachable by their telephone numbers. Designs of chips will be sent to manufacturers through mails, as a result, the address information is also needed.
+   Task 1: Draw the entity relationship diagram. Make sure M:N and 1:1 relationships are properly dealt with. In your ERD, make sure primary keys are underlined. (25 marks)
+   Task 2: Write down the CREATE TABLE statements of these tables. (10 marks)
+
+*** Entity:: ProductLine
+**** Attributes
+     - product_line_name:: varchar PK
+     - target_customer_group:: enum('personal computers','server','workstation','gaming consoles')
+**** Relationships
+     - 1:M → ChipModel
+
+*** Entity:: ChipModel
+**** Attributes
+     - model_name:: varchar PK
+     - release_date:: date
+     - die_size_nm:: int
+     - product_line_name:: FK → ProductLine
+**** Relationships
+     - 1:M ← ProductLine
+     - 1:M → Chip            ; 通过 Chip 映射到 Manufacturer，实现 M:N
+
+*** Entity:: Manufacturer
+**** Attributes
+     - manufacturer_id:: int PK
+     - name:: varchar
+     - telephone:: varchar
+     - address:: text
+**** Relationships
+     - 1:M → Chip            ; 一个厂商可生产多颗芯片
+
+*** Entity:: Chip        ; 弱实体，用 serial_number 唯一标识
+**** Attributes
+     - serial_number:: varchar PK
+     - model_name:: FK → ChipModel
+     - manufacturer_id:: FK → Manufacturer
+     - production_date:: date
+**** Relationships
+     - M:1 ← ChipModel
+     - M:1 ← Manufacturer
+
+@note
+- “同一型号可由多个厂商生产” 与 “同一天同厂商可生产多颗芯片” 通过 Chip 实体自然满足。
+- 未出现 1:1 关系；M:N 通过 Chip 间接实现。

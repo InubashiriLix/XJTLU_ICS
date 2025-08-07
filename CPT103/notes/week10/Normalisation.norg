@@ -1,0 +1,56 @@
+* DataBase: Normalisation
+** Characteristics of Good DB Design
+*** The minimal number of attributes necessary to support the data requirements of the enterprises
+    - like if the current database heve no requirement to store the blood type, then do not add it
+    - carefully sotre teh data taht will change with time, like age, use birth date instead
+    - fullfill the reqrirement first, then the expand ability
+*** Attributes with a close logical relationship are found in teh same relation
+    - one table one entity, like do not add the attributes to the other entity to the single entity 
+    - if salary is high related to the employee, then add it to the staff table
+      but for the salary history, it is better to add it to a separate table
+*** Minial redundancy with each attribute represted only once with the important exception of attributes that forma all or part off foreign keys
+    - if you store the phone number in two tables, then it is shit to update
+    - for the FK, cause' we care about the redundant value instead of definition of attribute, 
+      and FK point at the value, but the value only appear once
+
+** What is Normalisation
+   - technique of re-organising data into multiple related tables, 
+     so that data redundancy is minimised
+*** ER modling VS normalisation
+    - ER diagram is useful when you have detailed databse specifications but no existing table design
+    - When you already have a databse, but the tables are not well designedd, you can use normalisation techniques to improve them.
+** Update Anomalies
+   Data redundancy not only increases memory useage, but also leads to update anomalies
+
+   - Insert anomalies: one cannot add a new branch without the information of a staff in this branch
+   - Delete anomalies: Deleting the last staff of a branch also deletes the information of that branch
+   - Modification anomalies: To change one branch information, all staffs in that branch must also be updated
+
+** How to Re-org Tables:
+   - split the redundancy values into separeated tables
+   - What inforamtion can help use to redesign tables when we don't know the answer?
+     we can observe the edata in the table and find out the relationship between attributes
+     Comon sense may also help, but be careful wehn appllying common sense!
+*** Observing Table data
+**** Teh staffNo referes to a unique staff member in the real life
+     - There's only one sName for that staffNo, because a person can only have one single name
+     - Similarly: there's only one staff position, one staff salary value, one branchNo, and one bAddress for that person
+
+     - can we cliam the opposite?
+       there;s only one staffNo associated wiht a sName?
+       There's only one staffNo associated with a position -- No
+    - As a reuslt, staffNo has 1:M relationShip with sName, position, salary, branchNo, bAddress
+
+     - The brqanch No refers to a unique branch office in the real life
+       there's only one unique bAddress associated with one BranchNo
+     - Can we cliam the opposite?
+       There's only one unique branchNo associated with on bAddress? -- yes
+     - BranchNo has a 1:1 relationship with bAddress
+
+     - observing table data 
+       A sNmae is associate with a unique bAddress?
+       A position is associated with a unique salary?
+       A branchNo is associated with a unique position
+
+
+

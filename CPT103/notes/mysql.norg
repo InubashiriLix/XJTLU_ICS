@@ -1,0 +1,100 @@
+** some progrmas 
+   - show all the databases
+     SHOW DATABASES;
+   - use specified databses:
+     USE [DATABASE NAME];
+- create database
+     CREATE DATABASE \[IF NOT EXISTS] database_name
+     \[CHARACTER SET charset_name]
+     \[COLLATE collation_name]
+   - delete database
+     DROP DATABSE \[IF EXISTS] \<database_name>
+   - show all the tables:
+     USE ch;
+     SHOW TABLES;
+   - drop tables
+     DROP TBALE IF \[EXISTS] table_name
+
+** datatypes
+   - TINYINT: 1 byte
+   - SMALLINT: 2
+   - MEDIUMINT: 3
+   - INT / INTEGER: 4
+   - BIGINT: 8
+   - FLOAT: 4
+   - DOUBLE: 8
+   - DECIMAL:(M, D)
+** time types
+   - DATE: 3 (1000-01-01) - (9999-12-31)
+   - TIME: 3 (-838:59:59) - (838:59:59)
+   - YEAR: 1 (1901-2155)
+   - DATETIME: 8 (1000-01-01 00:00:00) - (9999-12-31 23:59:59)
+   - TIMESTAMP: 4 (1970-01-01 00:00:01) - (2038-01-19 03:14:07)
+
+** STRING types
+   - CHAR 0-255 bytes
+   - varchar 0-65535 bytes
+   - TINYBLOB: 0-255 bytes
+   - TINYTEXT: 0-255
+   - TEXT: 0-65535
+   - BLOB: 0-65535
+   - MEDIUMBLOB: 0-16777215
+   - MEDIUMTEXT: 0-16777215
+   - LONGBLOB: 0-4294967295
+   - LONGTEXT: 0-4294967295
+** TABLE
+*** CREATE TABLE:
+    CREATE TABLE IF NOT EXISTS table_name (
+        col1 datatype \[NOT NULL] \[DEFAULT] \[AUTO_INCREMENT] \[PRIMARY KEY],
+        \[CONSTRAINTS] (like PRIAMRY KEY(col))
+    );
+*** delete table
+    DROP TABLE \[IF EXISTS] table_name
+
+*** Insert data
+    INSERT INTO table_name (col1, col2, col3)
+    VLAUES 
+    (value1, value2, value3),
+    (value1, value2, value3),
+    (value1, value2, value3);
+
+*** query data:
+    SELECT col1, col2
+    FROM table_name
+    WHERE
+    ORDER BY col1
+    LIMIT 10;
+*** WHERE condition
+    BETWEEN value1 AND value2
+    IS NULL
+    IS NOT NULL
+
+*** UPDATE
+    UPDATE table_name
+    SET col = value1, col2 = value2
+    WHERE condition;
+
+    UPDATE table_name
+    SET col = (SELECT SUM(amount) FROM orders WHERE ... )
+    WHERE ...
+
+*** DELETE 
+    DELETE FROM table_name
+    WHERE condition;
+    @warning
+    you can use the query statement in the where condition
+    like 
+    WHERE id IN (SELECT id from balance WHERE balance > 1000 GROUP BY id)
+    @end
+
+*** GROUP BY 
+    SELECT column1, column2, aggregate_function(column3)
+    FROM TABLE_NAME
+    WHERE condition
+    GROUP BY column1, column2;
+    
+*** JOIN
+    INNER JOIN
+    RIGHT JOIN
+    LEFT JOIN
+

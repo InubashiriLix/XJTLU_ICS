@@ -1,0 +1,291 @@
+* Question1: Basic SQL 
+  | prize_id (int) | winner_sid (int) | award_time (date) |
+  | -------------- | ---------------- | ----------------- |
+  | 1              | 4121003          | 2020-01-12        |
+  | 2              | 6501396          | 2021-09-09        |
+  | 3              | 6501286          | 2021-09-09        |
+  | 4              | 6501296          | 2022-02-01        |
+
+  | sid     | sname  | class\_name |
+  | ------- | ------ | ----------- |
+  | 4121003 | Andrew | Y4C3        |
+  | 6501396 | Henry  | Y2C1        |
+  | 6501296 | Bob    | Y2C1        |
+  | 6501300 | John   | Y2C2        |
+  | 5501778 | Jack   | Y3C5        |
+
+  | class\_name | classroom |
+  | ----------- | --------- |
+  | Y2C1        | 201       |
+  | Y2C2        | 202       |
+  | Y2C3        | 203       |
+  | Y3C4        | 304       |
+  | Y3C5        | 305       |
+  | Y4C3        | 403       |
+
+
+  The relation t below stores the information about modules, lectures and teachers of lecture sessions. 
+  Assume that the module code is unique for a given module. 
+  A module has several lectures and each lecture is assigned with a session ID. 
+  If two lectures teach the same content, their session IDs will be the same. 
+  As a result, if a lecture of a module is delivered in two different academic years, their session ID will be the same. 
+  A same lecture will not be delivered again in the same day. 
+  Lecture session IDs are always different among different modules.
+
+** a) You are given the following SELECT queries. What are the results of application of these queries to the tables “prizes”, “classes” and “students”?  
+   Provide the answer in a table format. In case that query is not valid, explain the reason. (3 marks each)
+
+*** 1.
+    SELECT DISTINCT prize_id FROM prizes WHERE ID < > 3;
+    select the unique value of prize_id that not is 3
+    sol.
+    unknown column ID
+
+*** 2.
+    SELECT sid 
+    FROM students
+    WHERE class_name LIKE 'Y_C1';
+
+    sol.
+    get the sid of the student table whose in the class 1
+    6501396 
+    6501296
+
+
+*** 3.
+    SELECT sid 
+    FROM classes RIGHT OUTER JOIN students
+    USING (class_name);
+
+    sol.
+    select the sid from class table adn students even can not found match class_name
+    4121003 
+    6501396
+    6501296
+    6501300
+    5501778
+
+*** 4.
+    SELECT count(prize_id) 
+    FROM prizes NATURAL JOIN students
+    GROUP BY class_name;
+    sol.
+    teh natrual join will find the common column between prizes and students, which is sid
+    but sid != student_id
+    so fuck no
+
+** b) Write an SQL query to get the number of prizes won by each student.  
+   In the result, list students’ ID numbers as well as the number of prizes won. (4 marks)
+
+   sol.
+   SELECT s.sid, COUNT(s.sid)
+   FROM students AS s
+   LEFT JOIN prizes AS p
+   ON s.sid = p.winner_sid
+   GROUP BY s.sid
+   SORT BY s.sid;
+
+** c) Write an SQL query to get all students called “Bob” who are currently in year 2.  
+   In the result, list student IDs. (4 marks)
+
+   sol.
+   SELECT sid FROM students 
+   WHERE sname = "Bob" AND class_name LIKE "Y2%";
+
+** d) Write an SQL query to list classes that have not won any prizes after 2020-12-09.  
+   In the result, list the class_name in the descending order. (5 marks)
+
+   sol.
+   SELECT c.class_name
+   FROM classes AS c
+   LEFT JOIN (
+   SELECT DISTINCT s.class_name
+   FROM prizes AS p
+   JOIN students AS s ON s.sid = p.winner_sid
+   WHERE p.award_time > "2020-12-09"
+   ) AS w ON w.class_name = c.class_name
+   WHERE w.class_name IS NULL
+   ORDER BY c.class_name DESC;
+
+   first deal with the prized classes
+   @code mysql
+   SELECT DISTINCT s.class_name
+   FROM students AS s
+   RIGHT JOIN prizes AS p
+   ON p.winner_sid = s.sid
+   WHERE p.award_time > "2020-12-09";
+   @end
+
+   then concat
+   @code mysql
+   SELECT c.class_name
+   FROM classes AS c
+   JOIN (
+        SELECT DISTINCT s.class_name
+        FROM students AS s
+        RIGHT JOIN prizes AS p
+        ON p.winner_sid = s.sid
+        WHERE p.award_time > "2020-12-09"
+   ) as d 
+   ON c.class_name = d.class_name
+   WHERE d.class_name IS NULL
+   ORDER BY c.class_name DESC;
+   @end
+
+
+*** e) Write an SQL query to list classes along with their neighbouring classrooms.  
+    A classroom is considered to be the neighbouring classroom of another if the difference between their room numbers is 1.  
+    In the result, list class names and the two neighbouring classrooms.  
+    Non-existing neighbouring classrooms should be listed as NULL.  
+    The supposed output of your query is given below using the data in the current classes table:
+
+    class_name | neighbour1 | neighbour2
+    -----------|------------|-----------
+    Y2C1       | NULL       | 202
+    Y2C2       | 201        | 203
+    Y2C3       | 202        | NULL
+    Y3C4       | NULL       | 305
+    Y3C5       | 304        | NULL
+    Y4C3       | NULL       | NULL
+
+    sol.
+    SELECT c1.class_name, c2.classroom AS neighbour1, c3.classroom AS neighbour2
+    FROM classes AS c1
+    LEFT JOIN classes AS c2 ON c1.classroom = c2.classroom - 1
+    LEFT JOIN classes AS c3 ON c1.classroom = c2.classroom + 1
+    ORDER BY c1.class_name;
+
+* QuestionB: Transactions and Recovery
+  Answer the following questions related to transctions and recovery
+
+** Ahat does "Commit" means in transction?
+   A commit is the operation that permanently records all change mode by the current transaction 
+   wehn a ccommit succeed: 
+   - the changes are flushed to the disk
+   - locks held by the transactions are released, so other transactions can now see the new state (isolation -> visibility)
+   - the DBMS writes a commit log record, allowing crash-revcoery to redo these changes if the system failed after the commit
+
+   - before teh commmit, the DBMS can still roll the transaction back, after the comit, the effects must never be lost
+** Why supporting concurrency is important for database
+   - Throughput & resource utilization:
+     multiple user / process acn read and write at the same, time, keeping CPU, disks, and caches buzy
+   - Reduced response time
+     user do not have to wait for every other transctions to finish; the system feels faster
+   - Data consistency with high workload – proper concurrency control (locks, MVCC, etc.) lets many transactions run in parallel without corrupting data.
+   - Scalability on multi-core hardware – modern servers are inherently parallel; serial execution wastes hardware potential.
+** Descirbe the "lost update" problem of concurrency using a example
+
+
+* Question2 Normalization
+  A, B, C -> D, E, F, G
+  B, C -> E, F
+  F -> C
+  D -> G
+
+*** step1: Minimal Cover
+    A, B, C -> D
+    A, B, C -> E
+    A, B, C -> F
+    A, B, C -> G
+    B, C -> E
+    B, C -> F
+    F -> C
+    D -> G
+*** deleting
+    A, B, C -> E, F,   B, C -> E, F, deleting A, B, C -> E, F
+    A, B, C -> D -> G => deleteing A, B, C -> G
+
+    A, B, C -> D
+    B, C -> E
+    B, C -> F
+    F -> C
+    D -> G
+*** subset
+    R1 (A, B, C, D)
+    R2 (B, C, E)
+    R3 (B, C, F)
+    R4 (F, C)
+    R5 (D, G)
+*** merging
+    R1 (A, B, C, D)
+    R23 (B, C, E, F)
+    R4 (F, C)
+    R5 (D, G)
+*** candidate check
+    A, B, C+ = (A, B, C, D, G, E, F)
+    done
+
+* QuestionD: 
+  You are asked to develop a database that is used by a reference manager application. Reference manager applications are tools used to create, organize and store references for conference papers or journal articles. The requirements for the database are provided below:
+  The whole reference library is managed using tags. Tags are up to 15 characters long.
+  Each reference can have zero or more tags.
+  A same tag can be added to one or more references.
+  Each tag can be described with some comments.
+  Each reference has a unique citation key, a list of authors, a publish year, a title, 
+  the source of this reference (the name of the journal or conference),
+  the type of reference (journal article or conference paper),
+  and optionally a file path if the user owns the document.
+  Each author has a unique ID called ORCID, a full name and the research institution 
+  he/she is currently working in.
+  ORCID is always 16 digits long, the last digit can be the letter ‘x’.
+  Sometimes a document contains a collection of articles.
+** Task 1: Draw the entity relationship diagram. (20 marks)
+   sol.
+   I can't graph here, so I use text instead
+
+   Entity Reference:
+   attribute: citation key, publish year, title, source, type, file path
+   reference M:M tags (relation: have),  references M:M authors (relation: written by)
+
+   Entity Tags:
+   attribute:
+   comments
+
+   Entity Author:
+   attributes: ORCID, full name, institution
+
+** Task 2: Based on your solution to Task 1 above, write the SQL code to create the tables for the database. You should include all the specified attributes and specify the appropriate primary and foreign keys. All primary keys and foreign keys must be added separately using ALTER statements. Minor syntactical errors in your SQL code will not be penalised in the marking of this answer. (10 marks)
+   @code mysql
+   CREATE TABLE author (
+        author_id INT AUTO_INCREMENT PRIMARY KEY,
+        ORCID VARCHAR(17) UNIQUE NOT NULL ,
+        full_name VARCHAR(255) NOT NULL,
+        institution VARCHAR(255) NOT NULL
+   );
+
+   CREATE TABLE Tags (
+        tag_id INT AUTO_INCREMENT PRIMARY KEY,
+        tag_name VARCHAR(15) NOT NULL UNIQUE,
+        comments TEXT
+   );
+
+
+   CREATE TABLE refer (
+        reference_id INT AUTO_INCREMENT PRIMARY KEY,
+        publish_year YEAR NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        source VARCHAR(255) NOT NULL,
+        type ENUM('journal', 'conference') NOT NULL,
+        file_path TEXT DEFAULT NULL
+   );
+
+
+   CREATE TABLE reference_tags (
+        rt_id INT AUTO_INCREMENT PRIMARY KEY,
+        reference_id INT NOT NULL,
+        tag_id INT NOT NULL,
+        FOREIGN KEY (reference_id) REFERENCES refer(reference_id),
+        FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)
+    );
+
+    CREATE TABLE reference_authors (
+        ra_id INT AUTO_INCREMENT PRIMARY KEY,
+        reference_id INT NOT NULL,
+        author_id INT NOT NULL,
+        FOREIGN KEY (reference_id) REFERENCES refer(reference_id),
+        FOREIGN KEY (author_id) REFERENCES author(author_id)
+   );
+
+   @end
+
+

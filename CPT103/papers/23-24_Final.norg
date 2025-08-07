@@ -1,0 +1,57 @@
+** Question3
+   Normalise the following table "T" into the 3rd Normal Form by clearly descibing the normalisation prcess
+   @code text
+   A, B -> C, D, E, F, G 
+   B -> C, D, E, F
+   D -> E, F
+   F -> B
+   E -> F
+   @end
+
+*** SOL
+**** Minimal Cover
+     AB→C | AB→D | AB→E | AB→F | AB→G  
+     B →C | B →D | B →E | B →F  
+     D →E | D →F  
+     F →B  
+     E →F
+**** decrease the duplicated
+     AB→G  
+     B →C | B →D | B →E | B →F  
+     D →E | D →F  
+     F →B  
+     E →F
+**** delete 
+     B -> D -> E, F
+     so delete B -> E, F
+     B -> E -> F, remove B -> F
+    D -> E -> F, remove D -> F
+     so
+     AB→G  
+     B →C 
+     B →D 
+     D →E 
+     F →B  
+     E →F
+
+**** generate sub tables
+     R1 (A, B, G)
+     R2 (B, C)
+     R3 (B, D)
+     R4 (D, E)
+     R5 (F, B)
+     R6 (E, F)
+
+**** merge
+     R1 (A, B, G)
+     R23 (B, C, D)
+     R4 (D, E)
+     R5 (F, B)
+     R6 (E, F)
+**** candidate check
+     A, B + = {A, B, C, D, E, F, G} = candidate key = {A, B}
+     like 
+     (A, B)+ : AB -> G, B -> C, D, B -> D -> E -> F -> B
+     A+ = None
+     B+ = ALL - G
+     so (A, B)+ = ALL, and it is contains in the R1, so complete

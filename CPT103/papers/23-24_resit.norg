@@ -1,0 +1,39 @@
+Normalise the following table "T"
+B -> C, D, F
+C, F -> D
+G -> E
+C, F -> F
+
+*** Minimal Cover
+    B -> C
+    B -> D
+    B -> F
+    C, F -> D
+    G -> E
+    C, F -> F
+*** delete repeat
+    cause C, F -> F, so delete it
+    cause B -> C, F -> D, so delete B -> D
+    B -> C
+    B -> F
+    C, F -> D
+    G -> E
+*** generate sub tables
+    R1 (B, C)
+    R2 (B, F)
+    R3 (C, F, D)
+    R4 (G, E)
+*** merge
+    R12 (B, C, F)
+    R3 (C, F, D)
+    R4 (G, E)
+*** candidate check
+    B+ = (B, C, F, D)
+    G+ = E
+    cuase there are no table contain B, G, so add a new table (B, G)
+    R_BG = (B, G)
+*** final
+    R_BG = (B, G)
+    R_BCF = (B, C, F)
+    R_CF_D = (C, F, D)
+    R_G_E = (G, E)

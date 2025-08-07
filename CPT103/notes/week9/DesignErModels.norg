@@ -1,0 +1,112 @@
+* Design ER Models
+** Intro
+*** you need to identify:
+    - Entities
+    - Attributes
+    - Relationships and Cardinality ratios
+*** We obtain these from a problem description
+*** General guidelines
+    - Since entities are things or obejcts they are often nouns in the desciptions
+    - Attributes are facts or properties of enetities, and so often nouns also
+    - Verbs often descibe relationship between entities
+
+    ~  A university consists of a number of departments. Each 
+       department offers several courses. A number of modules 
+       make up each course. Students enroll in a particular course 
+       and take modules towards the completion of that course. 
+       Each module is taught by a lecturer from the appropriate 
+       department (several lecturers work in the same department), 
+       and each lecturer tutors a group of students. A lecturer can 
+       teach more than one module but can work only in one 
+       department.
+
+    entities: university, departements, cources, modules, students, lecturers
+    relationships: A university consists of A number of departments
+    departemnts offers serveral cources
+    cources consisis of modules
+    student enroll in particular course
+    models taught by a lecturer
+    serveral lecturers work in the same department
+    each lecturere tutuors a group of studets
+    lecturer can teach more than once module, but only in one department
+        
+
+** In databse: Many to Many relationships
+   - use a junction table to resolve many to many relationships
+*** Idea
+    entity A - entiry B
+    the record of A can response to many recors of B
+    the record of B can response to many records of A
+*** Junction table
+    id PK
+    FK -> A
+    ON DELETE CASCADE
+    FK -> B
+    ON DELETE CASCADE
+    - notes that on delete cascade is used to delete the junction table record when the record of A or B is deleted
+    - but is situation in finanace, SET NUL or RESTRICT is recommanded
+** In diagram: Removing M:M Relationships
+   - split the M:M relationship into two 1:M relationships
+   - An additional entiy is createedd to represent the M:M relationship
+** Removing M:M:
+   - Teh enrolemnt table:
+     will have columsn for the student ID and module code attributes
+   - Will have a foreign key to Student for the 'has' relationship
+   - will have a foreign key to modules for the 'in' relationship
+
+** General guidelines to tell Entities and Attributes:
+   - Entity have attributes but attributes have no smaller parts
+   - Entities can have relationships between them, but an attribut belongs to a single entity
+
+** Example2
+   We want to represent information about products in a 
+   database. Each product has a description, a price and a 
+   supplier. Suppliers have addresses, phone numbers, and 
+   names. Each address is made up of a street address, a city 
+   name, and a postcode
+
+*** entities: 
+    products
+    supplier
+    street address
+
+*** attributes:
+**** products:
+     - description
+     - price
+**** Supplier
+     - address
+     - phone number
+****  address
+      street address
+      city name
+      postcode
+
+*** Relationships
+    - each products have a supplier, but there is nothing to stop a supplier supplying many products
+      1:M 
+    - Supplier have address
+      it does not seem sensible for two different supliers to have the same address
+      1:1
+
+** One-to-One Relationships
+*** Some relationships between entiryes, A and B, might be reducdant if 
+    - it is a 1:1 relationship between A and B
+    - Every A is related to B and every B is related to an
+      for example, supplier-address relationship is one-to-one 
+      we don't need addresses that are not relate to  a supplier
+    - we can merge the two entities that take part in a redundant relationship together
+      they become a single enetity
+      teh new entitye has all the attrributes of teh old ones
+      so supplier -> phone number, street address, city name, postcode
+
+** ER diagram to SQL tables
+   - Entities become table names
+   - Attributes of an entity becomes teh col
+   - Relationships become foregin keys
+** Relationships as Foregin keys:
+   - 1:1 are usually not used or can be trated as a special case M:1
+   - M:1 are represented as a foreign key from the M-side to the 1
+   - M:M are split into two M:1 relationships
+
+

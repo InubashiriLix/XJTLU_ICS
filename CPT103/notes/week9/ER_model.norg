@@ -1,0 +1,80 @@
+* Entity-Relationship Modulling
+** components:
+   - Entities: objects or itme of interest
+   - Attributes: properties of entities
+   - Relationships: links between entities
+
+   - for example:o
+for student, moduler and lectures
+     students might have atttributes like ID, Name and cources
+   - Students could have relationships with Module (enrolment) and lectures (tutor / tutee)
+
+** ER diagrams (ER models)
+   ER modules are often represetned as ER diagrams that give a conceptual view of the database
+   - Give a conceptual view of the database
+   - Are independent of the choice DBMS
+   - Can identify come problems in design
+** ER: Diagram conventions
+   - Ther are various notations for representing ER diagrams
+   - Theese specify thee shape of the vai=rious compoennts, and the notation used to represent relationships
+   - For this introductorymoduler, we will use simplified notation
+
+
+** Entities:
+*** Entities represent objects or things of interest
+    - Pysical things like students, lectures, empoliyees, products
+    - More abstract things like module, orders, cources, projects
+*** Each entiry:
+    - Is a general type or class, such as Lecturer or Module
+    - Has instancees of that particular type. Eg DBI and IAI are instances of module
+    - has attributes
+
+*** representation in the diagram
+    - boxes with rounded corners
+    - labelled with that name of the calss of objects represented by that entity
+
+** Attributes:
+   Attributes are facts, aspects, propertiyes or detials about an entity
+   like student's ID, name, cources, addresses... 
+   Modules has code, title, credit weights, levels
+*** have 
+    - A name
+    - associtated enetity
+    - Domains of possible values
+    - For each instances of the associated entity, a value from the attributes domain
+
+*** representation in the diagram
+    - ovals
+    - linked to its entiry by a line
+    - name is written inside the oval
+
+** Relationship:
+*** A relationship is an association between two or more entityes
+   - students takes serveral modules
+   - module is taught by a lecturer
+*** Relactionships have
+    - name
+    - a set of entities that are participate in them
+    - degree: the number of entities taht participate (usually 2)
+    - A cardinality ratio
+      example
+      一对一（1:1）：一个学生对应一个学号。
+      一对多（1:N）：一个老师可以教多个学生。
+      多对多（M:N）：多个学生可以选修多门课程，反之亦然。
+
+*** Representaion
+    - diamond box
+    - the ends of the link show caridnality
+    - relationships are shown as links between two entities
+
+
+*** NOTES: One-to-Many
+    - many staff memebers can be assigned to a single branch
+    - the staff table has a foreign key to the barnch table
+      ususlly ON UPDATE CASCADE ON DELETE RESTRICT
+    - wrong designs
+    ~ if you put hte foreign key in the branch table, then each branch item cam only record the single employee and lost one to many
+    ~ the foreign key should be INDEX, or JOIN or query will be slower
+    ~ if set ON DELETE CASCADE, then delete a branch will delete all teh employees in the branch, the 
+        proper ops is RESTRICT or SET NULL
+

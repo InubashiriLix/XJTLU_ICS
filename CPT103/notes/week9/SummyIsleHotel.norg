@@ -1,0 +1,18 @@
+* The Sunny Isle Hotel
+** Entites and Attributes
+   - "the application must allow a guest to book rooms or cancel booked rooms"
+     table: guest, room
+     relationships: book
+   - Atrributes of Guest
+     "guest will have a username, guest's real name, passport ID, telephone number and email address",
+     "To log in, a guest is required to input his username and password correctly"
+     username, passportID, telephoneNumber, emailaddress, password
+   - Attributes of Room
+     "Romms in the Sunny Isle Hotel have four different types"
+     "The room number"
+    types, room, number
+** Relationships
+*** Guest book rooms
+    - One guest can bok muiltiple rooms?
+    - A room can be booked by multiple guests?
+

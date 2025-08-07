@@ -1,0 +1,141 @@
+* Functional Dependency
+** Intro
+   - we want to find relationship btween attributs within a tbale so that we can regroup attributes based on their context and split the big table
+   - Introducing Functional Dependency (FD):
+     "If A and B are attributes sets of relation R, B is funcationally dependent on A (donated as A -> B") 
+     if each vlaue of A in R is associate with exactly one value of B in R
+   - A is aclled determinant (决定属性/决定因素), B is called dependent (被决定属性/被决定因素)
+   - The concept of FD is closely related to M:1 and 1:1 relationships
+** note:
+   A -> B means, 
+   for the same value of A, ther is only one value of B
+   and there can be multiple same value of A, and multiple same valud of B,
+   but for all the lines with same valud of A, they must have the same valud of B
+   but for all the lines with same value of B, they can have different value of A
+   like ID -> Name
+
+** Example
+   For the attributes below:
+   PersonalTutor(LecID, LName, LEamil, StudentID, SName)
+   - we assume each lecturer has an unique email address 
+     and serveral stuedent have on personal tutor
+   - FDs 
+     LecID -> LEmail, LName
+     LName -> LecID
+     LEmail -> LecID
+     StudentID -> LeclD
+     StudentId -> Sname
+     LeclID -> Sname -- No
+     LEmail -> LeclID, LName
+   - note
+     Observer these FD carefully, you will realise that 
+     if these attributes are put together, they can form a relation, with the determinant being the uniqeu key or primary key of the relation
+     like 
+     1. LecID -> LName, LEmail
+     2. StudetnID -> SName, LecID
+     or 
+     1. LEmail -> LecID, LName
+     2. StudentId -> Sname, LEmail
+
+   - However
+     this FD is also true:
+     LecID, LName, LEamil -> LName, LEmail
+    recall the definition of super ky, candidate key and primary key
+** Full and Partial FD
+*** full functionasl dependency:
+    IF A and B are two sets of attributes of a relation, 
+     B is fully functionally dependent on A, if B is functionally dependent on A, 
+     but not on any proper subset of A
+*** Partial FD:
+    A -> B, is a partial FD, if some attribute of A can be removed an the FD still holds
+
+*** JUST LOOK THIS
+**** Fully Funciotnla Dependency
+     assuming we have a relation R with attributes A, B, C, D
+     if each of all unique pair of A, B can find the same valud of D, 
+     and there is no A -> D, B -> D, which is, any subset of A, B cannot find the same value of D
+     then we say (A, B) -> D
+     another situation is, A -> D, this is also a full functional dependency
+**** Paritla Functional Dependency
+     same assumption, we already know that (A, B) -> D and it is fully FD
+     we can also find (A, B, C) -> D, and if no A -> D
+     at this time, we will separate the C to another table
+
+     if A -> D, and (B, C) -> D, we need to seprate two tables: A, D, and A, B, C
+
+** 1NF
+*** reqirements:
+    ~ one unit cannot store multiple values, you cannot have data like "value1, value2" at a cell, or a table in a cell
+    ~ the col has the same type, if you want to have a date col, it should be all the datetimestamp or the string of date
+    ~ each line can be tell, but the PK may not exists, the 1NF does not require a primary key
+      that is to say, tables that designed from correct model diagram with fine design should be 1NF
+
+** 2NF
+   - candidate key: a set of attributes that is fully functionally dependent to the other attributes, 
+     the candidate key might be multiple, like A -> B, C, D, but at the same time B, C -> A, D, (B, C is fully FD with A, D)
+     which menas, (A) is a set of candidate key, and (B, C) is another set of candidate key
+   - primary key: 
+     the attribute that in the any set of candidate key
+   - non primary key:
+     not the primary key
+
+** Convert 1NF to 2NF
+  find the candidate key sets in the table, then get the rest attributes as non prime key
+      then check 2NF to confirm that there is no single or set of primary key that is partially functionally dependent on the non prime key (a none primary key or a set of non prime keys),
+      that is, if B, C -> A, D, E and B -> D, then it broke the 2NF, we need to separate the B, and D to another table, and repeat cheking and separation
+
+** 3NF:
+   the non prime key can not FD to non prime key
+   that is, if A -> B, C, D, E
+   while B -> C, D, E, (it is all the DF relations, no more DF like D -> E) then it breaks the 3NF
+   we need to get a new table B, C, D, E to the new table, and remove C, D, E from the old table
+   and the new table need to check from 1NF to 3NF
+
+** ONE TIME FROM 1NF TO 3NF
+*** 3.1 求最小覆盖 (G)
+    右拆单列：把 X → YZ 拆成 X → Y、X → Z
+    左去冗余：对 X = ABC，测试删 A/B/C 是否保持依赖成立
+    条目可删：尝试删除整条 FD，看闭包是否仍等价
+    结果满足：
+    Y 仅 1 列
+    X 无冗余列
+    集合最小
+*** 3.2 生成子表
+    对 G 中每条 X → Y 创建关系 R_i(X ∪ Y)
+
+    这样保证每条依赖都完全落在某张子表中 → 依赖保持
+
+*** 3.3 合并同键子表
+    若 R_i 与 R_j 的左边决定因素 X 相同，则合并列集
+
+    减少冗余表数量，同时无损依赖保持
+
+*** 3.4 候选键保障
+    计算原关系的 任一候选键 K
+
+    若 K 没有完全包含在任何子表的属性集中（或子表中 K 不是超键）
+    → 新建一张 R_key(K)，保证 无损连接
+
+*** 4 完整示例推演
+**** 4.1 原始关系
+     R(A, B, C, D, E)
+     F = { A→BC, B→D, C→E }
+**** 4.2 最小覆盖 G
+     A→B
+     A→C
+     B→D
+     C→E
+**** 4.3 生成子表
+     R₁(A,B)   ; A→B
+     R₂(A,C)   ; A→C
+     R₃(B,D)   ; B→D
+     R₄(C,E)   ; C→E
+**** 4.4 合并同键
+     A 相同 → R₁₂(A,B,C)
+     其它保持
+     => { R₁₂(A,B,C), R₃(B,D), R₄(C,E) }
+**** 4.5 候选键检查
+     原关系候选键：A
+     A 在 R₁₂ 中且是超键 → ✅ 不需额外表
+     最终 3 NF 集
+     R₁₂(A,B,C) R₃(B,D) R₄(C,E)

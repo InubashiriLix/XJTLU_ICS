@@ -1,0 +1,245 @@
+* Allthe Normalise Problems
+
+** 22-23 Final QuestionC
+   Normalise the following table "T" into the 3rd Normal Form by clearly describing the normalise proce, 
+   i.e. the dependencies removed and how the table is split into sub-tables
+   A, B, C -> D, E, F, G
+   B, C -> E, F
+   F -> C
+   D -> G
+*** SOL.
+    ~ minimal Cover
+      A, B, C -> D
+      A, B, C -> E
+      A, B, C -> F
+      A, B, C -> G
+      B, C -> E
+      B, C -> F
+      F -> C
+      D -> G
+    ~ deleting rebundency
+      cause' B, C in A, B, C and 
+      B, C -> E
+      B, C -> F
+      A, B, C -> E
+      A, B, C -> F
+      deduce the A, B, C -> E A, B, C -> F
+      A, B, C -> D
+      B, C -> E
+      B, C -> F
+      F -> C
+      D -> G
+      cause A, B, C -> D -> G, reduce it
+    ~ to subtables
+      R1 (A, B, C, D) 
+      R2 (B, C, E)
+      R3 (B, C, F)
+      R4 (F, C)
+      R5 (D, G)
+    ~ merge the sub tables
+      R1 (A, B, C, D) 
+      R23 (B, C, E, F)
+      R4 (F, C)
+      R5 (D, G)
+
+    ~ candidate key check
+      A, B, C -> D -> G
+      B, C -> E, F
+      so (A, B, C)+ = (A, B, C, D, E, F, G), whole set
+      and A, B, C have be contains in teh R1
+      the candidate check pass
+
+** 22 23 Resit
+   the relation t below stores the information about modules, lectures and teacher of a lecture session.
+   Assuming that the module code is unique for a given module, A module has serveral lectures and each lecture is assigned with a session ID,  
+   if two leactures teach the same content, their session IDs wil be the same, As a reuslt, if a lecture of a module isdelivered in two differe nt acaemic years, their session ID will be the same
+   A asme lecture iwll not be delivered agina in the same day, Lecture sessions IDs are always different among different modules
+*** Identify the Primary Key for the relation
+**** SOL
+     TeacherID -> TeacherName
+     ModuleCode -> ModuleTitle
+     SessionID -> ModuleCode
+     SessionID, SessionDate -> TeacherID
+
+     therefore, the primary keys should be SessionID and SessionDate
+
+*** Determine all functional dependencies, From these dependenciese, identify which are partial and which transitves
+**** SOL
+     ~ TeacherID -> TeacherName
+     ~ ModuleCode -> ModuleTitle
+     ~ SessionID -> ModuleCode
+     ~ SessionID, SessionDate -> TeacherID
+     - partial dependencies (violate 2NF)
+       SessionID -> ModuleCode (SessionID, SessionDate are the candidate key)
+       SessionID, SesssionDate -> MOdulseTitle (Deduced from 2)
+     - transitve dependnecies (violate 3NF)
+       SessionID, SessionDate ->  TeacherID -> TeacherName
+       SessionID -> ModuleCode -> MoudleTitle
+
+*** Normalise the to the third normal form, Write down each normalisation step (2NF then 3NF) in details
+**** SOL
+***** for 2NF
+      split the table to solve partial dependencies
+      R1 (SessionID, SessionDate, TeacherID, TeacherName)
+      R2 (SessionID, ModuleCode, ModuleTitle)
+***** for 3NF
+      fix the transitive dependencies
+      in the table R1, SessionID, SessionDate -> TeacherID -> TeacherNaem
+      R1 (SessionID, SessionDate, TeacherID)
+      R3 (TeacherID, TeacherName)
+      in the table R2, SessionID -> ModuleCode -> ModuleTitle
+      R2 (SessionID, ModuleCode)
+      R4 (ModuleCode, ModuleTitle)
+
+** 23-24 Resit
+   Normalise the following table "T" into the 3rd Normal Form by clearyly descibeing the normalise prcess
+   Describe the Functional Dependencies of eacch resulting subtable and underline thier primary keys
+   Attributes (A, B, E) form the priamry key. In addition, the relation has the following extra funcational dependencies
+   A, B, E -> C, D, E, F, G
+   B -> C, D, F
+   C, F -> D
+   G -> E
+   C, F -> F
+
+***  SOL
+**** minimal cover
+     A, B, E -> C
+     A, B, E -> D
+     A, B, E -> E
+     A, B, E -> F
+     A, B, E -> G
+     B -> C
+     B -> D
+     B -> F
+     C, F -> D
+     G -> E
+     C, F -> F (normal, ignore)
+**** remove redundancy
+     ~ cuase' 
+       B -> C
+       B -> D
+       B -> F
+       A, B, E -> C
+       A, B, E -> D
+       A, B, E -> F
+       remove 
+       A, B, E -> C
+       A, B, E -> D
+       A, B, E -> F
+
+     reuslt
+     A, B, E -> G
+     B -> C
+     B -> D
+     B -> F
+     C, F -> D
+     G -> E
+     C, F -> F (normal, ignore)
+**** sub tables
+     (A, B, E, G)
+     (B, C, D, F)
+     (C, F, D)
+     (G, E)
+**** candidate key check
+     A, B, E -> G 
+     B -> C, D, F (C, F) -> D
+     ( A, B, E )+ = A, B, C, D, E, F, G
+     pass
+
+** 23-24 Final 1
+   Normalise the following table "T" into the 3rd Normal Form by clearly descibing th noramalisation process
+   A, B -> C, D, E, F, G
+   B -> C, D, E, F
+   D -> E, F
+   F -> B
+   E -> F
+
+*** sol
+**** minimal cover
+     A, B -> C
+     A, B -> D
+     A, B -> E
+     A, B -> F
+     A, B -> G
+     B -> C
+     B -> D
+     B -> E
+     B -> F
+     D -> E
+     D -> F
+     F -> B
+     E -> F
+**** remove redundancy
+     cause'
+     A, B -> C
+     A, B -> D
+     A, B -> E
+     A, B -> F
+     B -> C
+     B -> D
+     B -> E
+     B -> F
+     result
+     A, B -> G
+     B -> C
+     B -> D
+     D -> E
+     F -> B
+     E -> F
+
+**** sub tables
+     R1 (A, B, G)
+     R2 (B, C)
+     R3 (B, D)
+     R4 (D, E)
+     R5 (F, B)
+     R6 (E, F)
+
+**** merge tables
+     R1(A, B, G)
+     R23 (B, C, D)
+     R4(D, E)
+     R5(F, B)
+     R6(E, F)
+
+**** candidate check
+     A, B -> C, D, E, F, G
+     fuck yes
+
+** 23-24 Final 2
+   Below is a table storing the inforamtion about food ordering in a restaurant. It is assumned that custormers 
+   do not share tables when eating food A, A custoner can make an order that contains multipe dishes
+   @code text
+   | Table_id | Order_time          | Customer_id | Customer_name | Dish_name         | Quantity |
+   | -------- | ------------------- | ----------- | ------------- | ----------------- | -------- |
+   | A03      | 2023-9-28 13:00:00  | 112233      | Peterson      | Mutton Masala     | 1        |
+   | A03      | 2024-9-28 13:00:00  | 112233      | Peterson      | Pea Salad         | 1        |
+   | B05      | 2023-9-11 12:00:00  | 778899      | Pei           | Vegetable Salad   | 1        |
+   | B07      | 2023-9-12 16:00:00  | 778899      | Pei           | Mixed Fruit Salad | 3        |
+   | A03      | 2023-10-12 13:00:00 | 112233      | Peterson      | Fish and chips    | 1        |
+   | B02      | 2023-10-12 13:00:00 | 445566      | Sam           | Mutton Soup       | 1        |
+   @end
+
+*** Task1: find a suitable primary key for this table
+*** Task2: Identify all functional dependencies in this table
+    Customer_id -> Customer_name
+    Customer_id, Order_time -> Table_id
+    Customer_id, Order_time, Dish_name -> Quantity
+
+*** Task3: Normalise this table into 3NF and underline the primary keys of each table
+**** minimal cover
+     Customer_id -> Customer_name
+     Customer_id, Order_time -> Table_id
+     Customer_id, Order_time, Dish_name -> Quantity
+**** remove redundancy
+     none
+**** subtables
+     R1 (customer_id, Customer_name)
+     R2 (Customer_id, Order_time, Table_id)
+     R3 (Customer_id, Order_time, Dish_name, Quantity)
+**** candidate key check
+     Customer_id -> Customer_name
+     Customer_id, Order_time -> Table_id
+     Customer_id, Order_time, Dish_name -> Quantity
+     fuck done
+

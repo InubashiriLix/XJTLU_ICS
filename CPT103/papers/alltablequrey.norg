@@ -1,0 +1,328 @@
+** 23 - 24 Resit
+
+*** Table:: cds
+    @code text
+    | cd_id | album             | artist           |
+    |-------|-------------------|------------------|
+    | 1     | Joyland           | Andy Mckee       |
+    | 2     | Mademoiselle      | Berry            |
+    | 3     | My Mixed Album    | various artists  |
+    @end
+
+*** Table:: tracks
+    @code text
+    | track_id | track_name        | genre       |
+    |----------|-------------------|-------------|
+    | 1        | Joyland           | acoustic    |
+    | 2        | Blue Liquid       | acoustic    |
+    | 3        | Enfant de salaud  | French pop  |
+    | 4        | Le bonheur        | French pop  |
+    @end
+
+*** Table:: tracks_in_cds
+    @code text
+    | track_id | cd_id |
+    |----------|-------|
+    | 1        | 1     |
+    | 2        | 1     |
+    | 3        | 2     |
+    | 4        | 2     |
+    | 1        | 3     |
+    | 2        | 3     |
+    | 4        | 3     |
+    @end
+
+** Questions
+
+*** a)  (3 marks each)  
+    You are given the following **SELECT** queries. What are the results of applying these queries to the tables above?  
+    Provide the answer **in a table format**. If the query is **not valid**, explain the reason.
+
+**** 1. `SELECT * FROM cds WHERE cd_id != 1;`
+***** SOL.
+      2     | Mademoiselle      | Berry            |
+      3     | My Mixed Album    | various artists  |
+
+**** 2. `SELECT SUM(track_id + cd_id) FROM tracks_in_cds WHERE cd_id < track_id;`
+***** SOL
+      3 + 5 + 6 + 7 = 21
+
+**** 3. `SELECT track_id FROM tracks_in_cds  
+     WHERE cd_id = ALL (SELECT cd_id FROM cds);`
+***** SOL
+      none
+      cause cd_id = ALL( ... )
+
+**** 4. `SELECT cd_id, track_id  
+     FROM cds RIGHT OUTER JOIN tracks ON (cd_id < track_id)  
+     WHERE track_name NOT LIKE '%d';`
+***** SOL
+      1 4
+      2 4
+      3 4
+
+*** b)  (4 marks)  
+    Write an SQL statement to *get all tracks along with their albums*.  
+    In the result, list *track names* and *album names*.
+**** SOL
+     SELECT DISTINCT a.track_name, b.album
+     FROM tracks AS a 
+     JOIN tracks_in_cds AS c ON a.track_id = c.track_id
+     JOIN cds AS b ON c.cd_id = b.cd_id;
+
+*** c)  (3 marks)  
+    Write an SQL statement to list *all CD tracks* 
+    whose track names *begin with “blue” and end with “d”*.
+**** SOL
+     SELECT *  
+     FROM tracks
+     WHERE track_name LIKE "blue%d";
+
+*** Write an SQL statenent to get all albums with more than 3 tracks, 
+    the reuslt should lis all album names;
+**** SOL
+     SELECT 
+     FROM (
+     SELECT COUNT(a.album) as cnt, a.album
+     FROM cds as a 
+     JOIN tracks_in_cds as b ON a.cd_id = b.cd_id
+     JOIN tracks as c ON c.track_id = b.track_id
+     )
+     WHERE cnt > 3;
+
+
+     SELECT album 
+     FROM (SELECT a.album, COUNT(a.album) as cnt
+     FROM cds as a 
+     JOIN tracks_in_csd as b ON a.cd_id = b.cd_id
+     GROUP BY a.album
+     )
+     as t
+     WHERE cnt > 3
+
+* 23-24 Final S2
+** Table:: cards
+   @code text
+   | card_no | balance | passport |
+   |---------|---------|----------|
+   | 1       | 6050    | G203T    |
+   | 2       | 7000    | G203T    |
+   | 3       | 280     | A8910    |
+   | 4       | 5000    | T2818    |
+   @end
+
+** Table:: holders
+   @code text
+   | passport | name  |
+   |----------|-------|
+   | G203T    | John  |
+   | A8910    | Anna  |
+   | T2818    | Chris |
+   @end
+
+** Table:: transactions
+   @code text
+   | trans_id | from_card | to_card | amount | trans_time           |
+   |----------|-----------|---------|--------|----------------------|
+   | 1        | 1         | 2       | 1000   | 2021‑03‑21 19:21:21 |
+   | 2        | 3         | 4       | 1550   | 2023‑02‑01 08:16:00 |
+   | 3        | 4         | 1       | 50     | 2024‑01‑01 09:32:21 |
+   @end
+
+* Questions (3 marks each unless noted)
+
+*** 1.
+    `SELECT card_no, name  
+    FROM cards NATURAL JOIN holders  
+    ORDER BY card_no DESC;`
+**** SOL
+     4 Chris
+     3 Anna
+     2 John
+     1 John
+
+
+*** 2.
+    `SELECT name  
+    FROM holders  
+    WHERE passport LIKE '%T' OR passport LIKE 'T_';`
+**** SOL
+     the _ can only match one char
+     so
+    John
+
+*** 3. 
+    `SELECT trans_id  
+    FROM cards LEFT OUTER JOIN transactions  
+    ON (card_no = from_card)  
+    WHERE to_card IN  
+    (SELECT card_no FROM cards WHERE balance <= 5000);`
+**** SOL
+     1 1 1 
+     2 none 
+     3 3 2 280
+     4 4 4 5000
+     so 
+     result ouput
+     2
+
+*** 4.
+    `SELECT c1.passport, c2.passport  
+    FROM cards c1, cards c2  
+    WHERE c1.card_no = c2.card_no - 3;`
+**** SOL
+     G203T T2818
+
+*** 5.
+    `SELECT name, SUM(balance) AS wealth  
+    FROM cards INNER JOIN holders USING (passport)  
+    GROUP BY name HAVING wealth > 1000;`
+**** SOL
+     1 6050 G203T John
+     2 7000 G203T John
+     3 280  A8910 Anna
+     4 5000 T2818 Chris
+    final output
+     John 13050
+    Chris 5000
+
+
+** Write an SQL stateent to increase the balance of all cards by 1000
+   UPDATE cards 
+   SET balance = balance + 1000;
+** Write an SQL statement to delete transactions that were done before the year of 2020
+   DELETE FROM transactions 
+   WHERE trans_time < '2020-01-01';
+
+** Write an SQL statent to get all transactions that involve cards having more than 2000 balance. In the reuslt,  
+   list trans_id and all card number involved in this transaction
+
+   SELECT trans_id, from_card, to_card
+   FROM transactions as t
+   JOIN cards as a ON (t.from_card = a.card_no) 
+   JOIN cards as b ON (t.to_card = b.card_no)
+   WHERE a.balance > 2000 OR b.balance > 2000;
+
+** Get the list of holders who have more than 1 bank cards. In the reuslt, list 
+   the number of banck cards, passport and holder names and sort the results by
+   holder names in ascending order
+   SELECT COUNT(card_no) AS card_count, passport, name
+   FROM cards JOIN holders USING (passport)
+   GROUP BY name 
+   HAVING card_count > 1;
+   ORDER BY name ASC
+
+** Get the names of holders who has the most money deposited in the bank
+   IF a person has multiple cards, all balances must be counted in. In the reuslt,
+   List holders passowrd number and total balance
+   SELECT passport , SUM(balance)
+   FROM cards 
+   GROUP BY passport
+   ORDER BY SUM(balance) DESC
+   LIMIT 1;
+
+* 23-24 Final S1
+** Table:: games
+   @code text
+   | title (varchar)        | release_date (date) |
+   |------------------------|---------------------|
+   | Deep Space Wanderer    | 2022‑06‑07 |
+   | Pop Stars              | 2021‑08‑02 |
+   | Potato Guy             | 2023‑01‑02 |
+   | Starfighter II         | 2020‑01‑21 |
+   @end
+
+** Table:: stores
+   @code text
+   | sname (varchar) | address (varchar)        |
+   |-----------------|--------------------------|
+   | R101 Store      | Hamster road 2‑103       |
+   | R212 Store      | North bridge road 7‑201  |
+
+   @end
+** Table:: stock
+   @code text
+   | title (varchar)        | sname (varchar) | stock (int) |
+   |------------------------|-----------------|-------------|
+   | Starfighter II         | R101 Store      | 21  |
+   | Starfighter II         | R212 Store      | 15  |
+   | Pop Stars              | R101 Store      | 5   |
+   | Pop Stars              | R212 Store      | 27  |
+   | Deep Space Wanderer    | R101 Store      | *null* |
+   | Deep Space Wanderer    | R212 Store      | 5   |
+   | Potato Guy             | R101 Store      | 10  |
+   | Potato Guy             | R212 Store      | 2   |
+   @end
+
+   > 注：题干说明 **games.title**、**stores.sname** 以及 **stock(title, sname)** 为主键（下划线）。
+
+
+** a) 给定 SELECT 语句，写出结果（每小题 3 分，若语句无效需说明原因）
+*** 1.  
+    SELECT title
+    FROM games
+    WHERE release_date > '2022-10-01'
+    OR title LIKE '*Stars_';
+**** SOL
+     Potato Guy             
+
+
+*** 2.  
+    @code sql
+    SELECT g1.title
+    FROM   games g1, games g2
+    WHERE  g1.release_date > g2.release_date
+    AND  g2.title <> 'Deep Space Wanderer';
+    @end
+**** SOL
+     DEep Space Wanderer
+     DEep Space Wanderer
+     Pop Stars
+     Potato Guy
+     Potato Guy
+
+
+*** 3.  
+    SELECT title, sname, stock
+    FROM   stock
+    WHERE  stock > 21 OR stock = 5;
+**** SOL
+     Pop Stars              | R101 Store      | 5   |
+     Pop Stars              | R212 Store      | 27  |
+     Deep Space Wanderer    | R212 Store      | 5   |
+
+*** 4.  
+    SELECT SUM(stock) AS all_stock
+    FROM   stock
+    GROUP  BY title
+    HAVING all_stock < 20;
+**** SOL
+    Deep Space Wanderer | 5
+     Potato Guy         | 12
+
+
+** b) （2 分）  
+   **要求**：列出 games 表中所有 **以 “deep” 开头且以 “r” 结尾** 的游戏标题。
+    *** SOL
+        SELECT title 
+        FROM games
+        WHERE title LIKE "deep%r";
+
+** c) （3 分）  
+   **要求**：查询 “R101 Store” 门店中 **最晚发行** 的游戏标题。
+*** SOL
+    SELECT g.games 
+    FROM games AS g
+    LEFT JOIN stock AS s ON g.title = s.title
+    WHERE s.sname = 'R101 Store' AND s.stock IS NOT NULL
+    ORDER BY g.release_date DESC
+    LIMIT 1;
+
+** d) （3 分）  
+   **要求**：查询 **没有被任何门店进货**（库存数量为 0 或记录缺失）的游戏标题。
+*** SOL
+   SELECT g.title 
+   FROM games as g
+   LEFT JOIN stock as s ON g.title = s.title
+    GROUP BY g.title
+    HAVING SUM(s.stock) IS NULL OR SUM(s.stock) = 0;

@@ -1,0 +1,97 @@
+* Question A
+  Consider the following relations used in a gamming platform;
+
+  @code text
+  Games
+  | ID (int) | Title (varchar(255)) | Developr varchar(255) | Publish_date (date) |
+  | -------- | -------------------- | --------------------- | ------------------- |
+  | 1        | Game1                | Developer1            | 2022-02-01          |
+  | 2        | Game2                | Developer2            | 2021-01-01          |
+  | 3        | Game3                | Developer2            | 2021-12-01          |
+
+  | Username (varchar(100)) | Join_date  |
+  | ----------------------- | ---------- |
+  | Player1                 | 2022-01-11 |
+  | Player2                 | 2022-01-01 |
+  | Player3                 | 2020-12-12 |
+
+
+  Ownership
+  | Username (varchar(100)) | Game_ID (int) |
+  | ----------------------- | ------------- |
+  | Player1                 | 1             |
+  | Player1                 | 2             |
+  | Player2                 | 1             |
+  | Player2                 | 2             |
+  | Player2                 | 3             |
+  @end
+** a
+*** 1
+    SELECT DISTINCT ID, Developer FROM Games WHERE
+    Publish_date > "2021-05-17";
+    sol.
+    1, Developer1
+    3, Developer2
+
+*** 2
+    SELECT sum (Game_ID), count(Join_date)
+    FROM Players NATRUAL JOIN Ownership;
+    Sol.
+    Exception, cause' the ID and Game_ID is not same in the natural join
+
+*** 3
+    SELECT Title AS GameTitle FROM Games
+    WHERE Publish_date LIKE "2021-%-01";
+    Sol.
+     Game2, Game3
+
+*** 4
+    SELECT * FROM Games WHERE ID <> 1
+    UNION
+    SELECT * FROM Players WHERE Join_date > '2022-01-01'
+    sol/
+    1        | Game1                | Developer1            | 2022-02-01          |
+    2        | Game2                | Developer2            | 2021-01-01          |
+    3        | Game3                | Developer2            | 2021-12-01          |
+** b
+   write an SQL statement to find the toal number of palyers registered in the platform
+   @code sql
+   SELECT COUNT(a.Username) 
+   FROM (
+       SELECT DISTINCT Useranme FROM Players
+   ) as a
+   @end
+** c
+   Write an SQL statement to list all developers that have developed more than 2 games, 
+   In the reuslt, show developers
+   
+
+
+** Question
+   ModuleCode ModuleTitle SessionID SessionDate, TeacherID TeacherName
+
+   SessionID -> ModuleCode
+   TeacherId -> TeacherName
+   ModuleCode -> ModuleTitle
+   SessionID, SessionDate -> TeacherID
+
+   SessionID, SessionDate is the primary key
+
+*** minimal cover
+    SessionID -> ModuleCode
+    TeacherId -> TeacherName
+    ModuleCode -> ModuleTitle
+    SessionID, SessionDate -> TeacherID
+*** delete
+    none
+*** subtables
+    R1 (SessionID, ModuleCode)
+    R2 (TeacherId, TeacherName)
+    R3 (ModuleCode, ModuleTitle)
+    R4 (SessionID, SessionDate, TeacherID)
+*** merge: none
+
+*** candidate check
+    SessionID+ = (ModuleCode) -> ModuleName
+    SessionDate+ = none
+    SessionID, SessionDate+ = (SessionID, SessionDate, ModuleCode, ModuleTitle, TeacherId, TeacherName)
