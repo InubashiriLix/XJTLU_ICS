@@ -1,5 +1,5 @@
 <!-- ──────────────── HEADER ──────────────── -->
-<h1 align="center">📚 My Knowledge Vault</h1>
+<h1 align="center">📚 XJTLU ICS Y2 NOTES</h1>
 <p align="center">
   <em>Notes + Code for everything that keeps me curious.</em>
 </p>
