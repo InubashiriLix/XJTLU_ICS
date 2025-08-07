@@ -1,0 +1,66 @@
+ques1
+
+1.
+item i         0   1   2   3 
+0              0   0   0   0
+w1=2 v1=12 1   0   0   12  12
+w2=1 v2=10 2   0   10  12  22
+w3=3 v3=20 3   0   10  12  22
+
+2.
+the value of most valuable set is 22
+
+3.
+Give an optimal subset of the instance based on the table
+cause 3,3 is equal to 3,2 -> that is the we do not use item3
+back to 2,3 which is equal to 2,2 that is we we use item2
+back to 1,3 which is equal to 1,2 that is we use item1
+so, item1 and item2 are used
+the subset is item1 and item2
+
+4.
+algorithm SnapPack0/1
+    // v[1...n] be the value of items
+    // n[1...n] be the weight of items
+    let V[0...n][0...w ] be a 2d table
+    for i = 0 to n do
+        begin 
+        V[i][0] = 0
+        end
+    for i = 0 to w do
+        begin 
+        V[0][i] = 0
+        end
+    // initialize the boarder
+
+    for i = 1 to n do
+        for j = 1 to w do
+            begin
+            if j < w[i] then 
+                V[i][j] = V[i-1][j]
+            else 
+                V[i][j] = max(
+                    V[i-1][j],
+                    v[i] + V[i-1][j-w[i]]
+                )
+            end
+
+    return V[n][w]
+
+5. 12 go see the table
+
+ques2
+1
+not a Euclidean graph cause
+cd = 1 ac = 5 ad = 3
+ac - ad = 2 > cd = 1
+not an triangle
+
+2
+we can use Dijktstra to find the minimum spanning tree
+we can find out three min edge with all the points
+ab = 2, bd = 3, dc = 1
+that is, using Twice-Around-the-Tree algorithm, the upper bound is 2 * ( 2 + 3 + 1 = 6 ) = 12
+but ca is 5, which is smaller than 6
+that is 2 + 3 + 1 + 5 = 11
+

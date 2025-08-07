@@ -1,0 +1,8 @@
+input m
+cnt = 1 
+x = 0
+while cnt \<= m do
+    x = x + cnt
+    cnt + 1
+end
+output x

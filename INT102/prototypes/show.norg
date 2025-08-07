@@ -1,0 +1,28 @@
+* showing each epoch in the loop
+** Give the trace table and output of the following algorithm for m = 16
+
+   input m 
+   count = 0
+   x = 1
+   while x < m do
+   begin 
+   x = x * 2
+   end
+   end
+
+   what is the the ouput for general m that is positive power of 2
+
+*** Sol.
+
+   1. the trace of the algorithm for m = 16 is 4.
+   table:
+   before the loop x = 1 count = 0
+   1st loop        x = 2 count = 1
+   2st loop        x = 4 count = 2
+   3st loop        x = 8 count = 3
+   4st loop        x = 16 count = 4
+   2. the output of the algorithm for m = 16 is 4
+   in general, the algorithm computes the value log2m.
+   that is  log 2 16 = 4
+
+

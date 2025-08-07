@@ -1,0 +1,47 @@
+Question 1
+Consider the following problem. Given an array A consisting of n distinct integers A[1], … A[n].
+It is known that there is a position p (1 <= p <= n), such that A[1], .., A[p] is in increasing order 
+and A[p], A[p+1], …, A[n] is in decreasing order. 
+    1. Write a brute force algorithm to find the position p. What is the time complexity of 
+    your algorithm? 
+    2. Devise a “divide and conquer" algorithm to find the position p. 
+    3. Set up a recurrence relation for the number of comparisons made by your algorithm and explain it. 
+    4. Based on the recurrence relation, show the complexity of your algorithm in big-O notation
+    and prove it using either the iterative method or the substitution method, i.e., Mathematical Induction (for simplicity, you can assume that n = 2k).  
+sols.
+1.  
+    algorithm bruteForceFindTurningPoint(A[1...n])
+        for i = 1 to n - 1 do
+            if A[i] > [i + 1] then 
+                return i 
+        return n
+2.  
+    algorithm findTuringPointDivice(A[1...n], low, high) 
+        if low == high then 
+            return A[low];
+        mid = low + (high - low) / 2
+        if A[low] < A[mid] then
+            return findTurningPoint(A, mid + 1, high)
+        else
+            return findTurningPoint(A, low, mid)
+3.
+    F(n) = {
+        1 if n = 1
+        T(n / 2) + 1 else
+    }
+4.
+    T(n) = (n/2) + 1 = F(n / 2^i) + i
+    when n = 2^k  and n = 1
+    T(n) = log2(n)
+    O(n) = {
+            O(1) if n == 1
+            O(log(n)) if n > 1
+        }
+
+
+Question II (13 marks)  
+1. Briefly describe the idea of the polynomial time reduction. Explain how to use it to prove a problem is NP-complete. 
+2. 4-SAT Problem: for a Boolean formula in CNF in which each clause has exactly 4 literals, determine if there is an assignment of Boolean value to its variables so that the formula evaluates to true? (i.e., the formula is satisfiable). Prove 4-SAT Problem is NP-Complete.
+sol.
+1.
+2. 

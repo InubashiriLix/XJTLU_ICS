@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/inubashiri/02_INT102/7week/HorspoolCPP/build",
+  "command": "/usr/bin/c++  -I/home/inubashiri/02_INT102/7week/HorspoolCPP/include -g -o CMakeFiles/horspool.dir/src/main.cc.o -c /home/inubashiri/02_INT102/7week/HorspoolCPP/src/main.cc",
+  "file": "/home/inubashiri/02_INT102/7week/HorspoolCPP/src/main.cc",
+  "output": "CMakeFiles/horspool.dir/src/main.cc.o"
+}
+]

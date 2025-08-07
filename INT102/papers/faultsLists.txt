@@ -1,0 +1,623 @@
+===================================================================
+22F
+
+a: b e g
+b: a f g
+c: d g h 
+d: c h
+e: a 
+f: b g
+g: a b c f
+h: c d 
+
+
+11. Starting at the vertex a and resolving ties by the vertex alphabetical order, traverse the graph 
+by breadth-first-search (BFS). Then, the 6th vertex being visited is 
+2.5 
+[ A ] g 
+[ B ] h 
+[ C ] e 
+[ D ] f 
+[ E ] c
+sol. D
+
+THIS IS NOT PRIORITY QUEUE
+THE ALPHABETICAL MEANS, WHEN YOU DO FIFO, USE THAT ORDER
+a
+( b e g )
+a b e g
+(f c)
+a b e g c f 
+(d h)
+a b e g c f d  h
+
+12. Starting at the vertex a and resolving ties by the vertex alphabetical order, traverse the graph 
+by depth-first-search (DFS). Then, the last vertex being visited is
+[ A ] e 
+[ B ] d 
+[ C ] g 
+[ D ] f 
+[ E ] h
+sol. A
+THE ALPHABETICAL THERE MEANS, WHEN YOU VISIT A CROSS LIKE, USE ALPHABETICAL TO VISIT NEXT NODE
+AND WHEN A BRANCH IS END, PLEASE GO BACKWARD AND FIND THE NODE WHERE HAVE NOT BEEN VISITED
+a b f g c d h e 
+
+14. Let G be a weighted connected graph 
+I.  If the edge weights are all different G must have exactly one MST         TRUE
+II. If the edge weights are not all different G must have more than one MST   FALSE
+III.If the edge weights are all same, every spanning tree of G is a MST       TRUE
+Which one of the following is correct？  
+[ A ] I is true, II and III are false 
+[ B ] I and III are true but II is false 
+[ C ] I and II and III are true 
+[ D ] I and II and III are false 
+[ E ] II is true but I and III are false
+SOL. WELL, FUCK YOU XJTLU
+NOTE:   I IS TRUE, JUST REMEMBER THAT
+        II IS FALSE, an triangle graph with 1 3 3 can prove there is one MST tree
+        III TRUE
+
+a: 2b 4c 4d 18e
+b: 2a 4c 3d 4e
+c: 4a 4b 1d 
+d: 4a 3b 1c 9e
+e: 18a 4b 9d
+
+15. Let T be a minimum spanning tree of the graph computed using Kruskal’s algorithm. The order 
+of edges selected by Kruskal’s algorithm is 
+2.5 
+[ A ] (c,d) (a,b) (b,d) (a,c) 
+[ B ] (c,d) (a,b) (b,d) (d,e) 
+[ C ] (c,d) (a,b) (b,d) (b,e) 
+[ D ] (c,d) (a,b) (b,d) (a,d) 
+[ E ] (c,d) (a,b) (b,d) (b,c)
+C
+dc ab bd be
+
+17. Assume the source vertex is a. Running Dijkstra’s algorithm for the graph, after the 
+termination, the label for vertex d is
+[ A ] d(4,b),   
+[ B ] d(6,b),   
+[ C ] d(4,a),   
+[ D ] d(6,a),   
+[ E ] d(6,c),
+C
+a   b   c   d   e 
+0   2a  4a  4a  18a
+0   2a  4a  4a  6b
+0   2a  4a  4a  6b
+0   2a  4a  4a  6b
+1   1   1   1   0 
+
+19. For the three statements below,  
+I. A problem in the class P can be solved in worst-case by a polynomial time algorithm.  TRUE
+II. A problem in the class NP can be solved by a non-polynomial time algorithms          TRUE
+III. A problem in the class NP can be verified in polynomial time                        TRUE
+[ A ] I is true, II and III are false 
+[ B ] I and II are true but III is false 
+[ C ] I and II are false but III is true 
+[ D ] II is true but I and III is false 
+[ E ] None of the above
+I TRUE
+II TRUE
+III TRUE
+E
+
+20. For the following problems  2.5 
+I. Vertex Cover Problem. NP 
+II. Finding minimum spanning tree (MST) in a weighted undirected graph. P
+III. 0/1 Knapsack problem. NP
+IV. Traveling Salesman problem.  NP
+Which one of the following is correct？ 
+[ A ] I , II are NP-Complete Problems, III and IV are P-Problems 
+[ B ] I , II are P-Problems, III and IV are NP-Complete Problems 
+[ C ] I , III are NP-Complete Problems, II and IV are P-Problems 
+[ D ] I , III are P-Problems, II and IV are NP-Problems 
+[ E ] I, III and IV are NP-Complete Problems, II is a P-Problem.
+===== NP_COMPLETE AND NP HARD
+NP-COMPLETE BELONG TO NP, ALL THE INSTANCES OF NP-COMPLETE CAN BE VERIFY IN POLYNOMIAL TIME
+NP-HARD IS AT LEAST AS HARD AS NP (THE NP_COMPLETE CAN REDUCTION), BUT MAY NOT CAN BE SOLVED IN POLYNOMIAL TIME (MAY BE THE OPITMIZATION)
+==== ITEMS
+VERTEX COVER NP-COMPLETE USING NP_COMPLETE THE 3_SAT, ALIQUES
+MST: THE PRIM AND KRUSKAL ALGORITHM
+0/1_KNAPSACK: NP_COMPLETE 
+TRAVELING SALESMAN PROBLEM (TSP) NP COMPLETE
+E
+
+Question I (12 marks) 
+1. Briefly describe the idea of the divide-and-conquer technique. 3 
+sol:
+    Divide the problem of size n into two or more subproblems of of (approximately) the same form
+    Conquer the subproblem recursively 
+    Combine the sub-solution into a solution for original problem
+    把大问题切成若干同型小问题→递归解决→把各小答案合并成大答案。
+2. Briefly describe the idea of the dynamic programming technique. 3 
+sols:
+    Optimal substructure: an optimal solution to the problem 
+    can be composed from optimal solutions to its subproblems.
+    Overlapping subproblems: the naïve recursion would solve the same subproblem many times.
+    Memoize or tabulate: store each subproblem’s answer once so you never recompute it.
+    Key idea: trade space for time, turning an exponential recursion into a polynomial‑time algorithm.
+    先存下子问题最优解（避免重复计算），再自底向上或带记忆地拼出整体最优——用空间换时间。
+3. Given any two decision problems A and B, what is a polynomial time reduction from A to B?  
+    Briefly explain how this technique can be used to prove certain problems are NP- hard.  
+sol.
+A ≤ₚ B 意味着“任何 A 实例都能在多项式时间内变形为 B 实例并保持答案一致”，因此若 A 已知难而 A ≤ₚ B，则 B 至少同样难（NP‑hard）。
+
+==== NOTE: FOR PATTERN MATCH
+PATTERN MATCH: 左插插上插插，指谁插谁
+
+Question II (18 marks)  
+1. There is a row of n coins whose values are some positive integers c1, c2, . . ., cn, not 
+    necessarily distinct. Let F(n) be the maximum amount of money that can be picked up from the 
+    row subject to the constraint that no two coins adjacent in the initial row can be picked up. 
+    a) Set up a recurrence relation for F(n) that can be used by a dynamic programming 
+        algorithm. (hint: to derive a recurrence for F(n), you can partition all the allowed coin 
+        selections into two groups: those that include the last coin and those without it. 
+    b) For coin row 5, 1, 2, 10, 6, 2 solve the coin row problem using the relation set in a). 
+    c) Write pseudocode of the dynamic programming algorithm for solving this problem and 
+       determine its time complexity.
+sol.
+    NOTE: FOR THE DP PROBELM, LIST THE LIST FIRST, THEN OBSERVE THE RULE
+    a. F(n) = {
+            1 if n = 1 
+            max( F(n - 1), F(n - 2) + ci) n >= 1
+        }
+
+        algorithm fuck(c[1 ... n])
+            prev1 = c[1]
+            prev2 = 0 
+
+            for i = 2 to n do
+                begin
+                current = max(prev2 + c[i], prev1)
+                prev2 = prev1
+                prev1 = current
+                end
+
+            return current
+    b. 5 1 2 10 6 2
+        time   |   curent number | current | prev1 prev2
+        1          1                5          5     0
+        2          2                7          5     5
+        3          10               10         7     5
+        4          6                13         10    7
+        5          2                13         13    10
+        final -> 13
+
+================================================================================
+21 F
+
+Question 1
+Consider the following problem. Given an array A consisting of n distinct integers A[1], … A[n].
+It is known that there is a position p (1 <= p <= n), such that A[1], .., A[p] is in increasing order 
+and A[p], A[p+1], …, A[n] is in decreasing order. 
+    1. Write a brute force algorithm to find the position p. What is the time complexity of 
+        your algorithm? 
+    2. Devise a “divide and conquer" algorithm to find the position p. 
+    3. Set up a recurrence relation for the number of comparisons made by your algorithm and explain it. 
+    4. Based on the recurrence relation, show the complexity of your algorithm in big-O notation
+    and prove it using either the iterative method or the substitution method, i.e., Mathematical Induction (for simplicity, you can assume that n = 2k).  
+sols.
+1.  
+    algorithm bruteForceFindTurningPoint(A[1...n])
+        for i = 1 to n - 1 do
+            if A[i] > [i + 1] then 
+                return i 
+        return n
+NOTE: IF ALL GROWING, THEN RETURN THE LAST INDEX
+IF ONE ELEMENT, THIS STILL FIT
+2.  
+    algorithm findTuringPointDivice(A[1...n], low, high) 
+        if low == high then 
+            return A[low];
+        mid = low + (high - low) / 2
+        if A[low] < A[mid] then
+            return findTurningPoint(A, mid + 1, high)
+        else
+            return findTurningPoint(A, low, mid)
+NOTE: IF YOU USE COMPARISION BETWEEN LEFT AND RIGHT, THE COMPLEX WILL BE O(n)
+3.
+    F(n) = {
+        1 if n = 1
+        T(n / 2) + 1 else
+    }
+4.
+    T(n) = T(n / 2) + 1 = T(n / 2^i) + i
+    when n = 2^k and n = 1
+    i = k, k = log2(n)
+    T(n) = T(n / 2^log2(n)) + log2(n)
+         = 1 + log2(n)
+    O(n) = log2(n)
+    O(n) = {
+        O(1) if n == 1
+        O(log(n)) if n > 1
+    }
+
+ Polynomial‑Time Reduction & NP‑Completeness
+Definition
+- Given decision problems A and B, a polynomial‑time reduction is a function 
+  f that maps any instance x of A to an instance f(x) of B \
+  in O(nᵏ) time such that
+  `x ∈ A  <=>  f(x) ∈ B`.
+  We write this relationship as `A ≤ₚ B`.
+
+ Why It Matters
+- If A is at least as hard as every NP problem (NP‑hard) and A ≤ₚ B, \
+  then B is also NP‑hard.  
+- A problem is NP‑complete when it is both\
+  1. in NP (certificate verifiable in polynomial time), and\
+  2. NP‑hard (some NP‑complete problem reduces to it in poly‑time).
+
+ Recipe to Prove a Problem **Q** is NP‑Complete
+1. NP‑membership → Show a certificate can be checked in polynomial time.  
+2. NP‑hardness → Take a known NP‑complete problem P and build \
+   a polynomial‑time reduction `P ≤ₚ Q`.  
+3. Conclude that Q is NP‑complete because it is in NP and NP‑hard.
+
+** One‑Sentence Mnemonic
+ “**Poly‑time reduction = fast translation + answer preservation; if a known hard problem turns into yours, yours is at least that hard.**”
+
+==========================================================================
+22R
+
+5. Running time T(n), where 'n' is input size of a *recursive!!!* algorithm is given as follows:
+Which of the following algorithms, its time complexity can be expressed by the T(n)?  
+    a) Binary Search 
+    b) Merge Sort 
+    c) Insertion Sort 
+    d) Selection Sort 
+    e) Dijkstra’s algorithm 
+SOL B
+    NOTE: Binary Search -> O(logn) but the sort need extra compexity,  it is not recursive
+    MERGE SORT -> O(nlogn) it is RECURSIVE
+    INSERTION SORT -> O(n^2)  NOT REC
+    SELECTION SORT -> O(n^2) RET REC
+    Dijkstra's algorithm -> O(n^2) PRIOIRTY QUEUE, NOT REC
+
+14. Let T be a tree constructed by Dijkstra’s algorithm in the process of solving the 
+    single-source shortest path problem for a weighted connected graph G.
+        I.  T is a spanning tree of G          TRUE
+        II. T is a minimum spanning tree of G  NOT MST, FALSE
+        III. T is a binary tree                NOT BINARY
+    Which one of the following is correct?  
+        a) I is true, II and III are false  
+        b) I and II and III are true  
+        c) I and II and III are false  
+        d) II and III are true but I is false  
+        e) None of the above
+SOL.
+A
+    NOTE:
+    I the a spanning tree
+    THE DIFF BETWEEN THE MST AND SPANNING TREE IS THAT DIJ FOCUS ON THE DISTANCE FROM EACH POINT A SINGLE SOURCE POINT, WHILE MST FOCUS ON THE TOTAL WEITHT IN THE TREE IS THE SMALEST
+    WHILE THE SPANNING TREE IS A TREE THAT CONTAINS ALL THE POINT IN G
+    II IS WRONG
+    III IN THE DIJ, THE POINT MAY HAGVE MULTIPLE SUBNODES, INSTEAD OF JUST TWO
+    ONLY I IS CORRECT
+
+15. Let G be a weighted connected graph 
+    I.  If e is a minimum-weight edge in G, it must be contained in a MST.   NOTE: IN A MST
+    II. If e is a minimum-weight edge in G, it must be contained in each MST.   NOTE: NOT MUST
+    III. If e is a maximum-weight edge in G, it must not be contained in any MST.  NOTE: like 3 3 3 GRAPH, 3 is the maximum
+    Which one of the following is correct?  
+    a) I and III are true, II is false  
+    b) I and II and III are true  
+    c) I and II and III are false  
+    d) II and III are correct but I is false  
+    e) None of the above  
+    NOTE:
+    E
+    I imagine a triangle 113, there are at least one tree have edge 1 (MULTIPLE MST IN A G)
+    II NO. ITEM I HAVE PROVED IT
+    III NO, IMAGINE A 3 3 3 TRIANGLE:
+
+16. Let G be a weighted connected graph 
+    I. If the edge weights are all different G must have exactly one MST         TRUE
+    II. If the edge weights are not all different G must have more than one MST  FALSE. FOREXAMPLE KRUSKAL ALGORITHM COULD IGNORE THE MAX WEIGHT EDGES WITH SAME WIDHT
+    Which one of the following is correct?  
+    a) I and III are true, II is false  
+    b) I and II and III are true  
+    c) I and II and III are false  
+    d) II and III are true but I is false  
+    e) None of the above
+WHERE IS III?
+    NOTE:
+    I TRUE JUST REMEMBER THAT
+    II NO JUST REM
+
+
+25
++-------+-------+-------+-------+-------+-------+-------+-------+
+|       |       |   A   |   A   |   T   |   G   |   T   |   T   |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|       |   0   |   0   |   0   |   0   |   0   |   0   |   0   |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|   A   |   0   |   1   |   1↖  |   1←  |   1   |   1   |   1   |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|   G   |   0   |   1   |   1   |   1   |   2↖  |   2   |   2   |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|   C   |   0   |   1   |   1   |   1   |   2↑  |   2←  |   2   |
++-------+-------+-------+-------+-------+-------+-------+-------+
+|   T   |   0   |   1   |   1   |   2   |   2   |   3   |   3↖  |
++-------+-------+-------+-------+-------+-------+-------+-------+
+c[i][j] = {
+    0 if i = 0 or j = 0
+    c[i - 1][j - 1] + 1 if i , j > 0 and A[i] = B[j]
+    max(c[i - 1][j], c[i][j - 1]) if i , j > 0 and A[i] != B[j]
+}
+
+The following is an incomplete table for the sequences of AATGTT and AGCT.
+25. The value of c[3, 4] is   
+    a) 1 
+    b) 2 
+    c) 3 
+    d) 4 
+    e) 5
+B well the i there is the row while j is the column
+i -> PATTERN, j -> TEXT
+
+26. The length of the longest common subsequence of AATGTT and AGCT is
+    a) 1 
+    b) 2 
+    c) 3 
+    d) 4 
+    e) 5
+SOL. C
+    follow the left up arrows, if there is an arror and the arror could form a path, then it is a part of LCS:
+    MULTIPLE LCS COULD APPEAR.
+
+27. The longest common subsequence of AATGTT and AGCT is   
+    a) AGCT  
+    b) ATGT  
+    c) AATG 
+    d) AGC  
+    e) AGT
+sol
+    E
+NOTE:
+    THE NOTE IN THE 26
+
+28. The length of the longest common subsequence of AATGT and AGCT is
+    a) 1 
+    b) 2 
+    c) 3 
+    d) 4 
+    e) 5
+SOL
+C
+AGT
+note:
+            A   G    C    T
+        0   0   0    0    0
+    A | 0   1↖  1←   1←   1←
+    A | 0   1↑  1←   1←   1←
+    T | 0   1↑  1↑   1↑   2↖
+    G | 0   1↑  2↖   2←   2←
+    T | 0   1↑  2↑   2↑   3↖T
+ NOTE:
+    follow the left up arrow, if there is an arrow and the path could be through, 
+    then it is consider as a part of the LCS
+    here A G T
+
+
+ALGORITHM SelectionSort(A[0..n − 1]) 
+//Sorts a given array by selection sort 
+//Input: An array A[0..n − 1] of orderable elements 
+//Output: Array A[0..n − 1] sorted in ascending order 
+for i =0 to n − 2 do 
+    min = i 
+    for j =i + 1 to n − 1 do 
+        if A[j]<A[min]
+            min = j 
+    if i < min do 
+        swap A[i] and A[min]
+
+21. The time complexity of the Selection sort algorithm is 
+    a) O(n log n) 
+    b) O(2n) 
+    c) O(n2) 
+    d) O(2n) 
+    e) None of the above
+SOL. C
+NOTE: TWO FOR -> >= nlogn 
+    ACTUALLY n * (n - 1) / 2 -> O(n^2)
+
+==========================================================================
+23 F
+
+QUESTION 1
+    finding sub string once appear once in the text 
+SOLS
+    1. algorithm findonce(T[0 ... n-1], P[0 .. m-1])
+        match_cnt = 0 
+        for i = 0 to n - m do
+            inner_match_cnt = 0;
+            for j = 0 to m - 1 do
+                if T[i + j] == P[j] then
+                    inner_match_cnt = inner_match_cnt + 1
+                else
+                    break;
+            if inner_match_cnt == m then match_cnt = match_cnt + 1
+            if match_cnt > 1 then return "No"
+        if match_cnt == 1 then return "Yes"
+        else return "No"
+
+    2. worst case: 
+        like all failed in the last cahr
+        CCCCCC
+        CA
+        T(n, m) = {
+            ( n - m ) * m 
+        }
+        O(n) = O(nm - m^2)
+        that is O(nm)
+
+
+QUESTION 2
+NOTE: CLASSIC DYNAMIC PROGRAMMING PROBLEM
+    Stairs-climbing problem: there are n stairs, a person standing at the bottom wants to climb 
+    stairs to reach the n-th stair. The person can climb either 1 stair or 2 stairs at a time, the task is 
+    to count the number of ways that a person can reach at the top.
+
+    Example: As shown in the figure above, starting from the bottom. To reach to the top, we have 
+    several options: 1) taking three steps individually, 2) taking two initially and then one, or 3) 
+    taking one step and then two.  
+
+    1. Briefly describe the idea of the dynamic programming technique.  
+    2. Let F(n) be the number of ways that a person can reach the n-th stairs. For convenience, 
+        Idefine F(0)=0, F(1)=1, F(2)=1. Set up a recurrence relation for F(n) (n > 0) that can be used by 
+        a dynamic programming algorithm.   
+    3. For the amount n =6, solving the stairs-climbing problem using the relation set in a)
+
+    |  n  |  1  |  2  |  3  |  4  |  5  |  6  | 
+    | F(n)|  1  |  1  |  2  |  3  |  5  |  8  |
+
+SOLS
+    1. for a big problem, depart this as step problens and record thier value each step, use the stored value to calculate the next step, and then store the result for the next step
+        use space to trade time
+    2. 
+        F(n) = {
+            0 if n = 0
+            1 if n = 1 or 2
+            n  if n > 2 (cause there are 2 checks if n > 2)
+        }
+        code
+        algorithm wathoutClassFight(step_n) 
+            if step_n == 0 reutrn 0
+            if step_n <= 2 return 1
+
+            privious1 = 1
+            privious2 = 1
+
+            for step from 3 to step_n do
+                current = privious1 + privious2
+                privious2 = privious1
+                privious1 = current
+
+            return current
+    NOTE: THE DYNAMIC COMPLEXITY IS O(n) ALWAYS
+    3.
+        when amount n = 6
+        then see the table complete upper 
+    4. the sudo code is in the question2
+
+========================================================================================
+23 R
+Question 1   
+1. Describe what a decision problem is and what an optimisation problem is.
+SOL.
+    a decision problem is a problem that can be answered with yes or no
+    and the optimisation problem is problem requireing the maximum or minimum some values
+
+2. Describe what a P problem is and what a NP problem is. 3 
+SOL.
+    1. P (polynominal time problem ) is in class P if there exits a detereministic algorithm that solves
+        every instance of the problem in polynomial time
+    2. NP (Non Polynominal time problem ) 
+        A decision problem is in class NP, if whenever the correct answer to an instance is "yes", 
+        there exists a polynomial-length cretificate that can be verified by a deterministic algorithm in polynomial time
+        - Equivalently, NP is the set of problem that can be solved in polynomial time by a nondeterministic truing machine
+        - Note that P ⊆ NP, and it is unknown whether P = NP.
+
+3. For each problem below, state whether it is a P problem or NP-complete problem.  
+    1. Vertex Cover Problem. 
+    2. Finding minimum spanning tree (MST) in a weighted undirected graph
+    3. 0/1 Knapsack problem.
+    4. Finding the nth Fibonacci number.
+SOLS:
+    1. for Vertex Cover problem, there are many solutions to many instances, DFS, BFS, MST etc
+    2. for finding minimum spanning tree -> PRIM, KRUSKAL can finish in O(E LogV)
+    3. for 0/1 knapsack problem, NP,
+    4. teh fibonacci -> classical DP algo, P
+
+Question 2  
+Consider the problem of searching for genes in DNA sequences using Horspool’s algorithm. A 
+DNA sequence is represented by a text on the alphabet {A, C, G, T}, and the gene or a gene 
+segment is a pattern.  
+ 
+1. Construct the shift table for the following gene segment.  10 
+    TCCTATTCTT  
+NOTE: 
+    THE SHIFT TABLE:
+    {
+        LENGTH_OF_PATTERN - 1 - LAST APPEAR INDEX (EXCEPT THE LAST CHAR INTHE PATTERN) 
+        1LENGTH_OF_PATTERN IF NEVER APPEAR IN PATTERN 
+    }
+SOL.
+    T = 10 - 8     = 1
+    C = 10 - 1 - 7 = 2
+    A = 10 - 1 - 4 = 5
+    G = 10         = 10
+
+2. Apply Horspool’ s algorithm to locate the pattern in the following DNA sequence. 10 
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT 
+NOTE:
+    TERMINAL ZHENG HAO YONG A 
+    THE PARTTERN MOVE TO RIGHT
+    WHILE INTERNAL COMPARE FROM RIGHT TO LEFT
+    IF NOT MATCH, USE THE LAST CHAR AT THE TEXT TO FIND NEXT MOVE OFFSET
+
+
+    1
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+    ^---------
+    TCCTATTCTT  
+    C NOT MATCH, T AT LAST -> 1 right
+
+    2
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+     ^---------
+     TCCTATTCTT  
+    G NOT MATCH, G AT LAST -> 10 right
+
+    3
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+               ^---------
+               TCCTATTCTT  
+    T NOT MATCH, T AT LAST -> 1 right
+
+    4
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                ^---------
+                TCCTATTCTT  
+    A NOT MATCH, A AT LAST -> 5 right
+
+    5
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                     ^---------
+                     TCCTATTCTT  
+    A NOT MATCH, T AT LAST -> 1 right
+
+    6
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                      ^---------
+                      TCCTATTCTT  
+    C NOT MATCH, C AT LAST -> 2 right
+
+    7
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                        ^---------
+                        TCCTATTCTT  
+    C NOT MATCH, C AT LAST -> 2 right
+
+    8
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                          ^---------
+                          TCCTATTCTT  
+    C NOT MATCH, T AT LAST -> 1 right
+
+    9
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                           ^---------
+                           TCCTATTCTT  
+    A NOT MATCH, A AT LAST -> 5 right
+
+    10
+    TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                                ^---------
+                                TCCTATTCTT  
+    FUCKING MATCH
+
+

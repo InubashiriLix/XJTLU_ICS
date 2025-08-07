@@ -1,0 +1,12 @@
+O(log n) < O() < O(n) < O(n2) < O(2n)
+
+* List the following functions from lowest order to highest order of magnitude
+  O(1), O(n2), O(n3) O(n) O(logn) O(log2timesn) O(nlogn) O(dist n) O(n2 log4timesn)
+
+*** solution:
+    O(1), O(log n), O(log2times n), O(distn), O(n) O(nlogn) O(n3/2) O(n2) O(n2log4n) O(n10/3) O(n4)
+    and it is only correct to say that 1 is of lower order than log n , log n is of lower order than log2 n etc...
+    because we focus on large n when we talks about order
+
+* Prove
+* Prove that the function f(n) = 3n2 * logn + 2n3 + 3n2 + 4n is O(n3)

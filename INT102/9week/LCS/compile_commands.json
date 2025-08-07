@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/inubashiri/02_INT102/9week/LCS/build",
+  "command": "/usr/bin/c++  -I/home/inubashiri/02_INT102/9week/LCS/include -g -o CMakeFiles/LCS.dir/src/main.cc.o -c /home/inubashiri/02_INT102/9week/LCS/src/main.cc",
+  "file": "/home/inubashiri/02_INT102/9week/LCS/src/main.cc",
+  "output": "CMakeFiles/LCS.dir/src/main.cc.o"
+}
+]

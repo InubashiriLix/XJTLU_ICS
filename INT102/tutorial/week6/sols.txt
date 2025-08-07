@@ -1,0 +1,75 @@
+1 
+  a b c d e f g h
+a 0 1 0 0 1 0 0 0
+b 1 0 1 0 0 1 0 0
+c 0 1 0 1 0 0 1 0
+d 0 0 1 0 0 0 0 0
+e 1 0 0 0 0 1 0 0
+f 0 1 0 0 1 0 1 0
+g 0 0 1 0 0 1 0 1
+h 0 0 0 0 0 0 1 0
+
+a = b -> e 
+b = a -> c -> f
+c = b -> g -> d
+d = c
+e = a -> b
+f = b -> e -> g
+g = c -> f -> h
+h = g
+
+bfs:
+fuckyou!!
+dfs: fuck you!
+
+2
+algorithm f(n)
+if (n < 4) then
+    return 1
+else 
+    return f(n - 1) + f(n - 2) + f(n - 3) + f(n - 4)
+
+compexity
+f(n) = f(n - 1) + f(n - 2) + f(n - 3) + f(n - 4)
+by character function
+f^4 = f^3 + f^2 + f^1 + 1
+f = 1.927...
+O = 1.927 ^ n
+
+function f_dp(n):
+    if (n <= 3) 
+        return 1
+
+    let dp[0...n]
+    for i = 0 to 3 do
+        dp[i] = 1;
+    end
+
+    for i = 4 to n do
+        dp[i] = dp[i - i] + ...
+    end
+
+    return dp[n]
+
+dp:
+T(n) = {1, n}
+dp(n) = {O( 1 ) if n <= 3; O( n ) else}
+
+3. 
+1. 
+a -1-> e -2-> f -3-> b -6-> c -7-> d 
+              |
+              -6-> g -8-> h
+
+a e f b g c d h
+not unique
+
+2.
+a -1-> e -2-> f -3-> b -6-> c -7-> d -8-> h
+              |
+              -6-> g 
+a e f b g c d h
+not unique 
+
+question3
+a e f 

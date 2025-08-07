@@ -1,0 +1,412 @@
+1. Which of the following is used to measure the efficiency of an algorithm?  2.5 
+[ A ] Number of lines of its pseudo code 
+[ B ] The running time of the algorithm on a machine 
+[ C ] The number of important operations and space used by the algorithm 
+[ D ] The running time of the algorithm on iphone 6 plus. 
+[ E ] The size of the algorithm 
+C
+
+2. What is the time complexity of the following algorithm of computing the sum of the first n non
+zero natural numbers? 
+input n 
+sum = n*(n+1)/2 
+output sum 
+2.5 
+[ A ] O(n)
+[ B ] O(n2) 
+[ C ] O(c), where c is a constant.  
+[ D ] O(n3) 
+[ E ] O(n*(n+1)/2)
+C
+
+3. Two algorithms A1, A2 solve a problem with running times of f1(n) and f2(n), respectively. 
+Then f1(n)∈O(f2(n)) means which of the following statements is true 
+2.5 
+[ A ] For all n, f1(n) ≤ f2(n) 
+[ B ] There exist n0, such that for all n > n0, f1(n) ≤ f2(n) 
+[ C ] There exist n0 and a constant c, such that for all n > n0, f1(n) ≤ cf2(n) 
+[ D ] A1 is running fast in all cases. 
+[ E ] None of the above.
+C
+
+4. Five algorithms A1, A2, A3, A4, A5 solve a problem with order f1(n) = 50log(log n) + 20,             
+f2(n)=10nlog2n + 100,  f3(n)=10(log n)2 + 100,  f4(n)=100n2 - 3n + 6,  f5(n)= n2/8 - n/4 + 2, 
+respectively. The algorithm(s) with highest time complexity is (are) 
+2.5 
+[ A ] A1 
+[ B ] A2, A3 
+[ C ] A4 
+[ D ] A4, A5 
+[ E ] A5
+T (f1(n) )  = 50log(logn)
+T(f2(n)) = 10nlog2n
+T(f3(n)) = 10logn
+T(f4(n)) = 100n^2
+T(f5(n)) = 1/8 * n^2
+D 
+
+Algorithm: F(A[l…r]) 
+ //Input: an array with a position p (l£ p £r), such that A[l] < A[l+1] <… < A[p] and A[p] > A[p+1] > …> A[r]. 
+ Begin 
+if l == r then  
+  return l  
+else  
+    m= [(l + r)/2]  
+    if A[m] < A[m+ 1] then 
+          return F(A[m+1…r]) 
+    else  
+          return F(A[l, m])  
+End
+
+5. Which algorithm design technique is employed in the above algorithm? 2.5 
+[ A ] Brute Force technique 
+[ B ] Greedy technique 
+[ C ] Divide- and-Conquer  
+[ D ] Dynamic Programming 
+[ E ] Ad hoc technique 
+C
+
+6. The output of the algorithm is  2.5 
+[ A ] The largest element in the array  
+[ B ] A position of the largest element in the array 
+[ C ] The smallest element in the array  
+[ D ] A position of the smallest element in the array 
+[ E ] The element in the middle of the array
+B
+
+7. What is the number of comparisons to return the output for the input A[0..7] = [12, 13, 14, 
+15,14, 13, 12, 11]?
+[ A ] 1 
+[ B ] 2 
+[ C ] 3 
+[ D ] 4 
+[ E ] 5 
+C
+
+8. If the size n of the array is greater than 1, then the time complexity of the algorithm can be 
+expressed by the recurrence  
+2.5 
+[ A ] T(n)=2T(n/2) + 1 
+[ B ] T(n)=2T(n/2) + n 
+[ C ] T(n)=T(n/2) + n 
+[ D ] T(n)=T(n/2) + 1 
+[ E ] T(n)=T(n-1) + T(n-2)
+D
+
+9. The time complexity of the algorithm is 
+[ A ] O(2n) 
+[ B ] O(log n) 
+[ C ] O(2n2) 
+[ D ] O(n log n) 
+[ E ] None of the above
+B
+
+a: b e g
+b: a f g
+c: d g h
+d: c h
+e: a 
+f: b g
+g: a b c f
+h: c d 
+20
+10. The total degree of the graph G is 2.5 
+[ A ] 21 
+[ B ] 18 
+[ C ] 19 
+[ D ] 20 
+[ E ] 10
+D
+
+11. Starting at the vertex a and resolving ties by the vertex alphabetical order, traverse the graph 
+by breadth-first-search (BFS). Then, the 6th vertex being visited is 
+2.5 
+[ A ] g 
+[ B ] h 
+[ C ] e 
+[ D ] f 
+[ E ] c
+E
+1 2 3 4 5 6 7 8
+a b e f g c d h
+
+
+
+12. Starting at the vertex a and resolving ties by the vertex alphabetical order, traverse the graph 
+by depth-first-search (DFS). Then, the last vertex being visited is
+[ A ] e 
+[ B ] d 
+[ C ] g 
+[ D ] f 
+[ E ] h
+A
+a b f g c d h e
+
+13. Let G be a weighted connected graph 
+I.  If e is a minimum-weight edge in G, it must be contained in a MST.  
+II. If e is a minimum-weight edge in G, it must be contained in each MST.  
+III. If e is a maximum-weight edge in G, it must not be contained in any MST.
+I right
+II fuck
+III fuck
+[ A ] I and III are true, II is false 
+[ B ] I and II and III are true 
+[ C ] I and II and III are false 
+[ D ] II and III are true but I is false 
+[ E ] I is true but II and III are false
+E
+
+14. Let G be a weighted connected graph 
+I.  If the edge weights are all different G must have exactly one MST  
+II. If the edge weights are not all different G must have more than one MST  
+III.If the edge weights are all same, every spanning tree of G is a MST  
+I true
+II false
+III true
+Which one of the following is correct？  
+[ A ] I is true, II and III are false 
+[ B ] I and III are true but II is false 
+[ C ] I and II and III are true 
+[ D ] I and II and III are false 
+[ E ] II is true but I and III are false
+A
+
+
+15. Let T be a minimum spanning tree of the graph computed using Kruskal’s algorithm. The order 
+of edges selected by Kruskal’s algorithm is 
+2.5 
+[ A ] (c,d) (a,b) (b,d) (a,c) 
+[ B ] (c,d) (a,b) (b,d) (d,e) 
+[ C ] (c,d) (a,b) (b,d) (b,e) 
+[ D ] (c,d) (a,b) (b,d) (a,d) 
+[ E ] (c,d) (a,b) (b,d) (b,c)
+B
+c-d, a-b b-d b-e
+
+16. Let T be a minimum spanning tree of the graph computed using the Prim’s algorithm: Assume 
+vertex a is selected first, then the order of vertices selected by Prim’s algorithm is 
+2.5 
+[ A ] a, b, d, e, d 
+[ B ] a, b, c, d, e 
+[ C ] a, c, d, b, e 
+[ D ] a, d, c, e, b 
+[ E ] a, b, d, c, e
+a - b - d - c - (b) e
+
+17. Assume the source vertex is a. Running Dijkstra’s algorithm for the graph, after the 
+termination, the label for vertex d is
+[ A ] d(4,b),   
+[ B ] d(6,b),   
+[ C ] d(4,a),   
+[ D ] d(6,a),   
+[ E ] d(6,c),
+a b c d e  index
+0 2 4 4 6  costs
+1 1 1 1 1  visited
+C
+
+
+19. For the three statements below,  
+I. A problem in the class P can be solved in worst-case by a polynomial time algorithm. 
+II. A problem in the class NP can be solved by a non-polynomial time algorithms 
+III. A problem in the class NP can be verified in polynomial time 
+[ A ] I is true, II and III are false 
+[ B ] I and II are true but III is false 
+[ C ] I and II are false but III is true 
+[ D ] II is true but I and III is false 
+[ E ] None of the above
+C?
+
+20. For the following problems  2.5 
+I. Vertex Cover Problem. P
+II. Finding minimum spanning tree (MST) in a weighted undirected graph. P
+III. 0/1 Knapsack problem. NP
+IV. Traveling Salesman problem.  NP
+Which one of the following is correct？ 
+[ A ] I , II are NP-Complete Problems, III and IV are P-Problems 
+[ B ] I , II are P-Problems, III and IV are NP-Complete Problems 
+[ C ] I , III are NP-Complete Problems, II and IV are P-Problems 
+[ D ] I , III are P-Problems, II and IV are NP-Problems 
+[ E ] I, III and IV are NP-Complete Problems, II is a P-Problem.
+B?
+
+Questions 21 to 24 refer to the following Longest Common Subsequence problem  
+  
+Let c[i,j] be the length of the Longest Common Subsequence of Xi = x1, x2,…, xi and Yj= y1, 
+y2,…,yj . Then c[i,j] can be recursively defined as following：
+
+c[i, j] = {
+    0 if i = 0 or j = 0,
+    c[i - 1, j - 1] if i, j > 0 and xi = yi,
+    max{c[i - 1, j], c[i, j - 1]},
+}
+
+0   0   A   A   T   G   T   T
+0   0   0   0   0   0   0   0
+A   0   1   1   1   1   1   1
+G   0   1   1   1   2   2   2
+C   0   1   1   1   2   2   2
+T   0   1   1   2   2   3   3 
+
+T _ T G T A A 
+T C _ 
+
+T T _ G T A A 
+T _ G
+
+21. The value of c[3, 4] is
+[ A ] 1 
+[ B ] 2 
+[ C ] 3 
+[ D ] 4 
+[ E ] 5
+B 2
+
+22. The length of the longest common subsequence of AATGTT and AGCT is
+[ A ] 1  
+[ B ] 2  
+[ C ] 3  
+[ D ] 4  
+[ E ] 5
+D?
+
+23. The longest common subsequence of AATGT and AGC is  2.5 
+[ A ] AGC 
+[ B ] ATG  
+[ C ] AAT  
+[ D ] AGC  
+[ E ] AG
+E?
+
+24. The longest common subsequence of AATGTT and AGCT is  2.5 
+[ A ] AGCT  
+[ B ] ATGT  
+[ C ] AATG  
+[ D ] AGC 
+[ E ] AGT
+A?
+
+Questions 25 to 28 refer to the following Knapsack problem: given the following instance of the 0/1 
+Knapsack problem. 
+item weight value
+1    2      12
+2    1      10
+3    3      20
+
+V[i, j] = {
+    0 if i = 0 or j = 0
+    max{V[i - 1, j], vi + V[i - 1, j - wi]} if j - wi >= 0
+    V[i - 1, j] if j - wi < 0
+}
+
+item i          0   1   2   3   4 
+0               0   0   0   0   0
+wi=2, v1=12     0   0   12  12  12
+w2=1, v2=10     0   10  12  22  22
+w3=3, v3=20     0   10  12  22  30
+
+25.  The value of V[0, 4] is 2.5 
+[ A ] 12 
+[ B ] 10  
+[ C ] 22  
+[ D ] 0  
+[ E ] 24
+D
+
+What is the value of the most valuable subset that can fit into the knapsack? 2.5 
+[ A ] 12  
+[ B ] 10  
+[ C ] 30  
+[ D ] 0  
+[ E ] 24
+C
+
+27.  Which of the following is an optimal subset of the instance based on the table if the item3 is 
+removed and the capacity of the knapsack is 4? 
+[ A ] {item1, item2}  
+[ B ] {Item3}  
+[ C ] {Item1, item2, item3} 
+[ D ] {Item1, item3}
+[ E ] {Item2, item3}
+item2 + item3 = 30
+A
+
+28.  Which of the following is an optimal subset of the instance based on the table if the capacity 
+of the knapsack is 3 and item3 is removed? 
+[ A ] {item1, item2} 
+[ B ] {Item3}  
+[ C ] {Item1, item2, item3}  
+[ D ] {Item1, item3}  
+[ E ] {Item2, item3}
+item1 + item2 = 22
+A
+
+Question I (12 marks) 
+1. Briefly describe the idea of the divide-and-conquer technique. 3 
+sol:
+    Divide the problem of size n into two or more subproblems of of (approximately) the same form
+    Conquer the subproblem recursively 
+    Combine the sub-solution into a solution for original problem
+2. Briefly describe the idea of the dynamic programming technique. 3 
+sols:
+    Optimal substructure: an optimal solution to the problem can be composed from optimal solutions to its subproblems.
+    Overlapping subproblems: the naïve recursion would solve the same subproblem many times.
+    Memoize or tabulate: store each subproblem’s answer once so you never recompute it.
+    Key idea: trade space for time, turning an exponential recursion into a polynomial‑time algorithm.
+3. Given any two decision problems A and B, what is a polynomial time reduction from A to B?  
+    Briefly explain how this technique can be used to prove certain problems are NP- hard.  
+sol.
+什么是多项式时间归约：
+假设有两个判定问题：A 和 B， 
+    如果存在一个转换算法 f，满足：input：f接收A的任何实例，
+    时间复杂度：f在x的长度|x|的某个多项式时间内运行完毕，
+    输入：f产生的B的一个实例: 并且
+    x is "Yes" in A <=> f(x) is "Yes" in B
+    in one word:
+    you can change the A into B with same answer
+
+    why reduction can be prove NP-Hardness
+    give that A has been proved to be NP-Hard
+    then you can use f to convert the input A to B' input, and use that convert algorithm/
+    the whole progress is polynomial time still, then A can also be can be solved in polynomial time, which contract with the A NP-hardness (only if P = NP)
+    therefore the B is at least as harder as A, that is NP hard
+
+Question II (18 marks)  
+1. There is a row of n coins whose values are some positive integers c1, c2, . . ., cn, not 
+    necessarily distinct. Let F(n) be the maximum amount of money that can be picked up from the 
+    row subject to the constraint that no two coins adjacent in the initial row can be picked up. 
+    a) Set up a recurrence relation for F(n) that can be used by a dynamic programming 
+        algorithm. (hint: to derive a recurrence for F(n), you can partition all the allowed coin 
+        selections into two groups: those that include the last coin and those without it. 
+    b) For coin row 5, 1, 2, 10, 6, 2 solve the coin row problem using the relation set in a). 
+    c) Write pseudocode of the dynamic programming algorithm for solving this problem and 
+       determine its time complexity.
+sol.
+    a. F(n) = {
+            1 if n = 1 
+            max( F(n - 1), F(n - 2) + ci) n >= 1
+        }
+
+        algorithm fuck(c[1 ... n])
+            prev1 = c[1]
+            prev2 = 0 
+
+            for i = 2 to n do
+                begin
+                current = max(prev2 + c[i], prev1)
+                prev2 = prev1
+                prev1 = current
+                end
+
+            return current
+    b. 5 1 2 10 6 2
+        time   |   curent number | current | prev1 prev2
+        1          1                5          5     0
+        2          2                7          5     5
+        3          10               10         7     5
+        4          6                13         10    7
+        5          2                13         13    10
+        final -> 13
+
+    c. in a 
+

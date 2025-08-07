@@ -1,0 +1,32 @@
+* NP ques strategies
+** solving
+   use a strategy that guarantees solving the problem exactly but doesn't guarantee to find a solution in polynominal time
+** Approximation algorithm
+   can find an approximate (sub-optimal) solution in polynomial time
+
+* Exact Solution Strategies 
+** exhaustive seatch (brute force) 
+   use only for small instance
+** backtracking:
+   - eliminate some unnessary cases form consideration
+   - yields solution in reasonable time for many instances but worse case is still exponential
+** barnch and bound
+   - further refines the backtracking idea for optimiztion problem
+** dynamic programming
+   applicable to some problems
+
+* Techniques Algorithm
+** Greddy
+   - Shortest path, minimum spanning tree, ...
+** Divide and Conquer
+   - Divide the problem into smaller subproblems,
+     solve them, and combine into the overall solution
+   - Often done recursively
+   - Quick sort, merge sort are g reat example
+** Dynamic Programming
+   - brute forces through all possible solutions,
+     storing solution to subproblems to avoid repeat computations
+** Backtracking
+   - a clever form of exahstive search 
+
+

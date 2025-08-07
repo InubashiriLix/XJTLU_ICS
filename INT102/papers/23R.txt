@@ -1,0 +1,91 @@
+PART2
+Question1
+1. Describe what a decision problem is and what an optimisation problem is.
+decision problem asks a yes/no question about the input
+optimisation problem asks for the best (min/max) solution and it's value
+
+2. Describe what a P problem is and what a NP problem is.
+P problem is the class of decision solvable in worst-case in polynomial time
+NP problem is the class of decision problems whose yes-answer can be verified in polynomial time
+but finding such solution can be difficult
+A problem is NP-complete if it lies NP and every NP problem can be reduced to it in polynomial time
+3. 
+For each problem below, state whether it is a P problem or NP-complete problem.  
+1. Vertex Cover Problem.  NP
+2. Finding minimum spanning tree (MST) in a weighted undirected graph P
+3. 0/1 Knapsack problem. NP
+4. Finding the nth Fibonacci number. P
+
+Question2
+1
+shift table
+T = 10 - 1 - 8 = 1
+A = 10 - 1 - 4 = 5
+C = 10 - 1 - 7 = 2
+G = 10
+ A  T  C   G
+ 5  1  2  10
+
+2 
+find DNA
+
+1
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+^---------
+TCCTATTCTT
+C not match, the end is T -> 1 right
+
+2
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+ ^---------
+ TCCTATTCTT
+G not match, the end is G -> 10 right
+
+3
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+           ^---------
+           TCCTATTCTT
+T not match, the end is T -> 1 right
+
+4
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+            ^---------
+            TCCTATTCTT
+A not match, the end is A -> 5 right
+
+5
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                 ^---------
+                 TCCTATTCTT
+A not match, the end is T -> 1 right
+
+6
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                  ^---------
+                  TCCTATTCTT
+C not match, the end is C -> 2 right
+
+7
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                    ^---------
+                    TCCTATTCTT
+C not match, the end is C -> 2 right
+
+8
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                      ^---------
+                      TCCTATTCTT
+C not match, the end is T -> 1 right
+
+9
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                       ^---------
+                       TCCTATTCTT
+A not match, the end is A -> 5 right
+
+10 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                            ^---------
+                            TCCTATTCTT
+fuckinng match
+

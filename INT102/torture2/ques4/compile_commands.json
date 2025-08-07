@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/inubashiri/02_INT102/torture2/ques4/build",
+  "command": "/usr/bin/c++  -I/home/inubashiri/02_INT102/torture2/ques4/include -g -o CMakeFiles/int_102.dir/src/localOptimal.cc.o -c /home/inubashiri/02_INT102/torture2/ques4/src/localOptimal.cc",
+  "file": "/home/inubashiri/02_INT102/torture2/ques4/src/localOptimal.cc",
+  "output": "CMakeFiles/int_102.dir/src/localOptimal.cc.o"
+},
+{
+  "directory": "/home/inubashiri/02_INT102/torture2/ques4/build",
+  "command": "/usr/bin/c++  -I/home/inubashiri/02_INT102/torture2/ques4/include -g -o CMakeFiles/int_102.dir/src/main.cc.o -c /home/inubashiri/02_INT102/torture2/ques4/src/main.cc",
+  "file": "/home/inubashiri/02_INT102/torture2/ques4/src/main.cc",
+  "output": "CMakeFiles/int_102.dir/src/main.cc.o"
+}
+]

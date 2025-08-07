@@ -1,0 +1,39 @@
+* SHIT SYNTEX
+** assignment
+   variable = value
+** compound statement
+   @code shit
+   begin
+        statement_1
+        statement_2
+   end
+   @end
+** condition
+    @code shit
+    if condition then
+        statement
+    else 
+        statement
+    @end
+
+
+** iterative
+   @code shit 
+   for shit = 1 to 10 do
+       p = p * x
+   output p
+
+   repeat 
+       statement 
+   until condition
+
+   while condition do
+
+   @end
+
+* Big O
+** Hierachy shit
+  1 < ln n < log n < sqrt(n) < n < n2 < nk < 2^n
+** 
+
+

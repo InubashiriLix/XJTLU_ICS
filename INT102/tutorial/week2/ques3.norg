@@ -1,0 +1,14 @@
+input m
+cnt = 1
+x = 1
+
+if m > 0 then
+    begin
+        repeat 
+            x = x + cnt
+            cnt ++;
+        until cnt > m
+    end
+
+output x
+

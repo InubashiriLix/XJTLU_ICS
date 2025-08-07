@@ -1,0 +1,61 @@
+ques1
+4 queen
+0 1 0 0
+0 0 0 1
+1 0 0 0
+0 0 1 0
+or 
+0 0 1 0 
+1 0 0 0
+0 0 0 1
+0 1 0 0
+NOTE: symmetric
+
+ques2
+a b d f c x
+a b d f g e b x
+a b e g d f c a done
+a b e g f d x
+a d b e g f c a done
+a d f c x
+a d f g e b x 
+a d g e b x
+a d g f c x
+
+ques3
+5 2 1 4
+
+a -> 1
+9 + 2 + 1 + 4 = 16 
+cause the solution is 13 UP, so deprecated
+
+a -> 2
+5 + 2 + 1 + 4 = 12
+
+a -> 2 b -> 1
+c -> 3 d -> 4
+2 + 6 + 1 + 4  = 13 first solution
+a -> 2 b -> 1 
+c -> 4 d -> 3
+2 + 6 + 8 + 9  = 25 inferior solution
+
+a -> 3 
+...
+
+ques4
+upper bound a b d c = 11
+
+a - b
+lb = 2 + 3 + 1 + 5 = 11
+
+a - b - d - c = 11 upper bound
+a - b - c - d = 18 x
+
+a - c 
+lb = 5 + 1 + 3 + 2
+a - c - d - b = 11 upper bound
+a - c - b - d = 23 x
+
+a - d 
+7 + 1 + 8 + 2 = 18 biger than uppler bound, depreacated
+

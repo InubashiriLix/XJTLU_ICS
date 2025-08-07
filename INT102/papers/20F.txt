@@ -1,0 +1,32 @@
+Question2
+    Change-making problem: give change for amount n using the minimum number of coins 
+    of values d1 < d2 < ... < dm.  Assume that there are unlimited quantities of coins for each 
+    of the m values d1 < d2 < ... < dm where d1 = 1, making change for n cents using the fewest 
+    number of coins. 
+a) Describe a greedy algorithm to make change consisting of quarters (25 cents), dimes 
+    (10 cents), nickels (5 cents), and pennies (1 cent).  
+b) Give a set of coin denominations for which the greedy algorithm does not yield an 
+    optimal solution. Your set should include a penny so that there is a solution for every 
+    value of n.
+c) Let F(n) be the minimum number of coins whose values add up to n. For 
+    convenience, define F(0)=0. Set up a recurrence relation for F(n) (n > 0) that can be 
+    used by a dynamic programming algorithm.
+d) Write pseudocode of the dynamic programming algorithm for solving this problem 
+    and determine its time complexity.
+SOL.
+a)  for greddy algorithm, we use the maximum coin we can use in the shit
+    algorithm shitGreedy() 
+        coins = {25, 10, 5, 1}
+        coin_cnt[0...3]
+        input target
+        temp_sum = 0
+        while temp_sum < target  do
+            for index, coin in enumerate(coins) do
+                if target - temp_sum > coin then
+                    temp_sum = temp_sum + coin
+                    coin_cnt[index]++
+        return coin_cnt
+
+
+            
+        

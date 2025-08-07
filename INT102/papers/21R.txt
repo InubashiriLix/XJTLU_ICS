@@ -1,0 +1,97 @@
+Question 1 (13 marks)  
+  
+1. Suppose T(n) denotes the worst case time complexity of the merge-sort algorithm on n 
+    numbers
+(a) Explain why T(n) can be described by the following recurrence.
+    T(n) = {
+        1 if n = 1
+        2(T( n/2 )) + n if n > 1
+    }
+Sol. 
+    1. cause' the merge sort algorithm works by dividing the input array into two halves with problem in same shape,
+    and then the subproblem repeat dividing until it got the minimum size of 1
+    that's why 2(T(n/2)) is used to denote the two recursive calls on the two halves of the array.
+    2. then compare the each subproblem's return value in the prior step, until the original problem is solved. (merge step)
+    that's wjyu a n is added to the end of the rcurreence
+    
+b) Show that T(n) = O(nlog n) by the substitution method. (Hint: show that T(n) ≤ 2n log n for n≥ 2 by Mathematical Induction.) 
+SOL.
+     T(n) = 2(T(n / 2)) + n = 2^i * T(i / 2^i) + in
+     when the dividing is done, the n should be 1 and we got 2^i = n 
+     that is i = log2(n)
+     T(n) = 2 ^ log2(n) * 1 + log2(n)n
+     T(n) = n + log2(n) * n
+     there fore, T(n) =O(nlogn)
+
+Question 2 (27 marks)  
+  
+Suppose there are two assembly lines each with n stations, for each j, 1 ≤ j ≤ n, let Si,j denote the 
+jth station in line i (i = 1, 2). For each i (i = 1, 2), let 
+ ei be the entry time into line i. 
+ xi be the exit time from line i. 
+ ai,j be the assembly time at Si,j  
+ t1,j be the transfer time from station S1,j to station S2,j+1 and t2,j be the transfer time 
+from station S2,j to station S1,j+1. 
+ 
+  
+The following is an example of two assembly lines, each line has 4 stations with e1=3, e2=2, 
+x1=6, x2=5. The assembly time is given in the circle representing the station and the transfer time 
+is given next to the edge from one station to another. 
+
+1. Let f1[j]and f2[j]be the fastest time to get through stations S1,j and S2,j, respectively. 
+    Using dynamic programming technique, derive a recursive definitions of f1[j] and f2[j] 
+    and the fastest time f* needed to get through the assembly line.
+SOL.
+    f1[j] = {
+        (e1 + a1j) if j = 1
+        min(f1[j-1], t2j-1 + f2[j - 1]) + a1j if i > 1
+    }
+
+    f2[j] = {
+        e2 + a2j if j = 1
+        min(f2[j - 1], f1[j - 1] + t1j-1) + a1j if i > 1
+    }
+2. 
+    For the assembly lines give above, fill in the table of the fastest time fi[j]needed to get 
+    through station Si,j. Show all the intermediate steps in computing these values. 
+SOL.
+    j   f1[j]   f2[j]
+    1   6       4
+    2   15      9
+    3   12      17
+    4   21      20
+    fin 24
+
+3. for the eassembly lines given above, twaht is the fastest time f* needed to get through the assemly line?
+SOL.
+    fin = min(f1[n] + x1, f2[n] + x2)
+        = min(21 + 3, 20 + 5) = 24
+    24
+4. For the assembly lines give above, which stations should be chosen? 
+SOL.
+    j   f1[j]   f2[j]
+    1   6       4
+    2   15 b    9 2
+    3   12 2    17 2
+    4   21 1    20 1
+    fin 24 1
+    f12 -> f22 -> f31 -> f41
+5. Based on the recurrence relation obtained in a), write a pseudo code of the bottom-up 
+    dynamic programming algorithm with running time O(n) for the n stations assembly 
+    line scheduling problem. 
+SOL.
+algorithm DP() 
+    input e[1..2], x[1...2], a1[1...n], a2[1...n], t1[1...n-1], t2[1...n-1]
+    // node1 is an arry with n size
+    // node2 is an arry with n size
+
+    node1[1] = e[1] + a1[1]
+    node2[1] = e[2] + a2[1]
+
+    cnt = 2;
+    while (cnt <= n) do
+        node1[cnt] = min(a1[cnt - 1], a2[cnt - 1] + t2[cnt - 1]) + a1[cnt]
+        node2[cnt] = min(a2[cnt - 1], a1[cnt - 1] + t1[cnt - 1]) + a2[cnt]
+        cnt = cnt + 1
+    fin_cost = min( node1[n] + x[1], node2[n] + x[2])  
+    return fin_cost

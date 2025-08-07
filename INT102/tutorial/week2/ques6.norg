@@ -1,0 +1,12 @@
+input C
+cnt = 0
+for c = 0 to n -1 do
+    if T[c] = C then
+        cnt = cnt + 1
+if (cnt = 1) then 
+    return "Yes"
+else
+    return "No"
+    
+
+

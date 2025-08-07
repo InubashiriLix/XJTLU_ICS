@@ -1,0 +1,109 @@
+* Introduction to Computational Complexity Theory
+** Complexity definitions
+*** Big-Oh
+    the upper bound of a algo, which means the grow situation of the wrost case cost
+    Worst Case
+    f(n) = O(g(n)) iff there exists positive constants c and n0 such that f(n) \<= cg(n) for all n >= n0
+
+
+*** Big-Omega
+    the lower bound of an algo, which means the grow situation of the best case cost
+    Best Case
+    Omega(g(n)) = \{f(n) there exist positive constants c and n0 such that 0 \<= cg(n) \<= f(n) for all n >= n0\};
+
+
+*** Big-Theta
+    Theata notation is use when function f can be bounded both from above and below by the same function g
+    Theta(g(n)) = \{f(n): there exists positve constant c1, c2 and n0 such that 0 \<= c1*g(n) \<= f(n) \<= c2*g(n) for all n >= n0\}
+
+*** Little-o
+    Little-o notation is used to describe algoA is strictly smaller than algoB in growing spped
+    eg. if f(n) = o(g(n)), which means the f(n) is growing slower than g(n)
+
+*** Little-omega
+    Little omega is to describe algoA is structly larger than algoB is growing speed
+    eg. if f(n) = w(g(n)), that is to say f(n) is growing faster than g(n)
+
+** P problem: (Polynomial time problems)
+   - the P problem means those problems that cna be solved in polynomial time
+   - an algo can solve problem in O(n^k) (k is a constant)
+   - those problems are regard as easy problems
+   - for example, sorting(O(nlogn)), searching(O(logn))
+
+** NP problem: (Nondeterministic Polynomial time problems)
+   - NP means those problems that can be verified in polynomial time
+   - find a solution for this problem can be very difficult, but if we have a solution, we can verify it in polynomial time
+   - exampple: TSP, 3-SAT
+
+** P and NP relations
+   - all the P problems are NP problems, becase if a problem  can be solved in polynomial time, it can be verified in polynomial time
+   - It is NOT PROVED that the NP equals P problems
+
+
+** Hamiltonian Circuit
+*** Input: A connected graph G
+*** Question: Does G have a Hamiltonian circuit?
+    i.e., does G have a circuit that passes through 
+    every vertex exactly once, except for the 
+    starting and ending vertex?
+
+** Knapsack Problem
+*** Input: Given n items with integer weights w1, 
+    w2, …, wn and integer values v1, v2, …, vn, and a 
+    knapsack with capacity W.
+
+*** Problem (optimisation version): Find a subset of 
+    items whose total weight does not exceed W 
+    and that maximises the total value.
+    (taking fractional parts of items is NOT allowed)
+
+** Boolean Circuit
+***  Input: a Boolean Circuit with a single output
+     vertex
+***  Question: is there an assignment of values to 
+     the inputs so that the output value is 1?
+
+* Decision and Optimisation Problems
+** Dicision Problem
+   - decision problem is a problem that can be ansered with yes or no
+   - these problems are ususally repressed by a boolean function
+*** examples: 
+    the connnectioness of a graph
+    hamiltonian circuit problem
+*** features
+**** usually wheter a condition is true or false
+
+*** application
+    Decision Problem usually is a component of NP problems
+
+
+** Optimisation Problem
+*** def
+    - the optimisation problem is a problem that can be found a best solution under certain constraints
+
+** relati9on between two fucking problems
+   - decision problem is an important part of optimisation problem
+   - we can convert the optimisation problem to the decision problem
+   - convert decision problem to optimisation problem
+     optimisation problem is usually more complex than decision problem, 
+     howerver, through iterate the decision problem, we can found the optimisation problem best solution
+
+** Exmaple: MST
+*** Optimisation problem: Given a graph G with 
+    integer weights on its edges.  What is the 
+    weight of a minimum spanning tree (MST) in G?
+***  Decision problem: Given a graph G with integer 
+     weights on its edges, and an integer k.  Does G 
+     have a MST of weight at most k ?
+
+
+** Exmaple: Knapsack Problem
+*** Input: Given n items with integer weights w1, 
+    w2, …, wn and integer values v1, v2, …, vn, a 
+    knapsack with capacity W and a value k.
+*** Optimisation problem: Find a subset of items 
+    whose total weight does not exceed W and 
+    that maximises the total value.
+*** Decision problem: For any integer k, is there a 
+    subset of items whose total weight does not 
+    exceed W and whose total value is at least k 

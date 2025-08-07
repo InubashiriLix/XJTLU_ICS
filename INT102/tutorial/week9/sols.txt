@@ -1,0 +1,112 @@
+ques1
+A0 B2 C5 D0 E2  
+A -> B = A-C-B 2
+A -> C = A-C 5
+A -> D = A-C-B-D 0
+A -> E = A-C-B-D-E 2
+
+ques2
+a a b b b c c d
+
+ques3
+TCCTATTCTT
+A = 5
+C = 10 - 1 - 7 = 2
+T = 10 - 1 - 8 = 1
+G = 10
+
+1 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+^---------
+TCCTATTCTT
+T not match -> 1 right
+
+2 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+ ^---------
+ TCCTATTCTT
+T not match -> 10 right
+
+3 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+           ^---------
+           TCCTATTCTT
+C not match -> 1 right
+
+4 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+            ^---------
+            TCCTATTCTT
+A not match -> 5 right
+
+5 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                 ^---------
+                 TCCTATTCTT
+A not match -> 1 right
+
+6 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                  ^---------
+                  TCCTATTCTT
+C not match -> 2 right
+
+7 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                    ^---------
+                    TCCTATTCTT
+C not match -> 2 right
+
+8 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                      ^---------
+                      TCCTATTCTT
+C not match -> 1 right
+
+9 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                       ^---------
+                       TCCTATTCTT
+A not match -> 5 right
+
+
+10 
+TTATAGATCTGGTATTCTTTTATAGATCTCCTATTCTT
+                            ^---------
+                            TCCTATTCTT
+fucking match
+
+ques4
+    –   A   C   A   T   G   T
+–   0  –1  –2  –3  –4  –5  –6
+G  –1  -2  -3  -4  -5  -3  -4
+A  –2   0  -1  -2  -3  -4  -5
+G  –3  -1  -2  -3  -4  -2  -3
+T  –4  -2  -3  -4  -2  -3  -1
+
+
+- A C A T G T done
+G A - - - G T
+
+
+A C - A T G T done
+- - G A - G T
+
+A C A T G T done
+G - A - G T
+
+- A C A T G T done
+G - - A - G T
+
+A - C A T G T done
+- G - A - G T
+
+    –   A   C   A   T   G   T
+-   0   0   0   0   0   0   0 
+G   0   0   0   0   0   1   0 
+A   0   1   0   0   0   0   0
+G   0   0   0   0   0   1   0
+T   0   0   0   0   1   0   2 
+
+T G T A
+T G - A

@@ -1,0 +1,19 @@
+* change the bug 
+** Rewrite the following for loop into a while loop
+   input m 
+   x = 0
+   for i = 1 to m do 
+        begin 
+            x = x + i
+       end
+   end
+
+** sol
+   input m 
+   x = 0
+   i = 0
+   while i < m do
+        x = x + 1
+        i = i + 1
+   end
+

@@ -1,0 +1,1 @@
+O(1) < O(log n) < O(( log n ) ^2) < O(sqrt n) < O(n) < O(n logn) < O(n^(3/2)) < O(n^ 2 * logn ^ 4) < O(n^3) < O(n ^ (10 / 3)) < O(n^4) < O(2^n) < O(n!) < O(n ^ n)

@@ -1,0 +1,7 @@
+1. trace table
+    before 1 2 3 4
+x   1      2 4 8 16
+count 0    1 2 3 4
+
+2. output:
+log2 m
