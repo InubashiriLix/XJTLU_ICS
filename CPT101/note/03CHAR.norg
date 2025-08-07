@@ -1,0 +1,74 @@
+* Machien instructions and HLL
+  - Sematic gap 
+    the term expression the enomous difference between the way human language expressing idea and ideas and actions and the way computer instructions represting data 
+    processing activities.
+** Translation 
+   - Compilers (编译器)
+     Translate HLL into machine code before execution
+     report errors if the source code is not valid
+     HLL -> machine code
+   - Assemblers: (汇编器)
+     Translate mnemonic machine instructions (MOV, ADD, etc,) into binary codes
+   - mnemonic
+     Human-readable symbolic representation of machine instructions
+     Example: MOV R1, R2  -> 0001 0010 0000 0001
+   - Interpreters
+     Translate HLL instructions on-the-fly while the program is running
+     在程序运行时逐条解析并执行 HLL 指令
+** Linking: 
+   - big programs divided into sepqarated modulers, each designed and compiled independently
+   - External references remain symbolic after compilation until resolved by linked
+     Linked joins all object file and libraries into an executable
+   - Reports errors if referenced symbols are missing
+** Libraries files
+   - Translated object code providing reusable functions but only usable when linked
+   - UnixL /lib and /usr/lib
+   - Windows: DLL files
+** Interpreter workflow
+   - Analyze HLL source  to generate tokens and report syntax errors
+   - Decoder selects and execcute routines based on tokens
+   - Translation and execution are interleaved, and no executable file is needed to be generated, like python, ruby, javascript, etc.
+** Java compilers and interpreters
+   - Java Source -> Java compiler -> Java bytecode -> Java interpreter -> JVM execution 
+   - java source code -> compiler -> bytecode: compile once, and all platform can run
+     JVM: java interpreter, which tokenize and interpret or JIT compiled and execcute the bytecode;
+   - Applet: the early web-based java program, download the java bytecode and run it in the JVM, which is write once, run anywhere
+
+** Compiler vs Interpreter:
+   - the program is faster after compilation, but the development cycle is longer
+   - the interpreter is slower, but suitful for prototype developing or frequencies changing code
+     it can give more specific error message
+     it can give platform for all the platform
+** Interpreters IS Virtual Machiens
+   - Similar to hardware: fetch one instruction at a time and execute it
+   - the interpreter simulate the fetch, translate and execute
+   - it provide its own environment (sandbox), which is also called virtual machine
+
+** Code sharing and reuse 
+*** Pipeline
+    - Edit -> Compile -> Link -> Run
+    ~ Edit: write source files
+    ~ Compile: expand macros into object files
+    ~ Link: combine object files with static relocatable libraries
+    ~ Build: bind dynamic libraries into final executable
+    ~ Run: load and execute the program
+*** Reuse approaches
+    - Source-level subroutines & macro libraries
+      Copy proven routines into new code and compile together
+      Disadvantage: unclear code ownership and maintenance
+    - Pre-translated relocatable biniary libraries
+      Libraries pre-compiled into relocatable binaries, linkable but immutable
+      Disadvantage: each program keeps its own copy, wasting memory & swap 
+    - Dynamic libraries & dynamic linking
+      Load "public" routines already resident in memory, share via memory mapping
+      Advantage: avoid duplicate copies, support runtime updates
+      Example: Microsoft ActiveX
+*** Pro & Cons
+    - Static reuse
+      Simple, no runtime dependencies
+      high resource consumption, maintenance overhead
+      Con: high resourcce consumption, maintenance overhead
+    - Dynamic reuse
+      Shared memory, hot swappable update
+      Con: version dependencies, runtime loading failures
+

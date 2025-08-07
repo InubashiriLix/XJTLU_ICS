@@ -1,0 +1,121 @@
+* Client-Server Computing
+** The client server 
+   - client: the client is the originator of the requests
+   - server: the suppiler of the service
+
+** the fox net
+   @code text
+
+   Network Bus
+   +---------+     +---------+     +---------+
+   | Screen  |-----| Screen  |-----| Screen  |
+   | Server  |     | Server  |     | Server  |
+   +---------+     +---------+     +---------+
+   |               |               |
+   |               |               |
+   +---------+     +---------+     +-------------+
+   | Print   |     | Client  |     | File        |
+   | Server  |     |         |     | Server      |
+   +---------+     +---------+     +-------------+
+   @end
+
+   - Screen Server:
+     the graphics server , which accept the print command of client, and show in the client 
+   - Print Server:
+     queues and execute print job
+     accept the print jobs, and push it into the queue, then print it in the printer
+
+   - File Server: 
+     the file server, which take response for store files, and the client can io through net
+** Request-Reply-Model
+   ~ client send a request msg to the server, the payload contains the operation or the resource identity
+   ~ server accept the request and return one or multiple response msgs
+   - synchronous:
+     client will wait for the response until the server reply
+   - Asynchronous: (异步 / 并发)
+     asynchronous request, send muliple requests, 
+     the server put teh request into queues or response asynchronously
+
+** TCP Protocol Notes (English)
+*** Overview
+    - Transmission Control Protocol: connection-oriented, reliable, ordered, full-duplex  
+    - Key features: flow control, congestion control, reliable delivery, segmentation & reassembly  
+
+*** TCP Segment Structure
+    @code text
+    ----
+    0                   1                   2                   3
+    +---------------------------------------------------------------+
+    | Source Port (16) | Destination Port (16)                      |
+    +---------------------------------------------------------------+
+    |               Sequence Number (32)                            |
+    +---------------------------------------------------------------+
+    |           Acknowledgment Number (32)                          |
+    +---------------------------------------------------------------+
+    | Data Offset| Resvd |U|A|P|R|S|F| Window Size (16)             |
+    |   (4)      | (6)   |R|C|S|S|Y|I|                               |
+    +---------------------------------------------------------------+
+    | Checksum (16)  | Urgent Pointer (16)                          |
+    +---------------------------------------------------------------+
+    |                   Options (0–320 bits)                        |
+    +---------------------------------------------------------------+
+    |                   Data (variable length)                     |
+    +---------------------------------------------------------------+
+    ----
+    @end
+
+*** Connection Management
+**** Three-way Handshake
+     @code text
+     ----
+     Client                        Server
+     |-- SYN(seq=x) ------------>|
+     |<-- SYN+ACK(seq=y,ack=x+1)-|
+     |-- ACK(ack=y+1) ---------->|
+     ----
+     @end
+
+**** Four-way Teardown
+     @code text
+     ----
+     Client                        Server
+     |-- FIN(seq=u) ------------>|
+     |<-- ACK(ack=u+1) ----------|
+     |<-- FIN(seq=v) ------------|
+     |-- ACK(ack=v+1) ---------->|
+     ----
+     @end
+*** Reliable Delivery & Fast Retransmit
+    @code text
+    ----
+    Sender Window: [0][1][2][3][4]
+    sent: 0,1,2,3,4
+    recv: ACK1, ACK2, dup-ACK2×3 → fast retransmit seq=2
+    ----
+    @end
+*** Flow Control
+    - Receiver advertises window (rwnd) indicating buffer space  
+    - Sender limits in-flight bytes ≤ rwnd  
+
+*** Congestion Control
+    - Slow Start: cwnd doubles each RTT until ssthresh  
+    - Congestion Avoidance: cwnd grows linearly  
+    - Fast Retransmit & Recovery:  
+    - On 3 dup-ACKs: ssthresh=cwnd/2, cwnd=ssthresh+3*MSS  
+
+*** Timers
+    - RTO: retransmission timeout  
+    - Persist Timer: avoid zero-window deadlock  
+    - Delayed ACK: coalesce ACKs  
+    - Keepalive: detect stale connections  
+
+*** State Machine
+    - CLOSED → LISTEN → SYN-SENT → SYN-RECEIVED → ESTABLISHED → FIN-WAIT-1 → FIN-WAIT-2 → TIME-WAIT → CLOSED  
+
+*** Extensions
+    - Congestion algorithms: Reno, NewReno, Cubic, BBR  
+    - TCP Fast Open: data in SYN  
+    - TCP options: MSS, Window Scale, SACK, Timestamps  
+
+
+

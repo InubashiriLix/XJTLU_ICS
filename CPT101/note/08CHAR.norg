@@ -1,0 +1,23 @@
+* CPU Registers
+** CPU status flags
+   - O (Overflow) -> memory overflow
+   - D (direction) -> string operation direction (0 forward, 1 backword)
+   - I (Trap) -> single stop mode, each instruction will trigger INT 1 
+   - S (Sign) -> sign bit (MSB)
+   - Z (Zero) -> result is zero
+   - A (Auxiliary Carry): BCD carry bit, used in BCD arithmetic
+   - P (Parity):  Parity bit, verification
+   - C (Carry): Carry bit, used in arithmetic operations
+
+** Stack
+   - Last In First Out (LIFO) data struction
+   - the stack pointer (SP / ESP / RSP)  points to the current stack item
+*** Operations
+
+    PUSH value → SP←SP−size; [SP]←value
+    POP value←[SP]; SP←SP+size
+
+*** Uses
+    Storing return addresses (CALL/RET)
+    Local variables & temporaries
+    Automatic context save on interrupts/exceptions

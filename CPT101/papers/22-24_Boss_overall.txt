@@ -1,0 +1,58 @@
+* 26
+  form a program that find the sum of odd uumber between 1 and 100 and stores this value in teh eax register
+** SOL
+   ~ mov eax, 0
+   ~ mov ebx, 1 
+   ~ mov ecx, 100
+   ~ L1: and ebx, 01H
+   ~ jz L2 
+   ~ add eax, ebx
+   ~ L2: inc ebx
+   ~ loop L1
+
+** 26
+find the sum of even numbers in an array of 6 integers and stores this valud inthe eax register
+   ~ lea esi, myArray
+   ~ mov eax, 0
+   ~ mov ecx, 6
+   ~ L1: test \[esi], 01H
+   ~ jnz L2
+   ~ add eax, \[esi]
+   ~ L2: add esi, 4
+   ~ loop L1
+
+** 28
+use enter a number geater then 10 other wise the program requests the user to input again
+   @code c
+   int number;
+   char format[] = "%d";
+   _asm {
+    readNumber:
+       mov eax, number;
+       push eax;
+       lea ebx, format;
+       push ebx;
+       call scanf;
+       add esp, 8;
+       mov eax, [number];
+       cmp eax, 10;
+       jle readNumber;
+   }
+   @end
+
+** 28
+compare two inetgers adn swap them, resulting in a sorted list of integers in ascending order
+   @code c
+   int MAX_SZ = 4;
+   int intArray[MAX_SZ] = {6, 1, 8, 4};
+   L3 {
+       lea esi, intArray;
+       mov eax, [esi];
+       cmp [esi + 4], eax;
+       jge L3;
+       xchg eax, [esi + 4]
+       mov [esi], eax;
+   }
+
+   @end
+

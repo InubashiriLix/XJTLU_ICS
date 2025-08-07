@@ -1,0 +1,66 @@
+* Building computers from logic
+** Engineering Level
+   the computer is a huge system consisting of large circuits, and focus on the current flow in the circuit 
+** Digital Systems
+   the existence of current is 1, else 0, and it ignore the current shit
+** Analog Systems
+   the continuous phsical quantities like temp, voltage
+** Boolean operations & Gates
+*** true table
+    AND, OR, NOT, XOR, equal
+*** symbols
+    - and: ^ or &
+    - OR: ∨
+    - XOR: ⊕ or |
+    - NOT: ¬ or –
+    - =
+** 布尔逻辑与逻辑门扩展（中文）
+*** 布尔代数定律
+    - 恒等律  
+      A + 0 = A；A · 1 = A  
+    - 支配律  
+      A + 1 = 1；A · 0 = 0  
+    - 交换律  
+      A + B = B + A；A · B = B · A  
+    - 结合律  
+      (A + B) + C = A + (B + C)；(A · B) · C = A · (B · C)  
+    - 分配律  
+      A · (B + C) = A·B + A·C；A + (B·C) = (A+B)·(A+C)  
+    - 双重否定律  
+      ¬(¬A) = A  
+    - 德摩根律  
+      ¬(A·B) = ¬A + ¬B；¬(A + B) = ¬A · ¬B
+
+*** 通用逻辑门
+    - NAND 门  
+      Y = ¬(A · B)，可用作 NOT、AND、OR、XOR 等所有布尔函数  
+    - NOR 门  
+      Y = ¬(A + B)，同样功能完备
+
+*** 多输入逻辑门
+    - n 输入 AND/OR/XOR 门，用于并行检测多个条件  
+    - 级联实现更高输入数：两个三输入 AND 串联可得四输入 AND
+
+*** 逻辑门性能参数
+    - 扇入 (Fan-in)：输入端数量，扇入越大，延迟和功耗越高  
+    - 扇出 (Fan-out)：驱动门的最大后级输入数  
+    - 传播延迟 (Propagation delay)：输入变化到输出稳定的时间  
+    - 上升/下降时间 (Rise/Fall time)：输出电平转换的斜率  
+    - 动态功耗 vs 静态功耗：CMOS 静态功耗低，TTL 切换功耗高
+
+*** 逻辑门家族
+    - TTL (Transistor–Transistor Logic)  
+      工作电压 5 V，门延迟 ~10 ns，扇出 ~10  
+    - CMOS (Complementary MOS)  
+      电压范围 3.3–15 V，静态功耗几乎为零，门延迟 ~10–50 ns  
+
+*** 组合逻辑设计
+    - 乘积之和 (SOP)：先与后或，易于 NAND 实现  
+    - 和之积 (POS)：先或后与，易于 NOR 实现  
+    - 卡诺图 (Karnaugh Map)：可视化化简方法  
+    - 布尔最小项与最大项：标准化表达
+
+*** 时序逻辑简介
+    - 触发器 (Flip-Flop)：边沿触发的存储单元  
+    - 时钟信号同步：建立寄存与稳态  
+    - 组合＋时序电路：有限状态机 (FSM) 的基础

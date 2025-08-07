@@ -1,0 +1,69 @@
+* INTRODUCTION FOR CPT101
+  - FOR COMPUTER SYSTEM
+
+** Four architectural levels of computer system
+   ~ The assembly language level
+   ~ the instruction set architecture level
+   ~ the micro architeccture level
+   ~ The digital logic level
+
+** CPU and ALU:
+   ~ CPU: Central processing unit
+   ~ ALU: Arithmetric and Logic Unit: the logical 
+
+** Components of computer system
+   - processor
+   - Controllers
+   - Primary Storage
+   - Secondary Storage
+   - Peripheral Devices
+
+** Types of computers
+   - Mainframe Computers (1960s)
+   - Supercomputers (1970s)
+   - Microcomputers (1980s)
+   - Workstations (1980s)
+   - Personal Computers (1980s)
+   - Microcontrollers (1980s)
+   - Servers (1980s)
+   - Chip Computers 
+
+** Computer geenrations:
+   - Vaccum tubes (1944 - 1958)
+   - Transistors (1959 - 1963)
+   - IC (Integrated Circuits) (1964 - 1970)
+   - VLSI (Very Large Scale Integration) (1970 - now)
+
+** Backwrad (Downward) Compatibility for new hardware
+   Most software written for computers iwth old hardware can be run on computers with newer hardware
+
+** VHDL (very High Speed Integrated Circuit Hardware Description Language)
+   - very high speed intergrated circuits hardware desciption language
+   - A programming language to be used to specify both the structure and function of hardware circuits
+   - Supports computer simulation as well as providing input to automatic layout packages which arranges the final circuits
+
+** Hierarchy of system
+   @code text
+   User code -> myprog.c
+   ----------- software  ------------------
+   ----- Operaing System procedures -------
+   WIN32 API 
+   O/S Kernel
+   ---------- Hardware --------------------
+   CPU Graphics Sound
+   ----------------------------------------
+   @end
+
+** Moore's Law: 
+   The amount of circuitry (number of transisitors) which can be placed on a given chip aread approximately doubles every two years
+** Windowing Interfaces - WIMPs
+   a by-product of the microprocessor revolution, which alloweda all users to have fast bitmapped graphics on their desks
+
+** Trends of computing:
+   - Scientific computing: Computation
+   - Business computing: Data
+   - Personal computing: Interaction
+   - Pervasive computing: Ubiquity
+   - Mobile computing: Mobility
+
+

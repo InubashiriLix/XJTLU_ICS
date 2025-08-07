@@ -1,0 +1,13 @@
+* Stack
+  - Last In First Out (LIFO) data struction
+  - the stack pointer (SP / ESP / RSP)  points to the current stack item
+** Operations
+
+   PUSH value → SP←SP−size; [SP]←value
+   POP value←[SP]; SP←SP+size
+
+** Uses
+   Storing return addresses (CALL/RET)
+   Local variables & temporaries
+   Automatic context save on interrupts/exceptions
+

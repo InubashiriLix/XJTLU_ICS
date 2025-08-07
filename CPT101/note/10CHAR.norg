@@ -1,0 +1,37 @@
+* Datacodes
+** 10.1 unsigned integer (BCD)
+   - Unsigned binary representation:
+     just store any whole number in its binary representation
+     store the unsigned integer in binary, like 13 -> 00001101
+   - BCD (Binar-Coded Dicimal):like hex, each four bits binary represents a decimal; like 59 -> 0101 1001; (0101 -> 5, 1001 -> 9)
+
+** 10.2 Signed Integers
+*** 10's complements:
+    - computation method:
+      complement each bits to make it can handle the negative and positive number at the same time
+    - symetric: 
+      the range is usually -(10^n - 1) to (10^n -1)
+** 10.3 Addition
+   Perform addition modulo \(10^n\) (or \(2^n\))
+   discard any carry beyond the n digits
+
+** 10.4 Subtraction
+   - \(A - B = A + (10^n - B)\)  
+   - Compute B’s complement then add to A  
+
+** 10.6 Floating Point Numbers
+*** IEEE 754 Single Precision (32 bit)  
+    - S (1) | E (8, Bias=127) | F (23)  
+    - Value: \((-1)^S × 1.F × 2\^{E-127}\)
+
+*** IEEE 754 Double Precision (64 bit)  
+    - S (1) | E (11, Bias=1023) | F (52)  
+    - Value: \((-1)^S × 1.F × 2\^{E-1023}\)
+*** Special Cases
+    - E = 0, F = 0 -> +-Zero
+    - E = Max, F = 0 -> +-Infinity
+    - E = Max, F != 0 -> Nan 
+
+*** Exponent Biasing
+    - Stored exponent E = true exponent + bias
+    - Bias: 127 (float), 1023 double (double)

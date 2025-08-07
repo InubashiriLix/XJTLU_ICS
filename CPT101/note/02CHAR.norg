@@ -1,0 +1,71 @@
+* I-O Process
+** Input-Process-Output Model
+*** Input data -> Process -> Output data
+    - the input process output modle is the fundamental model of current generation of digital computers
+    - this was an essential scheme of the von Neumann model
+      like cpu process like read data, compute, write data back to somewhere
+    - There are three components required for the implementation of Input-Process-output and von Neumann model
+    ~ Hardware - control execute input, itterupt manangement, computation unit, memory, and output interfaces
+    ~ SoftWare - responsible for implementation of specific algorithms, including the operation system, program, and drivers
+    ~ Data that is being manipulated - generate or being modified in the whole process
+
+
+
+** Von Neumann Model
+*** Diagram Structure
+    Input Device -> Processor + Memory -> Output Device 
+    the content is usually the data and instructions
+
+** Key POints
+*** General-purpose machine
+    - the computer are controlled by executable programs, like mulitple instructions guiding it to finish a task
+*** Stored-Program concept
+    the program ad data reside together in teh compute's re-writable memory, represted by binary codes
+*** Processor
+    The processor fetches, decodes, and executes instructions sequentially, reading from and writing to memory.
+*** Re-writable memory
+    - cause the meory is re-writable, the Von Neumann machines especitally powerful.
+
+** Von Neumann Bottleneck
+   cuase the CPU computing speed is way faster than memory speed, and instructions and data share a bus
+   - Stall and waiting: Processor frequently waits for data or instruction transfer, which waste time
+   - Modified Harvard archtecture:
+   ~ Separate instruction and data caches at cache level to alleviate contention
+   ~ most modern computers use Modified Harvard architecture, the instructions and data share a addresss, space, but in the cache level, they are separated
+
+** Extensions:
+   - Memory hierarchy:
+     Registers -> L1 / L2 / L3 Caches -> Main memory -> secondary storages
+   - Cache coherence:
+     MESI, MOESI protocols and memory barriers
+   - Advanced architectures:
+     NUMA, multi-channel memory, high bandwidth memory solutions
+
+** Harvard architecture 
+*** Separated Memories
+    - Program and data reside in distinct physical memories
+    ~ Program Memory 
+    ~ Data Memory
+*** Independent Buses
+    - Dedicated fetch and address bus for Program Memory <-> CPU
+     Example: 14-bit instrauction width, 12-bit addrsss
+    - Dedicated data and address bus for5 Data Memory <-> CPU
+      Example: 8-bit data width, 9-bit address
+*** Evolution of Architecture 
+    - Pure Harvard
+      Fully separated, used in early DSPs and ASICs
+    - Modified Harvard:
+        Physicallly separated caches, logically share main memory
+
+*** Use Caes:
+    - Embedded microcontroller (ARR, PIC)
+    - Digital Signal Processor (TI C6000 series)
+    - Secure System: (code soted read-only to prevent tampering)
+
+*** Security & Reliability
+    - Read-only program memory protection  
+    ~ Prevents runtime code modification and exploits  
+    - Isolated data bus  
+    ~ Reduces risk of accidental or malicious writes to code region  
+
+

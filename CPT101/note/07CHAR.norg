@@ -1,0 +1,126 @@
+* Principal components of a computer 
+** Components
+  - CPU (ccenter processing unit)
+  - Main memory 
+  - IO units (Input / Output units)
+
+** MotherBoard
+*** function:
+    - cpu plug set: install cpu
+    - PCIe: graphics card, network card, sound card, SSD, etc.
+    - storage interface: SATA, M2/PCIe NVMe plugs
+    - chipsets:
+      traditional northbridge / southbridge or single chip strategy 
+        for IO and cache control
+    - BIO / UEFI chips: 
+      the check before start (POST), hardware initialization, bootloader
+    - power & VRM: convert the external voltage into the needed voltage
+    - clock: 
+      provide the baseline time for the bus, CPU, external devices
+*** Procesor and Registers
+    ALU: Arthimetic logic Unit (ALU)
+    perform arithmetic (add, sub, mul, div) and logic (AND, OR, NOT) operations
+    - control unit:
+      Implements the machine cycle: Fetch, Decode, Execute, WriteBack
+    - Distinctions:
+      CPU: the entire central proceesing unit (ALU + control unit + registers)
+      processor: general term for the CPU
+      core: single processing unit within a multi-core CPU
+
+*** Registers
+    small, fast, storage for temporary data and addresses
+**** CPU registers
+     - Progaram Counter (PC), OR INSTRUCTION POINTER (IP) a special register that store the next instruction's address
+       it takes responsibility for fetch, decode execute,
+       under the situation that do not have goto, the program counter will increase, to point at 
+       the next instruction 
+        in JVM, PC is also used to sotre the context of instruction
+     - Instruction Register (IR), 
+        storews teh currently executing instruction
+     - Accumulator (AX / EAX / RAX in x86)
+       general-purpose data for arithmetic results 
+     - Memeory Address Register (MAR)
+        hold the memory address for the current bus transfer
+     - Memory Buffer Register (MBR) (or MDR)
+       Temporarily holds data from or to be written to memory
+
+    *** Coporcessor
+        - A specialized microprocessor for taskss the CPU cannot or cannot quickly prerforml
+        - Common use: early floatting-point arithetic, graphics acceleration
+*** Buses
+    - Address Bus
+      Carries address from CPU to memopry or I / O
+    - Data Bus
+      Transports data between CPU, memory and peripherals
+    - Contorl Bus
+      Conveys read / wirte signals, interrupts, clock, and contorl information
+
+** Bus Architecture
+*** Bus Signal lines
+**** Data lines
+     - carry the actual data bits
+**** Address Lines
+     - Specify targe memory or device address
+**** Control Lines
+     - Convey read/write commands, interrupts clock signals
+*** Device Attachments
+    - CPU and various devices share the same bus in parrllel
+    - Adding / removing devices requires only protocal compliance
+**** Topology Comparison
+     - Point-to-point:
+       O(n^2) wires, high cost
+     - Bus topology: O(n) wires, economical but has "bus bottleneck"
+*** Bus Bottleneck:
+    - Only one data transfer can occur at a time
+    - Bus bandwidth limits overall system performance
+
+** Memory Access Sequence
+   ~ CPU writes address into MAR
+   ~ Address travles on addres lines to memory / device decoder
+   ~ Control lines issue on data lines into MBR
+   ~ Device return data on data lines into MBR
+   ~ System clock synchronizes all phases
+
+
+** Machine Cycle
+*** Overview
+    I-Cycle -> Instruction Fetch -> Instruction Decode ->
+    E-Cycle -> Execute -> Store ->
+*** cycle:
+    ~ Fetch the instruction from memory. Brings the instruction into instrction register so that it can be decoded and executed
+    ~ Decode the instruction
+    ~ Read the effective address from memory if the instruction has an indirect address
+    ~ Execute the instruction
+    ~ Store the results
+
+    memory -> instruction register -> decode -> read effective address -> execute -> store results
+
+*** The fetch phase
+    ~ the address in IP register is copied onto the address bus and further to MAR register
+    ~ IP is incremented to the next cycle. IP now points to the next location in the program memory
+    ~ Memory selects location and copies the content onto the data bus
+    ~ CPU copies the instruction code from the data bus into IR
+    ~ Decoding of the instruction starts
+
+*** The execcution phase
+    Execute phase depends on the type of instruction 
+    for example:
+    MOV AX, 256
+    ~ IP is copied to address bus and latched into memory
+    ~ IP is incremented
+    ~ the value selected in memory is copyied onto data bus
+    ~ CPU copies the value from the data bus into AX
+
+** CISC & RISC
+   - CISC: complex instruction set
+   - RISC: reduced instruction set
+** Output Hardware:
+   - Hardcopy output: graphics, letters
+   - Softcopy output: video, audio
+
+** Communication Hardware:
+   - Parallel port: printers, some scanners
+   - Serial port: modems, mice
+   - USE (Universal Serial Bus): repplaced eriler interfaces, such as serial and parallel ports
+** Power Supply
+   protected by power protector or uninterrupted power supply unit (UPS)

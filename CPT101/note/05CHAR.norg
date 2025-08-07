@@ -1,0 +1,30 @@
+* Operation System
+** 5.1 Functions of OS
+*** Management
+    - it controls the hardware, drivers, memory, IO divices
+    - resource management
+      allocate the CPU time, memory, disk and web, make sure each process has fair resources allocation
+*** Provide functionalities
+    - allow the user efficient, fair, protected access to the facilities of machine, (Interact with user)
+    - use system calls to access the hardware, like read/write files, create processes, etc.
+    - interact interfaces like CLI, GUI, etc.
+
+** 5.2 Onion Ring Model
+*** Arrange the software system in multiple layers: 
+   - inner layers have higher privillege and lower functions
+   - outer layers are closer to the user with lower privillege 
+
+*** Details
+**** Hardware
+     - the lowerest-level physical devices: CPU, memory, disk, network, etc.
+**** Drivers
+     Programs that interact directly with hardware, handling initialization and control, exposing a unified interface upward
+**** Kernel
+     Core component of Operation System
+     process manangement, memory management, file system, network protocol stack, etc.
+**** CLI
+     The entry points for user interaction, parsing commmands and invoking kernel services
+**** User Applications
+     applications running on top of the OS, using underlying services via system calls
+
+

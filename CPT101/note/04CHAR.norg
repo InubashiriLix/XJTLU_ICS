@@ -1,0 +1,109 @@
+* Data information and Knowledge
+** Data information and Knowledge
+*** Data
+    - Raw facts, figures or measurements like 23, 3.14, "hello"
+    - Unprocessed; not directly actionable
+*** Information
+    - Data organized, aggregated or formatted into useful representations
+      like Average temperature 25°C; click-through time series
+    - Reduces uncertainty and reveeals relationships
+*** Knowledge
+    application of reasoned analysis of information
+*** 信息度量（Measurement of Information）
+    - 香农信息论（Shannon, 1948）  
+    - 信息熵  
+      \( H(X) = - \sum_x p(x)\log_2 p(x) \)  
+      概率越低，信息量越大  
+    - 两大方向  
+      信息论：信道容量、噪声、互信息  
+      编码理论：纠错码、压缩码  
+
+** ASCII code
+   - American Standard Code for Information Interchange
+   - 7-bit character encoding standard (0x00 - 0x7F)
+
+*** Table layout:
+    - Rows: high nibble 0x0 - 0x7
+    - Columns: low nibble 0x0 - 0xF
+    - Contorl characters: (0x00 - 0x1F, 0x7F(DEL))
+*** Example Contorl Codes: 
+    - NUL (0x00)
+    - BEL (0x07) bell
+    - BS  (0x08) backspace
+    - HT  (0x09) horizontal tab (\\t)
+    - LF (0x0A) line feed (\\n)
+    - CR (0x7D) carriage return (\\r)
+    - DEL (0x7F) delete
+
+*** Printable Categories:
+    - Space SP (0x20)
+    - Digits 0-9 (0x30 - 0x39)
+    - Uppercase A-Z (0x41 - 0x5A)
+    - Lowercase a-z (0x61 - 0x7A)
+    - Punctuatioin and symbols
+
+*** limitations
+    - Too limited for the diplay requirements of modern windows-based word-processors
+    - The requirement of global software for handling international character sets
+
+** 4.2.1 Overall Number Representation
+   - Must handle: integers vs real values, positive vs negative  
+
+** 4.2.2 Integer Representation
+   - Sign-magnitude  
+     MSB is sign, two zeros (+0/−0)  
+   - Ones’ complement  
+     Invert bits except sign, two zeros remain  
+   - Two’s complement  
+     Ones’ complement + 1, single zero  
+     Simplifies hardware add/sub and overflow detection  
+   - Example (8-bit): range –128…+127  
+
+** 4.2.3 Real Number Representation
+   - IEEE 754 Standard  
+     Single precision (32-bit): 1 sign bit + 8 exponent bits (Bias=127) + 23 fraction bits  
+     Double precision (64-bit): 1 sign bit + 11 exponent bits (Bias=1023) + 52 fraction bits  
+     Special values: NaN, ±∞, ±0, subnormals  
+     Operations: add/sub, mul/div, comparisons, rounding modes  
+
+** Extensions
+   - Unicode details  
+     Code points U+0000–U+10FFFF; UTF-8/UTF-16/UTF-32 encodings  
+   - Two’s complement arithmetic  
+     Subtraction as addition of two’s complement; shift and overflow rules  
+   - IEEE 754 rounding & error  
+     Five rounding modes; machine epsilon & numerical stability  
+   - Extended formats  
+     80-bit x87 extended, bfloat16, etc.
+
+** 4.2.1 数字的总体表示
+   - 需支持：整数 vs 实数、正数 vs 负数  
+
+** 4.2.2 整数表示
+   - 原码 (Sign-magnitude)  
+     最高位符号位，+0/−0 共存  
+   - 反码 (Ones’ complement)  
+     符号位同原码，其余取反，+0/−0 共存  
+   - 补码 (Two’s complement)  
+     反码 +1，仅有单一零  
+     硬件加减统一，溢出检测方便  
+   - 位宽示例（8-bit）  
+     范围：-128…+127  
+
+** 4.2.3 实数表示
+   - IEEE 754 标准  
+     单精度 (32-bit)：1 bit 符号 + 8 bit 指数 (Bias=127) + 23 bit 尾数  
+     双精度 (64-bit)：1 bit 符号 + 11 bit 指数 (Bias=1023) + 52 bit 尾数  
+     特殊值：NaN、±∞、±0、非规格化数  
+     操作：加减乘除、比较、舍入模式 (Round to nearest, toward zero, etc.)
+
+** 知识拓展
+   - Unicode 细节  
+     码点范围 U+0000–U+10FFFF；UTF-8/UTF-16/UTF-32 编码方式  
+   - 补码运算  
+     减法等同于加上补码；移位、溢出规则  
+   - IEEE 754 舍入与误差  
+     5 种舍入模式；机器 epsilon 与数值稳定性  
+   - 扩展浮点格式  
+     80-bit “extended precision” (x87)、bfloat16 等  
+

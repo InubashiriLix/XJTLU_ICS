@@ -1,0 +1,342 @@
+The major difference between the von Neumann architecture and the Harvard
+   architecture lies in
+    A. bus speed B. separated data from program C. CPU
+    D. use of secondary storage E. cache
+*** Sol
+    B
+*** Note
+    the VON NEUMANN arch and HARVARD arch have the main difference in cache
+    the von neumann arch's data and program share the same memory, it is slower
+    the harvard arch has separated memory for data and program, the separtaed memory 
+    is through bus, and the cpu can fetch data and program simultaneously, 
+    which is faster
+
+Which of the following will not lead to load-time error?
+    A. insufficient memory to load the program B. CPU is busy running another program
+    C. named executable file is corrupted D. hard disk failure
+    E. named executable file cannot be found
+*** Sol
+    B
+*** Note
+    A. insufficient memory: load-time error, as program cannot be loaded into memory.
+    B. CPU busy: not a load-time error; OS schedules the program, but loading is not prevented.
+    C. executable file corrupted: load-time error, as loader cannot interpret the file.
+    D. hard disk failure: load-time error, as program cannot be read from disk.
+    E. file not found: load-time error, as loader cannot locate the executable.
+
+   What is the decimal equivalent of this unsigned 8-bit integer 10111101?
+*** Options
+    A. 111 B. 131 C. 151 D. 171 E. 189
+*** Note
+    10111101 = 128 + 1 + 4 + 8 + 16 + 32 = 160 + 1 + 4 + 8 + 16  = 180 + 9  =189
+
+What is the decimal equivalent of this 8-bit signed integer 10111110 in 2's
+   complement encoding?
+    A. 43 B. -21 C. -58 D. -66 E. 74
+*** Sol
+    D
+*** Note
+    in 2's complement, the original number comethrough these shits
+    opposite number -> invert all bits -> +1 -> 10111110
+    so 10111110 -> 10111101 -> 01000010 -> +2 + 64 = 66
+    so -66 => D
+
+Overflow cannot result from
+    A. addition B. subtraction C. multiplication D. division E. comparison
+*** Sol
+    E
+*** Note
+    addition: add 1 to MAX_INT
+    substraction: decrease 1 from MIN_INT
+    multiplication: 2 * MAX_INT
+    division: 1 / 0
+    comparision: does not change the value, just compare two values
+
+Which of the following is volatile? 
+    A. ROM B. RAM C. DVD D. hard disk E. magnetic tape
+*** Sol
+    B
+*** Note
+    - A. 只读存储器，非易失性，断电后数据不会丢失。
+    - B: well, it well lose
+    - C. 光盘存储介质，非易失性，数据长期保存。
+    - D. 硬盘，非易失性，断电后数据依然存在。
+    - E. 磁带存储，非易失性，数据可长期保存。
+
+Which of the following starts up the computer and coordinates all hardware and
+   application software programs?
+    A. system hardware B. system server C. operating system
+    D. system operator E. command line interpreter
+*** Sol
+    C
+
+Which of the following does not help in solving the von Neumann bottleneck?
+    A. increase of memory speed B. increase of CPU speed C. use of additional memory buses
+    D. increasing bus width E. use of cache
+*** Sol
+    B
+
+What is the benefit of translating a C program into assembly code before object
+   code is produced?
+    A. code generator can be written as a separate assembler program
+    B. compiled code runs faster C. compiled code has less semantic gap
+    D. compiled code saves usage of memory E. compiled code has fewer bugs
+*** Sol
+    A
+*** Note
+    A. yes, the program is called assembler, which is a separate program that translates assembly code to object code.
+    B. nope, it is related to optimization level
+    C. well, the semantic gap is relatively small, but it is not the main benefit
+    D. nope, same as B and wheter the program you write is a piece of shit E. shit
+
+Which of the following is not an advantage of 2’s-complement encoding?
+    A. more user friendly compared to sign-magnitude encoding
+    B. easy to compute C. efficient computation
+    D. subtraction is absorbed by addition E. no duplicate exists when encoding 0
+*** Sol
+    A
+*** Note
+    A. -1 -> 0001 -> 1110 -> 1111, fuck no
+    B. yes, go to D C. yes, goto D
+    D. yes, if you try to add 1111 to 0001, which is -1 + 1,
+    you will get 0000, which is, 0, the only ops we need is addition
+    E. well, for sign-magnitude, it has -0 and +0, the complement only have 0000
+
+Excess-49 notation for the 2-digit decimal exponent lets us encode the real
+   exponent in which range?
+    A. 0 .. 99 B. 1 .. 100 C. -50 .. 49 D. -49 .. 50
+    E. none of the above
+*** Sol
+    boundary -> 10^2 / 2 = 50, 50 + 1 - 100 = -49
+    D
+*** Note
+    With Excess-49 the stored value S = E + 49. 2-digit decimals span 00-99.  
+    Thus E ranges from 00-49 → −49 to 50 and 99 → +50, i.e. −49 .. +50.
+
+Registers are part of ?
+    A. memory B. cache C. secondary storage
+    D. CPU E. power supply
+*** Sol
+    D
+    Registers reside on the CPU chip itself; they are the processor’s internal
+    high-speed storage locations, not main memory or cache.
+
+Executing more than one program concurrently on one computer is known as
+    A. caching B. multitasking C. nesting D. multicasting E. interrupt processing
+*** Sol
+    B
+
+Under the IEEE-754 standard, how many bits are required to specify the decimal
+   point position?
+    A. 0 B. 1 C. 2 D. 3 E. 4
+*** Sol
+    A
+*** Note
+    The binary (decimal) point is fixed; its position is implied.  No extra bit is
+    stored—location is determined by the exponent field.
+*** IEEE 754 Single Precision (32 bit)  
+    - S (1) | E (8, Bias=127) | F (23)  
+    - Value: \((-1)^S × 1.F × 2\^{E-127}\)
+
+Which of the following has the fastest access time?
+    A. ROM B. cache C. RAM D. DVD E. register
+*** Sol
+    the register has the fastest access time
+*** NOTE:
+    fast:
+    register > cache > RAM > ROM > DVD
+
+Which form of data storage is the slowest to access?
+    A. direct access storage B. sequential storage C. random access storage
+    D. indexed sequential storage E. cache storage
+*** Sol
+    B
+*** NOTE:
+    - A: you can visit every where, fastest
+    - B: the data stored in a sequence, you must read the data in order
+    - C: RAM, random access, fast
+    - D: it conbines the index and sequnetial, it speed is between sequential access and direct access
+    - E: fastest, CPU cache
+
+What type of flip-flop allows us to copy data?
+*** Options
+    A. SR flip-flop
+    B. toggle flip-flop
+    C. D flip-flop
+    D. J flip-flop
+    E. ST flip-flop
+*** Sol
+    C: D-flip-flop
+*** Note
+    - A. SR flip-flop: \{S = 1, R = 0 => output = 1}, \{S = 0, R = 1 => output = 0}, \{S = 1, R = 1, invalid}
+    - B: toggle flip-flop: toggles the output on each clock pulse
+    - C: D flip-flop: will store the data wehn the signal is high
+    - D: J-flip-flop
+        - *K = 0, J = 0* → output maintains (保持不变)
+        - *K = 0, J = 1* → output set to 1
+        - *K = 1, J = 0* → output reset to 0
+        - *K = 1, J = 1* → output toggles (翻转)
+    - E: no such flip-flop
+
+What are the main steps in a CPU cycle?
+    A. Compile, link, execute instructions
+    B. Interpret, translate to machine code, execute instructions
+    C. Instruction fetch, decode instruction, data fetch, execute and store
+    D. Data fetch, instruction fetch, decode instruction, execute and store
+    E. Instruction fetch, data fetch, decode instruction, execute and store
+*** Sol
+    C
+    the computer will first fetch the instruction
+    because it need to know what operation to performa before it knows wheter it needs to fetch any data
+    the typical instruction cycle is:
+    Instruction fetch, Instruction decode, Data fetch, Execute, Store
+
+Which of the following is not true?
+    A. A subroutine can be called from different places in the main program
+    B. A subroutine can call itself
+    C. Multiple stack frames can coexist during program execution
+    D. Upon subroutine call, ESP value must be saved
+    E. Parameters for function calls are stored using a stack
+*** Sol
+    D
+    - A. the subroutine (sub function ) can be called from different place in the main program
+    - B. yes, like recursion
+    - C. yes, when there are multiple subroutines aclled, each subroutine has its owm stack frame, 
+      and multiple stack are on the stack at the same tim
+    - D: nope, esp will automatically cahnge with ops, only in the especial case like context switch, it needed to be saved
+    - E: in most call, the arguments are push into the stack
+
+How many bits are required for a Java short integer?
+    A. 1
+    B. 8
+    C. 16
+    D. 32
+    E. 64
+*** Sol
+    C
+    A. java has no data type in 1 bit
+    B. 8bit -> byte
+    C. 16 -> short
+    D. 32 -> int 
+    E. 64 -> long 
+
+A 700 MB CD-ROM stores video only (160×120 px, 24 bit/px, 30 fps, no compression).  
+How many seconds of video fit at most?
+    A. 300 B. 350 C. 400 D. 425 E. 500
+*** Sol
+    D
+    (8 * 1024 * 1024 * 700) / (160 * 120 * 24 * 30) = 424
+
+Which of the following does not represent a typical use case of the Flag
+register in a Pentium processor?
+    A. overflow B. carry C. link D. sign E. interrupt
+*** Sol
+    C
+*** Note
+    well, no link there
+    the link register is used in arm
+
+Using 3 decimal digits only, what is the encoding of −177 in 10’s-complement?
+    A. 118 B. 726 C. 365 D. 823 E. 989
+*** Sol
+    D
+    - method1: 1000 - 177 = 823
+    - method2 177 -> 822 -> +1 -> 823
+
+Which register stores the subtraction result in `CMP AL, BL`?
+    A. AL B. DI C. BL D. BX E. none of the above
+*** Sol
+    E
+    wtf?
+    the CMP's result is sotred in the flag register
+
+Which of the following comprises (consists of) instructions to be executed by the computer?
+    A. hardware B. EBCDIC C. software D. Unicode E. ALU
+*** Sol
+    C
+*** Note
+
+hardware is the physical components, EBCDIC and Unicode are character encoding schemes, ALU is the arithmetic logic unit that performs operations.
+Assume Process A needs 10 pages of memory. When the CPU runs the process it
+requests data from each page with equal probability.  
+Average main-memory word read = 5 ns, average page read/write from disk = 3000 ns,
+no caching, all pages dirty.  
+Only 3 of the 10 pages are resident; a resident page must be swapped out before
+a new one is brought in.  
+What is the average access time to read a word of data?
+    A. 5   B. 3005   C. 2105   D. 3000   E. 4205
+*** SOL
+    E
+*** NOTE
+    (3 / 10) * 5 + (7 / 10) * (3000 + 3000 + 5) = 4025
+
+What is the encoding of the number −123.625 in IEEE-754 single-precision
+format?
+    A. 11000010111101101000000000000000  
+    B. 11001010111110101010010000001000  
+    C. 11010101111101110000000000000010  
+    D. 11000110111101111000011000000000  
+    E. 11000110111101110100010000000101
+*** Sol
+    1 - 8 - 23
+    first, negative, so S = 1
+    second, E: 2^(n-127), the n could be 133 or 134, which is 64 or 128, but 1 * 64 < 123 < 1 * 128, 
+    so E = 133
+    133 => 10000101
+
+    ok, A
+
+Which of the following values for (A,B,S) makes Y = 0 for the circuit shown?
+    A. (1,0,1)  B. (0,0,1)  C. (0,1,0)  D. (1,1,1)  E. (1,1,0)
+*** Sol
+    B
+*** Note
+
+Addition for *n*-digit numbers represented in 10’s-complement is performed as
+addition modulo …
+    A. 2ⁿ  B. n − 1   C. 10ⁿ   D. 2n   E. n
+*** Sol
+    C
+    In decimal complement arithmetic the result is taken modulo the base raised to
+    the number of digits: base = 10 → modulo 10ⁿ.
+
+
+~ mov ebx 0
+~ mov ecx 0
+~ mov eax array
+~ myLoop: add ebx, \[eax]
+~ add eax, 4
+~ inc ecx
+~ cmp ecx, 10
+~ jl myLoop
+
+fill the missing places with the correct arguments/instructions for a program segment that pulls characters from a stack
+   @code c
+   char newArray[MAX_SZ]
+   _asm{
+       mov  ecx, ___
+       mov esi, 0
+
+       myLoop:
+            ___ eax
+            mov newArray[esi], ___
+            ___ esi
+            ___ myLoop
+   }
+   @end
+*** SOl
+    @code c
+    char newArray[MAX_SZ]
+    _asm{
+        mov ecx, MAX_SZ
+        mov esi, 0
+
+        myLoop:
+        pop eax
+        mov newArray[esi], al
+        inc esi
+        loop myLoop
+    }
+    @end
+
+

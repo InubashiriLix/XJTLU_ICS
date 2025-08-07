@@ -1,0 +1,440 @@
+The Closed, concentric rings on a hard disk are referred to 
+   A. grooves, B tracks, C sectors, D allocation tables
+*** SOL:
+    B
+    A. grooves（槽）  B. tracks（磁道）  C. sectors（扇区）  D. allocation tables（分配表）
+
+What type of flip-flop allows us to copy data?
+   a) D flip-flop  b) toggle flip-flop  c) SR flip-flop  d) J flip-flop  e) ST flip-flop
+*** SOL:
+    A
+*** Explannations:
+    A: the D flip-flop will save the data when the signal is high
+    B: the toggle flip-flop will change the state when signal comes
+    C: SR ff, \{S = 1, R = 0 => output = 1\}, \{S = 0, R = 1 => output = 0}, \{S = 0, R = 0 => output = previous state\}, \{S = 1, R = 1 => invalid state\}
+    D: J-ff: consisis of SR-ff and T-ff, when the \{ SR = T = 1, output flip }, \{SR = 1, T = 0, output is set as 1}, \{ST = T = 0, output maintains the same}, \{ST = 0, T = 0, output is reste to 0\}
+    E: ST flip-flop is not a standard type, it may refer to a specific implementation or variation of flip-flops, but it is not commonly recognized in standard digital logic terminology.
+
+What is the hexadecimal equivalent of 10101111?
+   a) 9B  b) DE  c) AE  d) 6E  e) AF
+    1 + 2 + 4 + 8 + 32 + 128 = 47 + 128 = 175
+    175 / 16  = 10 * 16 + 15
+    E
+
+Executing more than one program concurrently by one (or more than one) user on one computer is known as
+   a) multicasting  b) nesting  c) multitasking  d) client-server computing  e) interrupt processing
+*** SOL:
+    C
+    A: mulitcasting is sneding data to multiple recipients simultaneously over a network
+    B: nesting: Placing structures or operations inside similar structures like loops within loops
+    C: multitasking: running multiple programs or tasks at the same tiem on a computer
+    D: client-server computing: A model where clients request services and servers provide them, in a network
+    E: interrupt processing: Handling events that emporarily halt the normal sequnce of execution to address urgent tasks (itterupts)
+
+Working with 7 bits, what is the two’s complement representation of –17?
+   a) 1101001  b) 1111011  c) 0001011  d) 1101111  e) 1100101
+    D
+*** Explanations
+    17 in 7 bits
+    17: 0010001
+    invertion: 1101110
+    add 1: 1101110 + 1  = 1101111
+    so D
+    get the opposite of the number:
+    invert the original number, than add 1 to it
+
+Which of the following is needed to generate executable code by combining object codes and library files together?  
+    A: compiler: translate the high-level language code into machine code
+    E
+    B: iterrpreter: tokenlate the high-level language code into code, then decode it to machine code
+    C: assembler: translate the assembly language code into machine code
+    D: loader: load the executable code into memory for execution
+    E: linker: combine the code in the lib or local object files into a single executable file, resolving references between them
+
+Comparing against CISC, which of the following is an advantage of adopting RISC philosophy in designing computers?  
+   a) Instruction execution is slower  
+   b) Instruction set is more friendly in supporting HLL (High-level-language) constructs  
+   c) Instruction set implementation is more expensive  
+   d) Instruction set implementation requires less chip area  
+   e) None of the above  
+*** SOL:  
+    D
+    A: for CISC, the instruction is more complex, so the execution is slower
+    B: for CISC, the instruction set is more closer to HLL, 
+    C: For CISC, the instruction set is expensive, cause' it is complex
+    D: teh RISC instruction set is simple, and decoder and control logic is simpler, so it requires less chip area
+    E: fuck you
+
+Which flag will be set after the execution of the instruction “CMP ESI, EDI” if the contents of ESI and EDI are equal?  
+   a) D flag  b) T flag  c) Z flag  d) S flag  e) O flag  
+     CMP ESI, EDI: compare ESI, EDI with same value
+     cause' no diff, there for output Zero
+     A: D flag: Direction flag: use to control the direction of operating string
+     B: T flag: Trap flag: use in single GDB, will generate the itterupts
+     C: Z flag: Zero 
+     D: S flag: sign flag, used to express the positive or negative to the output result
+     E: O flatg: Overflow, when the operration result is overflow
+    C
+
+Using two bytes only, what is the encoding of number 239 in BCD format?  
+   a) 1000000100111011  b) 0000001000111001  c) 0000000110111001  d) 0010000001111001  e) 0010001001111001  
+*** SOL:  
+    2 3 9
+    2 -> 0010
+    3 -> 0011
+    9 -> 1001
+    so  0000 + 001000111001 -> B
+
+What registers are used to delimit a stack frame on the program stack during subroutine calls?  
+   a) EAX,EBX  b) ECX,EDX  c) ESI,EDI  d) EBP,ESP  e) EAX,EDX  
+   EAX: Accumulator, use to contain the return value of calcuations
+   EBX: Base register, use to point to the base of the data segment
+   ECX: Counter, use to counting iteration loop 
+   EDX: Data register, used in * or / ops, and IO ops
+   ESI: source index: use to contains the source address of the data like String or array
+   EDI: Destination Index: use to continas the target address of the data like String or array
+   EBP: Base pointer: use to point to the current frame address
+   ESP: Stack pointer: point to the top of stack forever
+*** SOL:  
+    - 答案：d) EBP,ESP  
+    - ESP (Stack Pointer) 指向当前栈顶；  
+    - EBP (Base Pointer) 用于固定访问函数的局部变量和参数；  
+    - 其他寄存器用于通用数据存取，不做栈帧边界管理。
+
+** 11  
+   Assume a block of 256 data bytes has to be stored. Which of the following solutions is NOT sufficient?  
+   a) 8bit system with memory locations 0000 to 00FF  
+   b) 24bit system with memory locations 0000 to 0055  
+   c) 16bit system with memory locations 0000 to 007E  
+   d) 32bit system with memory locations 0000 to 005E  
+   e) 64bit system with memory locations 0000 to 0022  
+*** SOL:  
+    - 答案：b) 24bit system with memory locations 0000 to 0055  
+    - 解析：  
+    - a) 00₁₆–FF₁₆（256 个地址）恰好能存 256 字节，充足。  
+    - b) 00₁₆–55₁₆（86 个地址）不足以存 256 字节。  
+    - c) 00₁₆–7E₁₆（127 个地址）不足，但题目问“NOT sufficient”，此范围也不足，但核心考点是首个不满足者 b.  
+    - d) 00₁₆–5E₁₆（95 个地址）不足，同样不满足存储需求。  
+    - e) 00₁₆–22₁₆（35 个地址）严重不足。  
+    - 注意：若严格多选，应排除 b/c/d/e；但按考题单选设定，首个不满足方案是 b。
+
+
+Under 4-digit 10’s complementary coding, 4157 represents  
+   a) 157  b) -157  c) 4157  d) -4157  e) none of the above  
+    - 答案：c) 4157  
+    - 解析：4 位十进制补码中，0000–4999 范围表示正数，4157 即 +4157。
+    ~ invert it's opposite number by 9 (if 10), then add 1 to it
+    ~ add 10000
+    - for example: -1
+    ~ method1: -1 = 0001 invert -> 9998 add 1 -> 9999
+    ~ method2: -1 + 10000 = 9999
+
+
+Assume there are 5 devices to be interconnected with 8 data lines (wires) plus 4 control lines (wires), how many wires are needed if point-to-point connection scheme is used?  
+   a) 32  b) 64  c) 120  d) 180  e) None of the above  
+*** SOL:  
+    - 答案：c) 120  
+    - 解析：5 台设备间点对点连线对数为 C(5,2)=10，每对需 8+4=12 根线，总计 10×12=120 根。
+*** NOTE:
+    C formula: C(n, k) = n! / k!(n - k)!
+    for examole C(5, 2) = 5! / 2! * 3!  = 5 * 4 / 2 * 1 = 10
+    because there are total 12 wires for each to conect, so 120
+
+**** BUS connection:
+     use one single bus: 1 * 12 = 12
+**** for star / Switch Fabric: like only a node need to conect to all the others nodes, it need 5
+     like 1 - 2 - 3 - 4 - 5, with 3 as center, it need an extra wire to export, so 5 wires
+**** Ring:
+     1 - 2 - 3 - 4 - 5 - 1, it need 5 wires
+**** Daisy-Chain, Serial
+     1 - 2 - 3 - 4 - 5
+     4 wires, but the data in each node will be treansferred to the next node, so it is not a good choice for this question
+
+**** 交叉开关 Crossbar
+     n x (8 + 4) wires, 
+    @code text
+                        32-bit 数据线束
+            ┌───────────────────────────┐
+            │        交叉开关矩阵       │
+    IN0 ──┐ │  ┌──┬──┬──┬──┐            │   ┌─► OUT0
+          │ │  │╳ │  │  │  │            │   │
+    IN1 ──┼►│  │  │╳ │  │  │────────────┼──► OUT1
+          │ │  │  │  │╳ │  │            │   │
+    IN2 ──┼►│  │  │  │  │╳ │────────────┼──► OUT2
+          │ │  └──┴──┴──┴──┘            │   │
+    IN3 ──┘ │   可编程交叉点「╳」       │   └─► OUT3
+            └───────────────────────────┘
+        控制逻辑
+     @end
+
+     for this problem, it is 5 * 12 = 60 wires
+
+Name 2 registers that are always used during each instruction execution.  
+   a) IP, IR  b) ECX, EDX  c) EAX, EFLAG  d) EBX, EBP  e) None of the above  
+    - 答案：a) IP, IR  
+    - 解析：IP（指令指针）用于给出下一条指令地址，IR（指令寄存器）存放当前指令，二者每条指令周期必用。
+    ~ A:
+      for the instruction execution,
+      first read the instruction from address using IP
+      then push it into IR
+    ~ B:
+      ECX: Extended Counter Register, use to count the loop or used in string ops
+      EDX: Extended Data Register, use to store the data in IO or * or / ops
+    ~ C:
+      EAX: Extended Accumluator Register, use to store the return valud of operation or calculation
+      EFLAG: Extended Flag Register, used to store all the flags like Zero, Sign, Overflow, Direction, Trap, etc
+    ~ D:
+      EBX: Extended Base Register, use to point to the base of stack
+      EBP: Extended Base Pointer, used to point to the current stack frame
+
+Which register is affected by the execution of “CMP EAX, EBX” instruction?  
+   a) EAX  b) EBX  c) ECX  d) ESI  e) None of the above  
+*** SOL:  
+    - 答案：e) None of the above  
+    - 解析：CMP 并不修改任何寄存器，只是做减法更新 EFLAGS。
+    ECX: Extended Conter Register
+    ESI: EXtended Source Index Register, use to sotre the sourcce address of adata like string or array
+
+Which of the following is associated with labels during the assembly process?  
+   a) constants  b) data  c) interrupts  d) memory addresses  e) stack  
+*** SOL:  
+    - 答案：d) memory addresses  
+    - 解析：标签用于符号化内存地址，汇编器将标签替换为实际地址。
+    ~ title: what is labeling
+      in asm, a label is a symbolic name that represents a specific memory address in the program, 
+      During the assembly process, labels are used to mark locations for data. instructikons, or jump targets.
+      The assembler replaces the label with teh actual memory address when generating the machine code
+        for example:
+      start:  ; start is a label
+        MOV AX, BX
+        JMP start
+    ~ A:
+      constants are fixed values, it is used in the program like
+      MOV AX, 10
+    ~ B:
+      data: Information or values sotre and manipulated by the program, like
+      MOV AX, [data]
+    ~ itterrupts:
+      Signals that temporarily halt the CPU to handle urgent tasks, like
+      INT 21h, keyboard input, timer events
+    ~ memory addresses:
+      Numeric location in memory where data or instruction are stored
+      MOV AX, 1000h (1000h is a memory address)
+    ~ stack
+      A special memory area that operates in a last-in, first-out (LIFO) manner, used for function calls, local variables, etc.  
+      Pushing and popping values during subroutine calls.
+
+Which of the following flags can affect the branching effect of “LOOPNE label” instruction?  
+   a) A flag  b) D flag  c) O flag  d) P flag  e) Z flag  
+*** SOL:  
+    - 答案：e) Z flag  
+    - 解析：“LOOPNE/LOOPNZ” 当 CX≠0 且 ZF=0 时循环，故 ZF 决定不等分支。
+
+    @code asm
+    MOV CX, 5         ; 循环5次
+
+    start:
+        ; ... 这里可以有一些操作，比如比较、处理数据等
+        CMP AL, BL     ; 比较AL和BL，设置ZF
+        LOOPNE start   ; 如果CX≠0且ZF=0，则跳回start
+    ; 循环结束
+    @end
+
+    - 如果 `CMP AL, BL` 结果相等，ZF=1，循环提前结束。
+    - 如果不相等，且CX还没减到0，继续循环。
+
+
+Which of the following is used by Java interpreter as input?  
+   a) micro codes  b) byte codes  c) source codes  d) bit codes  e) macro codes  
+    - 答案：b) byte codes  
+    - 解析：Java 编译器生成字节码（.class），Java 解释器/JVM 以字节码为输入执行。
+    a) micro codes  
+    - 英文: Microcodes  
+    - 中文: 微代码  
+    - 说明: 控制CPU内部硬件操作的低级指令，通常由CPU厂商设计，用于实现机器指令的具体执行过程。
+    b) byte codes  
+    - 英文: Bytecodes  
+    - 中文: 字节码  
+    - 说明: 一种中间代码，通常由编译器生成，由虚拟机（如Java虚拟机）解释或编译执行。
+    c) source codes  
+    - 英文: Source codes  
+    - 中文: 源代码  
+    - 说明: 程序员用高级语言（如C、Python）编写的原始程序文本。
+    d) bit codes  
+    - 英文: Bit codes  
+    - 中文: 位码  
+    - 说明: 用二进制位（0和1）直接表示的数据或指令，通常指最底层的机器码。
+    e) macro codes  
+    - 英文: Macro codes  
+    - 中文: 宏代码  
+    - 说明: 由宏指令组成的代码，宏是一种可以展开为多条指令的高级指令，常用于汇编语言中简化重复操作。
+
+Assume 16-bit sample size is used for audio with these specifications – stereo, sampling rate at 44.1 kHz.  
+   How many Mbytes of data can a CDRom store by maximum if it can store up to 60 minutes of 
+   stereo audio without data compression?  
+   a) 127  b) 256  c) 605  d) 864  e) None of the above  
+*** SOL:
+    - 答案：c) 605  
+      16 bit × 2 通道 = 32 bit = 4 B/样本  
+      44 100 samples/s × 4 B ≈ 176 400 B/s  
+      60 min = 3 600 s ⇒ 176 400 × 3 600 = 635 040 000 B ≈ 605 MiB (用 1 MiB = 1 048 576 B)。
+
+Disk cache is typically part of?  
+   a) hard disk  b) MMU  c) cache control unit  d) memory  e) None of the above  
+    - 答案：a) hard disk  
+    - 解析：磁盘自带的缓冲区（on-drive buffer）属于硬盘内部；其余选项与盘缓存概念不符。
+
+Assume Process A needs 5 pages of memory.
+   When the CPU runs the process, it requests data from each of the 5 pages with equal probability.  
+   Average main-memory read = 5 ns.  
+   Disk page in/out (swap) = 5 000 ns each。  
+   1 page常驻内存，其余 4 页在磁盘，无缓存。  
+   What is the average access time to read a word of data?  
+   a) 5 ns  b) 5 005 ns  c) 7 505 ns  d) 8 005 ns  e) 10 005 ns  
+*** Explanation
+    if hit, then 5 ns, but 1 / 5 
+    if miss, then 4 / 5, 5000 + 5000 + 5 = 10005 ns
+    (1 / 5) * 5 + (4 / 5) * 10005 = 1 + 8004 = 8005 ns
+
+What is the range of integers encoded with 7 bits using sign-and-magnitude representation?  
+   a) [-31, 31]  b) [-63, 63]  c) [-255, 255]  d) [-127, 127]  e) [-1023, 1023]  
+*** SOL:
+    - 答案：b) [-63, 63]  
+    - 解析：1 位符号 + 6 位幅值。最大幅值 63，正负对称（+0/-0 重复），范围 -63…+63。
+*** NOTE:
+    for 1bit: 2 ^ 1 = 2
+    for 7bits: 2 ^ 7 = 128
+    considering the sign bit, it is 128 / 2 = +-64
+
+In one’s complement system, what is the integer that the binary value 10011111 represents?  
+   a) 63  b) 85  c) -79  d) -96  e) -15  
+*** SOL:
+    - 答案：d) -96  
+    - 解析：首位 1 表负数。取反得到 01100000₂ = 96₁₀，于是值 = -96。
+    WARNING: 2's complement need add 1 after invert, instead of 1's complement which only need invert
+    WARNING: 10's complement need the ops in 2's complement, so it is not the same as 1's complement
+    the 10011111 looks like bitter than 10000000, so it is negative
+    because the negative number -> positive number -> invert -> 10011111
+    so 10011111 -> invert -> 01100000 -> positive 32 + 64 = 96
+    so -96
+
+Which of the following value for input **(i1,i2,i3,i4)** gives the output **O1 = 1** in the Boolean circuit?
+   a) (1,1,0,0)  b) (1,0,0,1)  c) (1,1,1,1)  d) (1,0,0,0)  e) (0,0,0,1)  
+*** SOL:
+    A
+
+If four integer parameters were pushed onto stack when calling **scanf** in inline assembly, how would you adjust **esp** when returning?
+   a) add ESP,8  b) add ESP,16  c) sub ESP,8  d) sub ESP,16  e) No action  
+*** SOL:
+    - 答案：b) add ESP, 16
+    - 解析：cdecl 调用约定下，CALL scanf 前 caller `PUSH` 四个 32-bit 参数→栈顶向低地址移动 16 byte。  
+      返前需“弹栈”——把 ESP 加回 16 即可。
+
+8-bit 变形补码权值：128  -64  32  -16  8  4  2  -1
+   哪个整数无法表示？  
+   a) -101  b) -1  c) 66  d) 0  e) 137  
+*** SOL:
+    - 答案：a) -101
+    - 解析（暴力枚举 2⁸ 种取值）：所有可组合权值的和组成集合  
+      {-128 … 191} \ {-101}
+      其余选项均可由相应权位相加得到，因此唯有 -101 不可表示。
+*** NOTE:
+    the max of sum is 128 + 32 + 8 + 4 + 2 = 178
+    the min is -16 - 64 - 1 = -81, way smaller than -101, so A
+
+When a subroutine is about to finish its job and before it returns to the caller,
+   which of the following does *not* occur?  
+   a) all local variables are popped out of the stack  
+   b) the previous EBP address is popped from the top of the stack and restored in EBP  
+   c) parameters are cleaned up in the stack  
+   d) the return address is popped off the stack  
+   e) none of the above  
+    - 答案：c) parameters are cleaned up in the stack  
+    - 解析：在 cdecl 或多数调用约定下，**清理实参由调用者 (caller) 完成**，而非被调函数的收尾代码 (callee epilogue)。其余操作（弹 EBP、弹返回地址、恢复 ESP）都确实发生。
+    @code asm
+    ; ------ caller: main ------
+    push  dword [b]      ; 实参 y
+    push  dword [a]      ; 实参 x
+    call  add            ; 压回址 → 跳转
+    add   esp, 8         ; 清理实参 (caller 负责！)
+    ; --------------------------
+
+    ; ------ callee: add ------
+    add:                               ; <-- 入口
+        push ebp           ; 保存调用者的 EBP
+        mov  ebp, esp      ; 建栈框基准
+        sub  esp, 4        ; 留 4 字节给局部变量 s
+        ; ------- 函数体 -------
+        mov  eax, [ebp+8]  ; eax = x
+        add  eax, [ebp+12] ; eax = x+y
+        mov  [ebp-4], eax  ; s = eax (可省略)
+        ; ------- 返回值已在 eax -------
+        mov  esp, ebp      ; 抛弃局部变量
+        pop  ebp           ; 恢复 old EBP
+        ret                ; 弹回址 → 回 main
+    ; --------------------------
+    @end
+
+When passing parameters from our inline-assembly code to a C I/O library function 
+   such as `scanf`, the number of parameters is passed …  
+   a) by value  b) by reference  c) by register  d) by cache  e) none of the above  
+*** SOL:
+    - 答案：a) by value  
+    - 解析：在调用 `scanf` 时，我们把“实参个数”本身（即每个参数的地址）*按值压栈*；
+      库函数通过遍历栈中参数来取得对应地址。并没有额外用寄存器或引用去传递“参数个数”。
+
+The following 32-bit pattern is an IEEE-754 single-precision float:  
+   `01000001000010000000000000000000`  
+   What value is encoded?  
+   a) -1205  b) 8.5  c) -785.25  d) 61256  e) 8008  
+*** SOL:
+    - 答案：b) 8.5  
+    - 解析：  
+    - 符号位 0 → 正数  
+    - 指数 1000 0010₂ = 130 → 真指数 E = 130 − 127 = 3  
+    - 尾数 1.0001000₂ = 1 + 2⁻⁴ = 1.0625  
+    - 值 = 1.0625 × 2³ = **8.5**
+**** IEEE 754 Single Precision (32 bit)  
+     - S (1) | E (8, Bias=127) | F (23)  
+     - Value: \((-1)^S × 1.F × 2\^{E-127}\)
+    so, 
+       as 0 refers to positive, so it is positive
+       then the E: 10000010, which is 2 + 128 = 130
+    then the float
+       000 1000 0000 0000 0000 0000
+       the fourth bit is 1, so 2\^-4 = 1 / 16 = 0.0625
+       so value = 1 * 1.0625 * 8 = 8.5
+
+
+Given the C call `scanf("%d %d %c", a, b, c);` for simulation in inline assembly,  
+   how many parameters must be pushed onto the stack **before** `call scanf`?  
+   a) 0  b) 1  c) 2  d) 3  e) 4  
+    - 答案：e) 4  
+    - 解析：按 C 约定，`scanf` 形参依次是  
+      1. 指向格式字符串的指针  
+      2. &a  
+      3. &b  
+      4. &c  
+      共 **4 个** 指针需顺序压栈，然后再执行 `call scanf`。
+
+
+   mov ebx 0
+   mov eax, array
+   mov ecx, 7
+   myLoop: add ebx \[eax]
+   add eax, 4
+   loop myloop
+
+Fill in the missing place with the correct arguments / instructions 
+   for a program that sort integers in ascending order
+    _mov_   esi, intArray
+    L1:
+        mov   eax, \[esi]
+        cmp   _\[esi+4]_, eax
+        _jge_   L2
+        _xchg_   eax, \[esi + 4]
+        mov   \[esi], eax
+    L2:
+        add   esi, 4
+        jmp   L1
+

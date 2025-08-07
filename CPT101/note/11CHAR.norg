@@ -1,0 +1,95 @@
+* Data Storage:
+** Main memory:
+   the storage inside the computer, and it maintinas the program and data that is running
+   the vol and speed depends on program and the available space
+   the memory will lose all data when the computer is turned off
+
+** Mass storage
+   - non-volatile
+   - storage is large
+   - and low speed
+   - keeps the data for long time
+
+** Main Memory
+*** Random Access Memory (RAM)
+    - DRAM (Dynamic RAM): each address use a capacitor to store a bit, 
+    - need refreshed periodically
+*** Read-Only Memory (Staitc RAM)
+    - use flip-flop to maintians the data
+    - no refresh needed
+    - fast speed
+    - expensive
+    - use as CPU cache
+*** ROM (Read-Only Memory)
+    - firmware, like BIOS,
+    - ususally can not be changed
+*** Other Memory
+    - Cache: the fast memory between the CPU and main memory, multiple levels (L1, L2, L3), support read and write parrallel
+    - VRAM: physical memory for graphics, like GPU
+
+** HDD (Hard Disk Drive)
+*** structure in physical level
+    - platter, read-write head
+    - Voice-coil actuator
+*** Data structure
+    - each circle is a track, each track has multiple sectors, which is fixed size (512 bytes)
+    - the tracks with same radius are grouped into a cylinder
+*** address finding method (Addressing):
+    - CHS (Cylinder-Head-Sector)
+    - LBA (Logical Block Addressing): addressing using linear index
+*** reading flow:
+    ~ use CHS / LBA to calculate the cylinder, head, sector,
+    ~ the main device send requests through the hardware interface like STA, NVMe 
+    ~ the HDD control the head to the target track, and wait for the sector to the header
+    ~ the head read the data to the cache, then send to the main machine
+    ~ Disk cache: the cache in the memory for the hard disk, decrease the phsical latency
+** Address Width
+*** width of address: 
+    depends on the the CPU address register like IP, MAR and the memory bus's wires number
+*** Max addressing space:
+    if the address width is n, then it can addressing 2^n storage units
+    - 16bits -> 2 ^ 16 = 65536 words, the word usually is 2 bytes, and 1B -> 64KB
+    - 20-bits -> 1 048 576 B -> 1MB
+    - 24-bits -> 16 MB
+    - 32-bits -> 4GB
+    - 64-bits -> 16 EB (Exabyte)
+** Memory Maping
+*** high address used to select chips 
+    After CPU sending a address with N bits, the high address bits will send to device's address decoder, in order to select the divice 
+*** low address
+    the low address go to the target device (chips) to visit the specific address of word
+*** example
+    @code text
+    Device   Size   Addr-pins  32-bit bus            Address Range
+    PROM1    1 MB    20      0000 0000 xxxx … xxxx  0000 0000–000F FFFF
+    RAM1    16 MB    24      0000 0001 ++++ … ++++  0100 0000–01FF FFFF
+    RAM2    16 MB    24      0000 0010 ++++ … ++++  0200 0000–02FF FFFF
+    @end
+    0 / 1 bits: only 1 means selecting this device,
+    \+ means send this address to the deivce to addressing,
+    x menas don't care
+** Memory Levles
+*** architecture:
+    ~ Register: the faster memory inside the CPU
+    ~ L1/L2 Cache: inside CPU or on the board, latency in ns 
+    ~ Main memory: DRAM: multiple G, 10-100 ns 
+    ~ Mass Storage: HDD / SSD, ms, ns latency
+*** why the levels
+    - CPU is way faster then DRAM
+    - SRAM is expensive, DRAM is relatively cheap
+    - program is geting larger
+** Cache Memory Principles
+*** the principle of locality
+    the program tends to access the data or instruction that are near to each other
+*** Multiple Levels of Cache
+**** L1 Cache
+     CPU inside, 8-64KB, fastest cache
+**** L2 Cache
+     share between the cores, or inside the core, slower, but more vol
+*** Visit flow
+    ~ CPU request -> L1
+    ~ if L1 miss, then L2
+    ~ if L2 miss, then main memory
+    ~ if hit, then return the data to the previous cache
+
+
