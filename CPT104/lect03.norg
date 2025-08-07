@@ -1,0 +1,330 @@
+* BackGround
+** Process Synchronization
+*** definition: the coordination of concurrent processes so that at most one process accesses a shared resource at any time.
+*** goal: prevent data inconsistency and resource conflicts, ensuring correct program behavior.
+** Race Condition
+   - Occurs when two or more processes interleave operations on shared data, and the final outcome depends on the exact scheduling order.
+   - Example: Two processes each execute x = x + 1 without synchronization; x may only increase by 1 instead of 2.
+** Critical Section (临界区)
+   - The segment of code where a process accesses or modifies shared data.
+   - Critical Section Problem: Devise mechanisms to ensure only one process is in its critical section at a time.
+** Key Requirements for Synchronization
+   - Mutual Exclusion: Only one process can be in its critical section simultaneously.
+   - Progress: If no process is in its critical section and some wish to enter, decision on who enters cannot be postponed indefinitely.
+   - Bounded Waiting: After a process requests entry, there is a bound on how many times other processes can enter before it does.
+   - Performance: Synchronization should minimize overhead and avoid busy‑waiting or deadlock.
+
+* Critical Section Structure & Synchronization
+  To prevent race conditions on shared data, code around a shared resource is divided into four sections, synchronized by primitives like mutexes or semaphores:
+** Section	Purpose & Role
+*** Entry Section
+    Executes before entering the critical section.
+    lock(mutex).
+*** Typically acquires the lock:
+    Contains code that reads or writes shared data.
+    Must be mutually exclusive.
+*** Critical Section
+    Executes after leaving the critical section.
+    Releases the lock: unlock(mutex).
+*** Exit Section
+    Remainder Section	Code outside the critical section.
+    Unaffected by synchronization, can run concurrently.
+    @code c
+    // Global mutex
+    mutex_t lock;
+    void thread_function() {
+        // 1. Entry Section
+        lock(mutex_lock);
+        // 2. Critical Section
+        // Access/modify shared resource
+        shared_data += 1;
+        // 3. Exit Section
+        unlock(mutex_lock);
+        // 4. Remainder Section
+        // Other work unrelated to shared data
+        do_other_work();
+    }
+    @end
+** Common Synchronization Primitives
+*** Mutex
+    Ensures exclusive access to the critical section.
+*** Semaphore
+    A counting mechanism; allows up to N threads if initialized to N.
+*** Condition Variable
+    Threads wait on conditions and get signaled when the condition holds; useful for producer-consumer.
+
+** 3 principles
+   ~ 互斥性（Mutual Exclusion）：在任意给定的时刻，只允许⼀个进程进⼊临界区（Critical Section）执⾏，其他进程必须等待。通过互斥访问共享资源，确
+     保同⼀时刻只有⼀个进程可以操作该资源，避免数据的不⼀致性。（When a process/thread is executing in its critical section, no other process/threads
+     can be executing in their critical sections）
+   ~ 进展性（Progress）：如果没有进程进⼊临界区且有其他进程请求进⼊临界区，则必须选择⼀个进程进⼊。也就是说，当没有进程在临界区时，不能因为
+     其他进程的请求⼀直阻塞进程，保证进程的执⾏不会被⽆限期地延迟。（If no process/thread is executing in its critical section, and if there are some
+     processes/threads that wish to enter their critical sections, then one of these processes/threads will get into the critical section. No process running
+     outside its critical region may block any process）
+   ~ 有界等待（Bounded Waiting）：对于任意⼀个进程，其等待进⼊临界区的时间有上限，即进程不能⽆限期地等待资源的分配。这个要求保证了所有进程都
+     有机会进⼊临界区，避免出现某个进程饥饿的情况。（No process/thread should have to wait forever to enter into the critical section.）
+
+** 软件解决⽅案
+   ~ Software solutions：基于算法的解决⽅案，其正确性仅依赖于⼀次只有⼀个进程
+     线程可以访问内存位置或资源的假设。通过在代码中使⽤特
+     定的同步机制和算法，如互斥锁、信号量、条件变量等，来保证临界区的互斥访问和同步。
+     （algorithms whose correctness relies only on the assumption
+     that only one process/thread at a time can access a memory location/resource）
+   ~ 硬件解决⽅案 Hardware solutions
+     依赖特殊的机器指令来实现锁定操作。硬件层⾯可以提供原⼦操作和特殊的锁机制，如原⼦指令、⽐较交换指令等，⽤
+     于实现互斥和同步操作。这些机制通常由处理器或硬件⽀持，并提供⾼效的并发控制。
+     （rely on special machine instructions for “locking）
+   ~ 操作系统和编程语⾔解决⽅案
+     Operating System and Programming Language solutions (e.g., Java)
+     ：操作系统和编程语⾔提供了特定的函数和数据结构，
+     供程序员使⽤来实现并发控制和同步。例如，操作系统提供了进程间通信（IPC）机制，如管道、共享内存、消息队列等，⽤于进程之间的通信和同步。编
+     程语⾔也提供了各种同步机制和库函数，如线程同步原语、并发数据结构等，⽤于实现多线程编程中的同步和互斥访问。
+     （provide specific functions and data structures for programmers to use for synchronization）
+
+* Peterson's Solution
+*** sudo code
+    process P0
+    @code c
+    for (;;) {
+    flag[0] = true;
+    turn = 1;
+    while (flag[1] && true == 1);
+    dosomething1();
+    flag[0] = false;
+    }
+    @end
+
+    process 1
+    @code c
+    for (;;) {
+    flag[1] = true;
+    turn = 0;
+    while (flag[0] && turn == 0);
+    dosomething2();
+    flag[1] = false;
+    }
+    @end
+    such algorithm has impl two process could have mutex resource trun 
+    it also have Progress and Bounded Waiting
+
+* Hardware Solution    
+** Single-processor environment
+*** Test and SET solution
+    singel - processor env -> disable interrupts
+
+    initial lock value is set 0
+    lock value = 0 means the critical section is currently vacent and no process is present inside it
+    lock value = 1 means the critical section is currently occupied and a process is now inside it
+**** sudo code
+     @code c
+     do {
+     while (test_and_set(&lock)); // if occupied, then wait
+     // Critical Section
+     // do something here
+     lock = false;
+     // remaindeer section
+     } while (true)
+     @end
+     it is mutex. but not bounded waiting
+** Multi-processor env
+   provides special automic hardware instructions. Atomic means non-interruptable (i.e. the instruction executes as one unit)
+   - a global variable lock is initialized to 0
+   - the only Pi that can enter CS is the one which find lock = 0
+   - this Pi execute all other Pj by setting lock to 1
+   @code c
+   do { 
+   while (compare_and_swap(&lock, 0, 1) != 0); // wait here
+   // critical section
+   lock = 0;
+   // reaminder section
+   } while (1)
+   @end
+** Pro and cons
+*** pros
+    - applicable to any number of processes on eigher a single processor or multiple processor shareing main memory
+    - simple and easy to verify
+    - it can be used to support multiple critical sections; each critical section can be defined by its own variable
+*** cons
+    - Busy-waiting is when a process is waiging for access to critical section it continues to consume processor time
+    - Starvation is possiable when a process executes its critical section
+    - Deadlock is the permanent blocking of a set of processes waiting an event (the freeing up of CS) that can only be triggered by another blocked process in the set;
+
+** Mutex Lock
+   - a programmiong flag, used to get and release object
+     wh=en operate on an object, the other process can not edit this object at the sametime
+     after the original operation is done, the lock is release
+   - in kernel level, disable the iterrupt is the best way to perform less insrtuctions
+
+   - when use mutex ion software, use busy-waiting mechanism. eg. when a process is processing with resource, another prcess keeps checkintg the mutex
+   - the object of mutex is before entering critical region, take the lock and give when exiting critical region
+*** such lock is called SpinLock, cause the process will try to get the lock in a loop 
+
+** Semaphore:
+   Semaphore is a technique to manage concurrent processes by using a simple non-negative interger value;
+   Only three automic operation may be performed on a semaphore:
+   ~ initialize
+   ~ decrement
+   ~ increment
+
+   when a process require visit a public resource, it will try to decrease the semaphore value, if the semaphore value is positive, then it means the resouce is available, and the process can conti
+   if the semaphore value is 0, then ite means the resource is occupied, and it will block until the resource is released (semaphore value increased by another process)
+   when a process does not need the public resource, it will increase the semaphore value, which means the resource is now available for other processes
+
+*** sudo code
+    - wait operation decrement the semaphore value if S is bigger than 0  (avaliable)
+    @code  c
+    void wait(S) {
+    while (S <= 0);
+    // critical section
+    S--;
+    }
+    @end
+    - singal opertation increase the semaphore value (release)
+    @code  c
+    void singal(S) {
+    S++;
+    }
+    @end
+
+** Counting Semaphore:
+   - the semaphore is initializeed to number of available resources
+   - Each process that uses a resource, it perform a WAIT() operation on semaphore (thereby decrementing the number of available resources)
+   - when a process release a resource, it perform a signal() operation (increase the number of available resources)
+   - when thhe count for the semaphore goes 0, all resources are being used. After that, processes that wish to use a resource will be block until the count becomes greater than 0.
+** Binary Semaphore (MUTEX like):
+   - the binary semaphore is like mutet lock, it has only two values: 0 , 1 
+   - initialize: the binary semaphore is set to 1, it make sure that it has only a process could enter the critical section
+     thus complete the use of resource mutex
+   - The WAIT() operation check the semaphore vlaue, 
+     if the value is 0, then use iteration to wait, 
+     if 1 then the value is changed to 0 to present occupation
+   - The SIGNAL() operation check to seee if any processes are blcoked on this semaphore 
+     if so, then a process blocked by a signal() operation is unblocked
+     if no processes are blcoked, then the valie of the semaphbore is set 1 (waiting to be take)
+
+
+* MUTEX VS BINARY SEMAPHORE
+*** owner:
+mutex: in one thread: lock() first then unlock()
+    bianry: no owner concept: any thread can call wait() and signal()
+*** Meaning
+    mutex: protection for critical region disign, use make sure that "who take, who give"
+    bianry: used in resource counting, only make sure that the resource can not be used more than 1
+*** Initial value
+    MUTEX: used to initialized as 1
+    bianry: can be iniitialized as 1 or 0, it depends on whether the resource is avaliable or not
+*** unlock security
+    mutex: lock is unlocked repeatly usually will be fault (raise error), platform uausally will detect the owener
+    bianry: no owner detection, wrong use might lead to counting error
+*** Priority Inversion:
+    mutex: support priority inheritance to relieve high priroity thread lock
+    binary: used to have no prioirty inheritance, it need extra designs
+*** classic usage
+    mutex: critical region mutex visit, thread mutex
+    bianry: control the concurrency numner, notification (like signal awake)
+
+* Common Issues of MUTEX and BINARY
+** Starvation:
+   the thread with high priority frequently request for resource while thread with lower priority is delay
+** Deadlock
+   mutliple thread / progress wait for the lock of each other, thus make the sys can not continue
+** solutions:
+   - design better with take sequence, use timeout or try-lock
+   - prevent the starvation:
+     use fair mutex / semaphore, rolling or priroity inheritance strategy
+* Classic Problems
+** 有界缓冲区问题 / 生产者–消费者问题
+   有限大小的缓冲区由生产者（Producer）和消费者（Consumer）共享。
+   生产者只能在缓冲区非满时插入数据。
+   消费者只能在缓冲区非空时移除数据。
+   同时对缓冲区本身的访问要互斥。
+   @code c
+   semaphore mutex = 1;   // binary semaphore for mutual exclusion
+   semaphore empty = n;   // counts empty slots, initial = buffer size
+   semaphore full  = 0;   // counts filled slots, initial = 0
+   Pseudocode
+   c
+   复制
+   编辑
+   // Producer
+   do {
+       produce_item(&item);
+
+       wait(empty);             // decrement empty-count: wait if buffer full
+       wait(mutex);             // enter critical section
+       buffer[in] = item;
+       in = (in + 1) % n;
+       signal(mutex);           // leave critical section
+       signal(full);            // increment full-count
+   } while (true);
+
+   // Consumer
+   do {
+       wait(full);              // wait if buffer empty
+       wait(mutex);             // enter critical section
+       item = buffer[out];
+       out = (out + 1) % n;
+       signal(mutex);           // leave critical section
+       signal(empty);           // increment empty-count
+
+       consume_item(item);
+   } while (true);
+   @end
+** 2. 读者–写者问题 (Readers–Writers)
+   一个共享数据集同时被多个读者（Reader）和写者（Writer）访问。
+   允许多个读者并发读取；
+   但写者访问必须独占，不允许任何其他读者或写者同时进入。
+   经典方案（读者优先／写者优先／公平）
+   下面给出一个“写者优先”的信号量实现示例（可防止写者饥饿）：
+   @code c
+   semaphore mutex_r = 1;     // protects read_count
+   semaphore mutex_w = 1;     // serialize writers
+   semaphore wrt     = 1;     // ensures exclusive write access
+   int read_count = 0;
+
+   // Reader
+   do {
+       wait(mutex_r);
+       read_count++;
+       if (read_count == 1)
+           wait(wrt);    // first reader locks out writers
+       signal(mutex_r);
+       // ---- read shared data ----
+       wait(mutex_r);
+       read_count--;
+       if (read_count == 0)
+           signal(wrt);  // last reader releases writers
+       signal(mutex_r);
+   } while (true);
+
+   // Writer
+   do {
+       wait(mutex_w);   // serialize writer entry
+       wait(wrt);     // get exclusive access
+       // ---- write shared data ----
+       signal(wrt);
+       signal(mutex_w);
+   } while (true);
+   @end
+
+** 3. 哲学家进餐问题 (Dining Philosophers)
+*** Problem Description
+    N 位哲学家环坐，每人左右各有一支筷子。
+    哲学家只有同时拿到左右两支筷子才能吃饭；
+    否则只能思考（放下已拿的筷子）。
+    需要避免死锁（所有人都拿起左筷子后互相等待）和饥饿。
+
+*** sol
+    限制就餐者数量
+    最多允许 N–1 位哲学家同时“就餐意图”，保证至少一支筷子可用打破循环等待。
+    奇偶策略
+    奇数位哲学家先拿左筷子再右筷子；
+    偶数位哲学家先拿右筷子再左筷子。
+    破坏全员相同顺序拿筷子的循环等待条件。
+    资源仲裁者（Arbitrator）
+    引入一个服务员/仲裁者进程，哲学家需先向其申请许可，拿到许可后才能拿筷子。
+    仲裁者最多同时发放 N–1 个许可，或者根据状态动态决策。
+    这样，你可以根据应用场景选择合适的同步原语及策略：
+    生产者–消费者：半缓冲区场景，用信号量 + 互斥半锁（mutex）。
+    读者–写者：读写分离场景，用读写锁或信号量组合。
+    哲学家进餐：N 个资源的分配与循环等待，采用限制、顺序或仲裁者策略。

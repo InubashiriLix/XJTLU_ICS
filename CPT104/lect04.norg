@@ -1,0 +1,188 @@
+* Basic Concepts
+ - process execution consists of IO and CPU execution
+  - begin with CPU brust -> IO brust - CPU brust - IO brust - CPU brust ...
+  - the duration of these cpu brust have been measured
+  - I/O-bound program would typically would typeically have longer IO time than cpu brust
+  - CPU-bound program would typically have longer CPU brust than IO time
+- -> the I/O-bound and CPU-bound type are helpful when select appropriate CPU-scheduling algorithm
+
+** CPU scheduler
+   The CPU scheduler is the mechanism to select which process has to be executed next and allocates the CPU to that process. Schedulers are responsible for
+   transferring a process from one state to the other
+   调度器是选择下⼀个要执⾏的进程并分配
+   资源给该进程的机制。调度器负责将进程从⼀种状态转换
+   到另⼀种状态。）有三种调度器如前⾯学的⼏种调度。
+**** Long-Term scheduler
+     pick the process from the ready job and put it into the ready queue, it decide which process should be admiitted to the system 
+     and take control of the system process numbers
+**** Short-Term scheduler
+     cpu scheduler, it pick a procees from the ready queue and use schedule algorithm to decide which process should be executed, 
+     it control the sequence of execution of process
+     to maximize the system io and response time
+**** Mid-Term Schduler: (swap)
+     it control which process should be swapped out of the memory and which process should be swapped in, it is used to control the degree of multiprogramming
+*** Sccheduler and Dispatcher
+    - Schedulers are special system software that handles process scheduling in various ways.
+    - Dispatcher（分派器, module of the operating system, removes process from the ready queue and sends it to the CPU to complete
+
+*** CPU Scheduling Policies
+**** PREEEMPTIVE SCHDULING: 
+     the system may stop the execution of the running process and after that, the context switch may provide the processor to another process
+     The interrupted process is put back into the ready queue and will be scheduled sometime in future, according to the scheduling policy.
+**** NON-PREEMPTIVE-SCHEDULING:
+     when a process is assigned to the proceesor, it is allow to execute to its completion, that is, a system connot take away thee processor from the process until it exists
+     any other process which enters the queue has to wait until the current process finishes its CPU cycle.
+     like 
+     create -> ready -> executing -> terminated
+     executing -> itterrupt -> ready 
+     executing -> waiting for io -> receiving IO --scheduler \-> ready
+     executing -> waiting for resource -> reschedule -> ready
+*** Dispatch 
+    dispatch module will give the control of the CPU to the scheduler selected process
+    this will
+    - Context Switching
+    - Switch to user mode -> change the kernel model to the user mode, so the new process can run user program
+    - jump to the propoer location in the user program to restart the program
+*** Dispatch Latency
+    is the latency between the time scheduler stop a process and start another process
+    it should be as short as possible, to make sure the fast response of change process
+
+
+* Scheduling Criteria:
+** Max CPU ultilization (最大CPU利用率)
+   keep the cpu as busy as possible
+** Max Throughput (最大吞吐量)
+   complete as many process as possible per unit time
+** Fairness (公平性)
+   give each process a fair share of the  CPU
+** Min Waiting Time (最小等待时间)
+   process should not wait long in the ready queue
+** Min Response Time (最小响应时间)
+   CPU should respond immediatly
+
+* Scheduling Algorithms
+** Times
+*** Arrival time (AT)
+    time at which the process arrives in the ready queue
+*** Complete time:
+    Tiem at wichi process complete its executing
+*** Brust Time:
+    Time require by a proocess for CPU execution
+*** Turnarround Time (TT)
+    the total amoun of time spent by the process from coming in the ready state for the first time to its completion
+    TT = exit time (Complete time) - arrival time
+*** Warting Time:
+    Waiting time is the total time spent by the process in the ready state waiting for CPU
+    Waiting time = Turn Around Time - Burst Time
+*** Response Time:
+    Time at which the process gets the CPU for the first time.
+** Algorithms
+*** First-Come, First-Served (FCFS) Scheduling
+    this scheduling is execute by the tiem the process arrives, which menas, the process come first will be executed first
+    - the preformence of such scheduling is bad,
+      becase if a long time process, then all the process before it will have a long wating time
+*** Shortest-Job First (SJF) Scheduling
+    - Schedule processwith the shortest brust time
+    - the shortest brust time is scheduled first
+**** Advantages:
+     minimize average wait time and average response time
+**** Disadvantages:
+     Not pratical: difficult to predict brust time
+     - learning to predict furture
+     - May starve long time process
+**** how to get the cpu brust time?
+     long term scheduler can get the brust time of process when user addmit the process
+     α=1 时，
+     𝜏(𝑛+1) = τn+1 =tn
+     ——预测“只看”最近一次实际值，不具平滑性。
+     中间值0<α<1 实现“新旧平衡”：比如 𝛼=0.5时，上一实际值和之前的预测各占 50%。
+
+***  Shortest-Remaining-Time-First (SRTF) Schduling
+     the first process comming in will execute first, 
+     the remaing process will be executed according to the remaining time
+     the first process may be preempted by the new process if the new process has a shorter remaining time
+     @code sudo
+     Process | Arrive time | Brust time
+     P1          0               8
+     P2          1               4
+     P3          2               9
+     P4          3               5
+     @end
+Gantt Chart:
+     0      1       5              10         17    26
+     P1     P2      P4             P1         P3    all done
+     7r     l4      l5             l7         l9
+                 p4 complete    p4 comp
+*** Priority Scheduling
+    - each process is assigned a priority (an integer numner)
+    - the CPU is allocated to the process with the highest prioirity
+**** Priority 
+     Internal priority: based on critiria within os like (mem usage)
+     Externel priority: based on critiria outside OS like asigned by administrator
+
+**** Problem:
+     Starvation: process with lower priority may never execute
+     Solution: Aging - as time progress increaset the priority of the process: 
+     like do priority ++ every 10 mins
+
+*** Round Robin (RR) Scheduling (抢占)
+    - each process gets a saml unit of CPU time (time quantum or time-clice), unusally 10 - 100 ms
+    - After this time has elapsed, the process is preempted and added to the end of the ready queue.
+    - if there are n processes in the ready queue and the time quantum is q, then each process get 1/n of the cpu time in chunk of at most q time units at once. 
+      No process waitis more than (n - 1)q time units
+    - Performance:
+        q larget => RR scheduling = FCFS scheduling 
+        q smallest => q must larget wth respect to context switch, 
+      otherwise overhead is too high
+
+    @code text
+    Process  |  Brust Time  | Average wait time would be 
+    P1       |      24      |   P1w = 30 - 24 = 6
+    P2       |       3      |   P2w = 7 - 3 = 4
+    P3       |       3      |   P3w = 10 - 3 = 7
+    ( Average Wait Time ) = (6 + 4 + 7) / 3 = 5.67
+
+    Time quantum = 4ms
+    time   process  usage   p1 remain   p2 remain   p3 remain
+    0-4    P1       4       20          3           3    
+    5-7    P2       3       20          0           3   
+    8-10   P3       3       20          0           0
+    11-14  P1       4       16          0           0
+    15-18  P1       4       12          0           0
+    19-22  P1       4       8           0           0
+    23-26  P1       4       4           0           0
+    27-30  P1       4       0           0           0
+    @end
+
+*** Multiple-Level Queues Scheduling
+**** ready queue is partitioneed into seqarate queues: 
+     like two queues containing
+     - forground (interactive) processes. May have externally defined priority over background processes.
+     - background (batch) processes.
+**** Process permanently associated to given queue; no move to a different queue.
+**** There are two types of scheduling in multi-level queue scheduling:
+     - Scheduling among the queues
+     - Scheduling between the processes of the selected queue
+**** Must schedule among the queues too (not just processes):
+     - Fixed priority Scheduling: serve all from foprground then from background
+     - Time slice 
+       each queue gets a certain ampount of CPU time which it can schedule amonst its processes
+     - 80% to forground in RR, and 20% to backgrounds is FCFS
+
+*** Multiple-level Feedback Queue Scheduling
+    automatically place processes into qriority levels based on their CPU brust behavior
+    - I/O intensive processes will end up on higher priority queues 
+      and CPU-intensive processes will end up on low priority queues
+    - A process can move between queues, 
+    - A multilevel feed back queues uses two basic rules:
+    ~ A new process get placed in the highest priority queue
+    ~ if a process doest not finish its quantum, then it will stay at the same priority level otherwise
+
+    Three queues:
+    Q0 - RR with tiem quantum 8ms
+    Q1 - RR with time quantum 16ms
+    Q2 - FCFS lowerest priority queue
+    the newest process will enter Q0 first, if not complete in 8ms, then it will be remove to Q1, if it does complete in 8ms, then it will be remove natrually
+    the process in the Q1: if not complete in the 16ms, then enter Q3, if comp, then terminated naturlally
+    the proess in Q2: FCFS: the process will be executed until it is terminated
+     

@@ -1,0 +1,188 @@
+* 11 Protection & Security
+
+** 11.1 Protection（资源访问控制）
+   保护 = **对程序、进程、用户到系统资源的访问加以控制**  
+   **目标**  
+   1. 阻止 *未授权* 访问  
+   2. 让每个主体仅按 *策略* 使用资源  
+   3. 当程序出错或被攻破时，*限制* 其破坏范围  
+   4. 通过发现潜在错误来 *提高系统可靠性*  
+
+** 11.1.1 Principle of Least Privilege（最小权限原则）
+   - 给程序 / 用户 / 进程 **仅够完成任务的最小集合权限**  
+   - 权限可分配于：文件、设备、网络端口、系统调用、CPU 指令……  
+   - 静态 最小化：进程/系统整个生命周期固定权限  
+   - 动态 最小化：运行时按需 *提升 / 降权*  
+   - 域切换（domain switching）：从普通用户态 ➜ 特权态；再降回  
+   - 提权（privilege escalation）API：`setuid()`, `capset()`  
+   - *能力*（POSIX capabilities, Linux capabilities）——把超级用户权限拆分为细粒度片段
+
+** 11.1.2 Access Matrix（访问矩阵模型）
+  - 把“谁能对什么做什么”表示为一个二维矩阵  
+  |             | **Object₀** | **Object₁** | … |
+  |-------------|-------------|-------------|---|
+   | **Domain₀** | { read }     | { read,write } |   |
+   | **Domain₁** | { execute }  | ∅           |   |
+   | **…**       |             |             |   |
+
+   - 行 = *域*(domain) ⇢ 可看作主体（进程/用户）  
+   - 列 = *对象*(object) ⇢ 文件、设备、IPC 端口、内存页…  
+   - `Access(i,j)` = 进程在Domainᵢ状态下，可以在 Objectⱼ上执行的操作集合
+   - 常见操作：`read`, `write`, `execute`, `append`, `delete`, `getattr`…  
+   - 衍生权限（可出现在集合中）：  
+   - copy — 允许把该权限复制给其它域  
+   - owner — 允许添加 / 移除该对象上的权限条目  
+   - control — 域 i 可操作列 j 的 *域切换*（e.g. 终止进程）
+
+   ***  矩阵实现
+     1. *按列紧凑* ➜ 访问控制表 (ACL)：每个对象附带一张表列出哪些主体具有什么权限  
+     2. *按行紧凑* ➜ *能力表 (capability list)*：每个主体持有一组 token，声明对哪些对象拥有什么权限  
+     3. *混合 / 稀疏表示* ➜ 哈希、链表、位图
+
+*** 域切换
+     进程可通过系统调用改变自身所在域（例如 `setuid()`, `execve()` 加载 SUID 程序），即动态改变其在矩阵中的“行”。
+
+*** 优势
+   - 统一刻画不同资源  
+    - 易于形式化验证策略  
+    - 直接映射到 ACL 与 capability 两大工业实现
+** 11.1.3 Access Control Policy（基于角色的访问控制）
+   Role-based access control(RBAC)用于控制用户访问通常仅限root的任务
+   特点
+   - 先定义角色，再将权限分配给角色
+   - 用户可分配多个角色
+   - 多个用户可共用同一角色
+   - 角色可拥有多个访问权限
+     ASCII图示
+   +--------------------+
+   |      user1        |
+   |  +------------+   |
+   |  | role1      |   |
+   |  | - priv1    |   |
+   |  | - priv2    |   |
+   |  +------------+   |
+   +--------------------+
+   |
+   executes with role1 privileges
+   |
+   v
+   +---------------+
+   |   process     |
+   +---------------+
+
+** 11.2 Security
+** 11.2.1 Definition
+Security is the practice of the confidentiality, integrity, and availability of data
+
+** 11.2.2 Security Violation Categories
+*** Breach of confidentiality: Unauthorized reading of data  
+*** Breach of integrity: Unauthorized modification of data  
+*** Breach of availability: Unauthorized destruction of data  
+*** Theft of service: Unauthorized use of resources  
+*** Denial of service (DOS): Prevention of legitimate use  
+
+** 11.2.3 Security Violation Methods
+*** Masquerading (breach authentication): attacker pretends to be an authorized user to escalate privileges  
+*** Replay attack: attacker delays, replays, or repeats data transmission between the user and the site  
+*** Man‑in‑the‑middle attack: intruder sits in the data flow, masquerading as sender to receiver and vice versa  
+*** Hijacking: attacker takes control of computer systems, software programs, etc.  
+
+** 11.2.4 Security Measure Levels  
+To protect a system, we must take security measures at four levels:  
+*** Physical  
+    Data centers, servers, connected terminals  
+*** Human  
+    Avoid social engineering, phishing (sending an innocent‑looking email), dumpster diving (searching the trash for passwords), password cracking  
+*** Operating System  
+    Protect against accidental or intentional breaches: runaway processes (DOS), memory‑access violations, stack overflows, launching programs with excessive privileges  
+*** Network  
+    Protect the network itself from attack and the local system from network‑borne threats (eavesdropping, interruption, DOS, etc.)  
+
+** 11.2.1 Cryptography as a Security Tool
+*** 加密
+**** 定义
+     加密是将消息编码的过程，使未授权人员难以理解其含义
+*** Symmetric Encryption 对称加密
+**** 特点
+     - 使用相同密钥进行加密和解密  
+**** 常见算法
+     - Data Encryption Standard (DES)  
+     - Triple‑DES  
+     - Advanced Encryption Standard (AES)  
+     - Rivest Cipher RC4  
+**** 流程示意  
+     @code text
+     P →[加密算法, 密钥]→ C  
+     C →[解密算法, 密钥]→ P  
+     @end
+*** Asymmetric Encryption 非对称加密
+**** 特点
+     - 使用一对密钥：公钥用于加密，私钥用于解密  
+     - 公钥可公开分发，私钥仅用户持有  
+**** 常见算法
+     - RSA (Ron Rivest, Adi Shamir, Leonard Adleman)  
+**** 流程示意  
+     @code text
+     Alice               Bob  
+     P →[加密算法, 公钥]→ C  
+     C →[解密算法, 私钥]→ P  
+     @end
+*** 数字证书 Digital Certificates
+**** 定义
+     用于证明某个公钥或文档的真实性  
+**** 签发流程
+     1. 实体提交身份凭证  
+     2. 证书机构验证并签发  
+     3. 用户使用机构根公钥验证签名  
+**** 特点
+     - 证书机构根公钥预装于浏览器  
+     - 通过证书链建立信任  
+*** 密钥分发管理 Key Distribution Management
+**** 对称加密
+     - 密钥分发困难
+     - 可采用离线传输（纸质、面对面）或一次性密钥本  
+**** 非对称加密
+     - 公钥公开，可集中管理（密钥环文件）  
+     - 仍需防范中间人攻击  
+
+
+** 11.2.2 UserAuthentication（用户认证）
+*** 11.2.2.1 Identification（标识）
+    当用户登录计算机时，操作系统需要确定用户身份。
+    标识：为用户指定唯一标识符，Signing函数产生authenticator，用于后续认证。
+*** 11.2.2.2 Verification（验证）
+    验证：针对唯一标识符执行，确认用户与该标识符的绑定。
+    Verification函数返回“true”表示authenticator确实来自该用户，否则返回“false”。
+*** 11.2.2.3 常用认证算法
+**** MessageAuthenticationCode（MAC）
+     基于对称加密，使用密钥对消息生成加密校验和，用于完整性和来源验证。
+**** DigitalSignatureAlgorithm（数字签名算法）
+     基于非对称加密，使用私钥对签名数据加密，任何人可用对应公钥验证签名有效性。
+*** 11.2.2.4 常见认证形式
+**** 密码
+     现代系统不以明文存储密码，而是存储哈希值或经过加盐处理的散列。
+**** 一次性密码
+     每次登录产生新密码，可抵抗肩窥和重放攻击。
+**** 生物识别
+     利用指纹、虹膜、面部等生理特征，多因素认证时可与密码或令牌组合。
+
+** 11.2.3 ImplementingSecurityDefenses（实施安全防御）
+*** 11.2.3.1 安全策略
+    制定和发布全局安全准则，以规范访问控制、数据保护和事件响应流程。
+*** 11.2.3.2 漏洞评估
+    定期检查系统以发现并修复安全弱点：
+    - 端口扫描
+    - 弱口令检查
+    - 系统目录中未授权程序
+    - 错误权限位设置
+    - 程序校验和／数字签名变化
+    - 意外或隐藏的网络守护进程
+    - 启动／关闭脚本及配置文件中新条目
+    - 未授权账户
+*** 11.2.3.3 入侵检测
+    部署入侵检测／防御系统（IDS/IPS），实时监测并响应可疑活动。
+*** 11.2.3.4 病毒防护
+    安装并定期更新防病毒软件，检测、隔离和清除恶意软件。
+*** 11.2.3.5 审计记账和日志
+    启用系统审计、会计和日志记录，保留访问和操作痕迹，以便事后分析和合规检查。
+

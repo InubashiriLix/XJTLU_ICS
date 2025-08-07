@@ -1,0 +1,105 @@
+QUESTION II. CPU scheduling, Memory management, Disk scheduling  
+(36 marks) 
+1. Calculate the number of page faults for the following sequence of page references (each 
+    element in the sequence represents a page number) using the Least Recently Used (LRU) 
+    algorithm with frame size of 3. 
+    1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3 
+sol.
+    1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+    1 1 1 1 3 2 1 5 2 1 6 2 5 6 6 1 3 6 1 2
+      2 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4
+        3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+    1 1 1 0 0 1 0 0 1 0 1 0 1 1 0 0 0 1 1 1
+    11 / 20 = 55%
+
+2. In a paging system with Translation Lookaside Buffer (TLB), it takes 40 ns to search the 
+    TLB and 100 ns to access the memory. If the TLB hit ratio is 60%, find the effective memory 
+    access time.  
+    What should be the hit ratio to achieve the effective memory access time of 170 ns?  (6 marks)
+sol.
+    a. EAT = a * (40 + 100) + (1 - a) * (40 + 200)
+        = 240 - 100a 
+        if a = 60%
+        EAT = 180
+    b,
+        EAT = 240 - 100a
+        = 170
+        a = 70%
+3. Consider the following scenario of processes with their priority: 
+    1. Explain the Shortest-Remaining-Time-First (SRTF) algorithm of the processes.
+    2. Draw the Gantt chart for the execution of the processes.       
+    3. Calculate the Waiting Time for each process and the Average Waiting Time for the system.
++---------+--------------+-------------+
+| Process | Arrival time | Burst time  |
++---------+--------------+-------------+
+|   P1    |      0       |      7      |
+|   P2    |      2       |      4      |
+|   P3    |      3       |      9      |
+|   P4    |      5       |     10      |
++---------+--------------+-------------+
+sol.
+1.  the fucking SRTF 
+    the first task enter execute first in the first time quantum
+    then the tasks execute following whose remain brust execution time is shortest
+2.
+    0       2      6      11      20    30
+       P1      P2     P1      P3     P4
+       5r      done   done    done   done
+3. takearound time = finish time - arrival time
+    P1 = 11 - 0 = 11
+    P2 = 6 - 2 = 4
+    P3 = 20 - 3 = 17
+    P4 = 30 - 5 = 25
+    waiting time = takearound time - brust time
+    P1 = 11 - 7 = 4
+    P2 = 4 - 4 = 0
+    P3 = 17 - 9 = 8
+    P4 = 25 - 10 = 15
+    average waiting time: P1 + P2 + P3 + P4 / 4  = 27 / 4 = 8
+
+4. Consider a disk queue with I/O requests on the following cylinders in their arriving order:  
+    25, 90, 135, 50, 190, 60 
+    We assume a disk with 200 tracks and the disk head is initially located at track 100. 
+    Write the sequence in which requested tracks are serviced using the First Come First Served 
+    algorithm (FCFS) and calculate the total head movement (in number of cylinders) incurred 
+    while servicing these requests.   
+sol.
+    25, 90, 135, 50, 190, 60
+    100 -> 25 -> 90 -> 135 -> 50 -> 190 -> 60
+    75 + 65 + 45 + 85 + 140 + 130 = 540
+
+5. Given the following information:
+    Use the Best-fit algorithm to indicate which memory blocks are allocated to each of the arriving 
+    processes. Explain.
+    Job List:
++-----------+----------------+
+| Job       | Memory Request |
+| Number    |      (K)       |
++-----------+----------------+
+| Process A |      57K       |
+| Process B |     920K       |
+| Process C |      50K       |
+| Process D |     701K       |
++-----------+----------------+
+
+Memory Block List:
++---------+--------------------+
+| Memory  | Memory Block Size  |
+|  Block  |        (K)         |
++---------+--------------------+
+| Block 1 |        900K        |
+| Block 2 |        910K        |
+| Block 3 |        200K        |
+| Block 4 |        300K        |
++---------+--------------------+
+
+sol.
++------+--------------------------+---------+------------------+---------------+--------------+
+| Time | Free‑block list (K)      | Request | Best‑fit block   | Allocation    | Left‑over(s) |
++------+--------------------------+---------+------------------+---------------+--------------+
+| Init | 900, 910, 200, 300       |   –     |        –         |      –        |      –       |
+|  A   | 900, 910, 200, 300       |   57    | 200 (smallest fit)| A → 200       |   143 left   |
+|  B   | 900, 910, 300, 143       |  920    |        –         | Not allocable |      –       |
+|  C   | 900, 910, 300, 143       |   50    |      143         | C → 143       |    93 left   |
+|  D   | 900, 910, 300, 93        |  701    |      900         | D → 900       |   199 left   |
++------+--------------------------+---------+------------------+---------------+--------------+

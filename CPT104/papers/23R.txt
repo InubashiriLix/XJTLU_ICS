@@ -1,0 +1,319 @@
+QUESTION I
+1. For a given class, the student records are stored in a file. The records are randomly accessed and 
+updated. Assume that each student’s record is of fixed size. Which of the three allocation schemes 
+(contiguous, linked and indexed) will be most appropriate? Explain your answer.
+sol.
+    1. contiguous: logic address -> physical addrss = start block + offset (with fast random access)
+                but if we insert studnet while contiguous space is not eough, we need to move the files
+                and it is easy to lead to external fragments, 
+                expensive to maintain
+    2. linked: logic pointers: need track down the link to find the nth file, random access slow
+                but easy to insert and delete, no external fragments
+                high pointers costs
+    3. indexed: read the index block first, then located to the file only two driver io, 
+             access speed is near to the contiguous access, perform good in random access
+             the recording blocks can be in the any available space, no external fragments
+
+2. A system has two processes and three identical resources. Each process needs a maximum of 
+    two resources. Is deadlock possible? Explain your answer. 
+sol.
+    allocate the 3 resources to 2 process, the final allocation is (2, 1)
+    allocate the 3 resources to 1 process, the final allocation is (3, 0)
+    at any time at least one process can continue and return the resources, so no deadlock
+    1.
+    Pro Max Alloc Need 
+    P1  2   0     2
+    P2  2   0     2
+    avilable = 3
+    3 > 2(P1) -> 3 + 0 = 3
+    3 > 2(P2) -> 3 + 0 = 0
+    well, pro1 -> pro2 or pro2 -> pro1 are doable
+    2. 
+    if one type of resources, then M is the maximum of need, process num is P, Resource total = R
+    if R >= P * (M - 1) + 1 then no deadlock
+
+    M = 2, P = 2
+    P * (M - 1) + 1 = 3 <= 3
+
+3. List two reasons why the scheduling of processes and threads on a multi-processor system is 
+    more complicated than scheduling them on a uni-processor system.   
+sol.
+    1. Load balancing vs. affinity – the scheduler must keep every CPU busy yet avoid moving a thread away from the core (or NUMA node) whose cache already holds its data. Balancing these two goals does not exist on a single‑CPU machine.
+    2. Concurrent run‑queue updates – each CPU maintains its own ready queue, and several schedulers update those queues at the same time. They need locks/atomic operations and inter‑processor interrupts to pre‑empt or wake tasks on other cores, adding synchronization overhead that a uniprocessor never faces.
+ 
+4. One of the design decisions in Operating System memory management is the choice between 
+    swapping and paging.  
+    Define each of these terms and explain their respective roles in Operating System memory 
+    management.
+sol.
+    1. swapping
+    The entire image of a process is written out to a swap area on secondary storage and later read back into RAM as a whole.
+    Frees a large, contiguous block of physical memory when RAM is tight or the process is blocked for a long time.
+    2. paging
+    A process address space is divided into fixed‑size pages; only the pages actually referenced are kept in RAM. When frames are full, page‑replacement algorithms evict individual pages.	
+    Implements virtual memory: lets each process see a large, contiguous logical space and loads pages on demand, reclaiming RAM page‑by‑page.
+
+
+5. When multiple processes need to cooperate, there is a choice between shared memory and 
+    message passing communication.  
+    Give two advantages and two disadvantages of each method. Explain your answer.   
+    When cooperating processes map the same physical pages into their address spaces they can read and write data “in place,” so no kernel copy is needed.
+sol.
+    Advantage 1 – speed and zero‑copy: large buffers are exchanged at memory bandwidth, which is far quicker than copying them through the kernel.
+    Advantage 2 – easy sharing of complex data: pointer‑rich objects such as linked lists or ring buffers can reside in the shared region and be accessed directly.
+    The same direct access also creates problems.
+    Disadvantage 1 – difficult synchronization: nothing prevents two processes from writing the same location simultaneously; explicit locks, semaphores, or atomics are mandatory and bugs cause races or deadlocks.
+    Disadvantage 2 – limited scope and weak isolation: it works only between processes on the same machine; a stray pointer or buggy writer can corrupt data for every participant, so security and fault tolerance are poor.
+
+    Message passing
+    Processes communicate by sending and receiving discrete messages, typically through pipes, sockets, or an IPC mailbox.
+    Advantage 1 – implicit synchronization and strong isolation: a process cannot touch another’s memory, so the act of “receive” naturally serializes access and eliminates most data‑race errors.
+    Advantage 2 – transparent distribution: the same send/receive abstraction can be backed by Unix‑domain sockets on one box or TCP/RPC across the network, making it easy to scale to multiple hosts.
+    That safety comes at a price.
+    Disadvantage 1 – extra overhead: every message usually crosses the kernel boundary twice and is copied at least once, incurring CPU time, cache pollution, and context switches—especially painful for large payloads or high message rates.
+    Disadvantage 2 – protocol complexity and possible blocking: developers must design message formats, deal with serialization, flow control, and back‑pressure; if the receiver is slow or absent, the sender may block or the queue may overflow, requiring additional error handling.
+
+
+QUESTION II. CPU scheduling, Memory management and Disk scheduling 
+1. Consider the following scenario of processes. Their arrival time and burst time are as follows
+    +---------+-------------------+-----------------+
+    | Process | Arrival time (ms) | Burst time (ms) |
+    +---------+-------------------+-----------------+
+    |   P1    |         0         |        6        |
+    |   P2    |         1         |        4        |
+    |   P3    |         2         |        2        |
+    |   P4    |         3         |        3        |
+    +---------+-------------------+-----------------+
+    a. Draw the Gantt chart for the execution of the processes using the Shortest Remaining Time First 
+        scheduling algorithm.                            
+    b. Calculate the average waiting time for the system.           
+    c. Calculate the average turnaround time for the system.          
+sol
+    a.  0 - 1 | 1 - 2 | 2 - 4 | 4 - 7 | 7 - 10 | 10 - 15 |
+        P1    | P2    | P3    | P2    | P4     | P1      |
+        P1 5  | p2 3  | p3 d  | p2 d  | p4 d   | p1 d    |
+    bc. average waiting time and average turnaround time
+        turnaround time = complete time - enter time
+        turnaround  
+        P1 = 15 - 0 = 15
+        P2 = 7 - 1 = 6
+        P3 = 4 - 2 = 2
+        P4 = 10 - 3 = 7
+        total = 30 
+        average turnaround time = 30 / 4 = 7.5
+
+        waiting time = turnaround time - brust time 
+        P1 = 15 - 6 = 9
+        P2 = 6 - 4  = 2
+        P3 = 2 - 2  = 0
+        P4 = 7 - 3  = 4
+        total waiting time: 15
+        average waiting time: 15 / 4 = 3.75
+
+2. Calculate the number of page faults for the following sequence of page references (each 
+element in the sequence represents a page number) using the Least Recently Used (LRU) 
+replacement algorithm with frame size of 3. 
+7  2  3  1  2  5  3  4  6  7  7  1  0  5  4  6  2  3  0  1
+sol.
+    7  2  3  1  2  5  3  4  6  7  7  1  0  5  4  6  2  3  0  1
+    7  7  7  2  3  1  2  5  3  4  4  6  7  1  0  5  4  6  2  3
+    2  2  3  1  2  5  3  4  6  6  7  1  0  5  4  6  2  3  0
+    3  1  2  5  3  4  6  7  7  1  0  5  4  6  2  3  0  1
+    1  1  1  1  0  1  1  1  1  1  0  1  1  1  1  1  1  1  1  1 ( page fault new )
+    18 / 20 = 90%
+
+3. Consider a disk queue with I/O requests on the following cylinders in their arriving order:  
+    38, 180, 130, 10, 50, 15, 190, 90, 150 
+    We assume a disk with 200 tracks (numbered 0 to 199) and the head is initially at position 120 and 
+    current direction of head is towards 0. 
+    Write the sequence in which the requested tracks are serviced using the C-LOOK algorithm and 
+    calculate the total head movement (in number of cylinders) incurred while servicing these 
+    requests.                                  
+    38, 180, 130, 10, 50, 15, 190, 90, 150
+sol:
+    38, 180, 130, 10, 50, 15, 190, 90, 150
+    120 -> 90 -> 50 -> 38 -> 15 -> 10 - | -> 190 -> 180 -> 150 -> 130        
+    30 + 40 + 12 + 23 + 5 + 0 + 10 + 30 + 20 = 170  (NO wrap-around jump)
+    if we count wrap-around jump movement, then
+    350
+
+4. In a 32-bit machine we subdivide the virtual address into 3 segments as follows:    
+    We use a two-level page table such that the first 10-bit of an address is an index into the first level 
+    page table and the next 10-bit is an index into a second level page table. Each page table entry is 
+    32 bits in size. 
+        (a). What is the page size in such a system?           (3 marks) 
+        (b). How many entries are in the 1st level page table?        (3 marks) 
+        (c). How much memory does the 1st page table occupy?       (3 marks)
+sol.
+    (a). 
+        // overal page 2 ^ 12 * 2 ^ 10 * 2 ^ 10 = 4Gbits
+        page size 2 ^ 12  = 4048
+    (b).
+        1024bit
+    (c).  
+        4KB
+
+5. Three processes P1, P2, and P3 of size 900, 190, and 888 bytes, respectively, need space in 
+    memory. 
+    If partitions of equal size, that is, 2000 bytes, are allocated to P1, P2, and P3, will there be any 
+    fragmentation in this allocation? If, yes, then what is the size of the space left?  
+sol.
+    yes, inter fragments?
+    2000 - 900 + 2000 - 190 + 2000 - 888 = 1100 + 1810 + 1112 = 4022
+    内存管理方式	是否产生 内部碎片	是否产生 外部碎片	产生/不产生的原因
+    固定大小 partition（Fixed‑size partitions，含分页 page/frame）	有：分区/页固定，进程往往装不满 → 分区最后一段浪费	无：所有分区尺寸一致、位置固定，空闲块不会被切碎	固定块 ⇒ “用不完”就浪费（内部碎片），但不会出现大小形形色色的洞（无外部碎片）
+    可变大小 partition（Variable‑size 连续分区，早期 MVT）	很小或几乎无：给进程的分区大小 ≈ 需求大小	有：频繁分配/释放把整块内存撕成许多零散小洞	可变块 ⇒ “大小正好” → 几乎没内部碎片；但释放后留下杂碎空洞（外部碎片）
+    方式	        本质	            内部碎片	    外部碎片
+    分页 (paging)	固定‑页框	        有 (平均半页)	无
+    分段 (segmentation)	可变‑段	        几乎无	        有
+    固定大小 partition	固定‑分区	     有	            无
+    可变大小 partition	可变‑分区	    无或极小	    有
+
+QUESTION III.  Resource allocation
+Available:
++----+----+----+----+
+| R1 | R2 | R3 | R4 |
++----+----+----+----+
+|  1 |  0 |  1 |  0 |
++----+----+----+----+
+
+Processes:
++---------+--------+--------+--------+--------+----------+----------+----------+----------+
+| Process | Max R1 | Max R2 | Max R3 | Max R4 | Alloc R1 | Alloc R2 | Alloc R3 | Alloc R4 |
++---------+--------+--------+--------+--------+----------+----------+----------+----------+
+|   P0    |      0 |      1 |      2 |      3 |        0 |        1 |        1 |        2 |
+|   P1    |      2 |      0 |      0 |      2 |        1 |        0 |        0 |        2 |
+|   P2    |      0 |      2 |      0 |      1 |        0 |        1 |        0 |        1 |
+|   P3    |      2 |      2 |      0 |      0 |        1 |        1 |        0 |        0 |
+|   P4    |      0 |      2 |      2 |      0 |        0 |        1 |        2 |        0 |
++---------+--------+--------+--------+--------+----------+----------+----------+----------+
+
+a. Is this system in a safe state? If your answer is yes, please give a safe sequence and resources 
+    available after each process finished. If your answer is no, please specify the processes that might 
+    involve in a deadlock (unsafe).              
+b. If a request from P3 arrives for (1, 0, 0, 0), can that request be safely granted immediately? Explain 
+    your answer.
+
+sol.
+a. 
+    need matrix
+        R1  R2  R3  R4
+    P0  0   0   1   1
+    P1  1   0   0   0
+    P2  0   1   0   0
+    P3  1   1   0   0
+    P4  0   1   0   0
+    with avaliable r 1 0 1 0
+
+    can only pick P1
+    r = 1 0 1 0 + 1 0 0 2 = 2 0 1 2
+    can only pick P0
+    r = 2 0 1 2 + 0 1 1 2 = 2 1 2 4
+    pick P2
+    r = 2 1 2 4 + 0 1 0 1 = 2 2 2 5
+    pick P3
+    r = 2 2 2 5 + 1 1 0 0 = 3 3 2 5
+    pick P4
+    r = 3 3 2 5 + 0 1 2 0 = 3 4 4 5
+    P1 -> P0 -> P2 -> P3 -> P4
+b.  P3 arrives for (1, 0, 0, 0)
+    resources
+    0 0 1 0
+    then need matrix:
+        R1  R2  R3  R4
+    P0  0   0   1   1
+    P1  1   0   0   0
+    P2  0   1   0   0
+    P3  0   1   0   0
+    P4  0   1   0   0
+    not proces need is less than current resource, deadlock
+
+
+QUESTION IV. Operating System in C Language         
+
+Consider the provided C language code implementing a barber shop scenario using semaphores, 
+which includes a barber process and multiple customer processes: 
+``` lang c
+#include <stdio.h> 
+#include <pthread.h> 
+#include <semaphore.h> 
+
+#define MAX_CUSTOMERS 10 
+#define NUM_CHAIRS 5 
+
+sem_t barber_ready, customer_ready, mutex; 
+int num_waiting = 0; 
+
+// barber process: 
+void *barber(void *arg) { 
+    while (1) { 
+        sem_wait(&customer_ready); 
+        num_waiting--; 
+        sem_post(&barber_ready); 
+        printf("Barber is cutting hair\n"); 
+        // Perform haircut 
+    } 
+} 
+
+// customer process: 
+void *customer(void *arg) { 
+    if (num_waiting < NUM_CHAIRS) { 
+        num_waiting++; 
+        sem_post(&customer_ready); 
+        sem_wait(&barber_ready); 
+        printf("Customer is getting a haircut\n"); 
+        // Receive haircut 
+    } else { 
+        printf("No available chairs. Customer 
+        leaves.\n"); 
+    } 
+} 
+int main() { 
+    pthread_t barber_thread, customer_threads[MAX_CUSTOMERS]; 
+    sem_init(&barber_ready, 0, 0); 
+    sem_init(&customer_ready, 0, 0); 
+    pthread_create(&barber_thread, NULL, barber, NULL); 
+    for (int i = 0; i < MAX_CUSTOMERS; i++) { 
+        pthread_create(&customer_threads[i], NULL, customer, NULL); 
+    } 
+    pthread_join(barber_thread, NULL); 
+    for (int i = 0; i < MAX_CUSTOMERS; i++) { 
+        pthread_join(customer_threads[i], NULL); 
+    } 
+    return 0; 
+} 
+
+a)  Explain the purpose of the barber_ready and customer_ready semaphores in the barber shop 
+    scenario.                   
+b)  Discuss potential race conditions that may occur in this implementation and propose a solution 
+    to prevent them.                  
+c)  Describe a scenario where starvation might occur in this implementation and suggest a 
+    modification to the code to mitigate this issue.           
+
+sol.
+    a.  1. barber_ready means the barber ready state, 
+         sem_wait(&barber_ready) stop the barber process until sem_post(&barber_ready) is done in the customer processes
+        2. customer_ready means if there are customer waiting
+            sem_wait(&customer_ready) will block the barber tread until new customer post sem_post(&customer_ready) in the custormers threads
+
+    b.  potential race: 
+        concurrent visit at num_wating: the customer use if (num_waiting < NUM_CHAIRS) together, may miss the newest update -> use mutex to control visit and modify
+        the program start muiltiple customer threads, and no customer waiting temux, which might result in 
+        the situation where multiple customer use sem_post(&customer_ready) at same time,
+        but the customer can only run once (message queue may delieve this fuckiong sicutation)
+    c. 
+    void *customer(void *arg) {
+    sem_wait(&mutex);                         // 保护 num_waiting
+    if (num_waiting < NUM_CHAIRS) {
+        num_waiting++;
+        sem_post(&customer_ready);            // 告诉理发师有客
+        sem_post(&mutex);                     // 先解锁再等待
+        sem_wait(&barber_ready);              // 等待 barber 叫号
+        printf("Customer is getting a haircut\n");
+    } else {
+        sem_post(&mutex);
+        printf("No available chairs. Customer leaves.\n");
+    }
+}
+
+

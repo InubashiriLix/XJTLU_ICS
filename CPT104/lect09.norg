@@ -1,0 +1,260 @@
+* 9 File System（文件系统）
+** 9.1 File System Interface（文件系统接口）
+*** 文件属性（Attributes of a File）
+    - 名称（Name）：用户可见的文件名  
+    - 类型（Type）：普通文件、目录、符号链接、设备文件等  
+    - 存放位置（Location）：设备号 + 文件头所在块/扇区号  
+    - 文件大小（Size）：以字节、块或记录数表示  
+    - 读写指针（Position）：内存中维护的下次读写偏移量  
+    - 访问权限（Protection）：读/写/执行/删除/追加/列目录等控制  
+    - 打开计数（Usage/Open Count）：当前有多少进程或描述符打开此文件  
+    - 时间戳（Timestamps）：创建、最后访问、最后修改时间  
+
+*** 打开文件表（Open File Table）
+    - 进程级文件描述符表（File Descriptor Table）
+    - 每个表项存储局部索引，指向全局正在打开的文件表（OFT）  
+    - 全局打开文件表（Open File Table）
+    - 缓存文件元数据（如 inode 或等价结构）  
+    - 记录当前文件偏移量、打开模式（读/写/追加）  
+    - 引用计数：跟踪多少描述符或进程正在使用  
+
+** 9.1.1 访问方法（Access Methods）
+*** 顺序访问（Sequential Access）
+    - 视文件为一系列记录，读写依次进行  
+    - 读操作自动移动指针到下一条记录  
+    - 写操作在末尾追加并向后推进指针  
+    - 典型设备：磁带  
+
+*** 直接访问（Direct Access）
+    - 视文件为固定大小的块（block）或记录（record）序列  
+    - 可随机定位到任意块进行读写，不依赖当前指针  
+    - 典型设备：磁盘  
+
+*** 索引访问（Indexed Access）
+    - 为文件维护一个或多个索引结构  
+    - 索引条目：关键字/记录号 → 数据块地址或指针  
+    - 支持按关键字快速检索，常用于数据库索引、目录服务  
+
+** 9.1.2 Directory Structure（目录结构）
+*** 磁盘/分区与文件系统
+    - 整个磁盘可以作为一个文件系统使用  
+    - 也可划分为多个分区（partition/slice/mini‑disk），每个分区可独立建立文件系统  
+    - 磁盘或分区进一步划分为块（block）或扇区（sector）  
+    - 现代磁盘扇区 ≥ 512 字节  
+    - 文件系统通常以 4 KB 为基本块大小  
+
+*** 目录的双重角色
+    - 对用户：提供分层组织文件的方式  
+    - 对文件系统：提供逻辑命名界面，将文件的逻辑组织与物理存放分离  
+
+*** 目录支持的基本操作
+    - 搜索文件（Search）  
+    - 创建文件（Create）  
+    - 删除文件（Delete）  
+    - 列出目录内容（List）  
+    - 重命名文件（Rename）  
+    - 遍历文件系统（Traverse）  
+
+*** 目录的逻辑结构方案
+**** 单级目录（Single‑Level Directory）
+     - 所有文件都存放在同一个根目录下，文件名必须全局唯一  
+**** 二级目录（Two‑Level Directory）
+     - 一级：主目录（Master Directory）  
+     - 二级：每个用户拥有自己的目录，用户目录下才能创建文件  
+**** 树形/层次目录（Hierarchical/Tree‑Structured）
+     - 支持任意深度的子目录  
+     - 路径表示：  
+     - 绝对路径（Absolute Path）：从根目录开始  
+     - 相对路径（Relative Path）：从当前目录开始  
+**** 有向无环图目录（Acyclic‑Graph Directory）
+     - 允许目录或文件被多个父目录引用（即硬链接）  
+     - 需额外记录链接计数，注意删除时不破坏其他引用  
+
+** 9.1.3 Protection（保护机制）
+*** 访问控制需求
+    - 文件创建者/所有者应能决定：谁（WHO）可以做什么（WHAT）  
+*** 常见实现方案
+    - UNIX 模式位：owner/group/others 的 rwx 权限  
+    - ACL（Access‑Control List）：为每个文件列出（user, 权限）条目  
+    - 用户与用户组：基于 UID/GID 的访问控制  
+
+** 9.1.4 File‑System Mounting（挂载/装载）
+*** 概念
+    - 将一个设备或分区的根目录“挂”到现有目录树中某一点，形成统一视图  
+    - 被挂载的目录称为挂载点（mount point）  
+*** 操作
+    - mount：将一个文件系统装入挂载点  
+    - unmount：卸载，断开挂载点与底层设备的关联  
+*** Windows 示例
+    - “我的电脑”里可以看到各驱动器盘符即挂载结果  
+
+** 9.1.5 File Sharing（文件共享）
+*** 共享方式
+    - 本地共享：同一系统多用户或多进程访问  
+    - 网络共享：通过分布式文件系统或网络协议访问  
+    - NFS（Network File System）：UNIX 标准  
+    - CIFS/SMB（Common Internet File System）：Windows 标准  
+*** 共享模型
+    - 客户端‑服务器（Client‑Server）：客户端挂载远程导出的文件系统  
+    - 分布式信息服务（LDAP、DNS、NIS、Active Directory）：提供统一认证和目录服务  
+*** 保护与共享
+    - 共享必须在安全模型内进行  
+    - 结合 ACL 或 UNIX 权限控制访问  
+
+** 9.2.1 Allocation and Free‑Space Management
+   structure
+   @code text
+   ┌────────────────────┐  ← 应用程序发起的文件操作（open/read/write）
+   │  Application       │
+   │  Programs          │
+   └────────────────────┘
+   ↓               
+   ┌────────────────────┐  ← 逻辑文件系统
+   │  Logical File      │  • 理解路径、文件名、权限检查  
+   │  System            │    （对应 open/close、权限校验等）  
+   └────────────────────┘
+   ↓               
+   ┌────────────────────┐  ← 文件组织模块  
+   │  File‑Organization │  • 目录解析 → 找到对应的 FCB/Inode  
+   │  Module            │  • 实现 read/seek 等逻辑位置到块号的映射  
+   └────────────────────┘
+   ↓               
+   ┌────────────────────┐  ← 基本文件系统  
+   │  Basic File        │  • 按块（block）分配、释放、位图管理  
+   │  System            │  • 维护空闲块链表或位示图、选块算法  
+   └────────────────────┘
+   ↓               
+   ┌────────────────────┐  ← I/O 控制器  
+   │  I/O Control       │  • 驱动程序接口，发出磁盘读写命令  
+   │                    │  • 处理中断、DMA 完成、错误重试  
+   └────────────────────┘
+   ↓               
+   ┌────────────────────┐  ← 物理设备  
+   │  Devices           │  • 真实的磁盘/闪存等硬件  
+   └────────────────────┘
+   @end
+
+   On‑disk 结构
+   1. Boot Block（引导块）
+   - 位于分区的第一个块（LBA 0），包含引导程序（Bootstrap loader）和一些启动参数。
+   - 仅在系统上电或重启时由固件/BIOS/UEFI 调用。
+
+   2. Superblock（超级块，Volume Control Block）
+   - 存储整个文件系统的元数据：
+     • 总块数（total blocks），块大小（block size）
+     • 空闲块数（free blocks），空闲 inode 数（free inodes）
+     • 根目录 inode 号（root inode number）
+     • 文件系统状态、挂载计数、最大挂载次数等
+
+   3. Inode Table（索引节点表，也就是 File Control Blocks）
+   - 每个文件或目录对应一个 inode：
+     • 文件类型（普通文件/目录/设备等）、权限、硬链接计数
+     • 文件大小、访问/修改/创建时间戳
+     • 12 个直接块指针（direct blocks）
+     • 1 个一级间接块指针（single indirect）
+     • 1 个二级间接块指针（double indirect）
+     • 1 个三级间接块指针（triple indirect）
+
+   4. Data Blocks（数据块）
+   - 存放文件内容或目录项的实际磁盘块。
+   - 目录本身也是文件，其数据块中是一系列〈文件名, inode 号〉条目。
+
+   5. Directory Structure（目录结构）
+   - 目录文件格式：由多个目录项（dir entry）组成，每条记录包含：
+     • 文件名（variable length 或固定长度）
+     • 对应的 inode 号
+   - 遍历目录时，文件系统依次扫描目录文件的数据块，找到匹配的名称并取出 inode。
+
+   文件访问（映射）流程示意
+   ────────────────────────────────
+   1. 用户进程发起 read(fd, buf, len)：  
+   2. Logical FS 根据 fd 找到对应的 inode；  
+   3. File‑Org Module 计算文件内偏移 offset 属于第 N 块；  
+   4. 在 inode 中查 direct/indirect 指针，把第 N 块映射到物理块号 P；  
+   5. Basic FS 从 free‑list/位图确认 P 可用；  
+   6. I/O Control 调用驱动，向磁盘请求物理块 P；  
+   7. 磁盘 Devices 返回数据，逐层缓存直至交给用户缓冲区。  
+
+   - 内存中（In‑memory）缓存与管理结构
+   - Mount Table
+   - 记录已挂载文件系统的位置和类型
+   - Directory Cache
+   - 最近访问目录的条目，加速路径查找
+   - System‑wide Open File Table（SOFT）
+   - 系统范围内所有已打开文件的公共信息
+   - Per‑process Open File Table（OFT）
+   - 每个进程打开文件的私有句柄，指向 SOFT 条目
+   - Buffer Cache
+   - 磁盘块的内存缓存，减少 I/O 操作次数
+     2) 内存中数据访问相关结构
+
+** 9.2.2
+   - 挂载表（mount table）
+     • 记录系统中所有已挂载文件系统的信息  
+     • 每条记录包含：设备或分区标识、挂载点路径、文件系统类型、挂载选项等  
+     • 内核在访问路径时先查挂载表，确定该路径属于哪个文件系统
+
+   - 目录结构缓存（directory structure cache）
+     • 缓存最近访问的目录内容（目录文件的若干块）  
+     • 避免每次目录操作（如 lookup）都去磁盘读取，提高目录查找速度  
+     • 常见实现：哈希表或 LRU 缓存
+
+   - 系统范围打开文件表（System-wide Open-File Table，SOFT）
+     • 全局唯一，存放所有进程打开的文件的公共信息  
+     • 每条条目包含：对应 inode 指针、文件当前大小、访问模式、引用计数、文件偏移量等  
+     • 不同进程打开同一文件，共享同一 SOFT 条目
+
+   - 进程打开文件表（Per-process Open-File Table，OFT）
+     • 每个进程都有一张打开文件表，用文件描述符（fd）索引  
+     • 表项指向 SOFT 中的相应条目  
+     • 进程通过 fd 读取/写入，即间接修改 SOFT 中维护的偏移量等信息
+
+   - 缓冲区（buffer area）
+     • 用于缓存磁盘块数据的内存区域（又称 buffer cache 或页缓存）  
+     • 读操作先在缓存中查找，未命中时再从磁盘读取并填充缓存  
+     • 写操作可延迟合并（write-back）或同步提交（write-through），提高 I/O 吞吐  
+     • 缓存管理策略常用 LRU、CLOCK 等
+
+   这些内存中数据结构协同工作，实现文件系统对磁盘的高效管理和访问加速。```
+
+*** 9.2.2 Directory Implementation
+    - 目录本质：文件名 → FCB/Inode 映射表
+    - 实现方式：
+    - 线性列表（Linear List）
+    - 简单，插入删除容易
+    - 查找时需顺序扫描
+    - 散列表（Hash Table）
+    - 文件名经哈希后直接定位
+    - 查找速度稳定，需解决冲突
+
+** 9.2.3 文件块分配策略（Allocation Methods）
+   - Contiguous Allocation（连续分配）
+   - 优点：随机访问效率高，仅需起始块号和长度
+   - 缺点：外部碎片，难以动态扩张，需搬移或压缩
+   - Linked Allocation（链式分配）
+   - 每个块存指向下一个块的指针
+   - 只适合顺序访问；随机访问需从头遍历
+   - Indexed Allocation（索引分配）
+   - 每个文件拥有独立的索引块，内含所有数据块指针
+   - 支持随机访问，无外部碎片
+   - UNIX Inode 方案
+   - Inode 包含指向数据块的指针数组：
+   - 12 个 Direct pointers
+   - 1 个 Single‑indirect pointer → 指向一个间接块，该块存放更多块指针
+   - 1 个 Double‑indirect pointer → 指向一个双重间接块，…
+   - 1 个 Triple‑indirect pointer → 三级间接
+   - 支持小文件快速访问与大文件扩展
+
+** 9.2.4 空闲空间管理（Free‑Space Management）
+   - Bit Map（位示图）
+     用一位表示一个磁盘块是否空闲
+     随机扫描或用位运算快速查找
+   - Linked List（链表）
+     空闲块链表，头指针指向第一个空闲块，每块中存下一个空闲块地址
+   - Grouping
+     在第一个空闲块中存放其后的 n 个空闲块号，再链向下一个此类块
+   - Counting
+     在链表节点中记录连续空闲块的起始位置与长度
+   - Space Map
+     文件系统内部的位图或区间列表，用于更高效地跟踪大片空闲空间
+

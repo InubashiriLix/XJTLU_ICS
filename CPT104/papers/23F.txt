@@ -1,0 +1,336 @@
+PARTI
+
+1. Does Peterson’s solution to the mutual-exclusion problem work when process scheduling is preemptive? How about when it is non preemptive? Explain your answer
+    sol.
+    a. Peterson's solution works under preemptive scheduling because it only depend on turn and flag automic read and write operations.
+    Even if the IO interrupts a process at any point, the other process can still observe and update these variables to ensure mutual exclusion.
+    b. Peterson's sulution does not work under non-preemptive scheduling because the algo use spin-waiting (buuuuzy-waiting loops) without ever blocking, 
+    a process struct in its spin loop will never yield the CPU. The scheduler will not be able to switch to the other process, that is, it can not update its flag and turn variables,
+    leading to a deadlock situation.
+
+2. Describe the effects of a corrupted data block for a given file for: (a) contiguous, (b) linked, and (c) indexed allocation systems. 
+    sol.
+    a.  1. Effect pf a corrupted data block: only the corrupted block is lost or unreadable; the rest of file remains intact in its adjacnet blocks and still be accessed.
+        2. Exception: if a file's allocation meta data (start block or length entry ) is corrupted, the entire file may become unlocatable or lost
+    b.  1. Effect of a corrupted data block: the data in that single block is lost, since the block store the index of next block, then the subsequence of blocks inaccessible.
+    c.  1. Effect of a corrupted data block: only that data block's content ar5e lost; the index block still points correctly to all other blocks, so the rest of file remains accessible.
+        2. Index block corruption: if the index block is corrupted, then the entire file pointers are lost and the entire file becomes inaccessible.
+
+3. In a fixed-size partitioning scheme, what are the two advantages of using unequal-size partitions? 
+sol.
+    1.  Reduce internal fragmentation: by tailoring partiion size to the expected distribution of process sizes (small. medium, large), 
+        you minimize the wasted space memory that arises when a process occupies a partiion significantly large than its actual needs.
+    2.  Improve throughout and turnaround time:
+        Smaller job can immediatly occupy small partitions without waiting for large one, and large jobs can directly use larget partitions. 
+        This matching reduces queueing delayes and scheduling overhead, increase overall system concurrency and job throughout.
+
+4. In a system with threads, is there one stack per thread or one stack per process when user level threads are used? What about when kernel-level threads are used? Explain your answer.
+sol. 
+    1. ULT: the thread lib in user space schedules all the threads, and the kernel see only one schedulable entity (the process or LWP bind to it).
+        Consequently, there is one stack per thread. but the kernel only managees one stack for the entire process
+    2. KLT: the kernel schedules eacch thread independently, so it allocates a distinct kernel stack for each thread. Each thread also has its own user stack in user space for its user-mode execution.
+        every KLT has its own stack in both user and kernel mode.
+
+5. Consider a system that supports 1,000 users. Suppose that you want to allow 990 of these users 
+to be able to access one file. Please indicate two methods.  
+sol.
+    1. group-based permissions: create a new group. add the 990 authorized user to that group. Change the file's group owner to fileuser and set group permission bits (eg sudo chmod g+r file)
+        only member of fileusers (990users) can access the file.
+    2. Access Control List: 
+        Enable ACL on the file system (mount the ACL)
+        user setfacl to add allow entries for each of the 990 users.
+    3. NFSv4 ACL: 
+        Grant a broad allow to every one, then add two deny ACEs for the 10 disallowed users.
+
+PARTII
+1. Consider the following scenario of processes. Their arrival time and burst time are as follows
+========================================
+    process | arrival time | brust time
+    P1      | 0ms          | 10ms
+    P2      | 1ms          | 29ms
+    P3      | 2ms          | 3ms
+    P4      | 3ms          | 7ms
+=======================================
+a. draw the gannt char for the execution of the process useing the ROUND ROBIN SCHEDULING ALGORITHM (time quantum = 10) (4)
+b. calculate the average waiting time for the system
+c. calculate the average turnaround time for the system
+
+sol.
+    a. 
+    | P1     | P2       | P3       | P4      | P2      | P2        |
+    | 0 - 10 | 10 - 20  | 20 - 23  | 23 - 30 | 30 - 40 | 40 - 49   |
+
+
+    | 进程 | Arrival | Burst | Completion | Turnaround | Waiting |
+    |:----:|:-------:|:-----:|:----------:|:----------:|:-------:|
+    |  P1  |    0    |   10  |     10     |     10     |    0    |
+    |  P2  |    1    |   29  |     49     |     48     |   19    |
+    |  P3  |    2    |    3  |     23     |     21     |   18    |
+    |  P4  |    3    |    7  |     30     |     27     |   20    |
+    b. 
+    trunaround time = finish time - arrival time
+    Waiting time = trunaround time - brust time
+    P1 -> 10 - 10 = 0ms
+    P2 -> 30 - 21 + 1 + 9 = 19ms
+    P3 -> 20 - 2 = 18ms
+    P4 -> 24 - 3 = 21 ms
+    total = 58ms
+    total / 4 = 14.5ms
+
+    c. 
+    P1 -> 10ms
+    P2 -> 49 - 1 = 48 ms
+    P3 -> 23 - 2 = 21 ms
+    P4 -> 30 - 3 = 27 ms
+    total = 106
+    106 / 4 = 26.25 ms average turnaround time
+
+2. Calculate the number of page faults for the following sequence of page references (each 
+element in the sequence represents a page number) using the First-In, First-Out (FIFO) 
+replacement algorithm with frame size of 4. 
+2  5  7  3  1  1  2  3  0  7  6  5  4  3  7  5  2  0  0  5 total 20
+sol
+2  2  2  2  5  5  7  7  3  1  2  0  7  6  5  5  4  3  3  7
+   5  5  5  7  7  3  3  1  2  0  7  6  5  4  4  3  7  7  2
+      7  7  3  3  1  1  2  0  7  6  5  4  3  3  7  2  2  0
+         3  1  1  2  2  0  7  6  5  4  3  7  7  2  0  0  5
+1  1  1  1  1  0  1  0  1  1  1  1  1  1  1  0  1  1  0  1 fault  
+
+16 / 20 = 80%
+
+3. Consider a disk queue with I/O requests on the following cylinders in their arriving order:  
+    70, 20, 30, 530, 330, 150, 450, 400, 570, 290 
+
+    We assume a hard disk drive with 600 cylinders numbered 0 to 599 and the disk head is initially 
+    located at cylinder 60. 
+
+    Write the sequence in which the requested tracks are serviced using the Shortest Seek Time First 
+    (SSTF) algorithm and calculate the total head movement (in number of cylinders) incurred while 
+    servicing these requests. 
+
+sol.
+    60 -> 70 -> 30 -> 20 -> 150 -> 290 -> 330 -> 400 -> 450 -> 530 -> 570
+    total head movement
+       10  + 40  + 10  + 130 + 140  + 40   +  70  +  50  + 80   + 40
+       610?
+
+4. In a paging system with Translation Lookaside Buffer (TLB), it takes 50 ns to search the TLB 
+and 100 ns to access the memory.  
+    a. What is the effective access time (in ns) if the Translation Lookaside buffer (TLB) hit ratio is 60%? (6 marks) 
+    b. What should be the hit ratio to achieve the effective memory access time of 210 ns? (4 marks) 
+
+sol.
+    a.
+    EAT = a * (TBL_search + memory_access) + (1 - a) * (TBL_search + 2memory_access)
+    EAT = 0.6 * (50 + 100) + 0.4 * (50 + 2 * 100)
+        = 90 + 100
+        = 190ns
+    b.
+    EAT = a * tbl + a * mem + tbl + 2 * mem - a * tbl - 2a * mem
+        = 2-a * mem + tbl
+        = (2-a) * 100 + 50
+        = 210
+        a = 0.4
+    ratio = 0.4
+
+
+5. Consider the following segment table:
+
+Segment number  | Base Address  | Length
+0               | 219           | 600
+1               | 2300          | 14
+2               | 90            | 100   
+
+What are the physical addresses for the following logical addresses?
+Semgnent number, s  | Offset, d
+0                   | 430
+1                   | 10
+2                   | 500
+
+sol. 
+    1. segment numner 0, offset 430
+    cause 430 < length 600, valid
+    pysical addresss = Base + offset = 430 + 219 = 649
+    2. segment number 1, offset 10
+    10 < 14
+    2300 + 10 = 2310
+    3. seg 2, offset 500
+    500 > length 100, offset out of bounds
+    invalid
+
+
+QUESTION III.  Resource allocation         (12 marks) 
+Consider the following snapshot of a system:
++----+----+----+----+
+| R1 | R2 | R3 | R4 |
++----+----+----+----+
+|  3 |  3 |  2 |  1 |
++----+----+----+----+
+
++---------+-------+-------+-------+-------+---------+---------+---------+---------+
+| Process | Max R1| Max R2| Max R3| Max R4| Alloc R1| Alloc R2| Alloc R3| Alloc R4|
++---------+-------+-------+-------+-------+---------+---------+---------+---------+
+|   P0    |   4   |   2   |   1   |   2   |    2    |    0    |    0    |    1    |
+|   P1    |   5   |   2   |   5   |   2   |    3    |    1    |    2    |    1    |
+|   P2    |   2   |   3   |   1   |   6   |    2    |    1    |    0    |    3    |
+|   P3    |   1   |   4   |   2   |   4   |    1    |    3    |    1    |    2    |
+|   P4    |   3   |   6   |   6   |   5   |    1    |    4    |    3    |    2    |
++---------+-------+-------+-------+-------+---------+---------+---------+---------+
+a. Is this system in a safe state? If your answer is yes, please give a safe sequence and resources 
+available after each process finished. If your answer is no, please specify the processes that might 
+involve in a deadlock (unsafe).              (6 marks) 
+b. If a request from P4 arrives for (0, 0, 2, 0), can that request be safely granted immediately? Explain 
+your answer.
+
+sol.
+a.
+    need matrix
+           R1  R2  R3  R4
+    P0     2   2   1   1
+    P1     2   1   3   1
+    P2     0   2   1   3
+    P3     0   1   1   2
+    P4     2   2   3   3
+
+    initial 3 3 2 1
+    need for p0 can be fullfilled
+    3 3 2 1 >= 2 2 1 1
+    recycle the allocated resources of P0
+    3 3 2 1 + 2 0 0 1 = 5 3 2 2 
+    P0
+
+    r = 5 3 2 2 now
+    P3 need can be fullfilled, the other failed
+    after recycle allocated resource 
+    5 3 2 2 + 1 3 1 2 = 6 6 3 4
+    P3
+
+    r = 6 6 3 4    
+    pick P1
+    6 6 3 4 >= 2 1 3 1
+    r =  6 6 3 4 + 3 1 2 1  = 9 7 5 5 
+    P1
+
+    pick P2        
+    9 7 5 5 >= 0 2 1 3
+    r = 9 7 5 5 + 2 1 0 3 = 11 8 5 8
+    P2
+
+    pick P4
+    whatever, success
+
+    P0 -> P3 -> P1 -> P2 -> P4
+
+b.
+    P4 0 0 2 0 <= 3 3 2 1
+    r = 3 3 2 1 -> 3 3 0 1
+    P4 allocation: 1 4 3 2 + 0 0 2 0 = 1 4 5 2
+    P4 need 2 2 1 3
+
+    but under 3 3 0 1, No process need can be fullfilled.
+
+QUESTION IV. Operating System in C Language      (12 marks) 
+Consider the following C language code implementing a bounded buffer using semaphores: 
+``` language c
+#include <stdio.h> 
+#include <pthread.h> 
+#include <semaphore.h> 
+ 
+#define BUFFER_SIZE 5 
+ 
+sem_t mutex, empty, full; 
+int buffer[BUFFER_SIZE];
+int in = 0, out = 0; 
+
+// producer process:
+void *producer(void* arg) {
+    int item = *(int *)arg;
+    sem_wait(&empty); 
+    sem_wait(&mutex); 
+    buffer[in] = item; 
+    in = (in + 1) % BUFFER_SIZE; 
+    printf("Produced item: %d\n", item); 
+    sem_post(&mutex); 
+    sem_post(&full); 
+    pthread_exit(NULL);
+}
+
+// consumer process:
+void *consumer(void *arg) { 
+    int item; 
+    sem_wait(&full); 
+    sem_wait(&mutex); 
+    item = buffer[out]; 
+    out = (out + 1) % BUFFER_SIZE; 
+    printf("Consumed item: %d\n", item); 
+    sem_post(&mutex); 
+    sem_post(&empty); 
+    pthread_exit(NULL); 
+} 
+```
+
+a) Explain the purpose of the empty, full, and mutex semaphores in the bounded buffer 
+implementation.                 
+b) Discuss a scenario where deadlock might occur in this implementation.    
+c) Propose an alternative synchronization mechanism that could replace the semaphore-based 
+approach in the provided code and provide a brief description.   
+
+sol. 
+a.  1.  empty semaphore shows how many empty slots are available in the buffer, if it is 0, then producer must wait
+        sem_wait(&empty) will block the producer until there is space in the buffer.
+        sem_post(&emptu) will signal that a new item has been produced and there is space available.
+    2.  full semaphore shows how may filled slots are available in the buffer, if it is 0, then consumer must wait;
+        sem_wait(&full) will block the consumer until there is an item to consume.
+        sem_post(&full) will signal that a new item has been consumed and there is an item available.
+    3.  mutex semaphore shows that only one process can acccess the buffer at a time, using mutex, we can avoid race condition;
+        sem_wait(&mutex) will block the process until it can access the buffer.
+        sem_post(&mutex) will signal that the process has finished accessing the buffer and other processes can now access it.
+b.  1.  thread is suspend, terminated, or crashed in the critical region
+        when a process is suspend or terminated in the critical region (after sem_wait(&mutex) but before sem_post(&mutex)), 
+        the other process will be blocked cause the mutex is always false from that moment, system is blocked
+    2.  the amount of producer and consumer thread is not equal, 
+        for example. if there are 10 producer and only 2 consumer, then after produce 5 items (max), the full will locked, and 6+th producer will be blocked,
+        and once 2 consumer consume 2 item (2 empty++), 6, 7 will be awoken, and produce 2 more itmes and exit, the left 8 9 10 th producer will be blocked again
+        and there will be no more consumer to consume the items, leading to deadlock.
+
+```lang c
+
+#include <stdio.h>
+#include <pthread.h>
+
+#define MAX_VOL 5
+
+int buffer[MAX_VOL];
+int in = 0, out = 0, count = 0;
+
+pthread_mutex_t lock     = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t  not_full  = PTHREAD_COND_INITIALIZER;
+pthread_cond_t  not_empty = PTHREAD_COND_INITIALIZER;
+
+void *producer(void *arg) {
+    int item = *(int*)arg;
+    pthread_mutex_lock(&lock);
+    while (count == MAX_VOL)            // 缓冲区满了就睡
+        pthread_cond_wait(&not_full, &lock);
+    buffer[in] = item;
+    in = (in + 1) % MAX_VOL;
+    count++;
+    printf("Produced %d\n", item);
+    pthread_cond_signal(&not_empty);    // 唤醒消费者
+    pthread_mutex_unlock(&lock);
+    return NULL;
+}
+
+void *consumer(void *arg) {
+    pthread_mutex_lock(&lock);
+    while (count == 0)                  // 缓冲区空了就睡
+        pthread_cond_wait(&not_empty, &lock);
+    int item = buffer[out];
+    out = (out + 1) % MAX_VOL;
+    count--;
+    printf("Consumed %d\n", item);
+    pthread_cond_signal(&not_full);     // 唤醒生产者
+    pthread_mutex_unlock(&lock);
+    return NULL;
+}
+```

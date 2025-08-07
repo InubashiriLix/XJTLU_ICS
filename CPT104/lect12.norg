@@ -1,0 +1,81 @@
+* 12 VirtualMachines&DistributedSystems
+** 12.1 VirtualMachines
+*** 定义
+    Virtualization技术允许从单一物理硬件系统创建多个模拟环境或专用资源。
+*** Hypervisor/VirtualMachineManager(VMM)
+    hypervisor(虚拟机管理程序)直接与硬件交互,提供与主机一致的接口,用于创建和运行虚拟机。
+*** 主要组件
+    - Host: 装有hypervisor的物理硬件主机
+    - Guest: 在虚拟机中运行的操作系统
+*** 特点
+    - 单台物理机可并发运行多个操作系统,各自在独立虚拟机中隔离。
+    - hypervisor为硬件与虚拟机提供隔离层。
+*** 实现示意(ASCII图)
+    @code text
+    Non-virtualmachine:
+    +----------+
+    | processes|
+    |     ↓    |
+    |  kernel  |
+    | hardware |
+    +----------+
+
+    Virtualmachine:
+    processes   processes   processes
+    ↓           ↓           ↓
+    +-------+   +-------+   +-------+
+    |kernel |   |kernel |   |kernel |
+    | VM1   |   | VM2   |   | VM3   |
+    +-------+   +-------+   +-------+
+    +------------------------------+
+    |virtualmachinemanager        |
+    +------------------------------+
+    |hardware                     |
+    +------------------------------+
+    @end
+
+*** 12.1.2 Benefits
+**** 并行多OS运行
+    - 多环境共享同一硬件  
+**** 强隔离性
+    - 主机受VM保护,VM之间彼此隔离  
+    - 防止病毒横向传播(代价:资源共享受限)  
+**** 便于OS研发
+    - 虚拟化工作站支持快速移植与测试  
+**** 系统整合
+    - 将多系统迁移至单宿主  
+    - 提升资源利用与管理效率  
+**** 在线迁移
+    - 支持Live Migration运行时迁移VM  
+
+** 12.2 DistributedSystems
+*** 12.2.1 定义
+    - 松耦合架构,节点通过通信网络互联  
+    - 本地资源与远程资源区分  
+
+*** 12.2.2 设计目标
+**** 资源共享
+    - 远程文件访问与打印  
+    - 分布式数据库处理  
+    - 远程专用硬件使用  
+**** 计算加速
+    - 负载共享/任务迁移并行计算  
+**** 可靠性
+    - 故障检测与恢复  
+    - 功能接管与故障站点重整  
+    - 网络冗余路径  
+**** 通信
+    - 地理分散节点间信息交换  
+**** 经济性与可扩展性
+    - 低成本多处理器集群  
+    - 增量式系统扩展  
+
+*** 12.2.3 网络导向OS类型
+**** NetworkOperatingSystems
+    - 远程登录: telnet, ssh  
+    - 远程文件传输: FTP  
+    - 需会话管理  
+**** DistributedOperatingSystems
+    - 数据迁移: 整文件或部分传输  
+    - 计算迁移: 迁移任务而非数据  
+    - 进程迁移: 跨节点执行进程或其部分  

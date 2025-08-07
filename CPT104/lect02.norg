@@ -1,0 +1,245 @@
+* Thread
+** def
+   A thread is the smalllest execution unit within a process and the basic unit of CPU utilization in a multithreaded system
+** Resource Ownership
+   Shared: code segment, global/heap memory, open files descriptors
+   Private: stack, registers, program counter
+
+** Characteristics
+   - Lightweight: much lower overhead for creation and switching compared to processes
+   - Concurrency: multiple threads in the same process can run concurrently
+   - Efficient Communication: threads share address space, no message copying needed
+** Benefits
+   - Responsiveness: UI and background work in parallel, avoids blocking the main thread
+   - Economy: share large data structures, lower memory footprint
+   - Parallelism
+** Lifecycle
+*** Creattion
+    ~ POSIX: pthread_create()
+   ~ C++ 11: std::thread
+   ~ java new Thread(...).start()
+*** Synchronization
+    - Mutext / locks
+    - Semaphores
+    - Condition variables
+    - Barriers
+*** Termination
+    Thread function return or pthread_exit()
+    join(wait and reclaim resources) or detach (auto-cleanup)
+*** Context Switching
+    Save / restore only retgister and stack pointers; much cheaper than a process switch
+
+* TCB
+** TCB is the core data structure for os to manage and track threads
+*** Thread ID
+    the unique identifier for a thread, used to distinguish it from others
+    used to manage and schedule
+*** Execution State:
+    - CPU registers
+    - Program counter
+    - Stack pointers
+    - Float SIMD registers (optional)
+*** Scheduling Information
+    thread state: ready, running, blocked, terminated
+    priority level
+    CPU engage time, time slice remaining
+*** pointers
+    points at progress PCB
+    linked to schedule queue or other thread
+*** Shared Resoruces
+    - Share the other thread in the same process: (silbling threads)
+      code section, data section, open files descriptors, signal masks etc
+*** Storage Organization
+    TCBs are maintained in kernel memory via arrays or linked lists for fast lookup, insertion, and removal.
+*** diagram: 
+**** one thread process
+     code data files
+     / -------------
+     registers stack
+**** multiple thread in a process
+     code data files
+     / -----------------------------------
+     registers1  registers2  registers3
+     stack1      stack2      stack3
+* Benefits of Threads
+** Responsiveness:
+   Allows a program continue running if part of it is blocked or its is performing a lengthy operation
+   多线程的⼀个好处是提供更好的响应性。当程序的某个部分被阻塞或正在执⾏⻓时间操作时，其他线程仍然可以继
+   续运⾏。这意味着程序可以更快地响应⽤⼾的输⼊或其他事件，提供更好的⽤⼾体验。
+** Resource Sharing and Economy (资源共享和经济性)
+   - Threads share an address space, files, code, and data 
+     可以共享地址空间、⽂件、代码和数据。
+   - Avoid resource consumption 
+     访问和操作相同的资源，⽽不需要进⾏复制或额外的资源分配。这样可以避免资源的浪费
+   - Perform much a faster context switch 
+     线程间切换的开销较⼩，线程间的切换速度⽐进程间的切换要快，从⽽提⾼了系统的经济性。
+** Utilization of multiprocessor MP Architectures (多处理器架构的利⽤)
+   - Place code, files and data in the main memory.
+   - Distribute threads to each of CPUs, and
+   - Let them execute in paralle
+** Deadlock avoidance 死锁避免
+   死锁是指两个或多个线程因为彼此相互等待对⽅释放资源⽽⽆法继续执⾏的情况。多线程环境下，如果不正确地管理和同步线程对共享资源的访问，可能会导致
+   死锁的发⽣。通过合理的线程设计和正确的同步机制，可以避免死锁的发⽣，确保线程能够顺利执⾏。
+* State of Thread
+*** Born:
+    Undefined	Thread control block created but not yet runnable (no context)	After creation (thread() or ctor)
+*** Ready:
+    Thread ready to run, waiting in the ready queue	
+    - thread() return ready, ;
+    - resume()
+    - return from suspended
+*** resume()
+    is running in the cpu
+*** Running:
+    Thread is executing on CPU
+    enter when Scheduler picks from Ready
+*** Suspended:
+    Execution paused (context saved), not in ready queue	
+    - suspend()
+*** Terminated: 
+    Finished or killed — context remains until cleanup
+    exit() (self‑exit)
+    kill() (kill by ohter thread)
+*** Destroyed:
+    Resources (TCB, stack) reclaimed — thread no longer exists	
+** Chart
+    OS cleanup done
+    stateDiagram-v2
+    [*] --> Born
+    Born --> Ready       : thread()/create
+    Ready --> Running    : scheduler()
+    Running --> Suspended: suspend()
+    Suspended --> Ready  : resume()
+    Running --> Terminated: exit()
+    Suspended --> Terminated: kill()
+    Terminated --> Destroyed : cleanup
+
+* 并发和并⾏（Concurrency vs Parallelism）
+** Concurrency:
+   Single Core:
+   system will schedule multiple tasks in turns (interleaved)
+   at a moment, only one task is running
+   eg. server on a only thread accept multiple request, use round robin time slice to switch the requests 
+** Prarllelism
+   on the multi core or multi cpus, multiple tasks can be executed at the same time
+** Diagram:
+*** Concurrency
+    timeline:| T1 | T2 | T1 | T2 | T1 | T2 | ...
+*** Parallelism: 
+    core1 | T1 | T2 | T1 | T2 | T1 | T2 | ...
+    core2 | T3 | T4 | T3 | T4 | T3 | T4 | ...
+
+* Multithread Models
+** defs:
+*** Kernel Mode:
+    code under this has complete and full access to the hardware
+    - it can do any cpu command and visit any mem address
+    - kernel mode is geenrally reserved for the lowerest-level most trusted functions of the operation system
+    - crash in kernel mode are catastrophic, it will halt the entire PC
+*** User Mode
+    code in this mode cannot visit the cache directly
+    - in the user mode, you must use system api to visit hardware and mem
+    - crash in user mode are alwwasy recoverable
+    - most code run in user mode
+*** 用户级线程（ULT）：线程库在用户空间管理，内核不感知
+    is the unit of execution that is implemented by user, and kernel is not aware of these threads. Management done by user-level libraries
+*** 内核级线程（KLT）：由操作系统内核管理，直接映射到调度器
+    are handled by the operating system directly, and the thread manangement is done by kernel
+*** 轻量级进程（LWP）：在 M:N 模型或两级模型中，内核级线程与 ULT 间的桥梁
+
+** Diff ULT and KLT
+   ~ the user thread can block the whole progress, while kernel thread can block only the thread
+   ~ user thread can communicate using thread lib, while kernel thread can use the IPC directly
+   ~ KLT isparallelism: each thread has a PCB / TCB scheduler can send different thread to different CPU cores
+   ~ user thread creation terminated ... ops have relatively lower cost, because it has no relative with the kernel (no syscall)
+     but kernel thread create ... ops are related to system call and kernel costs, slower
+** MutliThreadModel
+*** Many to One: n ULT -> 1 KLT
+    faeture: thread lib is scheduling in the user space, only one 1 kernel thread is visible
+**** cons
+    - cannot use multiple cores
+    - ult block the whole progress
+*** One to One:
+     each user has one kernel progress
+**** pres:
+     - real parallelism, multicore friendly
+**** cons:
+     - larger cost at creation and swtiching costs
+*** Many to Many
+    feature: multiple user threads mapped to multiple kernel threads
+    the ult can be less than klt
+**** pres:
+     can be parallelism (kernel multicore fri) and concurrency (user scheduling)
+**** cons: complex
+
+* Thread Lib
+** def 
+   是应用程序与操作系统之间的接口（API），程序员通过它创建、管理和同步线程。
+** usage
+   封装线程的创建、终止、同步（互斥锁、条件变量、信号量等）、调度控制等操作，使多线程编程更简单。
+** user space thread lib 用户空间线程库
+   所有库代码与数据结构都驻留在用户地址空间。
+   调用线程库的函数仅为一次普通的函数调用，不产生系统调用开销。
+   优点：切换/创建/销毁开销极小，移植性好。
+   缺点：一旦线程做阻塞 I/O，整个进程都会被挂起；无法利用多核；内核不知晓线程存在。
+** kernel space thread lib
+   库的核心代码与数据结构在内核中实现。
+   调用库 API（例如 pthread_create(), CreateThread()）通常触发一次系统调用，内核才能为你创建或调度线程。
+   优点：线程阻塞仅挂起调用者，内核可多核并行调度；可利用系统提供的全部 IPC 和调度功能。
+   缺点：每次创建、切换都要陷入内核，开销相对较大；实现与内核紧耦合，可移植性差。
+* Thread Management Methods
+** Explicit Threading
+   - Programmers directly create, control, and destroy threads via API.
+   - Examples: pthread_create(), std::thread, Java’s new Thread().
+   - Pros & Cons
+   - Full control over thread lifecycle and scheduling.
+   - Must handle low‑level details (cleanup, synchronization, races), error‑prone.
+
+** Implicit Threading
+   Compiler or runtime automatically spawns and manages threads.
+   Developers provide directives or tasks, not thread code.
+   Pros & Cons
+   Greatly simplifies concurrent code.
+   – Limited customization, may not fit complex logic.
+
+* Threading Issues
+** fork and exec() system call
+*** fork: after parent progress calles fork(), the child progress wil
+    ! copy all the threads? 
+    some os will copy the current thread, some will copy all
+    the copied threads will interhirt the parent threads's runing state and resource handle
+*** exec:
+    after calling it , the new program will replace the current process image, and drop all the old threads
+    the child thread will begin (only one thread now)
+    (drop all the old threads, and create a new thread)
+
+** Singal Handling
+*** Asynchronous event:
+    extern event
+    generate externly like (kill(), hardware interrupt, timer)
+*** Synchronous
+    same (inner) thread genereate the signal:
+    like zero division, segment fault, raise()
+
+** deliver signal
+   - deliver the signal to the thread to which the signal applies: only send to target thread
+   - Deliver the signal to every thread in the process: every thread receive the signal
+   - Deliver the signal to certain thread in the process: target are selected according to the masks or priority
+   - Assign a specific thread to receive all signal for the process: binding a special signal handle thread to the thread (like sigwait())
+
+** Thread Cancellation
+*** Asynchronous Cancellation
+   pthread_cancel(tid) -> terminate the target thread immediatly
+    response fast
+    if the thread is changing data, then it can result in data corrupt or memory leak
+
+*** Deferred Cancellation
+    target thread quit at cancellation point
+    pthread_cleanup_push() / pop()
+    can release the reesource at safe position and kept the data integrity
+    if the cancellation points are too far, then the low response
+
+
+
+
+

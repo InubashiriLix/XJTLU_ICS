@@ -1,0 +1,275 @@
+1. Can the Priority-based scheduling schemes result in starvation? If so, how might you fix this? 
+Explain.
+sol.
+    yes, like high priority task take long time or quenquency interruption, then the taks with low priority will seldomly get chance to run,
+    solution:
+        1 dynamic change the task priority: like the taks with lower priority increasement by a time
+        2. simplify the code, shortten interrupt cost, faster high priority logic
+        3. dynamically change the priority of the tasks, like those tasks witch is needed in the high priority task sahre the same high priority (inhirit)
+2. Give two positive and two negative effects of increasing the page size. Explain.
+sol.
+    adv:
+        1. incrase page size could make a page contain more segments, partitions
+        2. could decrease the page table, fastening the mapping table spped
+    disadv:
+        1. might cause external fragment if do not switch the position of parition or segment reseouces
+        2. higher io searching time cost
+
+3. How do base register and limit register help in protecting against illegal memory access?
+    base register: can locate where the memory stores, and avoid invalid access address
+    limit register: can compare with offset in the request, avoiding accessing data overzone
+
+4. If you have to design and program a web browser (which is a complex application), what would 
+you choose to use multiple processes, multiple threads, or both? Explain your answer. (6 marks) 
+Discuss two advantages of your choice.  
+fuckyou! 
+
+
+QUESTION II. CPU scheduling, Memory management, Disk scheduling 
+
+1. Consider a Real-Time System in which there are three processes. Their arrival time, period and 
+execution time are as follows:         
++---------+--------------+----------------+----------+
+| Process | Arrival time | Execution time | Deadline |
++---------+--------------+----------------+----------+
+|   P1    |      0       |       10       |    33    |
+|   P2    |      4       |        3       |    28    |
+|   P3    |      5       |       10       |    29    |
++---------+--------------+----------------+----------+
+    a. Calculate total utilization of CPU.                
+    b. We assume that all three processes are released at time 0. Explain the Earliest Deadline First Scheduling Algorithm of the processes.           
+    c. Show the processes on timing diagram.           
+sol.
+    a. utilization = sum(execution time / deadtime) 
+        utilization = 10 / 33 + 3 / 28 + 10 / 29 = 0.755
+    b. EDF
+     |   P1   |   P2   |   P3   |   P1   |
+     | 0 - 4  |  4 - 7 | 7 - 17 | 17 - 23|
+     | 7r     |  done  |  done  | done   |
+
+    c. 
+    time diagram
+    time  | event     |  running process | note
+    0     | P1 arrive |  P1              | P1 33
+    4     | P2 arrive |  P2              | P1 remain 6, P2 start
+    5     | P3 arrive |  P2              | P2 remain 2, P3 wait, ddl 29 > 28
+    7     | P3 start  |  P3              | P2 done, P3 start    
+    17    | P1 start  |  P1              | P3 done, P1 start with remaining time 6
+    23    | P1 done   |  -               | P1 done, all done
+
+2. Calculate the number of page faults for the following sequence of page references (each 
+    element in the sequence represents a page number) using the First-In, First-Out (FIFO) 
+    algorithm with frame size of 3. 
+    1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+sol.
+    1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+    1 1 1 1 1 2 2 3 5 1 6 6 2 5 5 3 3 1 6 2
+      2 2 2 2 3 3 5 1 6 2 2 5 3 3 1 1 6 2 4
+        3 3 3 5 5 1 6 2 5 5 3 1 1 6 6 2 4 3
+    1 1 1 0 0 1 0 1 1 1 1 0 1 1 0 1 0 1 1 1
+
+    x - 6 / x = 14 / 20 = 70%
+
+3. Consider a disk queue with I/O requests on the following cylinders in their arriving order:  
+    44, 20, 95, 4, 50, 52, 47, 61, 87, 25 
+    We assume a disk with 100 tracks and the disk head is initially located at track 50. 
+    Write the sequence in which requested tracks are serviced using the Shortest Seek Time First 
+    (SSTF) algorithm and calculate the total head movement (in number of cylinders) incurred while 
+    servicing these requests.    
+sol.
+    50 -> 50 -> 52 -> 47 -> 44 -> 61 -> 87 -> 95 -> 25 -> 20 -> 4
+        0 + 2 + 5 + 3 + 17 + 26 + 8 + 70 + 5 + 16 = 152
+
+4. A paging scheme uses a Translation Lookaside Buffer (TLB). A TLB access takes 20 ns, and 
+    a main memory access takes 50 ns. What is the effective access time (in ns) if the Translation 
+    Lookaside buffer TLB hit ratio is 70% and there is no page fault?   
+sol. 
+    EAT = a * (20 + 50) + ( a - 1 ) * (20 + 50 * 2)
+    a = 70%
+    EAT = 70 * 0.7 + 0.3 * 120
+        = 49 + 36 = 85
+
+5. A program has been divided into five modules. Their lengths and base addresses are stored in 
+the segment table, as depicted in the following space: 
+    What will be the physical memory address for the following logical addresses?  
+    Show the physical memory mapping for the segments.
++----------------+--------+--------------+
+| Segment number | Length | Base address |
++----------------+--------+--------------+
+|       0        |  300   |     4000     |
+|       1        |  600   |     1000     |
+|       2        |  500   |     2700     |
+|       3        |  900   |     1800     |
+|       4        |  1000  |     2500     |
++----------------+--------+--------------+
++----------------+--------+
+| Segment number | Offset |
++----------------+--------+
+|       1        |  550   |
+|       3        |  908   |
+|       4        |  670   |
++----------------+--------+
+sol.
+    get the segment
+    check the offset is in the limitation first
+    if no, then add the base address
+    
+    1. 550 > 600 valid
+        physical address: 1000 + 550 = 1550
+    2. 908 > 900 invalid
+    3. 670 < 1000 valid
+    physccal address = 2500 + 670 = 3170
+    
+
+QUESTION III.  Resource allocation         
+ Consider a system with the following information.
+ Is this system currently in a safe or unsafe state? Why? Explain.
+ If a request from P2 arrives for (0, 5, 0), can that request be safely granted immediately? Explain the answer.
+ Available Resources
++----+----+----+
+| R1 | R2 | R3 |
++----+----+----+
+| 1  | 5  | 2  |
++----+----+----+
+
+          |        Max         |        Allocation
++---------+------+------+------+------+------+------+------+
+| Process | R1   | R2   | R3   | R1   | R2   | R3   |
++---------+------+------+------+------+------+------+------+
+|   P1    |  0   |  0   |  1   |  0   |  0   |  1   |
+|   P2    |  1   |  7   |  5   |  1   |  0   |  0   |
+|   P3    |  2   |  3   |  5   |  1   |  3   |  5   |
+|   P4    |  0   |  6   |  5   |  0   |  6   |  3   |
++---------+------+------+------+------+------+------+------+
+sol.
+
+a.  available: 1 5 2
+    need matrix: 
+    Process  R1   R2   R3
+    P1       0    0    0
+    P2       0    7    5
+    P3       1    0    0
+    P4       0    1    2
+    pick P1
+    since 1 5 2 > 0 0 0
+    r = 1 5 2 + 0 0 1 = 1 5 3
+    pick P3
+    1 5 3 > 1 0 0
+    r = 1 5 3 + 1 3 3  = 2 8 6
+    pick P2
+    2 8 6 > 0 7 5
+    r = 2 8 6 + 1 0 0  = 3 8 6
+    pick P4
+    3 8 6 > 0 1 2
+    r = 3 8 6 + 0 6 3 = 3 14 9
+    done, ok
+b.
+    if a request from P2 arrives for (0, 5, 0), the resouces avaliable are 
+    r = 1 0 2
+    need matrix:
+    Process  R1   R2   R3
+    P1       0    0    0
+    P2       0    2    5
+    P3       1    0    0
+    P4       0    1    2
+    the P2 allocation is 1 5 0
+    pick P1 as start 
+    1 0 2 > 0 0 0
+    r = 1 0 2 + 0 0 1 = 1 0 3
+    pick P3
+    1 0 3 > 1 0 0
+    r = 1 0 3 + 1 3 5 = 2 3 8
+    pick P2
+    2 3 8 > 0 2 5
+    r = 2 3 8 + 1 5 0 = 3 8 8
+    picl P4
+    3 8 8 > 0 1 2
+    r=  3 8 8 + 0 6 3 = 3 14 11
+    done ok
+    
+QUESTION IV. Operating System in C Language      
+(12 marks) 
+The following code implements a simple scenario of a barbershop, which includes a barber 
+process and multiple customer processes: 
+1) If there is an empty chair, a customer can sit down and wait for the barber to cut their hair.  
+2) If there are no empty chairs, the customer leaves.  
+3) When the barber wakes up, if there are customers waiting, the barber prepares to cut their hair. 
+
+int waiting = 0; 
+int CHAIRS = N; 
+semaphore customers = 0; 
+semaphore barbers = 0; 
+semaphore mutex = 1;
+
+// barber process: 
+process barber(){ 
+    while(true){ 
+        P(customers); 
+        P(mutex); 
+        waiting--; 
+        V(barbers); 
+        V(mutex); 
+        cut_hair();  //cutting hair 
+    } 
+} 
+
+// consumer process
+process customer_i(){ 
+    P(mutex); 
+    if(waiting < CHAIRS){ 
+        waiting++; 
+        V(customers); 
+        V(mutex); 
+        P(barbers); 
+        get_haircut();  //receiving service 
+    }else{ 
+        V(mutex); 
+    } 
+} 
+(1) What semaphores are used in this code？What are the implication of the initial value of each 
+semaphore？                 
+(2) What would happen if "waiting--" and "waiting++" were placed after V(mutex)?    
+(3) What would happen if the value of CHAIRS is set to 0 in this code?            
+
+sol. 
+    a. semaphores: 
+        mutex: bianry semaphore
+            the initial vlaue is 1, that is the barber should be block first until the first customer unlock it (that is the first customer arrives)
+            other influence:
+                ensure that the waitting variable can be access by only one process at a time, avoiding visit this variable at the same time, 
+                which leading to chaos
+        barbers: counting semaphore
+            set as 0 initially, which means only when the new customer arrives, the barber start woking
+            post when barber finish critical region
+        customers: counting semaphore
+            set as 0 initial, which means only when the barber is ready, the customer can start entering
+    b. the mutex is lock when a customer process arrives, and post when the barber get to work
+        Moving those statements outside the critical section breaks the atomic “check‑and‑update” on waiting, creating race conditions:
+        Customer side
+        P(mutex);
+        if (waiting < CHAIRS) {
+            V(customers);     // wake the barber
+            V(mutex);         // <- mutex released too early
+            waiting++;        // executed with NO lock
+            …
+        }
+        While one customer has already released mutex but not yet done waiting++, another customer can enter, find the same value of waiting, and also pass the test.
+        Result: several customers may increment waiting beyond CHAIRS; the queue length no longer matches the real number of people sitting, so chairs can be “over‑sold”.
+        Barber side
+        P(customers);         // a customer exists
+        V(barbers);
+        V(mutex);             // <- mutex released too early
+        waiting--;            // executed with NO lock
+        After the barber releases mutex, a new customer may arrive and enter the critical section before the barber executes waiting‑‑.
+        The barber might then decrement a value that was just incremented, producing a negative count or skipping a customer.
+        Consequences
+        inconsistent or incorrect value of waiting (may exceed chair limit or go negative);
+        possible lost wake‑ups or extra wake‑ups;
+        the logical contract “waiting accurately equals the number of customers in the shop” is violated, leading to unpredictable behaviour.
+        Hence waiting++ and waiting-- must remain inside the mutex‑protected critical section to keep the operation “test + update” atomic. 
+    c. 2) What would happen if waiting-- (in the barber) and waiting++ (in the customer) were executed after V(mutex)?
+        if the CAHIRS is set to 0
+        then the customer will never enter if content block, leading the mutex is unlock immediatly, the barber will have nothing todo, 
+        just waiting for customer semaphores increase, which, will never happen
+
+

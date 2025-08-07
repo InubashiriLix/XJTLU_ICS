@@ -1,0 +1,393 @@
+* Thread Scheduling
+** Contection scope
+   User threads are mapped to kernel threads
+**** The contention scope 
+     refers to the competition the User level thread to access the kernel resources
+     哪些实体一起入队竞争同一个资源 (eg. klt compete for CPU, ult compete for klt)
+**** Process Contention Scope (PCS)
+     - only multiple ULT in a process compete for single or serveral kernel threads
+- scheduler: the user thread lib 
+       the kernel have no sense of the user threads
+     - costs: low (no system call)
+     - but may not able to use multiple cores
+     - models:  Many-To-One, Many-To-Many
+**** System Contention Scope (SCS)
+     - the threads in the system (KLT) compete for CPU
+       user thread join the system scheduling through projecting to LWP then KLT
+     - switching cost is huge (system call and context switching)
+     - but, advantage: can use multiple cores
+     - models: One-To-One, May-to-Many (SCS optional)
+**** the thread models:
+***** Many-To-One: may user process to a kernel thread
+      - mapping: multiple user thread to single kernel thread
+      - competition: PCS only, cause only one LWP, only one cpu thread can be used
+***** One-To-One: one user process to one kernel thread
+      - mapping: one user thread to one kernel therad
+      - competition: SCS only, each user thread is a system entity
+***** Many-To-Many: many user processes to may kernel threads (the user threads can equal or smaller than kernel threads number)
+      - mapping: multiple user thread -> multiple LWP
+      - competition: 
+        PCS: user thread lib will schedule the user therad to LWP
+        SCS: let the KLT join the global scheduling
+***** struct
+      ULT -> LWP -> KLT
+** Thread Scheduling
+*** process contention scopt (PCS)
+    - entities: all the ults in the smae process
+    - scheduler: user thread lib
+    - resources: LWP (multiple or single)
+      utl will compete for switching chance
+    - models: One-To-One, Many-To-Many
+    ~ Many-To-One: multiple ults to single LWP
+    ~ Many-To-Many: multiple ults to multiple LWP
+*** System Contention Scope (SCS)
+    - entities: all the KLT in the system
+    - scheduler: kernel
+    - resources: CPU cores' time slices
+      KLT will compete with each other for next avaliable cpu cores
+    - models:
+    ~ One-to-One: each UTL has responding KLT, join the global scheduling 
+    ~ Many-To-Many: bound mode: if you bound some UTL to the LWP, then LWP is the global scheduling KLT
+      (well, the ppt admit O-t-O only, you can ignore this, I guess)
+      (by the way, fuck you! Ms.Mango!)
+
+*** Bound Threads vs Unbound Threads
+**** Unbound:
+     - due to the thread lib in the user space, it is PCS, which compute with other UTL for LWP
+     - mapping is flexible
+**** Unbound Thread:
+     - mannally or in the running time bound UTL to the LWP, to make it be a KLT, and enter SCS
+     - mappning fix, kernel will take this as indepandent schedulable entity and compute for CPU competition
+
+* Multiple-Processor Scheduling
+    for cpu with multiple processors, we assume that each processor is homogeneours, with same performance and function
+
+** Scheduling Methods:
+*** Asymmetricc Mlutiple-procssing ( AMP ) (非对称多处理)
+    only one main processor take control of every scheduler decision and global data structure (like ready queue, process tables)'s editing and modifying
+    other processor take control of executing tasks, they do not take part in schedduling part
+    - Advantage:
+      no need to multiple processor visit the same data structure parallelly, simplify the asynchronous and data sharing problem
+    - disadvantage:
+      scheduler bottleneck, every scheduling requests are sent to the main processsor, the expanding are limited.
+*** Symmetric Multiporcessing (SMP) (对称多处理)
+**** features:
+***** each process have individual kernel scheduler, and take part in the thread / process selection and switching
+***** the ready queue has two organize methods:
+****** Global queue
+       - every processor share a smae ready queue, any processor available can take the task from the queue
+       - advantage: payload is balanced and simple, will not cause the situation when a core is available but the other are busy
+       - disadvantage: 
+         visit global queue need synchronization lock, and compete cost is high
+****** per-processor queue
+       - each processor maintain their own ready queue, only select the task from their own queue
+       - advantage: 
+         local queue need no lock or less lock,
+         cache performs better,
+         context change cost low.
+       - disadvantages:
+         might have imbalanced load like one core is available but the other got full queue
+       - solutions:
+       ~ work stealing:
+         empty core will steal the tasks from the busy core's queue, balanced dynamically
+       ~ Work sharing:
+         when a core got its queue too long, the new tasks will be allocate to other cores' queues
+
+*** Overall
+    when cpu increase, the AMP's bottleneck will become more and more obvious, the SMP is more suitable for the multi-core system
+
+** Asymmetric multiprocessing (AMP)
+   ( Master - Slave ) configuration
+   One processor is the master, and other processor in the system as slaves, The master processor run the IO and processes while slave processors run the process only
+   the process scheduling is performed by the master processor.
+*** diagram:
+    @code text
+    |-----------------------------------------------------------------------------
+    |Master Processor  | Slave Processor | Slave Processor | 
+    |-----------------------------------------------------------------------------
+    |Processor 1       | Processor 2     | Processor 3     | Memory | IO | ...
+    |-----------------------------------------------------------------------------
+    |OS                | User processes  | User Processes  |
+    |User prcesses     |                 |                 |
+    |-----------------------------------------------------------------------------
+    @end
+
+** Symmetric Configuration (SMP)
+   Any processor can access any device and can handle any interrupts generated on it 
+   Mutual exclusion (互斥锁) must be enforced such that only on processor is allowd to execute the OS at one time
+*** diagram
+    @code text
+    ==============================================================
+    Processsor 1   | Processor 2     | Processor 3    | Mem | IO
+    OS             |                 |                | 
+    User processes | User processees | User processes |
+    ==============================================================
+    @end
+
+** Approaches to Symmetric Configuration
+*** Common ready queue (used in AMP)
+    @code text
+    T0 T1 T2 T3 T4 ...
+          |
+    core0 core1 core2 ...
+    @end
+*** per-core run queues
+    @code text
+    core0: T0 T1 T2
+    core1: T3 T4 T5 T6
+    core2: T7
+    core ...
+    @end
+
+** Processor Affinity (处理器亲和性)
+   - def: 
+     binding a task / process to run a specific core or sset fo cores to maximize cache reuse
+   - benefit: 
+     reduces cache-miss panalties when a process stays on the same core 
+     (you can reuse the cache in the same core)
+   - Migration Cost: 
+     Moving to a new core invalidation old core's caches, new core must repopulate, incurring delays 
+     eg. when a the proceess is moved from core A to core B, the cache should be copy again, and delay appears.
+   - Soft Affinity: 
+     OS hints to keep processes on the same core but may override for load balance.
+     advantage:
+     get a sweet point between payload and cache-miss
+   - Hard Affinity: 
+     Process is restrictde to a specified CPU set (via CPU mask); kernel will not schedule it elsewhere
+     eg. administor / user can bind the process to the specific core explicitly
+** Load Balancing
+*** goal: 
+    in the os with multiple cores, you need to allocate the ready tasks to the each core to optimize the repsonse time, resource utilization, and overall throughput
+*** Strategies:
+**** push migration
+     A periodic system daemon check load and push tasks from oveerloaded cores to underloaded ones. 
+**** pull migration
+     idle cores pull taks from other cores' run queues when they fiond themselves without work
+*** Hybrid and Optimization
+    - modern kernel use pull and push migration together, to avoid a core empty and the idle core get the tasks in time
+    - combine with Affinity, can get a balance between cache-miss and load balancing
+*** None-Uniform Memory Access (NUMA) Architecture
+**** Topology
+     - Consists of multiple nodes; each node contains one (or more) CPU(s) and its own local memory.
+     - Nodes are interconnected (via a bus, switch, or ring), allowing CPUs to access remote memory on other nodes.
+**** Memory Access Characteristics
+     - Local access: CPU → its own node’s memory → low latency, high bandwidth (“fast access”).
+     - Remote access: CPU → another node’s memory → higher latency, lower bandwidth (“slow access”).
+**** Scalability & Performance
+     - UMA (Uniform Memory Access) systems suffer contention on a single shared memory bus as CPU count grows.
+     - NUMA alleviates this by distributing memory across nodes; most accesses hit local memory, reducing global traffic.
+**** Operating System Support
+***** Processor Affinity: OS tries to schedule a process/ thread on the same NUMA node where its data resides to maximize cache hits.
+      - Soft Affinity: OS “hints” at preferred node but may migrate if load unbalanced.
+      - Hard Affinity: Process is pinned to a specific node or set of nodes (CPU mask).
+***** Load Balancing:
+      - Keep nodes busy but avoid excessive cross‑node memory traffic.
+      - Combine push/pull migration with NUMA‑aware policies to move tasks only when beneficial.
+**** Design Trade‑Offs
+     - Locality vs. Balance: Strong affinity improves cache reuse but can lead to hot‑node overload; periodic rebalancing may be required.
+     - Complexity: NUMA‑aware scheduling and memory allocation add algorithmic overhead versus simpler UMA strategies.
+
+** Memory Stall in Single Core CPU
+   when the single core CPU is executing a proceess, if cache-miss, it will wait the main mem to return the data, 
+   C - compute cycle, M -> memory stall 
+   @code text
+   [ C ] -> [ M ] -> [ C ] -> [ M ] -> ...
+   @end
+
+** Multicore Processor
+*** Multicore Advantage:
+    mutlicore cpu integrate multiple cores on a single chip, thus 
+    it can run parrallely, 
+    when a core is stalled on memory access, other cores can continue to run their tasks, 
+    overall, the throughout and response perform much better 
+*** Hyper-Threading (超线程) / SMT
+    - each physical core expose serveral "logic core" (hardware thread)
+    - when a thread is stall, the core can switch to another thread.
+    - switching cost is much smaller than complete context swtiching 
+*** diagram
+    in multi core
+    @code text
+    thread1 -> [ C ] -> [ M ] -> [ C ] -> [ M ] -> [ C ] -> [ M ] -> ...
+    thread2 -> [emp] -> [ C ] -> [ M ] -> [ C ] -> [ M ] -> [ C ] -> [ M ] -> ...
+    thread3 -> [ C ] -> [ M ] -> [ C ] -> [ M ] -> [ C ] -> [ M ] -> ...
+    @end
+
+** Multithreeading on a single core
+*** Coarse-Grained Multithreading (粗粒度多线程)
+    - the core will focus on current thread until long delay event like cache miss, 
+      only at this time, it will switch to anther thread
+**** adv:
+     - easy to impl on hardware cause the switch condition is clear
+**** disadv:
+     only cahnge when the thread is truly stalled, 
+     the stallde time is still idle
+*** Fine-Grained Multithreading (细粒度多线程)
+    - The core rotates among threads on every cycle (or every few cycles) in a round‐robin fashion, regardless of stalls.
+      that is the core will rolling across each thread in every cycle, and thread stalled will be ignore.
+    - each cycle it issues the next instruction from a different thread, so a memory stall in one thread doesn't block the pipeline.
+    - pros: Maximally hide latency, keeps pipeline busy.
+    - Cons: Increased hardware complexity, higher register-file scoreboard pressure.
+*** diagram
+    @code text
+    in one core
+    thread -> [ C ] -> [ M ] -> [ C ] - > [ M ] -> [ C ] -> [ M ] -> ...
+    @end
+
+* Real-Time Scheduling
+** Characiteristics of RTOS
+   a real-time operation system RTOS aree deadline driven
+   Example: the patient monitoring in a hospital intensive-care unit, the autopiolot in an aircraft, radar system, robot control in an automated factory, etc
+   以截止时间为核心
+*** Hard RTOS
+    is one that must meed its deadline; otherwise, it will cause unacceptable results (or fatal errors)
+*** Soft RTOS
+    an associated deadline that is desirable but not absolutely necessary;
+    it still makes sense to schedule and complete the taks even if it has passed its deadline
+    late execution still useful
+*** Timing Constraints
+**** Period
+     the amount of time between iterations of a regular repeated task
+     定期任务两次激活间隔
+**** deadline
+     单次任务完成的额最长期限
+     is a constraint of the maximum time limit within which the operation must be complete
+***** Aperiodic tasks (ramdom time) 
+      随机到达, 触发时间不固定
+      has irregular arrival times and either soft or hard deadlines
+***** Periodic tasks (repeated tasks)
+      固定间隔触发，通常有软或者硬截止
+      the requirement may be stated as "once per period" or "exactly T units apart"
+** Issues in Real-Time scheduling
+   the major chanllenge for an RTOS is to schedule the real-time tasks;
+*** Interrupt Latency (interrupt response)
+    is the tiem elapsed between the alst instruction executed on the current interrupted task and start of the interrupt handler
+    like time between last instruction of the current task and switch into the interrput handler works
+**** influence facotrs:
+     the current instruction executing now must be done first, CPU cannot preeempt it under critical part
+     iterrupt is disable or have a lower priority
+     ISR entrance handling like context switching, stack switching, etc
+**** optimizaztion:
+     restrict itterrupt nest depth
+     refact the itterrupt handler to minimize the iterrupt execution time
+     use hardware support (itterrupt priority)
+*** Dispatch Latency
+    - def: from a tasks is suspended to the next task get cpu and start executing
+      it contains the latency of context switching, stack switching, and the time to load the new task's context
+**** inflence factors:
+     - kernel scheduling algorithm complexity
+     - context switching cost (save, load, cache-miss, etc)
+     - itterrupt or system call's soft itterrupt 
+**** optimization:
+     - use preemptive scheduling algorithm, suspend the tasks with lower priority
+     - simplify the scheduling path, decrease function call depth,
+     - avoid tasks with high priority disabling itterrupts for long time or lock for long time
+*** Priority Inversion
+    High‑priority task blocked by low‑priority holding a resource, with medium‑priority “interference.”
+    Use Priority Inheritance or Priority Ceiling protocols on mutexes/locks.
+*** Jitter
+    Variability in task activation or completion times, harming deterministic behavior.
+    Standardize ISR/execution durations; use fixed‑priority scheduling; minimize timing variability.
+*** Worst‑Case Response Time
+    Maximum time a task can take under worst interference; used to verify deadlines at design time.
+    Perform schedulability analysis (e.g., RTA) using task parameters and system overheads.
+*** Resource Protocols
+    Synchronization methods ensuring mutual exclusion without uncontrolled inversion.
+    Mutex + Priority Inheritance/Ceiling; use short critical sections; bounded blocking protocols.
+*** Interrupt Nesting Depth
+    Number of nested ISR levels; deeper nesting increases cumulative interrupt latency.
+    Bound interrupt levels; offload heavy work to deferred threads; prioritize minimal ISR work.
+*** Deadline Miss
+    Occurs when a real‑time task completes after its deadline (unacceptable in hard RTOS).
+    Design for WCRT < deadline; use admission control; avoid overload.
+*** Preemptive Kernel
+    Kernel that can interrupt lower‑priority tasks immediately on higher‑priority task arrival, reducing latency.
+    Essential for low dispatch latency; combine with fast context‑switch implementation.
+** Real-Time Scheduling
+   The Rtos scheduling all tasks based on their deadlines infomation and ensure that all the deadline are met
+*** Static Scheduling
+    A Schedule is prepared before execution of the application begins
+**** features:
+     predictable, low scheduler cost
+     use for completet known and periodic tasks
+     not support adding new tasks when sceduling or adding offset to the executing time
+*** Priority Scheduling
+    The priority assigned to the tasks depends on how quickly a task has to respond to an event
+**** features:
+     - the priority is assigned when system start
+     - Rate Monotonic Scheduling (RMS): the task with lower routine will get higher priority
+     - suitable for hard real-time system
+***** Dynamic Priority Scheduling
+      - priority can be changed dynamically when running
+      - Earliest Deadline First (EDF): the tasks with earlies deadline will get higher priority
+      - flexible, but scheduling cost and complexity is high
+*** Dynamic Scheduling
+    There is complete knowledge of tasks set, but new arrivals are not known. Therefore, the scheduler changes over the time
+**** features
+     - only need to know about the tasks set's general characteristics: {routine, deadline, worst-case execution time, etc}
+     - can deal with non-routine tasks and random tasks 
+     - the scheduling algorithm is compute when running (like EDF, Least Laxity First, etc)
+** Characeristic of processes
+*** General
+    processes are considered periodic (repeated tasks) 
+    a periodic process has
+    ~ processing timee t
+    ~ deadline d by which it must be serviced by the CPU
+    ~ period p
+    @code text
+    0 <= t <= d <= p
+
+    diagram:
+    p p p p p | p p p p p period
+    d d d     | d d       deadline
+    t         | t         processing time
+    ---P1--------P2----------time->>
+    @end
+*** Rate-Monotonic Scheduling
+    it is staic priority-based preemptive scheduling algorithm
+    the task with shortest period will alwasy preempt the executing task
+    the shortest period = the hightest priority
+*** The cpu utilization of tasks Pi
+    ti = the execution time
+    pi = the period of task i
+    CPU utilization = ti / pi
+    to meet all deadlines in the system, the following must be satisfied:
+    sum(ti / pi) <= 1
+
+*** Earliest-Deadline-First Scheduling
+    The Scheduling criterion is based on the deadline of the processes. The processes / tasks need not be periodic.
+    dynamically assigns priority according to the deadline
+    the eariler the deadline -> the higher the priority
+
+*** Proportional Share Scheduling
+    Scheduling that pre-allocate certain amount of CPU time to each of the processes
+    Fair-share Scheduler
+    - Guarantee that each process obtain a certain percentage of CPU time
+    - Not optimized for turnaround or response time
+    - T shares are allocated among all processes in the system
+    - An application receives N shares where N < T
+    - This ensures each application will receive N / T of the total processor time
+
+* 6 Resource Management Deadlocks
+** 6.1 Deadlock Characterization
+- Each process follows: request → use → release
+- Deadlock: permanent blocking of a set of processes competing for resources
+- Four necessary conditions:
+  - Mutual Exclusion: only one process at a time can use a resource
+  - Hold and Wait: a process holding at least one resource is waiting for others
+  - No Preemption: resources released only voluntarily by holding process
+  - Circular Wait: cycle of processes each waiting for the next’s resource
+
+** 6.1.2 Resource‑Allocation Graph
+- Vertices:
+  - P = {P1, P2, …, Pn}  ; set of all processes
+  - R = {R1, R2, …, Rm}  ; set of all resource types
+- Edges:
+  - request edge  Pi → Rj
+  - assignment edge  Rj → Pi
+- Deadlock detection:
+  - single‑instance resources: cycle ⇔ deadlock
+  - multi‑instance resources: cycle necessary but not sufficient
+
+
+
+

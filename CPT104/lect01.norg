@@ -1,0 +1,247 @@
+* Characterristics of OS
+** Time Sharing: 
+   examples: rtos, linux, windows
+** MultiProcessing System
+   multi cpus share the same mem, and coperate and communicate by sharing mem
+** Distributed System
+   consist of multiple nodes: client, server and peers through a net
+** Real-Time System
+   - hard real-time: abs not timeout
+   - soft real-time: timeout is acceptable occasionally
+
+* Operation System
+** 管理程序的开始与结束并在程序间共享
+   CPU Process Management
+** 管理内存
+   Memory management
+** 输⼊输出
+   I/O System Managemen
+** ⽂件管理系统
+   File System Management
+** 保护
+   Protection and Security
+
+* Process
+** Process is considered an active entity
+** Program is considered to be a passive entity (stored on disk (executable file))
+** status of process:
+*** new: created
+*** ready: ready to execute
+*** waiting: process waiting for signal to continue
+*** running: operation is doing
+*** terminated: process is terminated
+
+    @code diagram
+    new --admitted-> ready --scheduler-dispatch-> running --exit-> terminated
+                      |                              |
+                ------------- <-iterrupt -< --------------------
+    |           |                                              |
+                 io or event complete <-waiting-<io or event wait
+                
+    @end
+
+* process control block (PCB)
+** truth def
+   on earth is a linked list, also called context of the process, it store all the infomation about a process
+   all the PCB are stored in the main mem
+** structure:
+   process state: ready, terminated, running, waiting, blocking, etc
+   process number: PID
+   program counter:address of next instruction to execut: used when switching context
+   registers: CPU regiester like common register, stack pointers, base pointers, etc save current state of process, resume or save when switching context
+   memory limits: make sure that process is visting valid address space
+   list of open files: fasten locate io file, and close io when process terminated
+   ... (liek scheduling priority, cpu usage state, signal masks, IPC handles)
+** signnificace
+   process is quite important for multiprogramming environment, as it captures the infomation pertaining to the number of process running simulataneously
+
+
+** Single-Stream Batch
+   system can only load one work to do, and only when it is done, another process will enter
+   CPU might be avaliable when waiting for IO, with lower efficiency
+   scheduler cost is smaller
+
+** Multiprogramming / Multi-Stream Batch
+   mem will load variable programs, and when on is waiting, another will be executed
+   it increase the cpu's and IO's efficiency 
+** RealTime
+   Must meet strict timing constraints (deadlines).
+   Hard real‑time: missing a deadline is unacceptable.
+   Soft real‑time: occasional deadline misses are tolerable.
+   Uses deadline‑driven scheduling (e.g., Rate‑Monotonic, EDF); system simplified to minimize latency and jitter.
+
+** TimeSharing
+   load time clice for each interactive process
+   rapid context switching gives the illusion of dedicated CPU per user
+   Designed for multi-user interactive enviornment; prioritizes quick response to user actions;
+
+* Scheduler Types:
+** Long-Term Scheduler, Job Scheduler:
+*** 职责：从作业池（job pool）中决定哪些新作业（进程）可以被“放”入内存并进入就绪队列。
+    - Controls admission of jobs into main memory.
+*** 目标：控制系统的多道程序程度（Degree of Multiprogramming），即同时在内存中、处于就绪状态的进程总数。
+    - Regulates the degree of multiprogramming (# of ready processes).
+*** 特点：调度频率最低、开销最大；影响系统负载与吞吐量。
+    - Low frequency, high overhead; shapes system workload and throughput.
+** Medium-Term Scheduler (Swapper)
+*** Temporarily swaps processes out of and into memory to/from secondary storage for those process that do not need CPU or blocking for io
+*** Balances memory pressure vs. CPU utilization. optimize whole performance
+*** Medium frequency; has a mid‑term impact on system performance.job: for those who does not need CPU and block io or 
+** 短期调度（Short‑Term Scheduler / CPU Scheduler）
+*** 职责：从就绪队列中快速选择一个进程，让它获得 CPU 并执行。
+    Selects a process from the ready queue for execution on the CPU.
+*** 目标：最大化 CPU 利用率、保证响应性和公平性（依据所选调度算法）。
+*** 特点：调度频率最高（每次时间片到期、I/O 完成、进程阻塞／终止等都会触发）；开销最小。
+    High frequency, low overhead; aims for high CPU utilization and good response times.
+
+** resource recycle
+*** ALL THE RECYCLE HAPPEND ON THE PROCESS EXIT MOMENT,  IT IS DONE BY SYSTEM's CLEANUP LOGICS
+*** when the process is exit or kliled, the kernel will release its pcb, and recycle the memory, page, file desc, signals etc resources
+*** mem management subsystem will take control of phsical and virtual memory, and recycle the memory
+*** File system will take the handler back and close inode etc
+
+* Context Switching
+** Context:
+   CPU states like common register, stack pointer, base pointer, program counter, etc
+   counters
+   Stack pointers
+   Frame pointers
+   page mem regiesters
+   float / SIMD registers
+** Save and Resume
+   save: when itterupt / system use / time slice timeup / io event happend, CPUU or OS entrance (iterrupt instance), it will save all the register infos in to the PCB
+   resume: when scheduler pick a process, it will get the register info and write back to CPU registers, then go back to the PC address to continue execution
+** Tiggeres:
+   hardware interrupts, system calls with premptions(抢占), time-clse expiry, IO block/unblock
+** OVerhead: costs
+   kernel-mode switch + register spills / fills + TBL / cache effects 
+   microseconds per swtich 
+** Mode switch
+   CPU change from user mode to kernel mode, so it can execute the kenel code with preemptions
+   this will be done with syscall, exception, interrupt entering kernel etc 
+*** System Call (Syscall): a synchronous trap from user to kernel to request OS services.
+
+    ***Steps:
+
+    ~ int/syscall/SVC trap instruction.
+    ~ Save minimal state (PC, flags), switch to kernel stack.
+    ~ Enter syscall handler in kernel mode.
+    ~ Execute service routine.
+    ~ iret/sysret return to user mode, restore state, resume same process.
+*** Mode Switch vs. Context Switch:
+    - Mode Switch: switch privilege and stack only, same process continues.
+    - Context Switch: save/load full PCB to switch between processes/threads.
+
+*** Syscalls ≠ Context Switch:
+    - Nonblocking syscalls return to the same process immediately.
+    - Only blocking syscalls (I/O wait, sleep, sync primitives) hand control to the scheduler and trigger a real context switch.
+    如果 syscall 是“非阻塞”的（比如 getpid()、write() 写到内存缓冲区），内核做完事直接返回给同一个进程，不会去跑别的进程。
+    只有当 syscall 内部遇到阻塞操作（如磁盘 I/O、网络 recv、等待信号量等），内核才把当前进程标记为 Blocked，再由调度器选别的 Ready 进程来运行，这才是真正的上下文切换。
+
+* Operations on Processes
+** Process Creation
+*** Parent→Child Creation
+    fork(): duplicates the calling process (PCB, address space, etc.), returns twice (parent gets child PID; child gets 0), forming a process tree.
+*** Resource Sharing Options
+    - Share All: parent and child share open files, memory pages (with copy‑on‑write).
+    - Share Some: share selected resources (e.g. file descriptors), others independent.
+    - Share None: parent and child completely isolated.
+*** Execution Options
+    - Concurrent Execution: both parent and child become ready/runnable.
+    - Wait: parent may call wait()/waitpid() to block until child terminates.
+*** Image Replacement
+    - exec() family: replaces the child’s memory image with a new program binary.
+** Process Termination
+*** Normal Exit
+    Process finishes its last instruction, then calls exit(status) to inform the OS of its termination status.
+*** Resource Deallocation
+    Kernel reclaims PCB, address space, file descriptors, semaphores, and all other resources held by the process.
+*** Parent Synchronization
+    wait() / waitpid(): parent blocks until a child exits, retrieves its exit code, preventing zombie processes.
+*** Forced Termination
+    Parent can send signals (e.g. kill(pid, SIGKILL)) to forcibly end a child.
+    A process may also be killed by the OS if it exceeds resource limits or receives fatal signals.
+
+* Inter-process Communication (IPC)
+** Indepedent Processes
+   - independent abs, not sharing same resource and do not influce eath other
+   - feat: simple, but cannot help each other, and no resource sharing
+** Cooperating Processes
+   - def: can influce each other, or sharing resources and data
+*** feat:
+    ~ Resourceing Sharing: can impl multiple user, process sharing the same data or device
+    ~ infomation sharing: process can swap data to each other
+    ~ computation speedup: you can broke a big question to multiple small question
+    ~ Modularity: can design program as module: like server / client struct
+    ~ Convenience: one user can do multiple things at the same time: edit, prin, compile, running
+*** Communiation models:
+    overall: cooperate process can use buffer to transmit the messages and sharing mem
+**** Mesage passing:
+***** def
+      - 合作进程通过发送和接收消息进行通信，消息暂存在邮箱或临时队列中。
+      - 英：Cooperating processes exchange information by sending messages that reside in a temporary queue (mailbox).
+      - 消息大小：固定或可变。
+***** 容量 / Capacity
+****** 零容量（Zero capacity）
+       - 队列最大长度为 0，消息不允许排队，发送者必须等待接收者立即接收。
+         Queue length = 0; no queuing allowed—sender blocks until receiver is ready to accept.
+****** 有限容量（Bounded capacity）
+       - 队列长度有限，可缓存至多 n 条消息。
+         Queue has finite length n; can hold up to n messages.
+****** 无限容量（Unbounded capacity）
+       - 队列长度不受限，可缓存任意数量消息（若不考虑内存）。
+         Queue length is potentially infinite.
+*****  basic operations: 
+       ~ send(message)
+       ~ receive(message)
+         the size of message can be fixed or variable
+***** Synchronous
+      - blocking vs non blocking:
+      - Synchronous vs Asynchronous
+***** Address method:
+      - directly: prcess can direct to another explicately (through PID or unique identifier)
+      - indirect: process can send / receive message from mail / port
+***** Pro and cons
+      easy to impl over net commu
+      frequently copy, context switching
+***** diagram
+      - ----------------------------
+        process A -> send msg to queue
+        process B -> receive msg from queue
+        process C
+        ...
+        message queue \[m0, m1, m2, m3 ...]
+        kernel
+
+****  Shared Mem
+***** def: two or more process project the same mem space, and switch data through this mem
+      - 中：多个进程映射同一块内存区域，通过读写这片缓冲区来交换信息。
+      - 英：Processes exchange information by reading and writing to a common shared‐memory region.
+***** 缓冲区 / Buffer
+      一块被合作进程共同访问的内存。
+****** 容量 / Capacity
+******* 有限容量（Bounded capacity）
+        中：缓冲区能存储的消息条数有上限 n。
+        英：The buffer has finite length n, at most n messages can be stored.
+******* 无限容量（Unbounded capacity）
+        中：缓冲区可存放消息数量不受限制。
+        英：The buffer’s capacity is potentially infinite.
+***** Synchronization
+      - need signals(semaphores) / mutext / condition to prevent race condition (conflicts)
+      - 异步／非阻塞式（Asynchronous / Non‑Blocking）
+      - Blocking send：发送后阻塞，直到消息被接收。
+      - Blocking receive：接收后才返回，直到有消息到达。
+      - Non‑blocking send：发送后立即返回，不管谁接收。
+      - Non‑blocking receive：接收时立即返回；若无消息则返回空。
+***** Pro and cons
+      - require less copy, faster
+      - need extra synchronization logic, easy to fault
+      - when buffer is bouded capacity: the buffer has limited mesgs
+      - when buffer is unbounded capacity: the buffer has no limited msg contains
+***** Diagram
+      - ---------------
+        Process A -> xSemTake(whatever)
+        Process B -> xSemGive(whatever)
+        ... processes
+        kernel
+
