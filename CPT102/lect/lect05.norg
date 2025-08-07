@@ -1,0 +1,130 @@
+* Lect5 Quees and Iterators
+  - Examples of using Map
+  - Queues and Priority Queues
+  - Classes/Interfaces that accompany collections
+    1. Iterator
+    2. Iterable
+
+* Examples of using Map
+  @code java
+  package Map;
+
+  import java.util.Map;
+  import java.util.HashMap;
+
+  public class MapExample {
+
+      private Map<String, Integer> wordMap = new HashMap<String, Integer>();
+
+      public MapExample(String input) {
+          CountWordFrequency(input);
+          IterWordMap();
+          findMaxCount(wordMap);
+      }
+
+      private void CountWordFrequency(final String input) {
+          for (String word : input.split(" ")) {
+              if (wordMap.containsKey(word)) {
+                  wordMap.put(word, wordMap.get(word) + 1);
+              } else {
+                  wordMap.put(word, 1);
+              }
+          }
+      }
+
+      private void IterWordMap() {
+          StringBuilder sb = new StringBuilder();
+          // NOTE: method 1
+          // for (String key : wordMap.keySet()) {
+          // var value = wordMap.get(key);
+          // if (value != null) {
+          // sb.append(key + " " + value + "\n");
+          // }
+          // }
+          // NOTE: method 2, but the key is not supported
+          // for (int value : wordMap.values()) {
+          // sb.append(value + "\n");
+          // }
+          // NOTE: method 3
+          for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
+              sb.append(entry.getKey() + ":" + entry.getValue() + "\n");
+          }
+          System.out.println(sb.toString());
+      }
+
+      private String findMaxCount(final Map<String, Integer> counts) {
+          String rtnKey = "";
+          int rtnCnt = 0;
+
+          if (wordMap.isEmpty()) {
+              System.out.println("the wordMap is empty");
+              return null;
+          }
+
+          for (var entry : wordMap.entrySet()) {
+              if (entry.getValue() > rtnCnt) {
+                  rtnKey = entry.getKey();
+                  rtnCnt = entry.getValue();
+              }
+          }
+
+          System.out.println("found max frequency count: " + rtnKey + " : " + rtnCnt);
+          return rtnKey;
+      }
+  }
+  @end
+
+* Queues and Priority Queues
+** Queues
+*** Collections of values with an order
+*** Constrained Access
+    - Only remove from the front
+*** Two varieties
+**** Ordinary Qeueus
+     - add only from the tail and remove from the head
+**** Priority Queues
+     - add or remove with a given priority
+
+** Used For
+*** Operating Systems,  Network Applications, Multi-user Systems
+    - Handling requests/events/jobs that must be done in order
+    - (memory pool holding such requests are often called a “buffer” in 
+      this context)
+
+*** Simulation program
+    - Representing queues in the real world
+      (traffic, customers, deliveries, ….)
+    - Managing events that must happen in the future
+
+*** Search Algorithm
+** Java provides
+   - a Queue interface
+   - serveral classes: LinkedList, PriorityQueue
+
+** Ops
+   boolean offer(T value);
+   T pool(value);
+   T peek();
+   T remove();
+   T elements(); like poll() and peek(), but throw exception if queue is empty
+
+* Class/Interfaces that accompany collections
+** Iterator
+*** Operations on Iterator
+    - hasNext()
+    - next()
+** Iterable
+   @code java
+   public interface Iterable<E> {
+       Iterator<E> iterator();
+   }
+   @end
+** Iterator
+   @code java
+   public interface Iterator<E> {
+       boolean hasNext();
+       E next();
+   }
+   @end
+
+   NOTE: NOT FINISH

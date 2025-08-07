@@ -1,0 +1,159 @@
+* AVL Trees – Comprehensive Neorg Note
+
+** 0. Reading Guide
+所有 ^强调/高亮^ 用 caret，代码与 ASCII 图统一包在 @code … @end，直接粘贴到 Neorg 工作区即可。
+
+
+** 1. What is an AVL Tree?
+AVL 树是一种自平衡二叉搜索树（BST），任何节点左右子树的 ^高度差^ ≤ 1。1962 年由 Adelson-Velsky & Landis 提出，保证 O(log n) 查找、插入、删除。
+
+** 2. Node Structure & Balance Factor
+@code cpp
+struct AvlNode {
+    int key;
+    AvlNode *left;
+    AvlNode *right;
+    int height;      // subtree height
+};
+@end
+
+平衡因子 bf(v) = height(v.left) − height(v.right)  
+取值 −1、0、+1 ⇒ 平衡；超出则需旋转。
+
+** 3. Height Bound Proof (Sketch)
+设 S(h) 为高度 h AVL 树的最小节点数：  
+S(0)=1, S(1)=2, S(h)=1+S(h−1)+S(h−2) ⇒ F_{h+2}−1  
+⟹ h ≤ 1.44·log₂(n+2)−0.328 ⇒ Θ(log n)。
+
+** 4. Rebalancing Rotations
+以下全部显示 ^T₁–T₄ 子树^（可为空），单/双旋均 O(1)。
+
+*** 4.1 LL (Left-Left) — single right rotate
+@code text
+Before                           After
+        z                                y
+       / \                              / \
+      y   T4        →                 x   z
+     / \                              / \ / \
+    x   T3                           T1 T2 T3 T4
+   / \
+  T1 T2
+@end
+
+@code pseudo
+rotateRight(z):
+    y = z.left
+    z.left = y.right   // T3
+    y.right = z
+    updateHeight(z)
+    updateHeight(y)
+    return y
+@end
+
+*** 4.2 RR (Right-Right) — single left rotate
+@code text
+    x                                y
+   / \                              / \
+  T1  y           →                x   z
+     / \                            / \ / \
+    T2  z                         T1 T2 T3 T4
+        / \
+       T3 T4
+@end
+
+@code pseudo
+rotateLeft(x):
+    y = x.right
+    x.right = y.left   // T2
+    y.left = x
+    updateHeight(x)
+    updateHeight(y)
+    return y
+@end
+
+*** 4.3 LR (Left-Right) — double rotate (left then right)
+@code text
+Step 0 (unbalanced)
+        z
+       / \
+      x   T4
+     / \
+   T1   y
+       / \
+      T2 T3
+
+Step 1 rotateLeft(x)
+        z
+       / \
+      y   T4
+     / \
+    x   T3
+   / \
+  T1 T2
+
+Step 2 rotateRight(z)
+        y
+       / \
+      x   z
+     / \ / \
+    T1 T2 T3 T4
+@end
+
+*** 4.4 RL (Right-Left) — double rotate (right then left)
+@code text
+        x
+       / \
+      T1  z
+          / \
+         y  T4
+        / \
+       T2 T3
+
+Step 1 rotateRight(z)
+        x
+       / \
+      T1  y
+          / \
+         T2  z
+             / \
+            T3 T4
+
+Step 2 rotateLeft(x)
+        y
+       / \
+      x   z
+     / \ / \
+    T1 T2 T3 T4
+@end
+
+** 5. Complexity Summary
+@code text
+| 操作                 | 最坏时间 | 说明                                   |
+|----------------------|----------|----------------------------------------|
+| 查找                 | O(log n) | 路径 ≤ h, h = Θ(log n)                 |
+| 插入 / 删除          | O(log n) | 搜索路径 + ≤2 旋转/层 × h              |
+| 单旋 / 双旋          | O(1)     | 常数次指针移动与高度更新               |
+| 空间                 | O(n)     | 每结点 1 个高度/平衡字段               |
+@end
+
+** 6. Comparison with Other Balanced BSTs
+@code text
+| 树种   | 查找        | 插入/删    | 旋转上限 | 典型用途                             |
+|--------|-------------|-----------|----------|--------------------------------------|
+| AVL    | O(log n)    | O(log n) | ≤2/层    | ^严格平衡^, 读多写少                 |
+| 红黑树 | O(log n)    | O(log n) | ≤1/层    | STL / Java TreeMap 等通用容器        |
+| Treap  | 期望 O(log n) | 期望 O(log n) | 期望常数 | 简单实现, 随机平衡                  |
+@end
+
+** 7. Implementation Tips
+- children 重接完再 updateHeight；
+- 插入：自下而上遇到首个 |bf|>1 即旋转并结束；
+- 删除：可能需一路回溯至根。
+
+** 8. Further Reading
+- G. Adelson-Velsky & E. Landis, \"An Algorithm for the Organization of Information\", 1962.
+- D. Knuth, ^TAOCP^, Vol. 3.
+
+---
+*End of Note*
+

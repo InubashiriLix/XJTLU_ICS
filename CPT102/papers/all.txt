@@ -1,0 +1,458 @@
+1. What is the major disadvantage of using dynamic data structure
+    a. the overhead to grow it when the structure becomes full
+    b. may result in under-estimate of memory usage
+    c. need to provide good estimate of memory usage in advance
+    d. may over-estimate memory usage
+    e. waste of memory space
+SOL..
+    A
+NOTE: the dynamic data strucure like linked list need the allocate the memory when running, 
+    but the indexes like the next node or the last node need allocate the pointers memory, 
+    which causes the waste of memory space,
+    such Phenomenon is obvivious in the situation that lot of small dynamic data structure is used
+
+2. What is the average cost of insertion in an ArrayList with N items inside
+    a. O(1)
+    b. O(NlogN)
+    c. O(N * N)
+    d. O(logN)
+    e. O(N)
+SOL.
+    E?
+NOTE:
+    if append in the end of list, then that is O(1) if not ensureCapacity happend
+    but when the ensureCapacity happends or insertion in the middle of list, then 
+    the following elements need to moved one place, then O(N)
+    thus, average -> O(N)
+
+3. which of the following is not in-space sorting
+    a. selection sort
+    b. bubble sort
+    c. insertion sort
+    d. merge sort
+    e. quick sort
+SOL.
+    D
+    WRONG AT INITIAL
+NOTE:
+    1. the definition of in-space sorting is that only extra space in constant to sort, that is O(1) in space complexity
+    2.  the selection, bubble, insertion, and quick sort usually need the extra space in constant, 
+    but merge sort need the extra space according to the size of the array (copy...etc)
+    so the merge sort
+
+4. in the process of converting "3+k/t in to postfix expression, how many stack push operation need"
+    a. 2
+    b. 0
+    c. 1
+    d. 3
+    e. 5
+SOL.
+    A
+    WRONG AT INITIAL
+NOTE: 
+    3 + k / t
+    1. 3, cuase 3 is the operation number, so output directly
+    2. + cause the stack is empty, so push it
+    3. k, operation number, output directly
+    4. / cuase / is priority than +, so push it
+    5. t operation number, output directly
+    total: push 2
+
+5. In th process of evaluation postfix expression "7b - 8" how many stack pop operation need be be performed
+    a. 3
+    b. 4
+    c. 2
+    d. 1
+    e. 0
+NOTE: 
+    for postfix expression, 
+    1. cuase 7 is an operation number, so push it 
+    2. push operation number b
+    3 
+
+5extra: how to deal with 5 + 5^2
+
+6. Which of the following is not correct in JAVA
+    a. interfaces can extends other interfaces
+    b. Classes can extend other clases
+    c. Java can have "type parameters" in classes
+    d. Classes can implement interfaces
+    e. Abstract class can extends other class
+SOL.
+    WRONG AT INITIAL
+    FUCK YOU! XJLLU
+NOTE:
+    A. 
+        interface A {}
+        interface B extends A {}
+    B. the class that are not final can extends other classes
+        class A {}
+        class B extends A {}
+    C. yes, like
+        public class A<T, K> {...}
+    D.
+        yes
+        public class A implements B {}
+    E: 
+        the abstract class A can extends other abstract class or normal class
+
+7. Which of the following data structure does not allow duplicate?
+    a. Tree
+    b. Queue
+    c. Bag
+    d. list
+    e. set
+SOL.
+    E
+NOTE:
+    well, bag is almost same like set, only less the duplications
+    tree refer to the normal binary tree, it can store the same value at different leaf node
+    queue, bag, and list can also
+
+8. Which of the following is not correct in JAVA
+    a. An Iterator interface must define a remove method
+    b. A Comparator interface must define a compareTo() method
+    c. An Iterator interfface must define a next() method
+    d. A Scanner() is an iterator
+    e. An Iterable class must implement inside it an iterator
+SOL.
+    B
+    WRONG AT INITIAL
+NOTE
+    a. the remove method has been contains in the java.util.Iterator interface
+    b. A comparator interfae msut define a compare(T o1, T o2) method 
+        and only comparable interface must define a compareTo() method
+    c. yes, of cource
+    d.  public final class Scanner implements Iterator<Strin>, Closeable {...}
+    e. the Iterable interface require iterator() method return a Iterator<T>, that is 
+        if a class is implements iterable, then it have to return a specific iterator inside
+        
+
+9. Data Insertion in a linked list is achieved by?
+    a. changing of elements
+    b. None of the other are true
+    c. changing of stacks
+    d. changing of links
+    e. changind of indices
+SOL.
+    D
+    WRONG AT INITIAL
+NOTE: 
+    WELL, FUCK YOU INUBASHIRILIX, where is your mind when reading the fucking selections
+
+10. Derice a maximum spanning tree (MST) for the following graph. What is the total cost for the MST derive
+    a. 25
+    b. 38
+    c. 21
+    d. 32
+    e. 15
+SOL.
+    12 10 6 7 3 -> 38 -> B
+    use KRUSKAL
+NOTE:
+    MAXIMUM SPANING TREE, FUCK!!!
+
+11. Which of the following is not a linear data structure 
+    a. list
+    b. priority queue
+    c. queue
+    d. tree
+    e. stack
+SOL
+    D 
+    WRONG AT INITIAL
+NOTE:
+    the linear means that the elements have one-to-one next and prev relation, the classic presentations are
+    array, list, queue, stack
+    1. Tree is obviously not linear cuase each node can have multi subnodes, that is, it is not a simple linked relation
+    2. while priority queue can be implemented by heap, but in abstract, the priority's visiting is still according to the priority relation
+
+
+12. What is the degreee of vertex V3 in the following graph
+    a. 3
+    b. 1
+    c. 0
+    d. 4
+    e. 2
+SOL.
+    D
+    WRONG AT INITIAL
+NOTE:
+    FUCK! THE EDGE THAT CONECTED TO ITSELF IS COUNT AS 2
+
+
+13. Which of the following data structure is not ordered
+    a. map
+    b. stack
+    c. queue
+    d. array
+    e. list
+SOL.
+    A
+NOTE: 
+    the ordered means that there exists a certain relation between the elements in logic, and can be 
+    visited in order, like array, list, list, stack (LIFO), queue (FIFO)
+
+14. If a hash table is well designed with few collisions, what is the average cost of each has table lookup?
+    a. O(N^3)
+    b. O(1)
+    c. None of the other are true
+    d. O(N^2)
+    e. O(N)
+SOL.
+    B 
+    WRONG AT INITIAL
+NOTE:
+    in the fine situation, the average complexity of searching, insertion, and deletion are close to constant time, that is O(1)
+    only when the conficts or the hash table return to linked list, then it will become O(N)
+
+15. What is the average performance of searching an item within a non-sorted array with N items inside
+    a. O(N * N)
+    b. O(1)
+    c. O(logN)
+    d. O(N)
+    e. O(NlogN)
+SOL.
+    D
+    WRONG AT INITIAL
+NOTE: well, linear search is what this problem wants
+
+16. Which of the following operation does not belong to the stack interface?
+    a. min
+    b. pop
+    c. push
+    d. new
+    e. top
+SOL.
+    D A
+NOTE: 
+    WTF IS NEW
+    the pop return the element on the top
+    the push operation push the new element to the top
+    the top is like peek
+    min WTF??? it does not exist
+
+17. What is returned from hasNext() when the queue is empty?
+    a. a boolean value FALSE
+    b. None of the other are true
+    c. the null value
+    d. an exception
+    e. a boolean value TRUE
+SOL.
+    A
+
+18 Assume a reasonable and efficient unordered ArraySet implementation, which of the following does not have the same cost as the others
+    a. all the other have the same cost
+    b. add O(N)
+    c. isEmpty O(1)
+    d. contains O(N)
+    e. remove O(N)
+SOL.
+    C
+NOTE: 
+    add -> O(N), we have discuss
+    contains, linear search O(N)
+    remove -> like insert, O(N)
+    isEmpty -> check if current count is 0
+
+19. Which of the following specifies the number of verices in a graph G
+    a. order of G
+    b. map of G
+    c. hash of G
+    d. index of G
+    e. incidence of G
+SOL.
+    A
+    WRONG AT INITIAL
+NOTE:
+    the order of G is number of vertices in G
+    the size refers to number of edges
+    the incidence refers to the relations between the edge and vertices
+
+20. Which of the following operations is used for rebalancing an AVL tree?
+    a. rotation
+    b. none of the other are correct
+    c. mirroring
+    d. pruning
+    e. shifting
+SOL
+    A
+    WRONG AT INITIAL
+NOTE:
+    the definition of AVL is that it maintain the balance of the high of tree, that is any left and right sub leaf have the difference in hight within 1
+    when it lose it balance, it will use left-rotate / right-rotate to rebalance the tree
+    while the other options like mirroring, purning, shifting are not the AVL's relalance strategy
+
+21. What is the average performance of searching an item within an AVL tree with M items inside?
+    a. O(1)
+    b. O(logM)
+    c. O(N*N)
+    d. O(MLogM)
+    e. O(N)
+SOL.
+    B
+NOTE:
+    AVL is a balanced binary search tree, and it search cost will need to from the root to the leaf, and the complexity is O(logM)
+
+22. What is the worst case performance for deletion of one value in an AVL tree with N nodes
+    a. O(logN)
+    b. O(1)
+    c. O(NlogN)
+    d. O(N^2)
+    e. O(N)
+SOL
+    A
+NOTE:
+    When delete a leaft, you need to locate this value from this tree (O(LogN)), then use rotate to the node on this path,
+    and the rotate number is k times with  the hight of the tree, that is O(logN)
+
+23. Using abstration and encapsulation in designing programs, which of the following is not necesaryily an outcome
+    a. modular programs
+    b. shortest code
+    c. program easier to change
+    d. localisation of errors
+    e. elimination of side effects
+SOL.
+    B
+
+24. Which of the following is not correct?
+    a. item in a set may not be duplicated
+    b. items in a bag may be duplicated
+    c. itmes in a sorted list may be duplicated
+    d. itmes in a list may be duplicated
+    e. items in a priority queue may not be ordered
+SOL.
+    E
+    
+
+25. Which of the following is related to the "information hiding" design principle
+    a. decoding
+    b. dynamic data type
+    c. privacy
+    d. watermarking
+    e. encoding
+SOL.
+    C 
+    WRONG AT INITIAL
+NOTE: 
+    the information hiding refers to hide the unnessary api outside, which means, use protect key words properly, that is private "privacy"
+
+26. What is best language to study data structure
+    a. C
+    b. Aseembly
+    c. Java
+    d. C++
+    e. None of the other are true, Langualge is not an issue
+SOL.
+    E OR C
+    FUCK YOU! XJTLU
+    WHERE IS MY C-SHARP?
+    WHERE IS MY PYTHON?
+    FUCK YOU!!!!
+
+
+27. Which of the following is TRUE for has table design?
+    a. Table size is usually prime to avoid bias
+    b. A has function is needed to generate random numbers
+    c. information hiding is used to hide keys
+    d. None of the others
+    e. Huffman coding is applied in the design
+SOL.
+    A
+NOTE:
+
+
+28. Whic h of the follwoin is TRUE for has table design?
+    A. Table size is usually prime to avoid bias
+    B. A hash fuction is needed to geenerate random numbers
+    C. information hiding is used to hide keys
+    d.  None of the others
+    E: huffman coding is applied in the design
+SOL.
+    A
+NOTE:
+    A. THE size of hashtable are usually prime cause it avoid hash function's computing index
+        the prime size and benefit spread the index values, and decrease the time of collisions
+    B.  A hash function is nnede to generate random numbers
+        the main function of hash function is to project the input index to antoher index value, instead of generate random numbers
+        has function need get the same output in the same input
+    C. Informatin hiding is use to hide keys
+        no, Information hiding refers to hide unnessary apis, 
+    D.  fuckyou 
+    E: Huffman coding is applied in the design
+         WRONG, huffman is a zip algorithm, it has no relation with has algorithm
+
+29. What is the outcome of post order traversal of the follwing tree?
+ |   |   |    | 63 |    |
+ | - | - | -- | -- | -- |
+ |   | 9 |    |    | 77 |
+ | 6 |   | 39 |    |    |
+
+6, 39, 9, 77, 63
+NOTE: steps
+    left first, then right, then root
+    first find 63, then its sub tree 9, then it's right 6 [6]
+    left, [6 39]
+    return to 9 [6 39 9]
+    right [6 39 9 77]
+    return to 63 [6 39 9 77 63]
+
+
+30. correct post-order depth first traversal
+         70
+        /  \
+      20    80
+     /  \
+   10    50
+        /  \
+      30    60
+        \
+        40
+SOL.
+    10 -> 40 -> 30 -> 60 -> 50 -> 20 -> 80 -> 70
+NOTE: 
+    the sequence of post-order traversal
+    traversal the left sub tree first, then traversal the right sub tree, and then visited the current node
+so, steps:
+    start from 70
+    left, and find the sub tree 20
+    left, find the sub tree 10   [10]
+    right, find the sub tree 50
+    left, find the sub tree 30
+    left, null does not account
+    right, count 40  [10 40]
+    return to 30     [10 40 30]
+    return to right of subtree 50 -> 60 [10 40 30 60]
+    return to root 50 [10 40 30 60 50]
+    return to root 20 [10 40 30 60 50 20]
+    return to right of root 70 -> 80 [10 40 30 60 50 20 80]
+    return to root 70 [10 40 30 60 50 20 80 70]
+
+31. implementing the delete operation of a binary min-heap abstract data type, assuming the element to be deleted is never in the last level.
+    NOTE that you sequence must absolutely mathc teh step numbers to the left-most column of te table otherwise 3 marks will be deduced for each incorrect match
+
+|       | correct seqence number | pick number from here                                                                                     |
+| ----- | ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| step1 | 2                      | 1 repeat step 3 to 4 until the node reaches its correct position                                        |
+| step2 | 4                      | 2 find the index for the elements to be deleted                                                          |
+| step3 | 7                      | 3 if the replaced element is smaller than any of its child node, swap the element with its greatest child |
+| step4 | 1                      | 4 Take out the last element from the last level of the heap and replace the index with this element       |
+| step5 | 6                      | 5 replaced the root element in the heap with the found indexed element                                    |
+|       |                        | 6 output updated binary heap                                                                               |
+|       |                        | 7 if the replaced element is greater than any of its child node , swap the element with its smallest child |
+|       |                        | 8 Add the indexed element to the bottom leaf of the leap                                                  |
+
+in implementing the remove elements function of a bag abstract data type.  
+Note that your sequence must absolutely match the step numbers to the left-most column of the table  
+otherwise 3 marks will be deducted for each incorrect match.  
+|       | no | options                                                                                            |
+| ----- | -- | -------------------------------------------------------------------------------------------------- |
+| step1 | 7  | 1 if element not found upon reacing end of colletion, return false                                 |
+| step2 | 3  | 2 Otherwise, copy last element on to target element's localtion and reduce collection's index by 1 |
+| step3 | 2  | 3 loop to chck each element in the collection aginst target value                                  |
+| step4 | 6  | 4 if element is found upon reaching end of collection, return true                                 |
+| step5 | 4  | 5 Otherwise, remove element that matches target value                                              |
+|       |    | 6 repeat step 2 to 3 for reamining target values                                                   |
+|       |    | 7 User enters target value to remove                                                               |
+|       |    | 8 repeat step 2 to 5 for remaining target values                                                   |
+

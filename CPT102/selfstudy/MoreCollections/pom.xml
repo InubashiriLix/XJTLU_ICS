@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+     http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 项目基本信息 -->
+    <groupId>com.example</groupId>
+    <artifactId>SimplifiedProject</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <!-- <dependencies> -->
+    <!--     <dependency> -->
+    <!--         <groupId>ArrayList.com</groupId> -->
+    <!--         <artifactId>ArrayList-pack</artifactId> -->
+    <!--         <version>1.0</version> -->
+    <!--     </dependency> -->
+    <!-- </dependencies> -->
+
+    <!-- 简化源码目录配置 -->
+    <build>
+        <!-- 将源码目录改为 src/ 而不是默认的 src/main/java -->
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <!-- 编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>21</source>   <!-- Java 编译版本：根据你需要选择 -->
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            <!-- 可选：添加 exec 插件方便运行 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+

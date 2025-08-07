@@ -1,0 +1,16 @@
+using System;
+using System.Collections.Generic;
+
+namespace ns_abs_ArrayList
+{
+    class Pack<T>
+    {
+        private int size
+        {
+            get { return size; }
+            set { size = Math.Min(1, Math.Max(value, size)); }
+        }
+
+        public Pack(T size) { }
+    }
+}

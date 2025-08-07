@@ -1,0 +1,54 @@
+* Pre-order (前序)
+** order: 
+   ROOT -> L -> R
+** code
+*** recurrsion
+    @code java
+    public boolean pre_order_search(Node n, Node target) {
+        if (n == null) return false;
+        if (Objects.equals(n, target)) return true;
+        // else
+        return pre_order_search(n.left) || pre_order_search(n.right);
+    }
+    @end
+*** iteration
+    @code java
+    public boolean pre_order_search(Node n, Node target) {
+        Stack stack = new Stack<Node>();
+        stack.push(root);
+        while (!stack.isEmpty())
+    {
+            n = stack.pop();
+            visit(n);
+            if (n.right != null) stack.push(n.right);
+            if (n.left != null) stack.push(n.left); 
+        }
+    }
+    @end
+
+
+* Post-order (后序)
+** L -> R -> ROOT
+** code
+*** recurrsion
+    @code java
+    public boolean post_order_search(Node n, Node target) {
+        if (n == null) return flase;
+        if ( post_order_search(n.left, target) || post_order_search(n.right, target)) return true;
+        return Objects.equals(n, target);
+    }
+    @end
+*** iteration
+    @code java
+    public  void post_order_search(Node n, Node target) {
+        var stack  = new Stack<Node>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            n = stack.pop();
+            visit(n);
+            if (n.left != null) stack.push(n.left);
+            if (n.right != null) stack.push(n.right);
+        }
+    }
+    @end
+

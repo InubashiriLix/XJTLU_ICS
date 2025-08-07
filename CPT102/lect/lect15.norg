@@ -1,0 +1,152 @@
+* Linked Stack and Queues
+  - A Stack using a linked List with a header
+  - A queue using a linked List with a header
+
+* A Stack using a linked List with a header
+** A Linked Stack: first in last out, last in first out
+   just like a stack of books
+** (x) Implement:
+   - 5week/MoreCollections/src/Stack/LinkedListStack.java
+   @code java
+   package Stack;
+
+   import LinkedList.LinkedList;
+   import java.util.Iterator;
+
+   public class LinkedListStack<E> extends LinkedList<E> {
+       /*
+     * the method below has been implemented in the LinkedList
+     * int size();
+     * boolean isEmpty();
+     * E get(int index);
+     * void add(int index, E item);
+     * void add(item);
+     * E set(int index, E item);
+     * boolean remove(Object item);
+     * E remove(int index);
+     * Iterator<E> iterator();
+     */
+
+       public boolean push(E item) {
+           return super.add(item);
+       }
+
+       public E peek() {
+           return get(super.size() - 1);
+       }
+
+       public E pop() {
+           return super.remove(super.size() - 1);
+       }
+
+       public LinkedListStack() {
+
+       }
+
+       public LinkedListStack(E item) {
+           super.add(super.size(), item);
+       }
+   }
+   @end
+
+   - ( ) WARNING: this code is not same as ppt, so continue...
+   - another thing I must say is:
+     fuck you! Guan! your muther fucking ppt do not provide complete iterator code, especially in this chapter!
+     fuck you! fuck you! Even I need to implement a single iterator called NodeIterator in the fucking inner class Node
+     FUCK YOU
+
+* A queue using a linked List with a header
+  @code java
+  package Queue;
+
+  import java.util.AbstractQueue;
+  import java.util.Iterator;
+
+  public class LinkedQueue<E> extends AbstractQueue<E> {
+      private static class Node<E> {
+          public E data;
+          public Node<E> next;
+
+          public int size() {
+              int cnt = 0;
+              var temp = this;
+              while (temp.data != null) {
+                  cnt++;
+                  temp = temp.next;
+              }
+              return cnt;
+          }
+
+          public Node(E data, Node<E> next) {
+              this.data = data;
+              this.next = next;
+          }
+      }
+
+      private Node<E> front = null;
+      private Node<E> back = null;
+
+      public LinkedQueue() {
+
+      }
+
+      public int size() {
+          if (front == null)
+          return 0;
+          return front.size();
+      }
+
+      public boolean isEmpty() {
+          return front == null;
+      }
+
+      public E peek() {
+          if (front == null) {
+              return null;
+          } else
+          return front.data;
+
+      }
+
+      public E poll() {
+          if (front == null)
+          return null;
+          E val = front.data;
+          front = front.next;
+          if (front == null) {
+              back = null;
+          }
+          return val;
+      }
+
+      public boolean offer(E item) {
+          if (item == null)
+          return false;
+          // @SuppressWarnings("unchecked")
+          if (front == null) {
+              this.back = new Node<E>(item, null);
+              front = back;
+          } else {
+              this.back.next = (new Node<E>(item, null));
+              back = back.next;
+          }
+          return true;
+      }
+
+      public Iterator<E> iterator() {
+          return new Iterator<E>() {
+              private Node<E> cursor = front;
+
+              public E next() {
+                  E val = cursor.data;
+                  cursor = cursor.next;
+                  return val;
+              }
+
+              public boolean hasNext() {
+                  return cursor != null;
+              }
+          };
+      }
+  }
+  @end

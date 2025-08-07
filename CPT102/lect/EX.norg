@@ -1,0 +1,7 @@
+* How to use for + specific Iterator to iterator an collection
+  @code java
+  for (Iterator<E> it = coll.Itr(); it.hasNext();) {
+      var shit = it.next();
+      // do somthing there
+  }
+  @end

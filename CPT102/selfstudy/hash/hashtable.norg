@@ -1,0 +1,100 @@
+* Hashtable 笔记
+
+** 1. 基本画像
+
+   @code text
+   | 特性                | 描述                                                     |
+   |---------------------|----------------------------------------------------------|
+   | 诞生年代            | JDK 1.0                                                  |
+   | 所在包              | java.util                                                |
+   | 线程安全            | 是（所有核心方法 synchronized；全表锁）                 |
+   | null 支持           | 不允许键和值为 null                                      |
+   | 底层结构            | 数组 + 单向链表                                          |
+   | 负载因子默认值      | 0.75                                                     |
+   | 扩容策略            | newCapacity = oldCapacity * 2 + 1                        |
+   | 迭代器              | Enumeration（非 fail-fast）与 Iterator（fail-fast）      |
+   @end
+
+** 2. 核心字段
+   @code java
+   transient Entry<?,?>[] table;   // 桶数组
+   transient int count;            // 已存元素数量
+   int threshold;                  // 触发 rehash 的阈值
+   float loadFactor;               // 负载因子
+   private transient int modCount; // 结构修改次数
+   @end
+
+   Entry 结构:
+   @code java
+   static class Entry<K,V> implements Map.Entry<K,V> {
+   final int hash;
+       final K key;
+       V value;
+       Entry<K,V> next;
+   }
+   @end
+
+** 3. 散列流程
+   1. 计算正整数哈希: `hash = key.hashCode() & 0x7FFFFFFF`
+   2. 取模定位桶: `index = hash % table.length`
+   3. 在链表中顺序比较 `(hash == e.hash && key.equals(e.key))`
+
+** 4. rehash 规则
+   - 触发: `count >= threshold`
+   - 新容量: `oldCap * 2 + 1`
+   - 重新取模搬迁所有 Entry，时间复杂度 O(n)
+
+** 5. 同步机制
+   - 每个公共方法 `synchronized`，锁对象为 `this`
+   - 读写同锁，读多写少场景性能差
+
+** 6. 枚举与迭代器
+   @code text
+   | 接口         | 生成方式                  | fail-fast | 线程安全前提           |
+   |--------------|---------------------------|-----------|------------------------|
+   | Enumeration  | elements(), keys()        | 否        | 调用方需 synchronized  |
+   | Iterator     | entrySet().iterator()     | 是        | 调用方需 synchronized  |
+   @end
+
+** 7. 时间复杂度
+   @code java
+   | 操作                 | 平均 | 最坏 |
+    |----------------------|------|------|
+    | get / put / remove   | O(1) | O(n) |
+    | rehash               | —    | O(n) |
+    | 遍历                 | O(n) | O(n) |
+   @end
+
+** 8. 与其他 Map 对比
+   @code java
+   | 维度           | Hashtable            | HashMap                    | ConcurrentHashMap                |
+   |----------------|----------------------|----------------------------|----------------------------------|
+   | 同步           | 内置 synchronized    | 不同步                     | 分段锁 + CAS                     |
+   | null 支持      | 否                   | 允许 1 null 键 / 多 null 值| 否                               |
+   | 扩容           | 2x + 1 取模          | 2^n 位运算                 | 同 HashMap                       |
+   | 最坏碰撞复杂度 | O(n) 链表            | JDK 8 起 O(log n)          | O(log n) 并发                    |
+   @end
+
+** 9. 简单性能对比示例
+   @code java
+   Map<Integer,Integer> map  = new Hashtable<>();
+   Map<Integer,Integer> cmap = new ConcurrentHashMap<>();
+
+   Runnable task = () -> {
+       for (int i = 0; i < 1_000_000; i++) {
+           map.put(i, i);      // 替换为 cmap.put(i, i) 进行对比
+       }
+   };
+
+   long t = System.nanoTime();
+   IntStream.range(0, 4).parallel().forEach(i -> task.run());
+   System.out.println("耗时(ms): " + (System.nanoTime() - t) / 1_000_000);
+   @end
+
+** 10. 实战建议
+   - 新代码: 优先 HashMap 或 ConcurrentHashMap  
+   - 维护旧代码:  
+   - Enumeration 不是 fail-fast  
+   - 保持键的 hashCode/equals 契约  
+   - 合理设置初始容量减少 rehash
+

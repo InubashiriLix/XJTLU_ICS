@@ -1,0 +1,90 @@
+* lect1 not done {:lect01:}
+
+* lect2 Overview of Data Structure Programming Topics {:lect02:}
+** Programming with Libraries
+** Collections
+** Programming with Lists of Objects
+** The Generic
+
+* lect3 Collections and List {:lect03:}
+**  Collections Interface and Class extends mode
+** Methods
+** The ArrayList:
+** Using List and ArrayList
+** Iterator
+
+* Lect4 More Collections {:lect04.norg:}
+** Bag
+** Sets
+** Stacks
+** Map and Application
+
+* Lect5 Quees and Iterators {:lect05.norg:}
+** Examples of using Map
+** Queues and Priority Queues
+** Class/Interfaces that accompany collections
+
+* Lect 6  {:lect06.norg:}
+  - Sorting collections
+  - Comparators and Comparables;
+** Sorting Collections
+** Comparators and Comparables
+** The different between the Comparable and Comparator
+
+* Lect 7 - 9 {:lect0789.norg:}
+** Implementing Collections
+** Comparators
+** Exceptions
+** Implementing Collections
+** Defining ArrayList
+** Abstract Classes
+*** Abstract ArrayList:
+*** ArrayList extends AbsArrayList
+** Implementing ArrayList
+*** Iterators
+** ArrayList 迭代器 Q&A
+
+* Lect 10 Analysis Costs {:lect10.norg:}
+  - Cost of operations and measuring efficiency
+  - ArrayList: retrieve, remove, add
+  - ArraySet: contains, remove, add
+*** How to calculate the time cost
+*** Benchmarking
+*** Algorithm
+*** Big O Notation
+** ArrayList: retrieve, remove, add Costs
+   ~ get
+   ~ remove
+   ~ ensureCapacity
+   ~ Sum
+** ArraySet: contains, remove, add
+** Execrices
+
+* Lect 11 {:lect11.norg:}
+** Recursion
+*** Recursive function
+*** Factorial
+*** Fibonacci
+*** Recursion vs Iteration
+*** Exercise:
+
+* Lect 12 Linked Structure {:lect12.norg:}
+** CallBack ArrayList ops costs
+** test method:
+** Queues
+** 队列实现比较
+** Linked List
+
+* Lect13 - 14 {:lect13_14.norg:}
+** List Using Linked Nodes with Headers
+*** Implementation
+** A collectino class - Linked List
+*** Implementation (including the methods)
+
+* Lect 15 Linked Stack and Queues {:lect15.norg:}
+** A Stack using a linked List with a header
+*** (x) Implement:
+** A queue using a linked List with a header
+*** Implementation
+
+* ( ) Lect16 Not done

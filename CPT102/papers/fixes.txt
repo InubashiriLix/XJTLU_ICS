@@ -1,0 +1,158 @@
+题目
+=====
+已知运算符优先级：
+  最高  ( )      （括号）
+        ^        （右结合）
+        *  /     （左结合）
+        +  -     （左结合）
+  最低  一元负号 “neg”   （写成前缀 -x，右结合）
+
+请对下列表达式完成 3 项任务：
+
+  -((m / n) + (p - q ^ r)) * (s + t / u)
+
+任务
+-----
+1. 写出对应的后缀（Postfix / RPN）表达式。
+2. 转换过程中，向 **运算符栈** 执行了多少次 push？
+3. 转换过程中，对 **运算符栈** 执行了多少次 pop？（包括扫描结束后清栈的 pop）
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+^
+[NEG] 1 push
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+  ^
+[((NEG] 3 push
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+     ^
+[/((NEG] 4 push
+m
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+        ^
+[(NEG] 4 push 2 pop
+m n / 
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+          ^
+[+(NEG] 5 push 2 pop
+m n /
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+            ^
+[(+(NEG] 6 push 2 pop
+m n / p
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                 ^
+[-(+(NEG] 7 push 2 pop
+m n / p q
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                     ^
+[^-(+(NEG] 8 push 2 pop
+m n / p q r 
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                      ^
+[+(NEG] 8 push 5 pop
+m n / p q r ^ - 
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                       ^
+[NEG] 8 push 7 pop
+m n / p q r ^ - + 
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                         ^
+[*NEG] 8 push 7 pop
+m n / p q r ^ - + 
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                           ^
+[(*NEG] 9 push 7 pop
+m n / p q r ^ - + 
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                                ^
+[+(*NEG] 10 push 7 pop
+m n / p q r ^ - +  s t
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                                  ^
+[/+(*NEG] 14 push 7 pop
+m n / p q r ^ - +  s t
+
+-((m / n) + (p - q ^ r)) * (s + t / u)
+                                     ^
+[*NEG] 14 push 10 pop
+m n / p q r ^ - + NEG s t u / + * 
+
+m n / p q r ^ - + NEG s t u / + *
+  ^
+[m n] push 2
+
+m n / p q r ^ - + NEG s t u / + *
+    ^
+[m/n] pop 2 push 2 + 1 = 3 
+
+m n / p q r ^ - + NEG s t u / + * 
+          ^
+[m/n p q r] pop 2 push 3 + 3 = 6
+
+m n / p q r ^ - + NEG s t u / + * 
+            ^
+[m/n p q^r] pop 4 push 6 + 1 = 7
+
+m n / p q r ^ - + NEG s t u / + * 
+              ^
+[m/n p-q^r] pop 6 push 7 + 1 = 8
+
+m n / p q r ^ - + NEG s t u / + * 
+                ^
+[m/n+p-q^r] pop 10 push 8 + 1 = 9
+
+m n / p q r ^ - + NEG s t u / + * 
+                   ^
+[-(m/n+(p-q^r))] pop 11 push 9 + 1 = 10
+
+m n / p q r ^ - + NEG s t u / + * 
+                          ^
+[-(m/n+(p-q^r)) s t u] pop 11 push 10 + 3 = 13
+
+m n / p q r ^ - + NEG s t u / + * 
+                            ^
+[-(m/n+(p-q^r)) s t/u] pop 13 push 13 + 1 = 14
+
+m n / p q r ^ - + NEG s t u / + * 
+                              ^
+[-(m/n+(p-q^r)) s+t/u] pop 15 push 14 + 1 = 15
+
+m n / p q r ^ - + NEG s t u / + * 
+                                ^
+[-(m/n+(p-q^r))*(s+t/u)] pop 17 push 15 + 1 = 16
+
+
+
+5. In th process of evaluation postfix expression "7b - 8" how many stack pop operation need be be performed
+    a. 3
+    b. 4
+    c. 2
+    d. 1
+    e. 0
+
+
+7 b - 8
+  ^
+[7 b] push 2
+
+7 b - 8
+    ^
+[7-b] push 3 pop 2
+
+7 b - 8
+      ^
+[7-b 8] push 4 pop 2
+

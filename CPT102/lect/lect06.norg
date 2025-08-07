@@ -1,0 +1,127 @@
+* Lect 6 
+  - Sorting collections
+  - Comparators and Comparables;
+
+* Sorting Collections
+** The soring of collections are common, like 
+   - List
+   - Map, Set, Stack, Queues, are not avaliable for sorting cause they are not ordered
+** Sort them with Natual Order
+   - "Natrual order of the values"
+   - for the String: alphabet order
+   - for the Integer, Double: numeric order
+   - but for order like faces in the crowd, the natrual order is what you define, and no order if you do not sort it
+
+* Comparators and Comparables
+** Comparable 
+*** if you got a class that implements the Comparable<T> Interface
+    - Object from tha that calss have a "natural order"
+    - Objects can be compared using the CompareTo() method
+    - Collections.sort() can sort Lists of those objects automatically
+*** Comparable<T> is an Interface
+    - Requires
+    - compareTo(T ob) -> int
+    - ob1.compareTo(ob2)
+      1. returns -ve if ob1 ordered before ob2
+      2. return 0 if ob1 ordered with ob2
+      3. return +ve if ob1 ordered after ob2
+** Comparator
+*** An object htat can compare other objects
+    - Comparator\<T> is an Interface 
+    - and the generic T is a class that implements Comparable
+    - it requires:
+      1. int compareTo(T ob1, T ob2);
+* The different between the Comparable and Comparator
+** Comparable
+   - the Comnparble define the compare rule for itself and other instance with same class
+   - can be sorted by Collections.sort() and Arrays.sort()
+
+** Comparator
+   - the comparator can compare two instance which have implements comparable interface
+
+** Examples: 
+   - Comparable:
+   @code java
+   package Comparable;
+
+   import java.lang.Comparable;
+   import java.util.Comparator;
+
+   public class FaceComparable implements Comparable<FaceComparable> {
+       private double size;
+       private double w;
+       private double h;
+
+       public FaceComparable(double w, double h) {
+           this.w = w;
+           this.h = h;
+       }
+
+       public double size() {
+           this.size = w * h;
+           return this.size;
+       }
+
+       @Override
+       public int compareTo(FaceComparable other) {
+           if (this.size() < other.size())
+           return -1;
+           else if (this.size() > other.size())
+           return 1;
+           else
+           return 0;
+       }
+   }
+
+   @end
+
+   - Comparator 
+   @code java
+   package Comparable;
+
+   import java.lang.Comparable;
+   import java.util.Comparator;
+
+   import Comparable.FaceComparable;
+
+   public class FaceComparator implements Comparator<FaceComparable> {
+
+       @Override
+       public int compare(FaceComparable f1, FaceComparable f2) {
+           if (f1.size() < f2.size())
+           return -1;
+           else if (f1.size() > f2.size())
+           return 1;
+           else
+           return 0;
+       }
+   }
+   @end
+
+   - Implements
+   @code java
+   package Comparable;
+
+   import java.util.Collections;
+   import java.util.List;
+   import java.util.ArrayList;
+
+   public class FaceExample {
+       private List<FaceComparable> faces = new ArrayList<>();
+
+       public FaceExample() {
+           faces.add(new FaceComparable(1.0, 2.0));
+           faces.add(new FaceComparable(2.0, 3.0));
+           faces.add(new FaceComparable(3.0, 4.0));
+           faces.add(new FaceComparable(4.0, 5.0));
+
+           Collections.sort(faces, new FaceComparator());
+
+           for (var face : faces) {
+               System.out.println("Face size: " + face.size());
+           }
+       }
+
+   }
+   @end
+

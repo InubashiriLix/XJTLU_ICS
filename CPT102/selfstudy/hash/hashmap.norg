@@ -1,0 +1,152 @@
+* HashMap
+** Core Freatures
+*** implementation interface:
+    Map\<K, V>
+*** Basic Structure
+    Array + linkedTable + redBlackTree
+*** Thread Safety
+    Collections.synchronizedMap(new HashMap<K, V>())
+    ConcurrentHashMap()
+*** key / value
+    @code text
+    | key           | value                            |
+    | ------------- | -------------------------------- |
+    | only one null | multiple null values are allowed |
+    @end
+*** iteration sequence:
+    no order, it is only related to the table size and the hash of key, 
+    the sequence will change when the table is resized.
+** Core components
+   @code java
+   transient Node<K, V>[] table;   // barral array (the length is always power of 2)
+   transient int size; // the number of key-value pairs had stored
+   int threadshold; //  the threshold when resize = capacity * laodFactor
+   final float loadFactor; // 0.75f by default
+   static final int TREEIFY_THRESHOLD = 8; // linkedlist >= 8, then treeify
+   static final int UNTREEIFY_THRESHOLD = 6; // the threshould when the tree becomes a linkedList
+   @end
+*** Node:
+    @code java
+    static class Node<K, V> implements Map.Entry<K, V> {
+        final int hash; // the hash value of key
+        final K key; // the key
+        V value; // the value
+        Node<K, V> next; // the next node in the linked list
+        Node<K, V> parent; // the parent node in the red-black tree
+        boolean red; // true if this node is red in the red-black tree
+    }
+    @end
+** HashCode and equals
+*** step1 
+    object calculate hashCode()
+    the hashcode is the memory address of the object by default, used as coarse screeening
+*** step2
+    hash spreader: 
+    use (h ^ (h >>> 16)) to spread the high and low bits, in case of collision
+*** index location
+    (n - 1) & hash (n as the array size)
+*** compare after collision
+    use Objects.euqals to match the key
+*** note:
+    if two objects has a.equals(b) == true, then hashcode must be equal; but the same hashcode does not mean a.equals(b) == true
+    example
+    @code java
+    public final class Point {
+        private fianl int x, y;
+        private final int x, y;
+        @Override public int hashCode() {
+            return Objects.hash(x, y);
+        }
+        @Override public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Point)) return false;
+            Point p = (Point) o;
+            return x == p.x && y == p.y;
+        }
+    }
+    @end
+
+
+** classical operation flow 
+*** put(K, V):
+    ~ calculate hash -> allocation the barral index
+    ~ if the target is empty, then put the node directly
+    ~ else iteration like below
+      tree node -> use red-black tree insertion
+      linkedList node -> compare the hash euqality, if match, then overcast, else append in the end
+    ~ insertion and then decision
+      if current barral array list >= TREEIFY_THRESHOLD and barral size >= 64 -> TREEIFY 
+    ~ if size++ >= threshould, then resize
+      new vol *= 2
+      recalculate each node's index (do not calcualte the hashcode, only the high bits)
+      the sequence of the node will change
+*** get(Object key)
+    same:
+    ~ hash code
+    ~ index (high bits)
+    ~ iteration in the barral
+*** remove(Object key)
+    ~ locate in the barral first, then delete node in the linked list or the tree, 
+    ~ for the tree, use binary search to locate
+      for the linked list, use iteration
+
+** details
+*** the iteration sequence is not the insertion sequence
+*** the sequence will change after resize
+*** fail-fast
+    if the structure is changed during iteration (except for deletion in the iterator), the iterator wil raise ConcurrentModuficationException
+*** Concurrent Interation
+    need mannal synchronization or use ConcurrentHashMap; or it will lead to data race condition
+
+*** the loadFactor and volumn setting
+    ~ 0.75 loadFactor is the balance between memory and performance
+    ~ the vol will maintain 2^n, which will maintain the (n - 1)&hash, and only depend on the the node with highest hash to decide use old array or the new array, avoiding calcualte hash for all the nodes
+** location
+   @code java
+   int spread = hash ^ (hash >>> 16);   // ① 扰动：把高 16 位混进低 16 位
+   int idx    = (n - 1) & spread;       // ② 定位：低 m 位当下标，m = log2(n)
+   @end
+*** why only one high space can lcate the position?
+    assuming that the old vol is 16 (01_00_00_b) and the new vol 32 = (10_00_00_b)
+    the old index use the lower 4 bits, the new index use the lower 5 bits
+    like 
+    @code text
+    | 32-bit spread | bit4 | bit 3 2 1 0 | old index (4) | new index (5) |
+    | ------------- | ---- | ----------- | ------------- | ------------- |
+    | 0b...0xxxx    | 0    | xxxx        | 0b xxxx       | 0b 0xxxx      |
+    | 0b...1xxxx    | 1    | xxxx        | 0b xxxx       | 0b 1xxxx      |
+    @end
+
+    when the vol x 2, then only one bits is nneded -> bit 4
+    and it is the left most between the old mask, 
+    the bits in the barral is 0 or 1
+    0 => reamain int the original barral i
+    1 => move to the barrai i + oldCap(i + 16)
+    fuck the link is that cut the original link into two and no need to calculate the new hash
+
+** Complexity:
+   @code text
+   | operation        | average complexity | worst complexity               |    |    |
+   | ---------------- | ------------------ | ------------------------------ | -- | -- |
+   | put(key)         | O(1)               | O(n) -> linked O(logn) -> tree |    |    |
+   | put(key, val)    | O(1)               | O(n) / O(logn)                 |    |    |
+   | remove(key)      | O(1)               | O(n) / O(logn)                 |    |    |
+   | containsKey(key) | O(1)               | O(n) / O(logn)                 |    |    |
+   | for-each         | O(n)               | O(n)                           |    |    |
+   @end
+   in the condition that loadFactor <= 0.75f
+    key hashCode is 良好散列——碰撞概率~1/n
+*** barral inner complexity
+    @code text
+    | barral type  | query / insert / deletion |
+    | ------------ | ------------------------- |
+    | linked list  | O(k) (iteration in order) |
+    | redBlackTree | O(log k) AVL              |
+    @end
+*** cost 
+    @code text
+    | operation           | cost  |
+    | ------------------- | ----- |
+    | resize()            | O(n)  |
+    | fail-fast detection | O(1)  |
+    @end

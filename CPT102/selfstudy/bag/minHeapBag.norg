@@ -1,0 +1,142 @@
+* HeapBag (Multiset + Min-Heap) Notes
+
+  The structure combines a **count hash-table** with a **binary min-heap** so that:
+  - add / remove of an element run in *O(log k)* only when that element
+    first appears or finally disappears (k = distinct element count);
+    otherwise they are *O(1)* like a normal HashBag.
+  - peekMin is *O(1)*, pollMin is *O(log k)*.
+
+** 1. Core fields
+   @code text
+   | name | type                       | stores                                    |
+   |------|----------------------------|-------------------------------------------|
+   | cnt  | Map<E,Integer>             | frequency of each distinct element        |
+   | heap | ArrayList<E> (binary heap) | every distinct element **once**           |
+   | idx  | Map<E,Integer>             | element -> current index in *heap*        |
+   | total| int                        | total number of items (sum of cnt vals)   |
+   @end
+
+** 2. Helpers
+   @code java
+   /* swap two indexes and keep idx in sync */
+   void swap(int i,int j){
+       E a=heap.get(i), b=heap.get(j);
+       heap.set(i,b);  heap.set(j,a);
+       idx.put(a,j);   idx.put(b,i);
+   }
+   @end
+   `siftUp(i)` and `siftDown(i)` are standard heap operations; every
+   internal swap *must* call `swap()` to repair `idx`.
+
+** 3. API step-by-step
+*** add(e)  (+1)
+    1. old = cnt.getOrDefault(e,0)
+    2. cnt.put(e, old+1)
+    3. total++
+    4. IF old==0               ; first appearance
+    4.1 heap.add(e)
+    4.2 idx.put(e, heap.size()-1)
+    4.3 siftUp(last)
+
+    *Complexity*
+    @code text
+    | case              | time          | heap action |
+    |-------------------|---------------|-------------|
+    | new element       | O(log k)      | append+up   |
+    | already in bag    | O(1) average  | none        |
+    @end
+
+*** add(e,n)
+    Same as above but add *n* and skip if n<=0.
+    If old==0 the heap path still runs once.
+
+*** remove(e)  (-1)
+    1. old = cnt.get(e); if null -> return 0
+    2. removed = 1 ; newCnt = old-1
+    3. total--
+    4. IF newCnt==0        ; last copy gone
+    4.1 pos = idx.remove(e)
+    4.2 swap(pos,last); heap.remove(last)
+    4.3 siftUp(pos); siftDown(pos)
+    4.4 cnt.remove(e)
+    ELSE
+    4.5 cnt.put(e,newCnt)
+    5. return 1
+
+    *Complexity*
+    @code text
+    | case                   | time          | heap action    |
+    |------------------------|---------------|----------------|
+    | count still >0         | O(1) average  | none           |
+    | count hits 0           | O(log k)      | removeAt(pos)  |
+    @end
+
+*** remove(e,n)
+    Identical flow but with `removed = min(n, old)` and `newCnt = old-removed`.
+    Heap removal only when newCnt==0.
+
+*** count(e)
+    `return cnt.getOrDefault(e,0)` — O(1)
+
+*** contains(e)
+    `return cnt.containsKey(e)`    — O(1)
+
+*** size()
+    `return total`                 — O(1)
+
+*** isEmpty()
+    `return total==0`              — O(1)
+
+*** peekMin()
+    `return heap.isEmpty()?null:heap.get(0)` — O(1)
+
+*** pollMin()
+    1. if heap empty -> null
+    2. min = heap.get(0)
+    3. remove(min,1)        ; reuse logic above
+    4. return min
+    *Worst time*: O(log k) when min count hits 0; otherwise O(1)
+
+*** uniqueSet()
+    `return cnt.keySet()` — O(1) view (changes with bag)
+
+*** iterator()
+    Outputs each element *count(e)* times:
+    Internal state `(entryIt, currentEntry, remaining)`.
+    Overall cost O(total). `Iterator.remove()` delegates to
+    `HeapBag.remove(e)` (single piece).
+
+** 4. Complexity summary*
+   @code text
+   | operation                | average            | worst (hash flood) |
+   |--------------------------|--------------------|--------------------|
+   | add / remove (count stay)| O(1)               | O(k)†              |
+   | add new / remove last    | O(log k)           | O(k)†              |
+   | count / contains         | O(1)               | O(k)†              |
+   | peekMin                  | O(1)               | O(1)               |
+   | pollMin                  | O(log k)           | O(k)†              |
+   | iterator (all items)     | O(total)           | O(total)           |
+   @end
+
+   † hash flood: all keys collide; HashMap degenerates to linked list.
+   Java 8+ uses treeified buckets, bounding it to O(log k).
+
+** 5. Update rules cheat-sheet
+   @code java
+   | event                        | cnt | heap | idx      |
+   |------------------------------|-----|------|----------|
+   | add existing element         | +1  |  –   | –        |
+   | add first time element       | +1  | add  | + new pos|
+   | remove but still >0          | -1  |  –   | –        |
+   | remove dropping to 0         | del | swap | rm e, fix|
+   | pollMin count>1              | -1  |  –   | –        |
+   | pollMin count→0              | del | swap | rm e, fix|
+   @end
+   (* “swap” means swap with last + siftUp/Down, updating idx every swap.)
+
+** 6. When NOT to choose HeapBag
+   - You never need min/max queries — plain HashBag cheaper.
+   - k (distinct) approaches n (total) and memory is tight
+     (heap + idx doubles key overhead).
+   - You need ordering by **frequency** instead of element value.
+

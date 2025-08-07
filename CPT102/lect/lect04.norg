@@ -1,0 +1,268 @@
+* More Collections: 
+  - Bag
+  - Set
+  - Stacks
+  - Maps
+
+* Bag
+** A Bag is a collection with
+   - no struct or order maintained
+   - no access constraints (acess any item any time)
+   - duplicates allowed (diff by Set)
+** Minimal Ops
+   - boolean add(value)  (true if the collection is changed)
+   - boolean remove(value) (true if the collection is changed)
+   - contains(value) (true if the elements is in the bag)
+   - T findElement(value) return a matching item
+
+*** and 
+    - size()
+    - isEmpty()
+    - iterator()
+    - clear()
+    - addAll()
+    - removeAll()
+    - containsAll()
+
+** Applications
+   - no need to order a collection, and duplicates possible
+   - eg. the books in book collection
+
+   - */⚠️There is NO STANDARD IMPLEMENTATIONS OF BAGS!!!!/*
+
+* Sets
+** Set is a collection with:
+   - no struct or order maintained
+   - no access constraints (acess any item any time)
+   - duplicates NOT allowed (diff by Bags)
+
+** Ops
+   - boolean add(value)  (true if the collection is changed)
+   - boolean remove(value) (true if the collection is changed)
+   - contains(value) (true if the elements is in the bag)
+   - T findElement(value) return a matching item
+
+*** and 
+    - size()
+    - isEmpty()
+    - iterator()
+    - clear()
+    - addAll()
+    - removeAll()
+    - containsAll()
+*** Basicalls as common as Lists
+
+* Stacks
+** If you can not imagine how to build a tower, then fuck off, you idiot;
+** Ops
+*** Stacks are a specical kind of List
+    - Sequnce of values
+    - Constraintd Access: add, get, remove, only from one end
+    - stack interface and differenet implementations of it (like ArrayStack, LinkedStack, etc) exists.
+
+*** Stack is a class that implements List
+    - has extra ops: like push, pop, peek
+    - push(value)
+    - pop() remove add return top of stack
+    - peek return top of stack without removing
+
+** Application
+   - Processing file of structured: nested data
+   - eg. reading files with structured markup (HTML, XML)
+   - Program execution
+   - Undo in editor
+   - Expression evaluation (6 + 4) * ((12.1 * sin(15)) - (cos(20) / 38)
+
+** The Program Stack for Program Execution
+*** when the method is called
+    - Runtime enviornment create activation record
+    - shows method's state during execution
+
+*** Activation record push onto the program stack (java Stack)
+**** The Program Stack
+     - Top of stack belongs to currently executing method
+     - Next recored down the stack belongts to the one that called currently method
+
+     @code c
+     int funcB() {
+         printf("we fall apart when nothing's new\n");
+         return -1;
+     }
+
+     int funcA() {
+         printf("I love u/hate my self\n")
+         return funcB();
+     }
+
+     int main() {
+         return funcA();
+     }
+     @end
+
+     - step 1
+       stack: main
+     - step 2
+       stack: main -> funcA 
+     - step 3
+       stack: main -> funcA -> funcB
+     - step 4
+       stack: main -> funcA
+     - step 5
+       stack: main
+**** Recursive Method
+***** A recursive method making many  recursive calls
+      - Places may activation recored in the program stack
+      - Explains why recursive methods can use much memories
+      - replace by the iteration
+
+** Stack for evaluating expression
+*** Example: (6 + 4) * ((12.1 *sin(15)) – (cos(20) / 38))
+*** Steps
+    - checking for balanced parenthese, Brackets, and Braces in an infix Algtebraic expression
+    - ( ) Transforming an infix Expression to a postifix Expression
+    - ( ) Evaluating PostFix Expression
+    - ( ) Evaluating Prefix Expression
+      WARNING: this part has not been comprehendede completely
+
+* Stack Example
+  @code java
+  package Stack;
+
+  import java.sql.Array;
+  import java.util.Iterator;
+  import ArrayList.ArrayList;
+
+  public class ArrayStack<T> implements Stack<T> {
+      private ArrayList<T> elements;
+
+      public ArrayStack() {
+          elements = new ArrayList<T>();
+      }
+
+      @Override
+      public boolean isEmpty() {
+          return elements.isEmpty();
+      }
+
+      @Override
+      public int size() {
+          return elements.size();
+      }
+
+      @Override
+      public boolean add(T value) {
+          return elements.add(value);
+      }
+
+      @Override
+      public T get(int index) {
+          return elements.get(index);
+      }
+
+      @Override
+      public boolean contains(Object o) {
+          return elements.contains(o);
+      }
+
+      @Override
+      public boolean remove(T element) {
+          return elements.remove(elements);
+      }
+
+      @Override
+      public Iterator<T> iterator() {
+          return elements.iterator();
+      }
+
+      @Override
+      public void push(T value) {
+          add(value);
+      }
+
+      @Override
+      public T pop() {
+          var temp = this.elements.get(this.elements.size() - 1);
+          elements.remove(temp);
+          return temp;
+      }
+
+      @Override
+      public T peek() {
+          var temp = this.elements.get(this.elements.size() - 1);
+          return temp;
+      }
+  }
+  @end
+
+* Map and Application
+** Concept
+   - Map is a collection of data, but not of single values:
+   - Map = /Set/ of pairs of keys to values
+   - Constrainted access: get value by keys
+   - /NO DUPLICATED KEYS/
+   - Lots of implements, most common is HashMap
+
+** Use
+   - 
+   @code java
+   private Map<String, Integer> Shit;
+   // two types: Key and Integer
+   Shit = new HashMap<String, Integer>();
+   @end
+
+*** ops
+    V get(key); return values associate with key
+    V put(key, value) set the value associate with key (and return the old key, if any)
+    V remove(key) removes the key and associate  value (and return the old key, if any)
+    boolean containsKey(key) 
+    int size()
+
+** Example of Using Map
+   @code java
+   package Map;
+
+   import java.util.Map;
+   import java.util.HashMap;
+
+   public class MapExample {
+
+       private Map<String, Integer> wordMap = new HashMap<String, Integer>();
+
+       public MapExample(String input) {
+           CountWordFrequency(input);
+           IterWordMap();
+       }
+
+       private void CountWordFrequency(final String input) {
+           for (String word : input.split(" ")) {
+               if (wordMap.containsKey(word)) {
+                   wordMap.put(word, wordMap.get(word) + 1);
+               } else {
+                   wordMap.put(word, 1);
+               }
+           }
+       }
+
+       private void IterWordMap() {
+           StringBuilder sb = new StringBuilder();
+           // NOTE: method 1
+           // for (String key : wordMap.keySet()) {
+           // var value = wordMap.get(key);
+           // if (value != null) {
+           // sb.append(key + " " + value + "\n");
+           // }
+           // }
+           // NOTE: method 2, but the key is not supported
+           // for (int value : wordMap.values()) {
+           // sb.append(value + "\n");
+           // }
+           // NOTE: method 3
+           for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
+               sb.append(entry.getKey() + ":" + entry.getValue() + "\n");
+           }
+           System.out.println(sb.toString());
+       }
+   }
+   @end
+
+

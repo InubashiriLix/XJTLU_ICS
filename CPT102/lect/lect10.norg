@@ -1,0 +1,220 @@
+* Analysing Cost 
+  - Cost of operations and measuring efficiency
+  - ArrayList: retrieve, remove, add
+  - ArraySet: contains, remove, add
+
+** How to calculate the time cost
+*** Time:
+    - Run the program and count the millisecond / other time unit
+    - Count the number of steps/operations the algorithm will take
+*** Space
+    - Measuring the amount of memory the program occupies
+    - Count the number of elementry data item the algorithm stores
+
+*** We use BOTH program and algorithm to measure the cost
+    - program: benchmarking
+    - algorithm: analysis
+
+** Benchmarking
+*** Measure:
+    - actual program 
+    - on real machines
+    - on specific input
+    - measure elaspsed time
+      1. use System.currentTimeMillis() to get the current time
+      2. time_end - time_start = time_cost
+    - measure real memory usage
+*** Prob
+**** input
+     - choose test set carefully
+     - use large data sets
+     - don't include user input
+**** user/proesses:
+     - minimise
+     - average over many runs
+**** computer 
+     - specific details
+
+** Algorithm
+   - do not care about almost all the concerings in the Benchmarking
+   - Measure number of "step" as function of data size(n)
+     1. worst case (easier)
+     2. average case (hardier)
+     3. best case (easy, but useless )
+   - Constuct an expression for the number of steps
+     1. eg. cost = 3n3 - 67n + 53;
+
+*** Asymptotic Notation
+
+**** we only care about the cost when it is large
+     1. drop the lower order terms when it is large
+     eg. cost = 3n3 + 2n2 => 3n3
+**** we dont care about the constant factor
+     - Actual constant will depend on the hardware
+     - Drop the constant factors
+**** Asymptotic Cost (Big-O cost)
+     - describe how cost grows with input size
+     - cost is O(1) fixed cost
+     - cost is O(n) grows with n
+
+** Big O Notation
+*** A notation for describing efficiency of computer algorithms
+**** assuming a 100-MHz clock N = 1024k = 2 ^ 20
+     - O(1) constant time 10ns
+     - O(log N) - logarithmic time 200ns
+     - O(N) - linear time 10.5 ms
+     - O(N logN) - nlogn time, 210 ms
+     - O(N ^ 2) - quadratic time 3.05 hours
+     - O(N ^ 3) - cubic time, 365 Years
+     - O(2 ^ N) - exponential, 10 ^ (10 ^ 5) years
+**** Meaning of the difference in Big O Notation
+***** O(1)
+      - the cost does not depend on the size of the input
+***** O(log N) 
+      - the cost grows by the increasement of n, like 10 times, but the cost will increase slightly
+***** O(sqrt(N, 2)) 
+      - the cost grows by the increasement of n, like 10 times, but the cost will increase slightly, like 5.12 times
+***** O(N)
+      - the cost grows linearly with the size of the input
+***** O(N logN)
+      - the cost grows more than 10 times when then input increases by 10 times, but less than square times
+***** O(N ^ 2)
+      - ths cost grows by the square of the input size
+***** O(N ^ 3)
+      - the cost grows by the cube of the input size
+***** O(2 ^ N)
+      - each time an element is added, the cost doubles
+***** O(N!)
+      - each time an element is added,  the cost multiplies by the number of elements (n)
+***** O(N ^ N)
+      - bigger than O(N!)
+**** Hierarchy of functions
+     - O(1) < O(log N) < O(N) < O(N log N) < O(N ^ 2) < O(N ^ 3) < O(2 ^ N) < O(N!)
+     - we can insert the different function into functions to apply hierarchy
+     - like ( n ^ 2 * sqrt(N, 2) ) is smaller than N ^ 3 but bigger than (n ^ 2 * log N)
+
+**** What is a step
+***** Count 
+      - action is the innermost loop (happen the most times)
+      - action that happend every time round ( not inside an "if")
+      - action involving "data value"  (rather than indexes)
+      - representative actions (don't need everry action)
+
+      @code java
+      public E remove(int index) {
+          if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+          E ans = data[index];
+          for (int i = index + 1; i < count; i++) {
+              data[i - 1] = data[i];
+          }
+          data[count] = null;
+          return ans;
+      }
+      @end
+
+      for each loop
+      - comparison: i < count
+      - 1 addition: i++
+      - 1 data retrieval: data\[i]
+      - 1 substraction i - 1
+      - 1 memory store: data\[i - 1] = data\[i]
+
+**** What's step: Pragmatics
+***** Count the most expensive actions:
+      - Adding 2 number is chaep
+      - Raising to a power is not so cheap
+      - Comparing 2 string may be expensive
+      - Reading a line from a file may be very expensive
+      - Waiting for input a user or another program may take forever
+
+***** Sometimes we need to know how the underlying operations are implemented in the computer to analyse well
+
+* ArrayList: retrieve, remove, add
+ - assume that the list contains n items
+
+** get: 
+*** best, worse, average: O(1) (it does not change) 
+   reason: element\[1] address offset to get the element directly
+
+** remove:
+*** best, worse, average
+**** best for unknow index: O(n)
+**** best for known index: O(1) -> bad O(n)
+***** Known Index
+      1. use the index to delete the element first, then move (n - 1) element to the front element
+      @code java
+      public void remove(int index) {
+          if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+          for (int i = index; i < size - 1; i++) {
+              elements[i] = elements[i + 1];
+          }
+          elements[size - 1] = null;
+          size --;
+      }
+      @end
+***** Unknown Index
+      2. use the object equal to find the element (i), than delete it, then move(n - i) => n
+      @code java
+      public boolean remove(Object o) {
+          for (int i = 0; i < size; i++) {
+              if (0 == null? elements[i] == null : o.equals(elements[i])) {
+                  int numMoved = size - i - 1;
+                  if (numMoved > 0) {
+                      System.arraycopy(elements, i + 1, elements, i, numMoved);
+                  }
+                  elements[--size] = null;
+                  return true;
+              }
+          }
+          return false;
+      }
+      @end
+     
+** ensureCapcity()
+   @code java
+   private void ensureCapcity () {
+   if (count < data.length) return;
+       E[] newArray = (E[]) (new Object[data.length + data.length / 2]);
+       for (int i = 0; i < count; i++) {
+           newArray[i]  = data[i];
+       }
+       data = newArray;
+   }
+   @end
+
+** Summary: 
+   - get: O(1)
+   - set: O(1)
+   - remove: O(n)
+   - add (at i): 
+     1. O(N) average and worst, 
+     2. best O(1) if i == 0
+   - add (at end):
+     1. O(1) average
+     2. O(n) worst
+     3. O(1) amortised average
+
+* ArraySet: contains, remove, add
+    - arraySet uses same data structure as ArrayList
+  - Ops are
+    1. contains
+    2. add(item) \<- alwasys add at the end
+    3. remove(item) \<- don't need to shift down - just move last item
+  - Costs
+    1. contains:  O(n)
+    2. remove: O(1) O(n)
+    3. add O(1), O(n)
+
+* Execrices
+  - O(log(n)) < O(sqrt(n, 2))  (T or F) => T
+  - O(n^n) < O(n!) (T or F) => F
+  - O(2^n) < O(n^n) (T or F) => T
+  - When analysing the cost of an algorithm, loop usually is the 
+    focus. (T or F) => T
+  - Which of the following operations is more expensive? => 2
+    1. Reading a line from a file
+    2. Reading a line from a use
+  -  Worst case cost analysis is usually more difficult than 
+     average cost analysis. (T or F) => F
+
+

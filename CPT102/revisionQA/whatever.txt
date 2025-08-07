@@ -1,0 +1,51 @@
+Name three typical type of data values in common data collections.
+integer, boolean, float
+
+Name three typical structures seen in common data collections.
+ArrayList, LinkedList, Set, Bag, HashMap, Table
+
+Name three typical operations seen in common data collections.
+get() remove() add()
+  Why do we learn data structure?
+  fuckyou
+  Can we program data structure in Java?
+  fuckyou
+  Can we program data structure in C
+  fuckyou
+
+Why do we insist an algorithm must terminate?
+IDK
+Why do we insist an algorithm must be precise?
+IDK
+Why instructions in an algorithm are written in a sequence?
+fuck your
+Write down an algorithm to start up IE Explorer on a computer. – Input: a computer equipped with Windows which is shut down– Output: a computer up & running with Windows IE Explorer 
+fuck you
+• Write down an algorithm to shutdown a computer safely from 
+Windows. – Input: a computer equipped with Windows which is running 
+under Windows– Output: a computer which is shutdown
+fuck you
+
+• Both space efficiency & time efficiency are metrics used 
+to evaluate the performance of an algorithm (and a data 
+structure). (T or F?)
+T
+• Dynamic data structures are more space efficient in 
+general. (T or F?)
+F
+• Static data structures are more time efficient in general. 
+(T or F?)
+F IDK?
+
+• Information hiding is the principle that users of a 
+software component need to know only the essential 
+details of how to initialize and access the component, 
+and do not need to know t
+F
+
+Name 3 type of collections that can be implemented under Java 
+Programming with Linear collections
+ArrayList, Queue, ArraySet
+
+Name 2 type of collections that can be implemented under Java 
+Programming with Hierarchical collections

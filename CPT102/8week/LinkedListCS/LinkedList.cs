@@ -1,0 +1,1 @@
+namespace ns_linkedList { }

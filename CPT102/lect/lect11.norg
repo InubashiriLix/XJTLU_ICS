@@ -1,0 +1,113 @@
+* Recursion
+  - recursive function
+  - factorial function
+  - fibonacci function
+  - recursion vs iteration
+
+* Recursive function
+ - a recursive function is a function that calls itself, directly or indirectly
+  - Related to recursive problem solving: binary tree traveral (dived and conquer)
+  - The function knows how to solve a base case (stopping rule)
+  - A recursion step is needed to divede the problem into sub-problem
+  - Need to check for termination
+
+* Factorial 
+  - 1! = 1
+  - 5! = 5 * 4 * 3 * 2 * 1
+  - 5! = 5 * 4!
+  - n! = n * (n - 1)!
+** Recursion
+   @code cpp
+   int fac(const int input) { return (input <= 1) ? 1 : input * fac(input - 1); }
+   @end
+   - base case:
+     input == 1
+   - recursive step:
+     return input * fac(input - 1);
+** Iteration
+   @code cpp
+   long long facIter(int input) {
+       long long rtn = 1;
+       while (input >= 1) rtn *= (input--);
+       return rtn;
+   }
+   @end
+
+* Fibonacci
+  note: it can be found in 3week folder fibonacci/
+  - base case:
+    fib(1) = 1;
+    fib(0) = 0;
+  - recirsive step
+    fib(n) =  fib(n - 1) + fib(n - 2);
+  @code cpp
+  int fib(int cnt) {
+      if (cnt == 1) return 1;
+      if (cnt == 0) return 0;
+      return fib(cnt - 1) + fib(cnt - 2);
+  }
+
+  int fibIter(int cnt) {
+      int sum = 0;
+      int a = 0;
+      int b = 1;
+      if (cnt == 1) return b;
+      if (cnt == 0) return a;
+      for (int i = 1; i < cnt; i++) {
+          sum = a + b;
+
+          a = b;
+          b = sum;
+      }
+      return sum;
+  }
+  @end
+* Recursion vs Iteration
+  - iteration: while, for
+  - recursion uses a selection structure & function calls;
+  -  iteration uses an iterative structure
+  - recursion & iteration each involves a termination test:
+    1. recursion ends when a base case recognized
+    2.  iteration ends when the continuation condition fails
+  - every recursive function can be rewritten as an 
+    iterative function
+  - iteration: efficient but not easy to design
+  - recursion: slow (cost memory & processor power) but 
+    elegant
+
+* Exercise:
+  - Design a recursive function to solve the following problem: sum up a given array
+    a\[0] to a\[m - 1] and return the esum to the caller
+
+  - int sum_up(a, n) // n: number of array elements to sum up
+
+** Sol
+    @code cpp
+    const int arrayLen = 10;
+    const int array[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+    int sum_up_recur(int cnt) {
+        if (cnt >= 10) throw new std::out_of_range("Out of range");
+        if (cnt == 0)
+            return array[0];
+        else
+            return array[cnt] + sum_up_recur(cnt - 1);
+    }
+
+    int sum_up_iter(int cnt) {
+        int sum = 0;
+        for (int i = 0; i <= cnt; ++i) {
+            sum += array[i];
+        }
+        return sum;
+    }
+   @end
+
+* QA
+  - What is the key step in designing a 
+     recursive function? => 
+     sol. base case, recursive step;
+  - Every recursive function can be rewritten 
+    as an iterative function.
+    sol. Yes
+

@@ -1,0 +1,96 @@
+* Overview of Data Structure Programming Topics
+    ** Linear Collections
+        *** Kinds 
+                Lists, Sets, Bags, Maps, Stacks, Queues, Priority Queues, Linked List
+        *** Usage
+                - search, sort
+                - implement linear collections
+                - implementing sorting algorithms
+    ** Hierarchical Collections
+        *** Kinds
+                Trees, binary trees, general trees
+        *** Usage
+                - building trees
+                - searching Trees
+                - Traversing Trees
+
+
+* Programming with Libraries
+    ** lib
+        *** fucking packages
+        *** classes
+        *** other libs 
+    ** shit
+        - java.util ( Coleections Classes / Utility classes )
+        - java.io ( input and output )
+        - javax.swing java.awt (shitlike GUI)
+    ** Struct
+        - Constructors
+        - Methods
+        - Interface to implement
+
+* Collections
+    ** ADT (Abstract Data Type (outcome of abstraction / encapsulation))
+        - ADT is a type of data, described at an abstract level
+        - specifies the operation
+        - specifies how it behaves
+
+    ** Example
+        *** Set 
+            - add(value), remove(value), contains(value)-> boolean
+        *** Interface
+            - Collection = Bag
+            - List = ordered collection
+            - Set = unordered, no duplicateds
+            - Queue = ordered collections limited access 
+            - Map = key-value pairs (or mapping)
+        *** Classes
+            - List classes: ArrayList, LinkedList, vector
+            - Set classes: HashSet, TreeSet
+            - Map classes: HashMap, TreeMap
+    ** How to implement
+        Example
+       @code java
+        public interface set\<E> {
+            public void add(E value);
+            public void delete(E value);
+        }
+       @end
+
+       -- declaration and mentions only
+        - no constructor
+        - no fields
+        - no method bodies
+
+* Programming with Lists of Objects
+** the difference between the E and Objects
+   - the E type has been confirm in the compile stage
+   - the onject will be deduced in the runtime 
+
+** Example
+    @code java
+    public interface ListInterfaceTest<E> extends Collection<E> {
+            boolean add(E value);
+            E get(int index);
+            boolean contains(Object o);
+            Iterator<E> iterator();
+        }
+    @end
+
+** The Generic
+   - the list contains type should be maintained as same, and if the class of the containers are not the same, it can be shit
+   - 
+     ```
+     public interface Set\<T\> {
+     void add(T item);
+     boolean remove(T item);
+     boolean contains(T item);
+     }
+     ```
+
+** Implemention
+   private List\<Shape\> drawing = new ArrayList\<Shape\>();
+   Set\<Person\> friends = new HashSet\<Person\>();
+   t
+
+

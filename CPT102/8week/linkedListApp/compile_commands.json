@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/inubashiri/08_CPT102/8week/linkedListApp/build",
+  "command": "/usr/bin/c++  -I/home/inubashiri/08_CPT102/8week/linkedListApp/include -g -o CMakeFiles/int_102.dir/src/scheduler.cc.o -c /home/inubashiri/08_CPT102/8week/linkedListApp/src/scheduler.cc",
+  "file": "/home/inubashiri/08_CPT102/8week/linkedListApp/src/scheduler.cc",
+  "output": "CMakeFiles/int_102.dir/src/scheduler.cc.o"
+},
+{
+  "directory": "/home/inubashiri/08_CPT102/8week/linkedListApp/build",
+  "command": "/usr/bin/c++  -I/home/inubashiri/08_CPT102/8week/linkedListApp/include -g -o CMakeFiles/int_102.dir/src/main.cc.o -c /home/inubashiri/08_CPT102/8week/linkedListApp/src/main.cc",
+  "file": "/home/inubashiri/08_CPT102/8week/linkedListApp/src/main.cc",
+  "output": "CMakeFiles/int_102.dir/src/main.cc.o"
+}
+]

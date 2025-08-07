@@ -1,0 +1,5 @@
+* HashBag
+** add(e), remove(e), count(e), contains(e), 
+   O(1) average
+** iterator(), foreach
+   O(n) average

@@ -1,0 +1,412 @@
+* Implementing Collections
+  - Comparators
+  - Exceptions
+  - Implementing Collections
+    1. interfaces
+    2. Classes
+
+* Comparators
+** compare a comparable with different order
+*** using comparator, we can sort a collection in different order
+**** Like:
+     - compare by size of width
+     @code java
+     public class FaceComparatorW implements Comparator<FaceComparable> {
+
+         @Override
+         public int compare(FaceComparable f1, FaceComparable f2) {
+             if (f1.getW() < f2.getW())
+             return -1;
+             else if (f1.getW() > f2.getW())
+             return 1;
+             else
+             return 0;
+         }
+     }
+
+     @end
+
+     - compare by size of heigh
+     @code java
+     public class FaceComparatorH implements Comparator<FaceComparable> {
+
+         @Override
+         public int compare(FaceComparable f1, FaceComparable f2) {
+             if (f1.getH() < f2.getH())
+             return -1;
+             else if (f1.getH() > f2.getH())
+             return 1;
+             else
+             return 0;
+         }
+     }
+     @end
+
+*** how to use
+    @code java
+    Collections.sort(faces, new FaceComparatorW());
+    Collections.sort(faces, new FaceComparatorH());
+    Collections.sort(faces) // default natral sort defined by comparable
+    @end
+
+* Exceptions
+** when to throw an Exceptions?
+   - when somthing goes wrong
+   - exception occurs during the execution of a program
+   - disrupt the normal flow of instructions
+** An Exceptions is a "non-level exit"
+*** Error of some kind:
+    - file does not exits
+    - dividing by zero
+    - calling a method on the null object
+    - callingt an undefined method
+*** An exception situation
+    - text in file doesn't have the expected format
+    - user enters an unexpected answer
+*** how to deal with Exceptions?
+    - throwing exceptions
+    - handling (catching ) exceptions
+*** Exception Examples
+    @code java
+    throw new NullPointerException();
+    throw new NoSuchElementException();
+    throw new IOException();
+    throw new UnsupportedOperationException();
+    throw new RuntimeException();
+    @end
+
+** Dealing with Exceptions
+   - the exceptions are throw in an try ... catch can be caught
+   @code java
+   int[] numbers = { 1, 2, 3, 4, 5 };
+   try {
+       System.out.println(numbers[5]);
+   } catch (ArrayIndexOutOfBoundsException e) {
+       System.out.println("Array index out of bounds: " + e.getMessage());
+   } catch (ZeroDivisionException e) {
+       System.out.println("Zero division error: " + e.getMessage());
+   } catch (Exception e) {
+       System.out.println("An unexpected error occurred: " + e.getMessage());
+   } finally {
+       System.out.println("This block always executes.");
+   }
+   @end
+   - flow like this: 
+     if exception exits in the try block:
+     try: catch an exception -> switch the exception list throught the catch -> finnal actions -> done
+     else:
+     try actions -> done
+
+   - the unhanddled RUNTIME Exceptions will result in an error message
+     but you can catch them if you want
+
+   - But other Exceptions must be handled
+     for example: IOException (which is why we always used a try catch when opening files)
+
+*** An Exceptions object contains infomation
+    - the state of execution stack
+    - any additional infomation specific ot the exception
+
+** Throwing Exceptions
+   RuntimeException: General RuntimeException type:
+   - Could use a more specific one (like UnsupportedOperationException)
+   - Could define our own type of exception
+   @code java
+   throw new RuntimeException("Unkown shape in drawing file");
+   @end
+   @code java
+   public Object pop()  {
+       Object obj;
+       if (size == 0) {
+           throw new EmptyStackException();
+       }
+       // ... ... 
+   }
+   @end
+
+* Implementing Collections
+** Interfaces and classes
+*** Interface:
+    - specific type
+    @code java
+    public interface List<E> extendsw Collection<E> {
+        public  E get();
+        // ...
+        // The E here is the variable TYPE
+    }
+    @end
+    - defines method headers only
+*** Classes
+    - implements interfaces
+    - define field for the data structures to hold the data
+    - define method bodies
+    - defines constructors
+
+*** Defining List interface
+    @code java 
+    public interface List<E> extends Collection<E> {
+        public E get(int index);
+        public void add(int index, E element);
+        public void remove(int index);
+        public int size();
+        public boolean isEmpty();
+        public boolean contains(E element);
+        public int indexOf(E element);
+    }
+    @end
+*** Defining ArrayList
+    @code java
+    public clas ArrayList<E> implements List<E> {
+        private E[] data;
+        private int count;
+        // ...
+        // implements all the method define int the List interface
+    }
+    @end
+
+* Defining ArrayList
+** Designthe data structure to store the values
+   - array of items
+   - count
+** Define the field and constructors
+   @code java
+   public class ArrayList<E> implements List<E> {
+       private E[] data;
+       private int count;
+   }
+   @end
+
+** Define all the method specified in the List interface
+   - size() add(E o ) add(int index, E element), contains(Object o), get(int index), isEmpty(), clear(), set(int index, E element), indexOf(Object o), remove(int index)
+     remove(Object o), lastIndexOf(Object o), iterator(), equals(), hashCode(), listIterator(), toArray(), toString(), .......
+
+   - the code is in the 2week/MoreCollections/src/ArrayList
+
+* Abstract Classes
+  - problem:
+    there are too many method in the list needed to be defined in the ArrayList, and many are complicated
+    and many could be defined in terms of a few basic methods (like  size, add, remove, set), which complicated method can use them
+  @code java
+  public boolean addAll(Collection <E> other) {
+      for (T item : other) {
+          add(item);
+      }
+  }
+  @end
+
+*** Solution:
+    - Defines the complex method in terms of the basic methods
+    - leaves the basic method "abstract" (not body)
+    - classes implementing List can extend the abstract class
+*** difference between classes and AbstractClasses
+**** Absstract classes:
+     - implements interface
+     - defines some methods
+     - leaves basic methods "abstract"
+     - example: 
+     @code java
+     AbastractList<E> {
+     implements List<E>
+     define array of <E>
+     define addALL(), subList
+     add, set, get, remove are left abstract
+     }
+     @end
+
+**** Classes
+     - extends Abstract Class
+     - define data structures
+     - defines basic method
+     - defines constructors
+     @code java
+     ArrayList<E>
+     {
+     extends AbstractList
+     implements field and constructor
+     implements add, get, remove, set
+     }
+     @end
+** Abstract ArrayList:
+*** Example:
+    see 2week/MoreCollections/src/ArrayList/AbstractArrayList.java
+
+** ArrayList extends AbsArrayList
+   @code java
+   package ArrayList;
+
+   public class ArrayListAbs<T> extends AbsArrayList<T> {
+
+       private T[] data;
+       private int count;
+       private static int INITIAL_CAPACITY = 16;
+       private int sizeArray = INITIAL_CAPACITY;
+
+       public ArrayListAbs() {
+           // @SuppressWarnings("unchecked")
+           this.data = (T[]) new Object[INITIAL_CAPACITY];
+       }
+
+       @Override
+       public int size() {
+           return count;
+       }
+
+       @Override
+       public T get(int index) {
+           if (index < 0 || index >= count) {
+               throw new IndexOutOfBoundsException("index out of boundary");
+           }
+           return data[index];
+       }
+
+       @Override
+       public T set(int index, T element) {
+           if (index < 0 || index >= count) {
+               throw new IndexOutOfBoundsException("index out of boundary");
+           }
+           data[index] = element;
+           return data[index];
+       }
+
+       @Override
+       public void add(int index, T element) {
+           if (count > sizeArray) {
+               throw new IndexOutOfBoundsException("detected data boundary");
+           }
+           if (count == sizeArray) {
+               sizeArray = sizeArray + (sizeArray >> 1);
+               T[] newArray = (T[]) new Object[sizeArray];
+               System.arraycopy(data, 0, newArray, 0, count);
+               data = newArray;
+           }
+
+           if (index < count) {
+               System.arraycopy(data, index, data, index + 1, count - index);
+           }
+
+           data[index] = element;
+           count++;
+       }
+
+       @Override
+       public T remove(int index) {
+           if (index < 0 || index >= count) {
+               throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + count);
+           }
+           T removedElement = data[index];
+
+           int numMoved = count - index - 1;
+           if (numMoved > 0) {
+               System.arraycopy(data, index + 1, data, index, numMoved);
+           }
+           data[--count] = null;
+
+           return removedElement;
+       }
+   }
+   @end
+
+* Implementing ArrayList
+** Iterators
+*** defining an iterator for ArrayList
+    - fields
+    - Constructors
+    - next
+    - hasNext
+    - remove
+
+    @code java
+    package ArrayList;
+
+    import java.util.Iterator;
+
+    public class IteratorArrayList<T> implements Iterator<T> {
+        private int currentIdx = -1;
+        private boolean canRemove = false;
+        private ArrayList<T> list;
+
+        public IteratorArrayList(ArrayList<T> list) {
+            this.list = list;
+            this.currentIdx = -1;
+            this.canRemove = false;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return (this.currentIdx >= 0 && this.currentIdx < list.size());
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new IndexOutOfBoundsException("next has out of boundary");
+            }
+            currentIdx++;
+            canRemove = true;
+            return list.get(currentIdx);
+        }
+
+        @Override
+        public void remove() {
+            list.remove(list.get(currentIdx));
+            canRemove = false;
+        }
+    }
+    @end
+
+    - add(e) best: O(1), bad O(n)
+      1. if the size is in the limit of max length, then the only ops is to add the new element to the end of the elements
+      but when the size is out of the limit, we need to copy the old array into the new array, which is the data in the next step
+    @code java
+    public boolean add(T value) {
+        if (size == elements.length) {
+            Object[] newArray = new Object[elements.length * 2];
+            System.arraycopy(elements, 0, newArray, 0, elements.length);
+            this.elements = newArray;
+        }
+        elements[size++] = value;
+        return true;
+    }
+    @end
+
+*** How expensive is it to increase the size
+*** How do we increase the size
+**** how to realize encurCapcity() / grow()
+     @code java
+     private void grow(int minCapacity) {
+         int oldCap = elementData.length;
+         int newCap = oldCap + (oldCap >> 1); // * 1.5
+         if (newCap < minCapacity) {
+             newCap = minCapacity;
+         }
+         elementData = Array.copyOf(elementData, newCap);
+     }
+     @end
+     - each time you remove(0) or remove(n/2) need to move the array O(n)
+     - the add need O(1) per time, but if the elements grow, we need O(n)
+
+* ArrayList 迭代器 Q&A
+** remove() 是否强制实现？ (T or F)
+   - 答案：False
+   - 说明：Iterator 接口中的 remove() 方法是可选的，不支持时应抛出 UnsupportedOperationException。
+
+** ArrayList 如何利用泛型参数？
+   - 编译时保证类型安全：add(T)、get() 等方法签名带有泛型 T
+   - 运行时通过 Object\[] elementData 存储所有元素，返回时强制转换为 T（类型擦除）
+
+** ArrayList.remove() 删除哪个元素？
+   - remove(int index)：删除指定下标的元素
+   - remove(Object o)：删除首个匹配的元素
+   - Iterator.remove()：删除上一次 next() 返回的元素
+
+** Iterator.next() 返回前做了哪些检查？
+   - 检查 cursor < size()，否则抛出 NoSuchElementException
+   - 检查 expectedModCount 与 modCount 是否一致，否则抛出 ConcurrentModificationException （fail-fast 机制）
+
+** Iterator.remove() 如何保证每次 next() 只能删除一个元素？
+   - 维护 lastRet 变量：初始为 -1；next() 设置 lastRet = cursor - 1
+   - remove() 必须 lastRet >= 0，并在删除后将 lastRet 设回 -1，防止重复调用
+
+** 多个 Iterator 并发遍历同一 ArrayList 会发生什么？
+   - 抛出 ConcurrentModificationException：迭代器检测到结构修改即失败快速退出
+   - 数据不一致：若捕获或绕过 CME，可能出现元素跳过、重复或索引错乱等问题

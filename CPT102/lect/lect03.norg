@@ -1,0 +1,194 @@
+* Notes:
+  - the codes are in the 1 week ArrayListInterface folder, todoList example is also there
+* Collections and List
+** Comments on code style
+   - fuck you! I just want to use this. 
+   - it is recommanded that drop this. except when needed
+   - it is also recommanded that leave out { } if only one statement is there
+**  Collections Interface and Class extends mode
+    @code none
+    Collections<E>(interface) <- List<E>(interface) <- ArrayList<E>(Class)
+    |
+    LinkedList<E>(Class)
+    @end
+
+** Methods
+*** Example
+    - Collection
+    @code java
+    public interface Collection<T> {
+        boolean isEmpty();
+
+        int size();
+
+        boolean contains(T element);
+
+        boolean add(T element);
+
+        boolean remove(T element);
+
+        Iterator<T> iterator();
+    }
+    @end
+
+    - List
+    @code java
+    public interface List<T> extends Iterable<T>, Collection<T> {
+        boolean add(T value);
+
+        T get(int index);
+
+        boolean contains(Object o);
+
+        Iterator<T> iterator();
+    }
+    @end
+** The ArrayList:
+   @code java
+   package ArrayList;
+
+   import java.util.Iterator;
+   import java.util.NoSuchElementException;
+
+   import ArrayList.Collection;
+   import ArrayList.List;
+
+   public class ArrayList<T> implements List<T> {
+       private Object[] elements;
+       private int size;
+
+       public ArrayList() {
+           this.elements = new Object[10];
+           this.size = 0;
+       }
+
+       @Override
+       public boolean add(T value) {
+           if (size == elements.length) {
+               Object[] newArray = new Object[elements.length * 2];
+               System.arraycopy(elements, 0, newArray, 0, elements.length);
+               this.elements = newArray;
+           }
+           elements[size++] = value;
+           return true;
+       }
+
+       @Override
+       public T get(int index) {
+           if (index < 0 || index >= this.size) {
+               throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+           } else {
+               @SuppressWarnings("unchecked")
+               T result = (T) this.elements[index];
+               return result;
+           }
+
+       }
+
+       @Override
+       public boolean contains(Object o) {
+           for (int i = 0; i < this.size; i++) {
+               if (o == null) {
+                   if (elements[i] == null) {
+                       return true;
+                   }
+               } else if (o.equals(elements[i])) {
+                   return true;
+               }
+           }
+           return false;
+       }
+
+       @Override
+       public boolean remove(Object o) {
+           for (int i = 0; i < size; i++) {
+               if (o == null ? elements[i] == null : o.equals(elements[i])) {
+                   int numMoved = size - i - 1;
+                   if (numMoved > 0) {
+                       System.arraycopy(elements, i + 1, elements, i, numMoved);
+                   }
+                   elements[--size] = null;
+                   return true;
+               }
+           }
+           return false;
+       }
+
+       @Override
+       public Iterator<T> iterator() {
+           return new Iterator<T>() {
+               private int currentIndex = 0;
+
+               @Override
+               public boolean hasNext() {
+                   return currentIndex < size;
+
+               }
+
+               @Override
+               public T next() {
+                   if (!hasNext()) {
+                       throw new NoSuchElementException();
+                   }
+                   @SuppressWarnings("unchecked")
+                   T result = (T) elements[currentIndex++];
+                   return result;
+               }
+           };
+       }
+
+       @Override
+       public int size() {
+           return this.size;
+
+       }
+
+       @Override
+       public boolean isEmpty() {
+           return size == 0;
+       }
+   }
+   @end
+
+* Using List and ArrayList
+** declare
+   @code java
+   private List<Task> tasks;
+   // specify the type of collection
+   // Specify the type of value
+   @end
+
+** create an object of a class that implemnts the type
+   @code java
+   tasks = new ArrayList<Task>();
+   // 1. specify the class
+   // 2. specify the type of the values
+   @end
+
+* Iterator
+** use for 
+   @code java
+   for (int i = 0; i < exampleList.size();  i++) {
+   // do something here
+   }
+   @end
+
+** use while
+   iterator<Task> iter = exampleList.iterator();
+   @code java
+   while (iter.hasNext()) {
+   // do something here
+   }
+   @end
+
+** use foreach
+   @code lang
+   for (var ele : exampleList) {
+   // do somthing 
+
+   }
+   @end
+
+* Comparision Between List and Array
+** No Size Limit!
+*** ...
