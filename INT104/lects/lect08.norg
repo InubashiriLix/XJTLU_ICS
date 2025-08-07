@@ -1,0 +1,45 @@
+* Decision Tree Classifier
+  - Model structure
+    - A tree where each internal node tests one feature, branches on its values, and each leaf assigns a class :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
+  - Splitting criteria
+    - Entropy   H(S)   = - ∑_{c in classes} p(c) * log2(p(c))
+    - Gini impurity   G(S) = 1 - ∑_{c in classes} p(c)^2
+    - Information gain for attribute A:
+        IG(A) = H(S) 
+                - ∑_{v in values(A)} (|S_v|/|S|) * H(S_v)
+    - Choose the attribute A that maximizes IG(A) (or equivalently minimizes weighted impurity)
+  - Tree induction (Hunt’s algorithm)
+    1. If all samples in S have the same class, make a leaf node with that class  
+    2. Else if no attributes remain or |S| below threshold, make a leaf with majority class  
+    3. Else  
+       - Select best attribute A by IG or Gini  
+       - For each value v of A, let S_v = {x in S | A(x)=v}  
+       - Recurse on each subset S_v to grow child subtrees
+  - Overfitting & pruning
+    - Fully grown trees may overfit noisy labels  
+    - Post-pruning: collapse subtrees whose removal improves validation accuracy  
+    - Pre-pruning: stop splitting when IG(A) below a threshold or node purity is high
+
+* k-Nearest Neighbors (kNN)
+  - Instance-based learning: no training phase, classification based on stored samples :contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3}
+  - Distance metric (Euclidean):
+      d(x, x') = sqrt( ∑_{i=1}^d (x_i - x'_i)^2 )
+  - Classification rule:
+    - Find the k samples nearest to x by distance d  
+    - Predict the class that appears most often among those k neighbors  
+  - Variants
+    - Weighted kNN: weight each neighbor’s vote by 1 / d(x, neighbor)  
+    - Other metrics: Manhattan, Mahalanobis, etc.
+  - Choosing k
+    - Small k → low bias, high variance (sensitive to noise)  
+    - Large k → high bias, low variance (smoother decision boundary)  
+    - Use cross-validation to select the k that minimizes validation error
+  - Pros & Cons
+    - Pros: simple, nonparametric, naturally handles multi-class  
+    - Cons: slow at query time (O(n) per sample), sensitive to feature scaling and high-dimensional “curse”
+
+* Model Evaluation
+  - Split dataset into training, validation and test sets  
+  - Use validation set to tune tree-depth, pruning parameters or k  
+  - Final performance assessed on test set to estimate generalization error
+

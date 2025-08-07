@@ -1,0 +1,191 @@
+* Lect4 
+** Data Featueres
+   - A column within a table is commonly referred to as a feature.
+   -  Synonyms: attribute, input, predictor, variable
+
+** Variability Metrics
+*** Deviation
+    The differences between the observed values and the estimate of location
+    Synonyms: errors, residual
+*** Variance
+    The sum of sqaured deviations from the mean divided by n - 1 where n is the number of data values
+    Synonyms: mean-squared-error
+*** Standard deviation
+    The sqrt root of variance
+*** Mean absolute deviation
+    The mean of the absolute values of teh deviation from the mean
+    Synonyms: 11-norm, Manhatten norm
+*** Median absolute deviation from the median
+    The median of the absolute values of the deviation
+
+** Correlation
+*** Correlation coefficient (Pearson's Correlation Coefficient)
+    A metric that measures the extend to which numeric variables are associated with one another 
+*** Correlation matrix
+    A table where the variables are shown on both rows and columns, and the cell values arethe correlation between the variables
+    - can colaborate with heatmap to find the cluster or relation mode
+*** Heat Map
+    usually, we use heatmap using Coreelation Matrix to find which features has higher relations
+    the warmer color is, more related the two features are
+
+** PCA (principle component analysis)
+*** Object:
+    to project the high dimensional data to the lower dimensional space 
+    while keeping the original data's variace infomation (that is, errors or differences)
+*** Reason
+    the original features are usually highly correlated to each other, 
+    which will often result in the unstability of the model
+    PCA can change these related data into the new, both uncorrelated Principal Components
+
+*** Steps
+    ~ Centralization
+      each variables decrease the average of it in order to make new data 
+      is speard around the origin (0 on axis)
+    ~ construct the Covariance or the Correlation matrix
+      the correlation can tell whether two features are related enough
+      so do the corrrelation matrix
+    ~ Eigen-Decomposition
+      matrix A just like converter, it can change the input vector x into A * x
+      if there exists a vector x (x!=0) that can maintain the same vector after A * x (the length changes only)
+      A * x = r * x
+      A is the eigenvector while r is the scaling factor
+      why do we need Eigen-Decomposition?
+      throw A, we can simplify the mixed scaling + rotate + slice to only A (scaling)
+    ~ sorting selection
+      sort values in featuress by big to small and select the k elements from front
+      to the projection matrix W = \[v1, v2, v3 ... vk]
+    ~ map the original data to the k vectors
+      Xpca = XW;
+
+*** Result:
+    - the new dimension (principle components) are linear irrelevant (orthogonal) and it terminate the relation between original datas
+    - the components in the front usually can fetch the ^the principle direction of variance^
+    - what is the principle direction of variance?
+      for the variance, it means the spread scale, the bigger variance is, the bigger scale the data place
+      And the PCA actually find the direction that the variance that has the biggest value, that is ^the first component of Principal Components^
+      and the second vector of the principle components is the sub biggest vairance in the u1 and u2 (they are orthogonal) plane
+
+*** How to calculate PCA
+
+*** Code
+    @code python
+    # How to use PCA
+
+    from matplotlib.patches import ArrowStyle
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from sklearn.decomposition import PCA
+
+    sns.set()
+
+    N_PCA_COMPONENTS = 2
+
+    rng = np.random.RandomState(1)
+    X = np.dot(rng.rand(2, 2), rng.randn(2, 200)).T
+    plt.scatter(X[:, 0], X[:, 1])
+    plt.axis("equal")
+    # plt.show()
+
+
+    pca = PCA(n_components=N_PCA_COMPONENTS)
+    pca.fit(X)
+    print(pca.components_)
+    print(pca.explained_variance_)
+
+
+    def draw_vector(v0, v1, ax=None):
+        ax = ax or plt.gca()
+    arrowprop = dict(arrowstyle="->", linewidth=2, shrinkA=0, shrinkB=0)
+    ax.annotate("", v1, v0, arrowprops=arrowprop)
+
+
+    plt.scatter(X[:, 0], X[:, 1], alpha=0.2)
+    for length, vector in zip(pca.explained_variance_, pca.components_):
+        v = vector * 3 * np.sqrt(length)
+    draw_vector(pca.mean_, pca.mean_ + v)
+    plt.axis("equal")
+    plt.show()
+
+    @end
+
+
+* HOW TO CALCULATE PCA
+** step 1
+    @code text
+   +---+---+
+   | A | B |
+   +---+---+
+   | 2 | 0 |
+   +---+---+
+   | 0 | 1 |   X
+   +---+---+
+   | 4 | 3 |
+   +---+---+
+    @end
+    m = 3 is the rows (smaples)
+   n = 2 is the num of features
+** step2
+   zero average + standarlized to 
+   zij = ( xij - uij ) / sj
+   u is the average of the feature
+   x is the eleemnt at i j
+   sj is the Standard Deviation
+   uj =  1/m * sum(xij)(from i to m)
+   sj = sqrt(( 1/m-1 ) * sum(xij - uj)^2 (from 1 to m))
+   so for feature A
+   uA = (2 + 0 + 4) / 3 = 2
+   sA = sqrt( (1/2) * (0 + 4 + 4) ) = sqrt(4) = 2
+    thus by    zij = ( xij - uij ) / sj
+    @code  text
+    uB = 4/3
+    sB = sqrt(2*(16/9 + 1/9 + 25/9)) = sqrt(82/9) = 2.3333
+    +---+-----------+
+    | A | B         |
+    +---+-----------+
+    | 0 | -0.8729   |
+    +---+-----------+
+    | -1 | -0.2182 |   X
+   +---+-----------+
+    | 1 | 1.0911 |
+   +---+-----------+
+   @end
+
+** step3 Covariance matrix C
+   C = 1/(m-1) * Z^T * Z
+   @code text
+   Z^T * Z = 
+   [2   1.3093]
+   [1.3093 2.3333]
+
+   C = 1/2 * Z^T * Z
+   C = [1   0.6547]
+   [0.6547, 1.1667]
+    @end
+
+** step4 Eigen-Decomposition
+   [1   0.6547]
+   [0.6547, 1.1667]
+   det([1 - r, 0.6547], [0.6547, 1.1667 - r]) = 0
+   (1 - r)(1.1667 - r) - 0.6547^2 = 0
+   -> r1 = 1.7354, r2 = 0.4313
+** step5  get the eigenvectos
+   −0.7354 0.6547   *  [v1, v2] = 0
+    0.6547 −0.5687
+   v2 = 1.1235v1
+
+*** standardlization
+    v1 = 1 / sqrt(1 + 1.1235^2)\[1, 1.235] = \[0.6645, 0.7473]
+    v2 = 1 / sqrt(1 + 1.1235^2)\[1.1235, -1] = [-0.7473, 0.6645]
+
+** Step6
+   get k main conponents:
+   λ	    解释的方差百分比
+   1.7354   1.7354/(1.7354+0.4313)=80.1%
+   0.4313	19.9 %
+   k = 1 when you want to get 80% infos, pick λ1
+** PROJECT
+   Zproj = ZW (W = λ1)
+
+
+

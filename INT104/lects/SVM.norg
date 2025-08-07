@@ -1,0 +1,83 @@
+* SVM (Support Vector Machine)
+
+** 1 核心思想
+   - 在特征空间寻找“间隔（margin）最大”的超平面分隔不同类别  
+   - 支持向量 = 距分割面最近的训练样本  
+   - 间隔越大 → 泛化能力越强
+
+** 2 线性可分 (硬间隔) SVM
+   min  ½ ||w||²  
+   s.t. y_i ( w·x_i + b ) ≥ 1  ∀ i
+
+** 3 线性近似可分 (软间隔) SVM
+   min  ½ ||w||² + C Σ ξ_i  
+   s.t. y_i ( w·x_i + b ) ≥ 1 − ξ_i  
+   ξ_i ≥ 0  
+
+   - C 大 → 误分类惩罚重，间隔可变窄  
+   - C 小 → 容忍误分类，间隔可变宽  
+
+** 4 对偶问题概要
+   max  Σ α_i − ½ ΣΣ α_i α_j y_i y_j (x_i·x_j)  
+   s.t. 0 ≤ α_i ≤ C,   Σ α_i y_i = 0  
+
+   - α_i > 0 的样本 = 支持向量  
+   - 预测: f(x) = sign( Σ α_i y_i (x_i·x) + b )
+
+** 5 核技巧 (Kernel Trick)
+   | 核函数      | 公式                                   |
+   |-------------|----------------------------------------|
+   | 线性核      | K(x,x') = x·x'                         |
+   | 多项式核    | K = ( γ x·x' + r )^d                  |
+   | RBF/高斯核  | K = exp( −γ ||x − x'||² )              |
+   | Sigmoid 核  | K = tanh( γ x·x' + r )                |
+
+   > 经验: RBF 为默认首选；特征维数 ≫ 样本数时用线性核
+
+** 6 多分类策略
+   - One-vs-Rest (OvR)  
+   - One-vs-One (OvO)  
+   - 直接多类公式 (Crammer-Singer)
+
+** 7 主要超参数
+   - C      : 软间隔惩罚强度  
+   - γ      : RBF/多项式核宽度  
+   - d      : 多项式核阶数  
+   - kernel : 核函数类型  
+
+** 8 优缺点
+*** 优点
+    - 理论扎实 (最大间隔, 结构风险最小化)  
+    - 核技巧可处理高维非线性  
+    - 只依赖支持向量, 模型稀疏  
+
+*** 缺点
+    - 大样本训练慢 (QP 复杂度高)  
+    - 核与参数选择经验性强  
+    - 概率输出需额外校准 (Platt scaling 等)
+
+** 9 典型工作流
+   1. 数据标准化 / 归一化  
+   2. 划分 train / val / test  
+   3. 网格搜索 (C, γ, kernel) + k 折交叉验证  
+   4. 训练 SVM, 取最佳参数  
+   5. 评估 Accuracy、AUC、Recall、F1  
+   6. 如需概率 → Platt scaling 或 isotonic calibration
+
+** 10 Python 示例
+   @code python
+   from sklearn.svm import SVC
+   from sklearn.model_selection import GridSearchCV
+
+   param_grid = {
+       "C": [0.1, 1, 10],
+       "gamma": ["scale", 0.1, 1],
+       "kernel": ["rbf"]
+   }
+
+   grid = GridSearchCV(SVC(), param_grid, cv=5, n_jobs=-1)
+   grid.fit(X_train, y_train)
+
+   y_pred  = grid.predict(X_test)
+   y_score = grid.decision_function(X_test)  # 距离超平面距离
+   @end

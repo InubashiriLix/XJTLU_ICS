@@ -1,0 +1,29 @@
+* Decision Tree
+** Intution behind a decision tree
+*** Ask a series questions about a given record
+   ~ each question is about one of the attribute
+   ~ Answer to one question decides what question to ask next (or if a next question is needed)
+   ~ Continue asking questions until we can infer the class of the given record
+*** the decision treee si structure of such question and decide precedure
+   ~ inner node: question
+   ~ branch: the way to different path to other subtree
+   ~ leaf node: when all the questions are done, the final label
+*** Pros
+    - easy to understand
+    - each divide is based on a best attribute selection banch that make the tree as short, as shallow as possible
+    - for new sample: we only to go through from root to leaf
+** Structure of a decision tree
+*** Hierarchical tree with three node types
+*** Root node
+    - No incoming edge, one or more outgoing edges
+*** Internal nodes
+    - Exactly one incoming edge, two or more outgoing edges
+    - Each tests one attribute (e.g. "petal_length ≤ 1.5")
+*** Leaf (terminal) nodes
+    - Exactly one incoming edge, no outgoing edge
+    - Assigned a class label (final decision)
+*** Traversal
+    - Follow tests from root → internal nodes → leaf
+    - At each internal node, choose branch based on attribute value
+    - Stop at leaf to read off predicted class
+

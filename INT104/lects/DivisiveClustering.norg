@@ -1,0 +1,16 @@
+* Divisivie Clustering
+** basic idea:
+   constract with agglomerative clustering
+   it treat all the samples as a single cluster at initial
+   when iteration:
+   ~ pick a strategy to divide the cluster into two sub-clusters, usually use the max variance or the max distance
+   ~ do the same job to the sub-clusters, and reapeat until every cluster only contains one sample, or reach the set clueter num k
+** advantages:
+   can speciy the setted cluster num k at initial
+   sometimes it an divide the clusters with huge difference
+** disadvantages:
+   calculation cost is big, O(n^3)
+   if the divide strategy is not godd, then it can cause the local best, and once dividing, it cannot be cancelled
+
+
+

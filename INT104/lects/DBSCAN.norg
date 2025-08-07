@@ -1,0 +1,60 @@
+* DBSCAN:
+** basic definitions
+*** core idea
+    set the ^core point^ where have a sphere which has more than MinPts
+    the cluster is a seed of a score, and linked the all the density-reachable points
+*** points
+    ~ core point: the point which has more than MinPts points in its eps-neighborhood
+    ~ border point: a point that does not fit the core point but in the range of some core point's eps-neighborhood
+    ~ noise point / outliers: a point that neither a core point nor a border point
+*** reach
+    ~ directly-reachable: if point p is in the q core point's neighborhood, then q is directly-reachable from p
+    ~ density-reachable: if there is a point chain which p = p0, p2, p3, p4 ... for every p they are directly-reachable to pi, then the q density is reachable from p
+    ~ Density-Connected: Density-Connected: if there is a core point o, which makes p and q are both density-reachable from o, then the p is density-connnected to q,
+      density-connected is the sufficient condition for a cluster
+*** definition of cluster:
+    dbscan will scan all the point, and find a ^core point^ that is not belong to any cluster, set it as a seed and 
+    merge all the point that is density-reachable to the same cluster, then find the next unclassified core point, 
+    and generate a new cluster, until all the points are classified
+    the point that not belong to any cluster is seen as noise points
+** Steps
+   input: data set D, radius r, and the min neighborhood points number MinPts
+***  initialization: 
+     assign all the poinst as unclassified
+***  iteration
+    @code python
+    def main():
+        for point in D:
+            if point is visited: 
+                continue
+            N = RegiionQuery(p, r)
+            if abs(N) < MinPts:
+                p = "noise"
+            else:
+                ExpandCluster(p, N, C, r, MinPts)
+
+    def ExpandCluster(p, N, C, r, MinPts) :
+        C.add(p)
+        for point in N:
+            if point == "unvisited":
+                point = "visited" 
+                N_ = ReigoinQuery(point, r)
+                if abs(N_) >= MinPts:
+                    N = N.union(N_)
+            if point is not in np.concat(*Cs)
+                C.add(point)
+
+    def RegionQuery(p, r):
+        return all the distance between p and tese points when d(p, x) <= r
+    @end
+
+** advantages
+   ~ do not require cluster number k at initial
+   ~ can foudn the cluster in any shape, if the cluster has proper density
+   ~ can detect the outliers, no need for extra outlier detection
+   ~ works well for cluster with high intra-distance and low inter-distance
+** disadvantages:
+   ~ are sensitive to the r adn MinPts, need fintune
+   ~ if the real cluster has different density at different area, then it would be depart as multi parts (subclusters)
+   ~ the complexity is O(nlogn), performance is not godd at large scale or high dimentional data
+

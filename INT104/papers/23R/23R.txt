@@ -1,0 +1,199 @@
+23R 
+SECTION 2
+1.The given table shows the preference of golf players for playing golf
+    or not. Based on the information presented in the table, what is the golf
+    player’s preference under the condition of rainy weather and humidity higher
+    than 65%? Please use Naive Bayes to make the decision.
+    +---------+----------+------------+------------+
+    | Outlook | Humidity | Wind Speed | Preference |
+    +---------+----------+------------+------------+
+    | Rainy   | 80%      | 0.5m/s     | Yes        |
+    | Rainy   | 40%      | 0.2m/s     | Yes        |
+    | Rainy   | 50%      | 5.0m/s     | No         |
+    | Rainy   | 50%      | 0.2m/s     | Yes        |
+    | Rainy   | 75%      | 4.0m/s     | No         |
+    | Sunny   | 70%      | 5.0m/s     | No         |
+    | Sunny   | 75%      | 0.4m/s     | No         |
+    | Sunny   | 80%      | 0.1m/s     | No         |
+    | Sunny   | 50%      | 0.2m/s     | Yes        |
+    | Sunny   | 40%      | 4.0m/s     | Yes        |
+    +---------+----------+------------+------------+
+sol.
+    1.
+        according to the require, we collect the preference of golf in the rain and humid respectively
+        RAINY:
+        +-----------+------------+------------+
+        |   RAIN    |     YES    |     NO     |
+        +-------------------------------------+
+        |    5      |     3      |     2      |
+        +-----------+------------+------------+
+        HUMIDITY:
+        +-----------+------------+------------+
+        |   HUMI    |     YES    |     NO     |
+        +-------------------------------------+
+        |    5      |     1      |     4      |
+        +-----------+------------+------------+
+    2. calculate the POSTERIOR PROBABILITY
+        P(YES)  = 5 / 10       = 0.5
+        P(NO)   = 5 / 10       = 0.5
+        P(RAIN | YES)  = 3 / 5 = 0.6
+        P(RAIN | NO)   = 2 / 5 = 0.4
+        P(HIGH | YES)  = 1 / 5 = 0.2
+        P(HIGH | NO)   = 4 / 5 = 0.8
+    3. unnormalized posterior
+        ∝ is "proportional to" A ∝ B  = A = k x B
+        Pr(YES | x) ∝ P(YES) * P(RAIN | YES) * P(HIGH | YES) = 0.5k * 0.6 * 0.2 = 0.06k
+        Pr(NO  | x) ∝ P(NO)  * P(RAIN | NO)  * P(HIGH |  NO) = 0.5k * 0.4 * 0.8 = 0.16k
+    4. noramlization
+        P(YES | x) = 0.06 / (0.06 + 0.16) = 0.27
+        P(YES | x) = 0.16 / (0.06 + 0.16) = 0.73
+
+
+2.  2. Assume a dataset is stored in a variable features where each column of
+    features represents a feature and each row of features represents a data
+    sample. The samples belong to 4 classes. A variable labels stores the class
+    information of each sample as a column vector where each row of labels
+    represents a data sample.
+    The Python script on the next page attempts to cluster the features with
+    k-means in an unsupervised manner. The resulting clusters then correspond
+    to a class according to the ground truth provided by labels. As a result,
+    each resulting cluster will be assigned to a class.
+    Both features and labels are an ndarray in Numpy.
+    Please fill in the blank marked as [#001] to [#010] as appropriate in the
+    script and then answer the following questions:
+    (a) When n clusters=4, is that guaranteed that each class in the dataset
+        can be assigned to at least one resulting cluster in the given Python
+        script? If yes, explain the reason. If no, provide a way that assures each
+        class being assigned to at least one resulting cluster.
+    (b) There are about 600 samples in the dataset. When n
+        clusters=500, the
+        accuracy of clustering is 91.438%. Will the result be considered as a case
+        of overfitting? Why?
+    Each blank in the Python script is worth 1 mark. Each question you are asked to answer is worth 4 marks.
+    A set of API of Python has been provided in the section of Appendix for your reference.
+    
+    from sklearn.cluster import KMeans
+    from sklearn.metrics import accuracy_score
+    from scipy import stats
+    import numpy as np
+
+    # Range of number of clusters to try
+    num_clusters_range = [4, 40, 120, 200, 240, 400, 500]
+
+    for n_clusters in [#001]:
+        # Initialize and fit KMeans
+        kmeans = KMeans(n_clusters=[#002], random_state=0)
+        kmeans.[#003](features)
+
+        # Get the cluster labels for each data point
+        cluster_labels = [#004]
+        new_labels = np.empty_like([#005]) #Initialize
+
+        # For each unique cluster label
+        for cluster_label in np.unique([#006]):
+            # Find the most common class label in ‘labels’
+            # corresponding to this cluster label
+            most_common_label = \
+                stats.mode(labels[[#007]])[0][0]
+
+            # Assign this label to all data in this cluster
+            new_labels[cluster_labels == cluster_label] = [#008]
+
+            # Calculate accuracy
+            accuracy = accuracy_score(labels, new_labels)
+            print(f’Number of clusters: {[#009]}, \
+                Accuracy: {[#010]*100:.3f}%’)
+
+    sol.
+    code:
+        +------+-------------------+
+        | NO   |    ANS            |
+        +------+-------------------+
+        |[#001]| num_cluster_range |
+        |[#002]| n_clusters        |
+        |[#003]| fit               |
+        |[#004]| predict(features) |
+        |[#005]| labels            |
+        |[#006]| cluster_labels    |
+        |[#007]| cluster_labels == cluster_label
+        |[#008]| most_common_label |
+        |[#009]| n_clusters 
+        |[#010]| accuracy          |
+        +------+-------------------+
+    a. 
+        No.
+        1. kmeans does not care about the label; it only focus on the distance^2 to the centroid. 
+            thhat means, if two real cluster has very close distance, then kmeans might merge them into one cluster
+        2. the logic in the code is the common label of the cluster, 
+            which means if a low part of samples are allcated into other class, then they will be ignored
+        Solution:
+        1. build aa 4 x 4 confusion matrix M[i, j] the number of real class j in the cluster i
+        2. use Hunmgarian Algorithm or (scipy.optimize.linear_sum_assignment) to find the maximum matching's relation, and force four clusters project to 4 class
+        3. choose the maximum cluster for each class
+            for each real class j, find argmax_i M[i][j] and assign this cluster as class j, the rest of cluster to the other class,
+            which can also ensure that eacch class have at least on clsuter
+
+    b. 600 -> 500 is almost overfitting
+        1. cause the model has almost same size with the data size, which is almost memory the data instead of conclude the data
+        2. for evaluate, it use the training data itself, when use the data that have not been seen, the accuracy will drop
+        3. the majority votinhg inherently favors singleton and small clusters, when the cluster size is big, 
+            then many cluster will only contain only 1-2 samples, and the commmon label will be the real label, thus the accuracy will high
+        4. unsuppervised learning is not equal to not overfitting: alghrogh the kmeans not depend on the label, 
+            but if you usee the all the data's labels to attach the cluster, 
+            then and collect accuracy on the same data, which import the suppervised learning, then it has the ovveritting problem
+3.
+    Write a Python script that detects the best value of C in a binary
+    SVM classification. Assume the input data is X whose shape is (1000, 2).
+    Please remember to perform cross validation. The candidate C value is
+    [0.1, 0.5, 0.7].
+    The appendix of the exam provides a set of API that may be used in this
+    question
+SOl.
+   @code python 
+        import numpy as np
+        from sklearn.svm import SVC
+        from sklearn.model_selection import GridSearchCV
+        from sklearn.metrics import accuracy_score, classification_report
+        from sklearn.model_selection import train_test_split
+
+        rng = np.random.RandomState(42)
+        X = rng.randn(1000, 2)
+        y = (X[:0] * X[:1] > 0).astype(int)
+
+        param_grid = {"C": [0.1, 0.5, 0.7]}
+
+        base_svc = SVC(kernel="linear", random_state=0)
+
+        grid = GridSearchCV(
+            estimator=base_svc,
+            param_grid=param_grid,
+            cv=5,
+            scoring="accuracy",
+            n_jobs=-1,
+            refit=True,
+        )
+
+        grid.fit(X, y)
+
+        for c, mean_acc in zip(param_grid["C"], grid.cv_results_["mean_test_score"]):
+            print(f"C {c:<4} -> mean accuracy = {mean_acc:.4f}")
+
+        print(f"best param: {grid.best_params_}")
+        print(f"best cross vertification accuracy: {grid.best_score_:.4f}")
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+        best_svm = grid.best_estimator_
+        best_svm.fit(X_train, y_train)
+        test_acc = accuracy_score(y_test, best_svm.predict(X_test))
+        print(f"on the independent test set: accuracy: {test_acc}")
+    @end
+
+ 4. Write a Python script that compares the clustering results of K-means
+    with the following initialisation methods: 1) totally random; 2) pick random
+    samples. The data should be randomly generated and contains 1000 samples
+    for 2 clusters, which is named as a variable X. k hence should be set to 2. Use
+    silhouette index to evaluate the performance of clustering.
+    The appendix of the exam provides a set of API that may be used in this
+    question

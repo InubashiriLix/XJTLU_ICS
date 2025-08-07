@@ -1,0 +1,117 @@
+* PCA (principle component analysis)
+** object 
+   to project the high dimensional data to the lower dimensional space
+   while keeping the original data's variance infomation (that is , errors or differences)
+** Reason
+   the original features are usually highly correlated to each other
+   which will often result in the unstability of the mode
+   PCA can change thses related data into the new, both uncorrelated principal Components
+** Steps
+   ~ Centralization: 
+     each variables decrease the average of it in order to make new data 
+     is spread around the origin (0 on axis)
+   ~ construct the covariance matrix
+     the correlation can tell whether trwo features are related enough
+     so do the correlation matrix
+   ~ Eigen-Decomposition
+     matrix A just like converter, it can change the input verctor x into A * x
+     A * x = r * x
+     A is the eigenvector while r is the scaling factor
+     why do we need Eigen-Decomposition?
+     throw A, we can simplify the mixed scaling + rotate + slice to only A (scaling) 
+   ~ sorting selection
+     sort the values in  features by big to small and select the k elements from front
+     to the projection matrix W = \[v1, v2, v3 ... vk]
+   ~ map the original data to the k vectors
+        Xpca = XW;
+
+** result
+   - the new dimension (principal components) are linear irrelevant (orthogoanl) and 
+     it terminated the relation between original datas
+   - the components in the front usually can fetch the  ^principal direction of variance^
+   - what is the principal direction of variance?
+     for the variance, it means the spread scale, the bigger variance is, the bigger scale the data place
+     PCA actually find the direction that has the biggest value, that is the ^first components of principal Components^
+
+* HOW TO CALCULATE PCA
+** step 1
+    @code text
+   +---+---+
+   | A | B |
+   +---+---+
+   | 2 | 0 |
+   +---+---+
+   | 0 | 1 |   X
+   +---+---+
+   | 4 | 3 |
+   +---+---+
+    @end
+   m = 3 is the rows (samples)
+   n = 2 is the num of features
+** step2
+   zero average + standarlized to 
+   zij = ( xij - uij ) / sj
+   u is the average of the feature
+   x is the eleemnt at i j
+   sj is the Standard Deviation
+   uj =  1/m * sum(xij)(from i to m)
+   sj = sqrt(( 1/m-1 ) * sum(xij - uj)^2 (from 1 to m))
+   so for feature A
+   uA = (2 + 0 + 4) / 3 = 2
+   sA = sqrt( (1/2) * (0 + 4 + 4) ) = sqrt(4) = 2
+    thus by    zij = ( xij - uij ) / sj
+    @code  text
+    uB = 4/3
+    sB = sqrt(2*(16/9 + 1/9 + 25/9)) = sqrt(82/9) = 2.3333
+    +---+-----------+
+    | A | B         |
+    +---+-----------+
+    | 0 | -0.8729   |
+    +---+-----------+
+    | -1 | -0.2182 |   X
+   +---+-----------+
+    | 1 | 1.0911 |
+   +---+-----------+
+   @end
+
+** step3 Covariance matrix C
+   C = 1/(m-1) * Z^T * Z
+   @code text
+   Z^T * Z = 
+   [2   1.3093]
+   [1.3093 2.3333]
+
+   C = 1/2 * Z^T * Z
+   C = [1   0.6547]
+   [0.6547, 1.1667]
+    @end
+
+** step4 Eigen-Decomposition
+   [1   0.6547]
+   [0.6547, 1.1667]
+   det([1 - r, 0.6547], [0.6547, 1.1667 - r]) = 0
+   (1 - r)(1.1667 - r) - 0.6547^2 = 0
+   -> r1 = 1.7354, r2 = 0.4313
+** step5  get the eigenvectos
+   −0.7354 0.6547   *  [v1, v2] = 0
+    0.6547 −0.5687
+   v2 = 1.1235v1
+
+*** standardlization
+    v1 = 1 / sqrt(1 + 1.1235^2)\[1, 1.235] = \[0.6645, 0.7473]
+    v2 = 1 / sqrt(1 + 1.1235^2)\[1.1235, -1] = [-0.7473, 0.6645]
+
+** Step6
+   get k main conponents:
+   λ	    解释的方差百分比
+   1.7354   1.7354/(1.7354+0.4313)=80.1%
+   0.4313	19.9 %
+   k = 1 when you want to get 80% infos, pick λ1
+** PROJECT
+   Zproj = ZW (W = λ1)
+
+
+
+
+
+

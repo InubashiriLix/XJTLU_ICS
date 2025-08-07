@@ -1,0 +1,288 @@
+SECTION 2
+1. Given a dataset that consists of following points below:
+    A =(1, 2), B = (2, 0), C = (1, 0), D = (1, 1), E = (4, 0)
+    Cluster the data points by agglomerative clustering with maximum city
+    block distance and draw the cluster dendrogram.
+sol.
+    Dman = |x1 - x2| + |y1 - y2|
+    +---+---+---+---+---+---+
+    | 0 | A | B | C | D | E |
+    +---+---+---+---+---+---+
+    | A | 0 | 3 | 2 | 1 | 5 |
+    +---+---+---+---+---+---+
+    | B | 3 | 0 | 1 | 2 | 2 |
+    +---+---+---+---+---+---+
+    | C | 2 | 1 | 0 | 1 | 3 |
+    +---+---+---+---+---+---+
+    | D | 1 | 2 | 1 | 0 | 4 |
+    +---+---+---+---+---+---+
+    | E | 5 | 2 | 3 | 4 | 0 |
+    +---+---+---+---+---+---+
+    1. get the minimum distance that not zero
+    +---+---+---+---+---+---+
+    | 0 | A | B | C | D | E |
+    +---+---+---+---+---+---+
+    | A | 0 | 3 | 2 | 1 | 5 |
+    +---+---+---+---+---+---+
+    | B | 3 | 0 | 1 | 2 | 2 |
+    +---+---+---+---+---+---+
+    | C | 2 | 1 | 0 | 1 | 3 |
+    +---+---+---+---+---+---+
+    | D | 1 | 2 | 1 | 0 | 4 |
+    +---+---+---+---+---+---+
+    | E | 5 | 2 | 3 | 4 | 0 |
+    +---+---+---+---+---+---+
+    A-D: 1
+    +---+---+---+---+---+
+    | 0 |A-D| B | C | E |
+    +---+---+---+---+---+
+    |A-D| 0 | 3 | 2 | 5 |
+    +---+---+---+---+---+
+    | B | 3 | 0 | 1 | 2 |
+    +---+---+---+---+---+
+    | C | 2 | 1 | 0 | 3 |
+    +---+---+---+---+---+
+    | E | 5 | 2 | 3 | 0 |
+    +---+---+---+---+---+
+    B-C:3
+    +---+-----+-----+---+
+    | 0 | A-D | B-C | E |
+    +---+-----+-----+---+
+    |A-D|  0  |  3  | 5 |
+    +---+-----+-----+---+
+    |B-C|  3  |  0  | 2 |
+    +---+-----+-----+---+
+    | E |  5  |  2  | 0 |
+    +---+-----+---+---+
+    A-D - B-C:3
+    +---+-------+---+
+    | 0 |A-D-B-C| E |
+    +---+-------+---+
+    |A-D|   0   | 5 |
+    + - +-------+---+
+    |B-C| 
+    +---+-------+---+
+    | E |   5   | 0 |
+    +---+-------+---+
+    A-D-B-C-E: o5
+
+    A-D-B-C-E level5
+    A-D-B-C   level3
+    A-D B-C   level1
+
+           5
+           |
+     +-----+-----+
+     |           |
+     E           3
+                 |
+           +-----+-----+
+           |           |
+           1           1
+           |           |
+        +--+--+     +--+--+
+        |     |     |     |
+        A     D     B     C
+
+extra agglomerative question (gpt gives)
+P(0,4), Q(1, 1), R(0, 0), S(0, 2), S(0, 2), T(3, 0), U(6, 0)
+
+    |  P  Q  R  S  T   U
+----+-------------------
+ P  |  0  4  4  2  7  10
+ Q  |  4  0  2  2  3   6
+ R  |  4  2  0  2  3   6
+ S  |  2  2  2  0  5   8
+ T  |  7  3  3  5  0   3
+ U  | 10  6  6  8  3   0
+sol
+    |  P  Q  R  S  T   U
+----+-------------------
+ P  |  0  4  4  2  7  10
+ Q  |  4  0  2  2  3   6
+ R  |  4  2  0  2  3   6
+ S  |  2  2  2  0  5   8
+ T  |  7  3  3  5  0   3
+ U  | 10  6  6  8  3   0
+P-S: 2
+    |P-S  Q  R  T   U
+----+----------------
+ P-S|  0  4  4  7  10
+ Q  |  4  0  2  3   6
+ R  |  4  2  0  3   6
+ T  |  7  3  3  0   3
+ U  | 10  6  6  3   0
+
+Q-R: 2
+    |P-S Q-R T   U
+----+-------------
+ P-S|  0  4  7  10
+ Q-R|  4  0  3   6
+ T  |  7  3  6   3
+ U  | 10  6  3   0
+
+T-U: 3
+    |P-S Q-R T-U
+----+-------------
+ P-S|  0  4  10 
+ Q-R|  4  0  6 
+ T-U| 10  6  0   
+
+P-S-Q-R:4
+    |P-S-Q-R T-U
+----+-------------
+ P-S|  0    10 
+ Q-R|
+ T-U|  10    0   
+
+P-S-Q-R - T-U:10
+
+level1: 
+Q-S Q-R T-U
+level 4:
+Q-S-Q-R T-U
+
+
+QUESTION 3
+2.
+    Assume a dataset is stored in a variable features where each column
+of features represents a feature and each row of features represents a
+data sample. The samples belong to a certain number of classes. A variable
+labels stores the class information of each sample as a column vector where
+each row of labels represents a data sample.
+    The Python script on the next page attempts to calculate the ratio between
+average intra-class distance and average inter-class distance per pair
+of samples.
+    Both features and labels are an ndarray in Numpy.
+    Please fill in the blank marked as [#001] to [#006] as appropriate in the
+script and then answer the following question:
+• Considering the difficulties of classification process, will a larger value of
+    the ratio between average intra-class distance and average inter
+    class distance be preferred?
+
+import numpy as np
+
+intra_distances= []
+inter_distances= []
+
+for i in range([#001]):
+    for j in range([#002], len(features)):
+        # Euclidean distancebetween twosamples
+        distance= np.linalg.norm([#003])
+
+        # Ifboth samplesbelong tothe sameclass,
+        # it’s an intra-class distance
+        if [#004]:
+            intra_distances.append(distance)
+        # Else, it’s ainter-class distance
+        else:
+            inter_distances.append([#005])
+
+# Calculate average intra-class andinter-class distances
+avg_intra_distance= np.mean(intra_distances)
+avg_inter_distance= np.mean(inter_distances)
+
+# Calculate the ratio
+ratio =[#006]
+print(‘Ratio:’,ratio)
+
++------+-------------------------------------------+
+|  No  |                    ANS                    |
++------+-------------------------------------------+
+|[#001]| features                                  |
+|[#002]| i+1                                       |
+|[#003]| features[i] - features[j]                 |
+|[#004]| labels[i] == labels[j]:                   |
+|[#005]| distance                                  |
+|[#006]| avg_inter_distance / avt_intra_distance   |
++------+-------------------------------------------+
+
+
+3.  Assume a dataset is stored in a variable features where each column of
+    features represents a feature and each row of features represents a data
+    sample. The samples belong to 4 classes. A variable labels stores the class
+    information of each sample as a column vector where each row of labels
+    represents a data sample.
+    The Python script on next page attempts to build up an ensemble classifier
+    that predict the class of samples belonging to. Three sub-classifiers are built:
+    a SVM classifier, a decision tree classifier and a kNN classifier. The final
+    prediction is made by a vote of three sub-classifiers.
+    Both features and labels are an ndarray in Numpy.
+    Please fill in the blank marked as [#007] to [#012] as appropriate in the
+    script and then answer the following question:
+    • Besides voting, propose two other methods to make the final prediction
+    with prediction of sub-classifiers.
+
+    from sklearn.ensemble import VotingClassifier
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.svm import SVC
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.model_selection import train_test_split
+
+# Split the dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split \
+    (features, labels, test_size=0.2)
+
+# Create the classifiers
+    knn = KNeighborsClassifier(n_neighbors=5)
+    svm = SVC(kernel='rbf', probability=True, random_state=104)
+    dt = DecisionTreeClassifier(random_state=104)
+
+# Create the ensemble model
+    ensemble = VotingClassifier(estimators=[('knn', knn), \
+    ('svm', svm), ('dt', dt)], voting='hard')
+
+# Train the ensemble model
+    [#007].fit([#008], [#009])
+
+# Check the ensemble model performance
+    ensemble_score = ensemble.[#010]([#011], [#012])
+
+    print('Ensemble Model Accuracy:', ensemble_score)
+sol.
+    1. 
+    +------+-------------------------------------------+
+    |  No  |                    ANS                    |
+    +------+-------------------------------------------+
+    |[#007]| ensemble                                  |
+    |[#008]| X_train                                   |
+    |[#009]| y_train                                   |
+    |[#010]| score                                     |
+    |[#011]| X_test                                    |
+    |[#012]| y_test                                    |
+    +------+-------------------------------------------+
+    2. 
+    a. soft voting:
+        概率平均 / 加权平均（Soft Voting 的一般化形式）
+        让所有子分类器都打开 probability=True，得到它们各自对 4 个类别 的预测概率
+        取 简单平均 或 加权平均
+        最终类别 = argmax(p_ensemble)。
+
+        优点：利用了置信度信息，比硬投票更细腻；权重还能靠交叉验证自动寻找最佳组合。
+        实现：VotingClassifier(voting="soft") 就是平均概率；自定义 weights=[α,β,γ] 就变成加权平均
+        soft_vote = VotingClassifier(estimators=[('knn', knn), \
+            ('svm', svm), ('dt', dt)], voting='soft')
+    b. stcking
+    第一层：用 KNN、SVM、DT 在训练集上做 K 折交叉验证，记录它们对每个样本的预测（通常用概率向量）。
+    把这 3 组预测拼成新的特征矩阵 
+    Z（每行 3×4=12 维，或 3 维若只用 argmax），真实标签仍为 y_train。
+    第二层：训练一个“元学习器”——例如 逻辑回归 / 线性 SVM / XGBoost——用Z 来学“如何最好地组合子模型输出”。
+    预测时，先让子模型对新样本输出概率，再喂给元学习器出最终类别。
+    estimators = [
+        ("knn", KNeighborsClassifier(n_neighbors=5)),
+        ("svm", SVC(kernel='rbf', probability=True, random_state=104)),
+        ("dt", DecisionTreeClassifier(random_state=104))
+    ]
+
+    meta learner = LogisticRegression(max_iter=1000, multi_class="auto")
+    stacking = StackingClassifier(
+        estimators=estimators,
+        final_estimator=meta_learner,
+        stack_method="auto",
+        cv=5,
+        passthrough=false
+    )
+    stacking.fit(X_train, y_train)
+    pred_stack = stacking.predict(X_test)
+    
+

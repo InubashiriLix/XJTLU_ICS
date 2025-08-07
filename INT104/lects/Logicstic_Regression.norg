@@ -1,0 +1,78 @@
+*  Logistic Regression 笔记 (ASCII 版)
+
+** 1 为什么要用 Logistic 回归?
+   - 解决二分类 / 多分类问题
+   - 输出需要落在 0‒1 之间, 可解释为“属于正类的概率”
+   - 线性回归直接预测会出现 < 0 或 > 1 的数, 无法当概率
+
+** 2 模型形式
+*** 2.1 线性部分
+    z = w0 + w1*x1 + w2*x2 + ... + wn*xn
+
+*** 2.2 Sigmoid (Logistic) 函数
+    sigma(z) = 1 / (1 + exp(-z))
+    hat_y    = sigma(z)        ; 0 < hat_y < 1
+
+*** 2.3 决策规则
+    if hat_y >= threshold (默认 0.5) then y_pred = 1
+    else                               y_pred = 0
+
+** 3 训练原理
+*** 3.1 损失函数 (二元交叉熵 / 负对数似然)
+    J(w) = - Σ_i [ y_i * log(hat_y_i) + (1 - y_i) * log(1 - hat_y_i) ]
+
+*** 3.2 梯度
+    ∂J/∂w_j = Σ_i (hat_y_i - y_i) * x_ij
+
+*** 3.3 参数更新 (梯度下降示例)
+    w_j <- w_j - alpha * ∂J/∂w_j
+
+*** 3.4 正则化
+    - L2:  J_reg = J + lambda * Σ_j w_j^2
+    - L1:  J_reg = J + lambda * Σ_j |w_j|
+
+** 4 参数解释
+   - w_j > 0  : x_j 增大 → 正类概率增大
+   - w_j < 0  : x_j 增大 → 正类概率减小
+   - exp(w_j) : x_j 增 1 单位时, 正类几率(odds) 乘以 exp(w_j)
+   - w0       : 所有特征为 0 时的基准 log-odds, sigma(w0) 为基准概率
+
+** 5 优点 / 缺点
+   - 优点
+   - 简单、易解释
+   - 训练快, 不易过拟合 (可加正则)
+   - 直接输出概率
+   - 缺点
+   - 决策边界线性, 难捕捉复杂非线性
+   - 需手工构造交互 / 多项式特征
+   - 对离群值敏感
+
+** 6 常见扩展
+   - 多分类
+   - OvR (One-vs-Rest)
+   - Softmax (Multinomial Logistic)
+   - Kernel Logistic Regression
+   - 稀疏 LR (L1 正则) 做特征选择
+
+** 7 典型工作流
+   1. 数据准备 → 缺失值处理 / 编码 / 标准化
+   2. 拆分 train / val / test
+   3. 训练 LogisticRegression (可设 penalty, C)
+   4. 评估准确率, AUC, F1
+   5. 根据业务调阈值
+   6. 解释系数, 输出 odds ratio
+
+** 8 参考代码
+   ```python
+   from sklearn.linear_model import LogisticRegression
+   from sklearn.preprocessing import StandardScaler
+   from sklearn.pipeline import make_pipeline
+
+   model = make_pipeline(
+   StandardScaler(),
+   LogisticRegression(penalty="l2", C=1.0, solver="lbfgs")
+   )
+
+   model.fit(X_train, y_train)
+   proba = model.predict_proba(X_test)[:, 1]  # 正类概率
+

@@ -1,0 +1,116 @@
+1. Suppose we build a classifier for predicting number of people who have
+    more than $1000 in their bank account. Consider a dataset with 200 obser
+    vations i.e. n=200. From the confusion matrix given below we can get that
+    (i.e. “prediction=No” means the account has less than $1000):
+ (1) In reality, there are a total of [a] accounts with a balance more than
+    $1000 and [b] accounts with a balance less than $1000.
+ (2) The overall accuracy is [c] and the recall is [d] .
+    +-----------+---------------+----------------+
+    | n=200     | Prediction=No | Prediction=Yes |
+    +-----------+---------------+----------------+
+    | Actual=No | 60            | 10             |
+    | Actual=Yes| 5             | 125            |
+    +-----------+---------------+----------------+
+Sol.,
+    (1) In reality, there are a total of [a] accounts with a balance more than
+        $1000 and [b] accounts with a balance less than $1000.
+        a = ( 125 + 5 ) / 200 * 1000 = 650
+        b = ( 60 + 10 ) / 200 * 1000 = 350
+    (2) The overall accuracy is [c] and the recall is [d] .
+        overall accuracy = (60 + 125) / 200 = 0.925
+        overall recall = (125) / (5 + 125)  = 0.9615
+
+2. The following python code is to find the odd numbers in randomly generated 
+    100 integers in the range of 1 to 100. Please fill in the blank to complete
+    the code. The API for numpy.random.randint is:
+    numpy.random.randint(low, high=None, size=None, dtype=int)
+    • low: Lowest (signed) integers to be drawn from the distribution
+    • high: If provided, one above the largest (signed) integer to be drawn
+    from the distribution
+    • size: Output shape
+    • dtype: Desired dtype of the result
+
+import numpy as np
+number = np.random.randint(1, [e] , size=( [f] ))
+def findodd(number):
+    odd=[]
+    for n in number:
+        if(n [g] 2 [h] 0):
+        odd.append(n)
+return odd
++------+-------------------------------------------+
+|  No  |                    ANS                    |
++------+-------------------------------------------+
+|  e   | 101
+|  f   | 100
+|  g   | %
+|  h   | !=
+
+ Section 3 Computation Questions
+ Thegfollowing table shows the preference of golf players for playing golf or
+ not
+    +---------+----------+------------+------------+
+    | Outlook | Humidity | Wind Speed | Preference |
+    +---------+----------+------------+------------+
+    | Rainy   | 80%      | 0.5m/s     | Yes        |
+    | Rainy   | 40%      | 0.2m/s     | Yes        |
+    | Rainy   | 50%      | 5.0m/s     | No         |
+    | Rainy   | 50%      | 0.2m/s     | Yes        |
+    | Rainy   | 75%      | 4.0m/s     | No         |
+    | Sunny   | 70%      | 5.0m/s     | No         |
+    | Sunny   | 75%      | 0.4m/s     | No         |
+    | Sunny   | 80%      | 0.1m/s     | No         |
+    | Sunny   | 50%      | 0.2m/s     | Yes        |
+    | Sunny   | 40%      | 4.0m/s     | Yes        |
+    +---------+----------+------------+------------+
+
+3. Based on the information presented in the table, what is the golf player’s
+    preference under the condition of rainy weather and humidity lower than
+    65%? Please use Naıve Bayes to make the decision
+SOL:
+    using naive Bayes:
+    P(YES) = 5 / 10 = 0.5
+    P(NO) = 5 / 10 = 0.5
+    P(YES | RAINY) = 3 / 5 = 0.6
+    P(NO | RAINY) = 2 / 5 = 0.4
+    P(YES | HUMIDITY < 65) = 4 / 5 = 0.8
+    P(NO | HUMIDITY < 65) = 1 / 5 = 0.2
+
+    P(YES | x) ∝ P(YES) * P(YES | RAINY) * P(YES | HUMIDITY < 65) = 0.24k
+    P(NO | x) ∝ P(NO) * P(NO | RAINY) * P(NO | HUMIDITY < 65) = 0.04k
+
+    noralaization: 
+        P(YSE | x)  = 0.24 / (0.24 + 0.04) = 0.857
+        P(NO | x) = 0.04 / (0.24 + 0.04)  = 0.143
+
+4. k = 3, what is the golf player’s preference under
+    the condition of 65% (Humidity) and 3.0 m/s (Wind Speed) in a Sunny day?
+    Please use City Block distance to calculate the distance between two samples,
+    i.e., D{A,B} = D(x1,y1),(x2,y2) = |x1 − x2| + |y1 − y2|
+    +---------+----------+------------+------------+----------+
+    | Outlook | Humidity | Wind Speed | Preference | distance |
+    +---------+----------+------------+------------+----------+
+    | Sunny   | 70%      | 5.0m/s     | No         | 5+2=7    |
+    | Sunny   | 75%      | 0.4m/s     | No         | 10+2.6=12.6 |
+    | Sunny   | 80%      | 0.1m/s     | No         | 20+2.9=22.9 |
+    | Sunny   | 50%      | 0.2m/s     | Yes        | 10+2.8=12.8 |
+    | Sunny   | 40%      | 4.0m/s     | Yes        | 20+1=21  |
+    +---------+----------+------------+------------+----------+
+    in the most nearest 3 samples, which is 7, 12.6, and 12.8, YES: 1, NO: 2
+    NO is much than YES
+    there fore preference is NO
+
+5. If humidity is a more important factor in the golf players’ preference, what
+    issue is introduced with the kNN system in the previous question? Propose
+    a way to fix the issue you have identified. (There is no need to do the actual
+    calculation for your suggestion.)
+SOL.
+    a. cause what problem:
+         two sample. if wind speed differs alittle but humidi diffiers a lot, 
+         but the wind speed is more important, then the humidity is seen as little, then the 
+         importance of humidity will be ignored
+         at same time, the unit in the problem is different, the humidity use 0-100 while wind speed use 0-10, which is unbalnaced
+    b. solution
+        1. D(A, B) = wH * |Ha - Hb| + wW * |Wa - Wb| wH > wW, you need to find a specific ratio that make the model balance
+        2. or standarlize the humidity and the wind spped in to the same range(0-1), then give higher weight to the humidity
+

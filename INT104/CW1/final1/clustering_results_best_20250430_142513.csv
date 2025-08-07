@@ -1,0 +1,19 @@
+FeatureSet,Algorithm,Params,ARI,Accuracy
+Scores,KMeans,{'n_clusters': 2},0.12687380380048702,0.5386266094420601
+Scores,Agglomerative,"{'n_clusters': 2, 'linkage': 'ward'}",0.10545000569512716,0.5278969957081545
+Scores,DBSCAN,"{'eps': 1.0, 'min_samples': 5}",0.03492884141125681,0.4248927038626609
+Scores,GaussianMixture,{'n_components': 4},0.08470265759947962,0.4356223175965665
+Demo,KMeans,{'n_clusters': 4},0.09777056778344174,0.5
+Demo,Agglomerative,"{'n_clusters': 2, 'linkage': 'complete'}",0.10677263810998794,0.4592274678111588
+Demo,DBSCAN,"{'eps': 0.5, 'min_samples': 5}",0.09777056778344174,0.5
+Demo,GaussianMixture,{'n_components': 4},0.09777056778344174,0.5
+PCA2D,KMeans,{'n_clusters': 4},0.17995486533712818,0.5257510729613734
+PCA2D,Agglomerative,"{'n_clusters': 5, 'linkage': 'complete'}",0.1501885943775238,0.5085836909871244
+PCA2D,DBSCAN,"{'eps': 0.5, 'min_samples': 5}",0.09378684603728973,0.49141630901287553
+PCA2D,GaussianMixture,{'n_components': 6},0.13450443120936095,0.4742489270386266
+PCA3D,KMeans,{'n_clusters': 3},0.20300987595889924,0.5901287553648069
+PCA3D,Agglomerative,"{'n_clusters': 4, 'linkage': 'ward'}",0.17648534084141543,0.5472103004291845
+PCA3D,DBSCAN,"{'eps': 1.5, 'min_samples': 5}",0.10441964159121293,0.44635193133047213
+PCA3D,GaussianMixture,{'n_components': 3},0.20620035317911187,0.592274678111588
+PCA3D,VotingEnsemble,-,0.10543795568594934,0.5236051502145923
+PCA3D,StackingEnsemble,-,0.15079277395133614,0.5536480686695279

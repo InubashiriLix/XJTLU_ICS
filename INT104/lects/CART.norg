@@ -1,0 +1,93 @@
+* CART (Classification And Regression Tree) 笔记
+  :author: ChatGPT
+  :date: 2025-06-02
+
+** 1 定义
+   - CART = 一种 二叉决策树 框架  
+   - 可同时处理 分类（输出离散标签）和 回归（输出连续值）任务  
+   - 通过递归地把数据划分为更纯净（分类）或更均匀（回归）的子区域来构建树结构
+
+** 2 基本流程
+   1. 选择最佳分裂  
+    - 在当前节点遍历所有特征 & 值，计算分裂后指标（分类 ⇒ Gini；回归 ⇒ MSE）  
+    - 选使指标最小的分裂 (Δ impurity 最大)  
+   2. 递归建子树  
+   -- 对左右子集重复步骤 1，直到触发停止条件  
+  3. 剪枝  
+    - 先生成一棵“极大树”  
+    - 再用 **成本复杂度剪枝 (Cost-Complexity Pruning)**  
+    - 逐步剪掉收益小的子树，得到不同 α 水平的子树序列  
+    - 用验证集 / 交叉验证选最优 α，对应的子树即最终模型
+
+** 3 纯度/误差指标
+   | 任务 |  指标 | 公式 (p = 子节点正样本比例 / 预测值) |
+   |------|-------|--------------------------------------|
+   | 分类 | Gini  |  Gini = 1 − Σ p_k²                   |
+   |      | 交叉熵|  Entropy = − Σ p_k log p_k           |
+   | 回归 | MSE   |  MSE = (1/|S|) Σ (y_i − ȳ_S)²        |
+
+   - CART 原论文使用 Gini (分类) & MSE (回归)
+
+** 4 分裂搜索小结
+   - 对每个特征 Xi：  
+   - 将取值排序  
+   - 在相邻唯一值中点处试分裂  
+   - 计算左右子集纯度/误差  
+   - 复杂度 ~ O( n_samples · n_features · log n_samples )
+
+** 5 停止与剪枝
+   - 常见停止条件  
+   - 纯度/误差已达阈值  
+   - 树深 ≥ max_depth  
+   - 子节点样本数 < min_samples_leaf  
+   - 剪枝比提前停止更稳健  
+   - 先长后剪 ⇒ 不轻易错过重要分裂  
+
+** 6 示例 (分类)
+   Gini_parent = 0.48
+   尝试按 X2 < 3.5 分裂 → 得到左右子集 Gini_L=0.10, Gini_R=0.30
+   ImpurityReduction = 0.48 − (n_L/n)*0.10 − (n_R/n)*0.30 = Δ
+   若 Δ 最大 → 选择此分裂
+** 7 优缺点
+*** 优点
+    - 直观易解释 (if-else 规则)  
+    - 同时支持分类 & 回归  
+    - 可处理数值 + 类别特征 (无需标准化)  
+    - 内部自动做特征选择  
+*** 缺点
+    - 易对训练数据过拟合 → 需剪枝 or 集成 (RF, GBDT)  
+    - 分裂点是轴对齐 ⇒ 难以拟合斜线型决策边界  
+    - 预测不连续 (回归) & 不稳定 (对数据噪声敏感)
+
+** 8 典型超参数
+   | 参数                | 作用                           |
+   |---------------------|--------------------------------|
+   | max_depth           | 树最大深度                     |
+   | min_samples_split   | 内部节点最少样本数             |
+   | min_samples_leaf    | 叶节点最少样本数               |
+   | max_features        | 分裂时考虑的特征子集 (集成用)  |
+   | ccp_alpha           | 成本复杂度剪枝系数 (sklearn)   |
+
+** 9 简易 Python 示例 (sklearn)
+   @code python
+   from sklearn.tree import DecisionTreeClassifier, plot_tree
+   from sklearn.model_selection import train_test_split
+
+   X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+
+   cart = DecisionTreeClassifier(
+       criterion="gini",        # or "entropy"
+       max_depth=None,
+       min_samples_leaf=5,
+       ccp_alpha=0.005          # 剪枝强度
+   )
+   cart.fit(X_train, y_train)
+   val_acc = cart.score(X_val, y_val)
+   print("Validation accuracy:", val_acc)
+
+   # 可视化
+   import matplotlib.pyplot as plt
+   plt.figure(figsize=(12,6))
+   plot_tree(cart, feature_names=feature_names, class_names=class_names, filled=True)
+   plt.show()
+   @end

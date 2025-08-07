@@ -1,0 +1,169 @@
+* SVM & Naive Bayes
+** Supervised Learning
+**** Uses labeled datasets (X with y) to train models
+**** Learns input–output relationships by adjusting weights/parameters
+**** Training process:
+     - Feed input features X and true labels y
+     - Compute predictions ŷ and loss
+     - Update model parameters to minimize loss
+**** Common tasks:
+     - Classification (predict category labels)
+     - Regression (predict continuous quantities)
+**** Goal: produce a model that makes accurate predictions on new, unseen data
+
+** How supervised learning works
+*** Labeled dataset
+    - Input features X paired with true labels y
+*** Training process
+    - Algorithm processes large dataset to learn input–output relationships
+    - Compute predictions ŷ and evaluate with a loss function
+    - Use gradient descent (e.g. SGD) to follow the loss gradient and update parameters
+*** Evaluation
+    - Test model on held-out data to check performance
+    - Cross-validation: split data into folds and rotate training/testing
+*** Key concepts
+    - Loss function measures discrepancy between predictions and actual values
+    - Gradient is the slope of the loss used to guide parameter updates
+    - Optimization algorithm updates model settings to minimize loss
+
+** Supervised Learning Workflow
+   ~ Identify the type of input data the model will see in production
+   ~ Assemble and label a dataset, ensuring minimal data bias
+   ~ Split data into training, validation, and test sets
+   ~ Choose an appropriate machine learning algorithm
+   ~ Train the model on the training dataset
+   ~ Validate and test the model using the validation and test sets
+   ~ Monitor model performance in production and update regularly
+
+** Real-world supervised learning use cases
+*** Spam detection
+   - Classify messages as spam or not spam using labeled examples
+*** Forecasting
+    - Use regression models to predict future values (e.g. financial trends, inventory needs, salaries)
+*** Recommendation engines
+   - Analyze past user choices to predict preferences and suggest relevant content or products
+
+** Linear 2-Classification Task
+*** Decision boundary
+    - Defined by (w*)ᵀ x = 0
+*** Classification rule
+    - (w*)ᵀ x > 0 → Class +1
+    - (w*)ᵀ x < 0 → Class –1
+*** Weight vector w*
+    - Is normal (perpendicular) to the boundary
+    - Points toward the positive class side
+*** Interpretation
+    - The sign of (w*)ᵀ x determines the class
+    - The magnitude of (w*)ᵀ x reflects distance (and confidence) from the boundary
+*** Training objective
+    - Find w* (and bias b if used) so that the two classes are separated by the hyperplane
+
+** Perception 
+*** algorithm type
+    an supervised ml algorithm, you can use it to train simple binary classification model
+*** Weight self learning
+    though update the weights and bias, the perception algorthm can get the best weight parameters
+*** Calculate precedure
+    intput * weight + bias  => pure input
+    through activation function to find out whether the nuron is activated
+*** Linear Decision Plane
+    the final learning result define a plane taht can seperate the data
+*** ouput principle:
+    if input > threshold: 1
+    if input < threshold: 0 / -1
+
+** Perception Learning Rule:
+*** Model Structure:
+    - Input: x_0 = 1 (bias) x_1 ... x_m
+    - Weight:  w_0, w_1, ... w_m
+    - Net input: z = Σ_i w_i * x_i
+    - Activation: step(z) -> output yhat in \{+1, -1}
+*** Learning update (for each sample x,y)
+    - y = step(wᵀ x)
+    - error e = y - yhat
+    - w_i = w_1 + lr * e * x_i
+    - bias update: w_0 = w_0 + lr * e
+    - Converge guaranteeed if data is linearly separtable
+
+** SVM
+*** train data
+    if you got a bunch of train data (like (xi, yi)), and every xi is an eigenvector (for example: (xi1, yi1) responding label yi is 1 or -1)
+*** linear hypothesis
+    we assume there exists a weight vector w, and we use the new point x to wᵀx, then we can get an data
+    if this value > 0, then we send x to 1
+    if this value < 0, then we send x to -1
+    - in format:
+      y = sign(wᵀx) = {1 (wᵀx > 0); -1 (wᵀx < 0)}
+*** Dision Edge
+    the line that separate the minor one and positive one is the set of all the point that satisfies wᵀx = 0
+    the vector w it self orthogonal to the line, and it points at the +1 side
+*** Next step:
+    the next step is to find a w that has the biggest margin as the final solution
+    (margin = distance from the nearest example to hte separating line)
+    bigger marin is better -> better generalization
+*** Decision Boundary
+    - if we want an hyper plane that can separate the two classes and make the nearest point as far as possible, this is the idea of maximum boundary
+*** HyperPlane
+    - in the d dimensional space, a hyperplane can be writeen as wᵀx + b = 0
+      while positive class is wᵀx + b > 0, and the negative class is wᵀx + b < 0
+    - in order to convient the boundary, we define the plane that approch the positive and negative class as wᵀx + b = +- 1
+*** Support Vecotor: 
+    those sample that just on the wᵀx + b = +- 1 are called support vectors
+    they define the length of the margin, and make the other further points make no influence to the boundary
+*** Margin Width
+    the distance between two plane is 2 / ||w||
+    thusm the max margin is equal to minimize ||w||^2
+*** Optimizaion target:
+    - constraint: each samle should be classified correctly and out of the boundary, 
+    thus
+    yi(wᵀxi + b) >= 1 for all i
+    - target function:
+      min(w, b) (1/2) * ||w||^2  
+      s.t(such that) yi(wᵀxi + b) >= 1 for all i
+*** Kernel Trick
+**** Problem
+     - Data not linearly separable in original feature space
+**** Solution
+     - Map input x into higher-dimensional feature φ(x)
+     - In new space classes become linearly separable
+**** Example: polynomial feature
+     - Original: x₁ only, points on a line overlap
+     - Add x₂ = (x₁)²
+     - Now points lie on a parabola in (x₁,x₂) plane
+     - A straight line in (x₁,x₂) separates the two classes
+**** Kernel function
+     - K(x, x′) = φ(x)ᵀ φ(x′) computes inner product in high-dim space
+     - No need to explicitly build φ(x)
+**** Common kernels
+     - Polynomial kernel: K(x,x′) = (1 + xᵀ x′)ᵈ
+     - RBF (Gaussian) kernel: K(x,x′) = exp(−γ‖x−x′‖²)
+** Bayes Classifier
+*** input and output 
+    input: a set of eigenvector x 
+    output: which class we want to tell that it belongs to
+*** score principle
+    // lets say the x is a set of patients, and y is disease class
+    calculating P(y|x) is difficult, but we can use Bayes:
+    P(y|x) = ( P(x|y) * P(y) ) / P(x)
+    P(y): prior probability
+    P(x | y): in the known ill people the probability that this feature appears;
+    P(x): the overall  probability that this feature is observed
+*** Final Score Formula
+    for each class y we can calculate the 
+    score(y) = P(x|y) P(y)
+*** dealing with high dimensionnal data
+    if the feature has too much, then calc byes can be difficult
+    but naive byes would assume the each feature is independent to each other
+    P(x|y) = ∏i P(xi|y)
+    then we can calculate the high dimensional problem into simple one dimnsioanal collection
+*** sum up:
+    the byes classifier use Posterior probability to collect each class, the class with highest score
+    the class with highest score is the forcast result, the core of it is the Bayes' theorem
+    ^Works when each feaure are independent to each other^
+** Other Bayesian classifiers
+*** Use when features are not conditionally independent
+*** Bayesian Belief Network (BBN)
+   - Directed acyclic graph of variables
+   - Edges represent conditional dependencies
+   - Each node has a conditional probability table P(X | Parents(X))
+   - Encodes prior knowledge and causal relationships

@@ -1,0 +1,55 @@
+* Ridge Regression 简明笔记
+
+** 1 核心动机
+   - 在线性回归中遇到 多重共线 或 高维特征 时，(XᵀX) 可能奇异导致估计方差大  
+   - Ridge 通过在损失函数中加入 L2 惩罚 (λ Σ βⱼ²) 收缩系数 → 减少方差、提升泛化
+
+** 2 模型与损失
+   y_hat = β₀ + Σ βⱼ xⱼ
+
+   Ridge 损失  
+   J(β) = Σ (yᵢ − y_hatᵢ)²  +  λ Σ βⱼ²
+   └──── SSE ───┘     └ 惩罚 ┘
+   - λ ≥ 0，越大 → 系数收缩得越厉害  
+   - β₀(截距) 通常 不正则化 (先对特征中心化再训练更方便)
+
+** 3 闭式解
+   β_ridge = (XᵀX + λ I)⁻¹ Xᵀ y
+   - 始终可逆 (λ>0) ⇒ 稳定  
+   - 当 λ→0 → 退化为普通最小二乘 (OLS)  
+   - 当 λ→∞ → 系数趋向 0 但不完全为 0
+
+** 4 与岭参数 λ
+   - 偏差-方差权衡  
+   - λ 小：拟合好、方差大  
+   - λ 大：偏差增加、方差减少  
+   - 调参方法：k 折交叉验证 / 留一交叉验证 (LOOCV)
+
+** 5 与 Lasso 的对比
+   | 特性           | Ridge (L2)      | Lasso (L1)      |
+   | -------------- | --------------- | --------------- |
+   | 系数收缩       | 平均收缩        | 可收缩到 0      |
+   | 特征选择       | 否 (不稀疏)     | 是 (稀疏化)     |
+   | 共线性处理     | 优              | 任意保留其中一列|
+   | 解的稳定性     | 高              | 对 λ 敏感       |
+
+** 6 预处理
+   - 对每列特征 **标准化** (mean=0, std=1) → 使惩罚对各 βⱼ 影响一致  
+   - 若使用截距 β₀，可先中心化 y：y ← y − ȳ
+
+** 7 Python 示例 (sklearn)
+   @code python
+   from sklearn.linear_model import Ridge
+   from sklearn.model_selection import GridSearchCV
+   from sklearn.preprocessing import StandardScaler
+   from sklearn.pipeline import make_pipeline
+
+   param_grid = {"ridge__alpha": [0.01, 0.1, 1, 10, 100]}  # α=λ
+   pipe = make_pipeline(
+       StandardScaler(with_mean=True),
+       Ridge()
+   )
+   model = GridSearchCV(pipe, param_grid, cv=5)
+   model.fit(X_train, y_train)
+   print("最佳 λ =", model.best_params_["ridge__alpha"])
+   @end

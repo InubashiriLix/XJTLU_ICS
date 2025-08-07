@@ -1,0 +1,93 @@
+FeatureSet,Algorithm,Params,ARI,Accuracy
+Scores,KMeans,{'n_clusters': 2},0.12687380380048702,0.5386266094420601
+Scores,KMeans,{'n_clusters': 3},0.11009097699485171,0.4678111587982833
+Scores,KMeans,{'n_clusters': 4},0.09590427289716114,0.4012875536480687
+Scores,KMeans,{'n_clusters': 5},0.07566688972081814,0.3369098712446352
+Scores,KMeans,{'n_clusters': 6},0.09537484187067058,0.34549356223175964
+Scores,Agglomerative,"{'n_clusters': 2, 'linkage': 'ward'}",0.10545000569512716,0.5278969957081545
+Scores,Agglomerative,"{'n_clusters': 2, 'linkage': 'complete'}",0.10345213706552481,0.5150214592274678
+Scores,Agglomerative,"{'n_clusters': 3, 'linkage': 'ward'}",0.08860704418052548,0.4356223175965665
+Scores,Agglomerative,"{'n_clusters': 3, 'linkage': 'complete'}",0.10370543727945034,0.5171673819742489
+Scores,Agglomerative,"{'n_clusters': 4, 'linkage': 'ward'}",0.08050427935216303,0.38197424892703863
+Scores,Agglomerative,"{'n_clusters': 4, 'linkage': 'complete'}",0.06306673160946033,0.3905579399141631
+Scores,Agglomerative,"{'n_clusters': 5, 'linkage': 'ward'}",0.08543084416878347,0.3605150214592275
+Scores,Agglomerative,"{'n_clusters': 5, 'linkage': 'complete'}",0.06009328913349049,0.37339055793991416
+Scores,Agglomerative,"{'n_clusters': 6, 'linkage': 'ward'}",0.07807867125379156,0.34120171673819744
+Scores,Agglomerative,"{'n_clusters': 6, 'linkage': 'complete'}",0.05212340578936909,0.33047210300429186
+Scores,DBSCAN,"{'eps': 0.5, 'min_samples': 5}",-0.017082219436597344,0.3133047210300429
+Scores,DBSCAN,"{'eps': 1.0, 'min_samples': 5}",0.03492884141125681,0.4248927038626609
+Scores,DBSCAN,"{'eps': 1.5, 'min_samples': 5}",0.0048667793552219125,0.4055793991416309
+Scores,GaussianMixture,{'n_components': 2},0.03433289123609928,0.4613733905579399
+Scores,GaussianMixture,{'n_components': 3},0.04893348791137546,0.44849785407725323
+Scores,GaussianMixture,{'n_components': 4},0.08470265759947962,0.4356223175965665
+Scores,GaussianMixture,{'n_components': 5},0.0745818831075222,0.4206008583690987
+Scores,GaussianMixture,{'n_components': 6},0.06502644752346277,0.36909871244635195
+Demo,KMeans,{'n_clusters': 2},0.0366017691551102,0.463519313304721
+Demo,KMeans,{'n_clusters': 3},0.06984060014605478,0.5021459227467812
+Demo,KMeans,{'n_clusters': 4},0.09777056778344174,0.5
+Demo,KMeans,{'n_clusters': 5},0.09777056778344174,0.5
+Demo,KMeans,{'n_clusters': 6},0.09777056778344174,0.5
+Demo,Agglomerative,"{'n_clusters': 2, 'linkage': 'ward'}",0.05294438198218322,0.463519313304721
+Demo,Agglomerative,"{'n_clusters': 2, 'linkage': 'complete'}",0.10677263810998794,0.4592274678111588
+Demo,Agglomerative,"{'n_clusters': 3, 'linkage': 'ward'}",0.10071674601503418,0.5171673819742489
+Demo,Agglomerative,"{'n_clusters': 3, 'linkage': 'complete'}",0.10071674601503418,0.5171673819742489
+Demo,Agglomerative,"{'n_clusters': 4, 'linkage': 'ward'}",0.09777056778344174,0.5
+Demo,Agglomerative,"{'n_clusters': 4, 'linkage': 'complete'}",0.09777056778344174,0.5
+Demo,Agglomerative,"{'n_clusters': 5, 'linkage': 'ward'}",0.09632580531529045,0.4978540772532189
+Demo,Agglomerative,"{'n_clusters': 5, 'linkage': 'complete'}",0.09632580531529045,0.4978540772532189
+Demo,Agglomerative,"{'n_clusters': 6, 'linkage': 'ward'}",0.09490022963898151,0.4957081545064378
+Demo,Agglomerative,"{'n_clusters': 6, 'linkage': 'complete'}",0.09490022963898151,0.4957081545064378
+Demo,DBSCAN,"{'eps': 0.5, 'min_samples': 5}",0.09777056778344174,0.5
+Demo,DBSCAN,"{'eps': 1.0, 'min_samples': 5}",0.0,0.4055793991416309
+Demo,DBSCAN,"{'eps': 1.5, 'min_samples': 5}",0.0,0.4055793991416309
+Demo,GaussianMixture,{'n_components': 2},0.0366017691551102,0.463519313304721
+Demo,GaussianMixture,{'n_components': 3},0.0634081591397716,0.47854077253218885
+Demo,GaussianMixture,{'n_components': 4},0.09777056778344174,0.5
+Demo,GaussianMixture,{'n_components': 5},0.09777056778344174,0.5
+Demo,GaussianMixture,{'n_components': 6},0.09777056778344174,0.5
+PCA2D,KMeans,{'n_clusters': 2},0.12624464142061873,0.5364806866952789
+PCA2D,KMeans,{'n_clusters': 3},0.12339116192838982,0.47854077253218885
+PCA2D,KMeans,{'n_clusters': 4},0.17995486533712818,0.5257510729613734
+PCA2D,KMeans,{'n_clusters': 5},0.1429121846532488,0.4570815450643777
+PCA2D,KMeans,{'n_clusters': 6},0.13072691116438026,0.3948497854077253
+PCA2D,Agglomerative,"{'n_clusters': 2, 'linkage': 'ward'}",0.06895110285976115,0.4957081545064378
+PCA2D,Agglomerative,"{'n_clusters': 2, 'linkage': 'complete'}",0.08692836825945355,0.5150214592274678
+PCA2D,Agglomerative,"{'n_clusters': 3, 'linkage': 'ward'}",0.09350351178457475,0.4613733905579399
+PCA2D,Agglomerative,"{'n_clusters': 3, 'linkage': 'complete'}",0.11479765677685674,0.5343347639484979
+PCA2D,Agglomerative,"{'n_clusters': 4, 'linkage': 'ward'}",0.13488036354541252,0.5085836909871244
+PCA2D,Agglomerative,"{'n_clusters': 4, 'linkage': 'complete'}",0.10575564392659466,0.49356223175965663
+PCA2D,Agglomerative,"{'n_clusters': 5, 'linkage': 'ward'}",0.143813206550462,0.44420600858369097
+PCA2D,Agglomerative,"{'n_clusters': 5, 'linkage': 'complete'}",0.1501885943775238,0.5085836909871244
+PCA2D,Agglomerative,"{'n_clusters': 6, 'linkage': 'ward'}",0.10918252659584085,0.37339055793991416
+PCA2D,Agglomerative,"{'n_clusters': 6, 'linkage': 'complete'}",0.11253314821382356,0.4613733905579399
+PCA2D,DBSCAN,"{'eps': 0.5, 'min_samples': 5}",0.09378684603728973,0.49141630901287553
+PCA2D,DBSCAN,"{'eps': 1.0, 'min_samples': 5}",0.08740902276676789,0.4356223175965665
+PCA2D,DBSCAN,"{'eps': 1.5, 'min_samples': 5}",0.0017448303921703393,0.40772532188841204
+PCA2D,GaussianMixture,{'n_components': 2},0.10936777833580091,0.4592274678111588
+PCA2D,GaussianMixture,{'n_components': 3},0.08490215868201338,0.4613733905579399
+PCA2D,GaussianMixture,{'n_components': 4},0.09622544236787886,0.4978540772532189
+PCA2D,GaussianMixture,{'n_components': 5},0.12552077204700277,0.5
+PCA2D,GaussianMixture,{'n_components': 6},0.13450443120936095,0.4742489270386266
+PCA3D,KMeans,{'n_clusters': 2},0.1266901424213958,0.5364806866952789
+PCA3D,KMeans,{'n_clusters': 3},0.20300987595889924,0.5901287553648069
+PCA3D,KMeans,{'n_clusters': 4},0.15773112371656728,0.5150214592274678
+PCA3D,KMeans,{'n_clusters': 5},0.16076165602382986,0.4871244635193133
+PCA3D,KMeans,{'n_clusters': 6},0.12452482131169818,0.37553648068669526
+PCA3D,Agglomerative,"{'n_clusters': 2, 'linkage': 'ward'}",0.0939364673011421,0.5107296137339056
+PCA3D,Agglomerative,"{'n_clusters': 2, 'linkage': 'complete'}",0.05789916007330544,0.4871244635193133
+PCA3D,Agglomerative,"{'n_clusters': 3, 'linkage': 'ward'}",0.15408861186066078,0.5643776824034334
+PCA3D,Agglomerative,"{'n_clusters': 3, 'linkage': 'complete'}",0.15233397533364154,0.5364806866952789
+PCA3D,Agglomerative,"{'n_clusters': 4, 'linkage': 'ward'}",0.17648534084141543,0.5472103004291845
+PCA3D,Agglomerative,"{'n_clusters': 4, 'linkage': 'complete'}",0.1174012879300446,0.48497854077253216
+PCA3D,Agglomerative,"{'n_clusters': 5, 'linkage': 'ward'}",0.14075380699254428,0.463519313304721
+PCA3D,Agglomerative,"{'n_clusters': 5, 'linkage': 'complete'}",0.12029409476987234,0.48283261802575106
+PCA3D,Agglomerative,"{'n_clusters': 6, 'linkage': 'ward'}",0.12417664974537104,0.41201716738197425
+PCA3D,Agglomerative,"{'n_clusters': 6, 'linkage': 'complete'}",0.11721007569586372,0.4656652360515021
+PCA3D,DBSCAN,"{'eps': 0.5, 'min_samples': 5}",0.0875126075420379,0.47854077253218885
+PCA3D,DBSCAN,"{'eps': 1.0, 'min_samples': 5}",0.09634061265681429,0.4892703862660944
+PCA3D,DBSCAN,"{'eps': 1.5, 'min_samples': 5}",0.10441964159121293,0.44635193133047213
+PCA3D,GaussianMixture,{'n_components': 2},0.11319258909604446,0.5300429184549357
+PCA3D,GaussianMixture,{'n_components': 3},0.20620035317911187,0.592274678111588
+PCA3D,GaussianMixture,{'n_components': 4},0.09869905727008418,0.5128755364806867
+PCA3D,GaussianMixture,{'n_components': 5},0.13903545129958805,0.47639484978540775
+PCA3D,GaussianMixture,{'n_components': 6},0.13509394878188322,0.45493562231759654

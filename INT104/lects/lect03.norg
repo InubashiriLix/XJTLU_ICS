@@ -1,0 +1,363 @@
+* Lect3
+** Data Collection for Machine Learning: Steps, Methods and Best Practice
+*** Process  Raw Data Collection -> Data Cleaning and preprocessing -> Data training and testing -> Prediction -> Bussiness plan, strategy
+
+*** Resource flow
+    data souces (Web, Iot, Databse, Business system, Paper document)
+    | (What, where and  how  to collect)
+    Data collection method (Application Programming Interface, Optical Character Recognition, Robotic Process Autiomation, InteligentD Document Processing, Web Scraping)
+    | (how much to collect, where to store the data)
+    Data Respository (SQL / NO SQL database) (Data warehouse) (Data lake)
+    ( ) NOT DONE YET
+
+** Data type
+*** Numeric:
+    Data that are expressed on a numeric scale
+    1. Continuous: Data that can take on any value in a interval. (ninterval, float,  numeric)
+    2. Discrete: Data that can take on only integer valuesm, such as counts (integer, count)
+*** Categorical:
+    data that can take on only a specific set of value representing a set of possible categories (enums, enumerated, facotrs, nominal)
+    Binary: A special case of categorical data with just two categories of values (0/1, true/false) (dichotomous, logical, indicator, boolean)
+    Ordinal: Categorical data that has an explicit ordering (ordered factors)
+** Rectangular Data
+*** Data frame
+    Rectangular data (like a spreadsheet) is the basic data structure for statistical and machine learning models.
+*** Feature
+    A column within a table.
+    Synonyms: attribute, input, predictor, variable
+*** Outcome
+    The target value to predict in an experiment or study (often a yes/no outcome).
+    Synonyms: dependent variable, response, target, output
+*** Record
+    A row within a table.
+    Synonyms: case, example, instance, observation, pattern, sample
+** Estimates of Location
+*** Mean
+    The sum of all values divided by the number of values.
+    Synonym: average
+*** Weighted mean
+    The sum of all values times a weight divided by the sum of the weights.
+    Synonym: weighted average
+*** Median
+    The value such that one-half of the data lies above and below.
+    Synonym: 50th percentile
+*** Percentile
+    The value such that P percent of the data lies below.
+    Synonym: quantile
+** Estimates of Location
+*** Weighted median
+    The value such that one‑half of the sum of the weights lies above and below the sorted data.
+*** Trimmed mean
+    The average of all values after dropping a fixed number of extreme values.
+    Synonym: truncated mean
+*** Robust
+    Not sensitive to extreme values.
+    Synonym: resistant
+*** Outlier
+    A data value that is very different from most of the data.
+    Synonym: extreme value
+
+** Variability Metrics
+*** Deviations
+    The difference between the observed values and the estimate of location.
+    Synonyms: errors, residuals
+*** Variance
+    The sum of squared deviations from the mean divided by n – 1, where n is the number of data values.
+    Synonym: mean‑squared‑error
+*** Standard deviation
+    The square root of the variance.
+*** Mean absolute deviation
+    The mean of the absolute values of the deviations from the mean.
+    Synonyms: l1‑norm, Manhattan norm
+*** Median absolute deviation from the median
+    The median of the absolute values of the deviations from the median.
+*** Range
+    The difference between the largest and the smallest value in a data set.
+*** Order statistics
+    Metrics based on the data values sorted from smallest to biggest.
+    Synonym: ranks
+*** Percentile
+    The value such that P percent of the values take on this value or less and (100–P) percent take on this value or more.
+    Synonym: quantile
+*** Interquartile range
+    The difference between the 75th percentile and the 25th percentile.
+    Synonym: IQR
+
+** Degrees of Freedom and n vs n–1
+*** Biased vs Unbiased Variance
+    When you divide by n in the sample variance formula, you systematically underestimate the true population variance (biased estimate).  
+    Dividing by n–1 instead yields an unbiased estimate.
+
+*** Reason for Bias
+    - Deviations are measured from the sample mean \(\bar x\), not the true population mean.  
+    - Those deviations are on average too small, so summing their squares and dividing by n underestimates the real variance.
+
+*** Unbiased Estimator (n–1)
+    - Using n–1 in the denominator corrects for that underestimation.  
+    - Over many repeated samples, the average of these estimates equals the true population variance.
+
+*** Degrees of Freedom
+    - Computing the sample mean imposes one constraint (the deviations sum to zero).  
+    - Of the n data points, only n–1 can vary freely—hence “degrees of freedom = n–1.”
+
+*** Practical Implications
+    - For large n, the difference between dividing by n or n–1 is negligible.  
+    - Most statistical software (R, Python, Excel, etc.) uses n–1 by default to produce an unbiased variance estimate.
+**** Overall, use The n - 1
+
+** Exploring the Distribution
+*** Boxplot
+    A plot introduced by Tukey to visualize the distribution of a dataset.
+    - Shows median (center line), first and third quartiles (box edges), and “whiskers” (typically extending to ±1.5×IQR).
+    - Points beyond the whiskers are marked as outliers.
+      Synonym: box and whiskers plot
+
+*** Frequency table
+    A tally of the count of numeric data values that fall into a set of intervals (bins).
+
+*** Histogram
+    A bar‐style plot of the frequency table with bins on the x‑axis and count (or proportion) on the y‑axis.
+    - Bars represent continuous intervals, not discrete categories.
+    - Use to assess mode, skewness, and overall shape.
+
+*** Density plot
+    A smoothed estimate of the distribution, typically constructed via a kernel density estimate (KDE).
+    - Does not depend on a specific binning strategy.
+    - Reveals fine‐grained features like multimodality and tail behavior.
+
+*** Recommended Usage
+    - **Histogram** / **Frequency table**: for a raw view of where data values concentrate.  
+    - **Boxplot**: for quick comparison of center, spread, and outliers across groups.  
+    - **Density plot**: for a smooth, detailed depiction of the distribution’s shape.
+     
+** Exploring Categorical Data
+*** Mode
+    The most commonly occurring category or value in a dataset.
+*** Expected value
+    When categories can be associated with numeric values, the probability‑weighted average of those values.
+*** Bar chart
+    A plot of the frequency or proportion for each category shown as bars.
+*** Pie chart
+    A plot of the frequency or proportion for each category shown as wedges of a circle.
+
+** Correlation
+*** Correlation coefficient
+    A metric that measures the extent to which numeric variables are associated with one another (ranges from –1 to +1).
+*** Correlation matrix
+    A table where variables appear on both rows and columns, and each cell contains the correlation between the corresponding pair.
+*** Scatterplot
+    A plot in which the x‑axis is the value of one variable and the y‑axis is the value of another, used to visualize their relationship.
+
+** Exploring Two or More Variables
+*** Contingency table
+    A tally of counts between two or more categorical variables.
+*** Hexagonal binning
+    A plot of two numeric variables with the records binned into hexagons.
+*** Contour plot
+    A plot showing the density of two numeric variables like a topographical map.
+*** Violin plot
+    Similar to a boxplot but showing the density estimate.
+
+** Random Sampling
+*** Sample
+    A subset drawn from a larger data set.
+*** Population
+    The larger data set or the conceptual whole from which samples are drawn.
+*** N (n)
+    The size of the population (or sample).
+*** Random sampling
+    Drawing elements into a sample at random.
+*** Simple random sample
+    A sample obtained by random sampling without stratification.
+*** Stratified sampling (分层抽样)
+    Dividing the population into homogeneous subgroups (strata) and randomly sampling within each stratum.
+*** Stratum (pl. strata) (层)
+    A homogeneous subgroup of a population sharing common characteristics.
+*** Bias (偏差)
+    Systematic error in sampling or estimation.
+*** Sample bias (样本偏差)
+    When a sample misrepresents the population.
+
+** Selection Bias
+*** Selection bias
+    Bias resulting from the way in which observations are selected.
+*** Data snooping
+    Extensive hunting through data in search of something interesting.
+*** Vast search effect
+    Bias or nonreproducibility resulting from repeated data modeling or modeling with large numbers of predictor variables.
+
+** Sampling Distribution
+*** Sample statistic
+    A metric calculated for a sample of data drawn from a larger population.
+*** Data distribution
+    The frequency distribution of individual values in a data set.
+*** Sampling distribution
+    The frequency distribution of a sample statistic over many samples or resamples.
+*** Central limit theorem
+    The tendency of the sampling distribution to take on a normal shape as sample size rises.
+*** Standard error
+    The variability (standard deviation) of a sample statistic over many samples (not to be confused with standard deviation of individual data values).
+
+** Bootstrap
+*** Bootstrap sample
+    A sample taken with replacement from an observed data set.
+*** Resampling
+    The process of taking repeated samples from observed data; includes both bootstrap (sampling with replacement) and permutation (shuffling) procedures.
+*** Basic bootstrap theory
+    - Start with an original sample.  
+    - Draw a large number of resamples (with replacement) of the same size.  
+    - Compute the statistic of interest on each resample.  
+    - Use the distribution of those statistics to approximate the sampling distribution and estimate standard errors or confidence intervals.
+
+** Bootstrap
+*** Bootstrap sample
+    A sample taken with replacement from an observed data set.
+*** Resampling
+    The process of taking repeated samples from observed data; includes both bootstrap (sampling with replacement) and permutation (shuffling) procedures.
+*** Basic bootstrap theory
+    - Start with an original sample.  
+    - Draw a large number of resamples (with replacement) of the same size.  
+    - Compute the statistic of interest on each resample.  
+    - Use the distribution of those statistics to approximate the sampling distribution and estimate standard errors or confidence intervals.
+
+** ( ) Confidence Intervals
+*** ( ) Confidence level
+    The percentage of confidence intervals, constructed in the same way from the same population, that are expected to contain the statistic of interest.
+*** ( ) Interval endpoints
+    The top and bottom of the confidence interval.
+
+**  Normal Distribution & Standardization
+*** Error (Residual)  
+   - Definition :: The difference between an observed data point \(x\) and a reference value (e.g., predicted value or sample mean \(\mu\)):  
+     \[
+       \text{error} = x - \mu.
+     \]  
+   - Use :: Measures how far individual observations deviate; key for model diagnostics and outlier detection.  
+   - Synonym :: residual  
+
+*** Standardization  
+   - Formula ::  
+     \[
+       z = \frac{x - \mu}{\sigma},
+     \]  
+     where \(\mu\) is the mean and \(\sigma\) the standard deviation of the dataset.  
+   - Purpose :: Removes units and rescales data to mean = 0, SD = 1 for comparability across variables.  
+   - Interpretation ::  
+     - \(z = +2\) means the value lies two standard deviations above the mean.  
+     - \(z = -1.5\) means one and a half SD below the mean.  
+
+*** Z‑score  
+   - Definition :: The standardized value of an individual data point after applying the standardization formula.  
+   - Probability :: Under a standard normal \(N(0,1)\), \(\Pr(Z < z)\) gives the percentile rank of the observation.  
+
+*** Standard normal distribution  
+   - Definition :: A normal distribution with mean = 0 and standard deviation = 1.  
+   - Probability density function (PDF) ::  
+     \[
+       \phi(z) = \frac{1}{\sqrt{2\pi}} \exp\!\bigl(-\tfrac{z^2}{2}\bigr).
+     \]  
+   - Cumulative distribution function (CDF) ::  
+     \(\Phi(z) = \Pr(Z \le z)\) used for lookup tables and p‑values.  
+   - Properties :: Symmetric, bell‑shaped, ~68% of values within ±1 SD, ~95% within ±2 SD.  
+
+*** QQ‑Plot (Quantile–Quantile Plot)  
+   - Purpose :: Visual check of how closely a sample’s distribution matches a specified theoretical distribution (often normal).  
+   - Construction ::  
+     1. Sort the sample and compute its empirical quantiles.  
+     2. Compute the theoretical quantiles for the target distribution.  
+     3. Plot sample quantiles (y‑axis) vs theoretical quantiles (x‑axis).  
+   - Interpretation ::  
+     - Points along the 45° line → good fit.  
+     - S‑shaped curve → heavy or light tails.  
+     - Systematic deviations → skewness or other non‑normal features.  
+   - Use :: Tests of normality, model diagnostics, distributional comparisons.  
+
+** Normal Curve (Empirical Rule)
+*** Empirical rule (68‑95‑99.7)
+    - ≈ 68 % of observations lie within one standard deviation of the mean (μ ± σ).  
+    - ≈ 95 % lie within two standard deviations (μ ± 2σ).  
+    - ≈ 99.7 % lie within three standard deviations (μ ± 3σ).  
+
+*** Implications  
+    - Most data cluster tightly around the mean in a bell‑shaped pattern.  
+    - Values beyond ±2σ are relatively rare; beyond ±3σ are extremely rare.  
+
+*** Applications  
+    - Quick assessment of outliers: any point outside μ ± 3σ is almost certainly an anomaly.  
+    - Basis for many statistical rules of thumb and confidence interval approximations.  
+
+** Long‑Tailed Distributions
+*** Tail  
+    The long, narrow portion of a frequency distribution where extreme values occur at low frequency.  
+    - Represents observations far from the bulk of data.  
+    - A long tail means most values cluster near the center, but occasional outliers appear far away.
+
+*** Skew  
+    When one tail of a distribution is longer than the other, indicating asymmetry.  
+    - Positive skew (right‑skewed): right tail longer → presence of unusually large values.  
+    - Negative skew (left‑skewed): left tail longer → presence of unusually small values.
+
+*** QQ‑Plot for Tail Assessment  
+    - Plot sample quantiles (y‑axis) against theoretical normal quantiles (x‑axis).  
+    - If the distribution is normal, points lie along the 45° reference line.  
+    - Systematic deviations at the ends reveal tail behavior:  
+    - Upward departure on the right ⇒ heavy right tail (positive skew).  
+    - Downward departure on the left ⇒ heavy left tail (negative skew).  
+
+** Student’s t‑Distribution
+*** n (Sample size)  
+    - The number of observations in your sample.
+
+*** Degrees of freedom (df)  
+    - A parameter (df = n – 1 for a single sample mean) that controls the shape of the t‑distribution.  
+    - Reflects the “information” available after estimating the mean.
+
+*** Shape and tails  
+    - For small df, the t‑distribution has heavier tails than the normal → more probability of extreme values.  
+    - As df → ∞, it converges to the standard normal distribution (mean = 0, SD = 1).
+
+*** Gosset’s experiment (1908)  
+    - William Sealy Gosset (“Student”) drew repeated samples from a normal population, computed sample standard deviations, and plotted their distribution.  
+    - The jagged line in his Biometrika paper matches the fitted t‑curve (smooth line), empirically validating the theoretical distribution.
+
+*** Key uses  
+    - Constructing confidence intervals and hypothesis tests for a mean when the population SD is unknown.  
+    - Adjusting for extra uncertainty in small samples via wider tails.
+
+** Binomial Distribution
+*** Trial  
+    An event with a discrete outcome (e.g., a coin flip).
+
+*** Success  
+    The outcome of interest in a trial (often coded as “1” instead of “0”).
+
+*** Binomial (binary)  
+    Describes a process or variable with two possible outcomes: success or failure.
+
+*** Binomial trial (Bernoulli trial)  
+    A single trial with exactly two outcomes (success/failure).
+
+*** Binomial distribution (Bernoulli distribution)  
+    The probability distribution of the number of successes in \(n\) independent binomial trials with success probability \(p\).  
+    - PMF: \(\Pr(X = k) = \binom{n}{k} p^k (1-p)^{n-k}\) for \(k = 0,1,\dots,n\).  
+    - Mean: \(n p\)  
+    - Variance: \(n p (1-p)\)
+
+** Poisson & Related Distributions
+*** λ (Lambda)  
+    - The event rate per unit of time or space.
+
+*** Poisson distribution  
+    - Models the count of events in fixed intervals when events occur independently at constant rate λ.  
+    - PMF: \(\Pr(X=k) = \frac{e^{-λ} λ^k}{k!}\) for \(k=0,1,2,\dots\).  
+    - Mean & Variance: both equal to λ.
+
+*** Exponential distribution  
+    - Models the waiting time between successive events in a Poisson process with rate λ.  
+    - PDF: \(f(t)=λ e^{-λ t}\) for \(t≥0\).  
+    - Mean: \(1/λ\), Variance: \(1/λ^2\).
+
+*** Weibull distribution  
+    - A generalization of the exponential that allows λ (the hazard rate) to vary over time.  
+    - PDF: \(f(t)=\frac{k}{θ}\bigl(\frac{t}{θ}\bigr)^{k-1} e^{-(t/θ)^k}\), where shape \(k\) and scale \(θ\).  
+    - Reduces to exponential when \(k=1\).  

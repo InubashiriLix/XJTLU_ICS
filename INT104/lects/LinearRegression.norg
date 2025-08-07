@@ -1,0 +1,50 @@
+* Linear Regression 简明笔记
+
+** 1 目的
+   - 建立 线性关系 y ≈ β₀ + β₁x₁ + … + βₙxₙ  
+   - 预测连续目标值 (房价、温度、销量…)
+
+** 2 模型形式
+   y_hat = β₀ + Σ (βⱼ · xⱼ)
+
+** 3 训练：最小二乘 (OLS)
+   - 损失：MSE = (1/m) Σ (yᵢ − y_hatᵢ)²  
+   - 求解  
+   - 闭式：β = (XᵀX)⁻¹ Xᵀ y  
+   - 或梯度下降 / SVD
+
+** 4 假设前提
+   - 线性可加  
+   - 误差 ε ~ N(0, σ²)，且同方差 (Homoscedasticity)  
+   - 特征独立性；无高多重共线
+
+** 5 评估指标
+   | 分类 | 公式                |
+   | ---- | ------------------- |
+   | MSE  | mean((y - y_hat)^2) |
+   | RMSE | sqrt(MSE)           |
+   | R^2  | i - SSE / SST       |
+** 6 正则化
+   - Ridge (L2)  : 加 λ Σ βⱼ²  
+   - Lasso (L1)  : 加 λ Σ |βⱼ|  
+   - ElasticNet  : L1 + L2 混合
+
+** 7 优点
+   - 简单、可解释  
+   - 训练速度快、闭式解  
+   - 输出连续可微，便于梯度分析
+
+** 8 缺点
+   - 只能拟合线性关系 (需手工加多项式 / 交互)  
+   - 对异常值和共线敏感  
+   - 假设误差同方差，实际常被破坏
+
+** 9 Python 速用
+   @code python
+   from sklearn.linear_model import LinearRegression
+   model = LinearRegression()
+   model.fit(X_train, y_train)
+   y_pred = model.predict(X_test)
+   r2 = model.score(X_test, y_test)
+   @end
+

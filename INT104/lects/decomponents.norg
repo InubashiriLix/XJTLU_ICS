@@ -1,0 +1,61 @@
+* t‑SNE (t‑Stochastic Neighbor Embedding)
+** Idea
+   Keeps neighbourhood relationships by mapping high‑dimensional points
+   into a low‑dimensional space where points that were close stay close.
+** Core Steps (pseudo)
+   ~ Build a probability matrix P_{ij} from pairwise distances in high‑D.
+   ~ Initialise low‑D points y_i randomly.
+   ~ Iteratively update y_i ← y_i + learning_rate * ∂KL(P||Q)/∂y_i
+     where Q_{ij} uses a Student‑t kernel in low‑D.
+   ~ Continue until KL divergence stops dropping.
+** Key Parameters
+   perplexity ≈ "effective #neighbors" (typ. 5‑50)
+   learning_rate (200‑1000 works well)
+   n_iter (≥ 1000 for stable maps)
+** Pros / Cons
+   ++ Superb local cluster separation, great for pretty 2‑D plots.
+   −− Slow (> 50 k points) and distorts large‑scale geometry.
+
+* UMAP (Uniform Manifold Approximation & Projection)
+** Idea
+   Builds a nearest‑neighbour graph in high‑D and optimises its layout in low‑D, balancing attraction (neighbours) and repulsion (non‑neighbours).
+** Algorithm Sketch
+   1. Compute k‑NN graph (k = n_neighbors).
+   2. Weight edges with a smooth exponential kernel.
+   3. In low‑D, minimise cross‑entropy between high‑D weights and low‑D distances using stochastic gradient descent.
+** Main Knobs
+   n_neighbors   :  local vs global balance (5‑200)
+   min_dist      :  how tight clusters can pack (0.0‑0.5)
+   n_components  :  output dimension (2‑100+)
+** Pros / Cons
+   ++ 10‑100× faster than t‑SNE, preserves both local and some global structure.
+   −   More hyper‑parameters; results can wiggle with random seed.
+
+* Autoencoder (AE)
+** Architecture
+   input → [Encoder] → latent z → [Decoder] → reconstruction
+** Training Objective
+   Minimise reconstruction error:
+   text
+   L = sum_i  || x_i  −   f_dec( f_enc(x_i) ) ||^2
+   ^----decoder  ^----encoder
+** Variants & Extras
+   - Denoising AE : add noise to x_i, force network to learn robust codes.
+   - Variational AE (VAE) : impose Gaussian prior on latent z.
+   - Convolutional AE : for images.
+** Pros / Cons
+   - ++  Flexible dimension (latent_size) & scalable on GPU.
+   - −−  Needs NN training; quality depends on data size & tuning.
+     ASCII Formula Reference
+** GMM responsibility (example of ASCII math style)
+   gamma_ik =  pi_k * N( x_i | mu_k , Sigma_k )
+              \ -----------------------------------
+                Σ_{j=1..K}  pi_j * N( x_i | mu_j , Sigma_j )
+
+   Quick Comparison Table
+   | Method      | Speed     | Local Keep | Global Keep | Typical Out‑Dim | Notes                       |
+   |-------------|-----------|-----------|-------------|-----------------|-----------------------------|
+   | t‑SNE       | Slow      | High      | Low         | 2‑3             | Best for small pretty plots |
+   | UMAP        | Fast      | High      | Medium      | 2‑50            | Scales to 1e5+ points       |
+   | Autoencoder | GPU‑bound | Config    | Config      | Any (set latent)| Needs training data & GPU   |
+

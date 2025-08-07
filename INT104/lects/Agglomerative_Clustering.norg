@@ -1,0 +1,23 @@
+* Agglometrative Clustering
+** baisc ideal
+   ~ when initial, treat every sample as a cluster,
+   ~ when iterations
+     calcualte the intra-distance (cluster to cluster distnce)
+     single linkage: min(x belong C, y belong C)d(x, y)
+     Complete linkage: max(x belong C, y belong C)d(x, y)
+     Average linkage: (1/|Ci|*|Cj|) * sum(x belong Ci, y belong Cj)d(x, y)
+     find the most like (distance is samllest two clusters) and merge them into a cluster
+   ~ repleat untill all the clusters are clusters are merged as a single cluster or the cluster num reaches the set num of clusters: k
+   ~ the basic result display is dendrogram(树状图) 
+     x axis represent the merge sequence or the cluster distance
+     y axis represents the cluster or sample
+** advantages:
+   ~ no specified the cluster num at initial, only the dendrogram can be cut into any clusters you want (even a percent number like 80%)
+   ~ can find the cluster in all shape, not limited to the ball or Convex shape
+** disadvantages:
+   ~ compute and storation cost is big, 
+     it meed to maintain and update the distance between all the clusters
+     which is usually O(n^3), and space complexity is O(n^2)
+   ~ sensitve to the noise and outliers, 
+     the merge in the early stage can be affected by the noise and outliers,
+   ~ uncancellable whn the merge or divide, the result could be unstable

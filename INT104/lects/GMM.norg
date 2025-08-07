@@ -1,0 +1,46 @@
+* GMM (Gaussian Mixtrue Model)
+** idea and features
+*** main idea
+    assume that each sample set is mixed by k multivariate Gaussian distribution,
+    and each Gaussian distribution represent a explicit cluster, then GMM will learn each somponents' weight
+    through Maximum likelihood estimation, including the average value u, correlation matrix Sumk and mixed weight pik
+** Steps
+*** EM algorithm 
+    ~ iniitialization
+        随机或用 K-means 得到:
+        mu_k(0)     初始均值
+        Sigma_k(0)  初始协方差 (可设单位矩阵)
+        pi_k(0)     初始权重 = 1 / K
+    ~ E - calcualte the soft-assignment
+        for 每个样本 xi, 每个成分 k:
+        gamma_ik(t) =  pi_k(t-1) * N(xi | mu_k(t-1) , Sigma_k(t-1))
+                    \-------------------------------------------------
+            sum\_\{j=1..K}  pi_j(t-1) * N(xi | mu_j(t-1) , Sigma_j(t-1))
+        注: gamma_ik(t) 表示 “xi 属于成分 k 的概率”，对每个 i 有
+            sum_k gamma_ik(t) = 1
+    ~ M - update the parameters
+        N_k(t) = sum_{i=1..n}  gamma_ik(t)          # 有效样本数
+        mu_k(t) =
+            (1 / N_k(t)) * sum_{i=1..n}  gamma_ik(t) * xi
+        Sigma_k(t) =
+            (1 / N_k(t)) * sum_{i=1..n}  gamma_ik(t) * (xi - mu_k(t)) (xi - mu_k(t))^T
+            # 如果怕耗时，可改成对角矩阵或球状: sigma_k^2 * I
+        pi_k(t) = N_k(t) / n
+    ~ 判断收敛
+        计算对数似然:
+        L = sum_{i=1..n}  log( sum_{k=1..K}  pi_k * N(xi | mu_k , Sigma_k) )
+        若 L 与上一次差值 < 阈值 (或迭代次数达上限) => 停止
+        否则 t = t + 1, 回到 E 步
+    ~ 得到最终标签（如果你想要“硬”聚类）
+        label(xi) = argmax_k  gamma_ik
+** Advantages
+   ~ soft clustering
+        each smaple has a probability of belonging 
+   ~  can fit Anisotropy (各向异性) distribution like orthogonal ellipses
+   ~  EM algorithm has specific 最大似然统计学解释，若数据确实服从高斯混合，效果很好。
+** Disadvantages
+   ~ sensitive to initialization, bad initial parameters may let the model converge to secondary optimum solution
+   ~ easy to converge to secondary optimum solution -> it need multiple runs with different initial parameters to find the best initialization paramentss
+   ~ compute cost: especially high with data with high dimension
+   ~ the data has to close the the gauusian distribution, otherwise the model will not converge
+

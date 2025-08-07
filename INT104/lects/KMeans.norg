@@ -1,0 +1,59 @@
+* KMANS: 
+** ^unsupervised^ clustering
+** steps
+*** step1
+    pick k original centroid at initial, these centroid can be the data sample or randomly generated centroid
+*** step2
+    each iteration contains two steps
+    - Assignment: 
+      assign each sample to nearest centroid
+    - update
+      for each centroid, calcualte the average value for each point in its cluster, and update this average value as teh new centroid
+*** step3
+    iterate the upper step until there there is no obvious change or reach the set upper iteration time bound
+** calculation
+   - let the dataset is {x1, x2, x3, ..., xn} and cluster K clusters {c1, c2, ..., ck} with centroid {u1, u2, ..., uk}
+   - the target is to minimize the Sum of Squared Error in each cluster
+     SSE = sum(from 1 to K)(sum(for each xi in Ck)(||xi - uk||^2))
+     (sum of each clusters' points' distance's square to its centroid)
+*** step1
+    for each xi pick the centroid with min distance
+    k* = arg min||xi - uk||^2
+*** step2 iterations
+    ~ allocate
+      for each xi pick k* = arg min||xi - uk||^2
+      and assign the xi to the k*
+    ~ update the Ck
+      recalculate 
+      uk = 1/|Ck| * sum(xi in Ck)(xi)
+** advantages:
+   the algorithm is straightforward, easy to understand, easy to converge
+   have good performance on large dataset
+** disadvantages:
+   ~ sensitive to the original centroid, different initial centroid can lead to different results
+   ~ can only find the cluster in ball shape, if the cluster have complex shape, then it failed
+   ~ need to set k initially, and in real, we need to use Elbow method or silhouette method to find best k
+   ~ sensitve to noise and outliers, which will laed to wrong centroid
+
+* K-medoids
+** basically same as Kmneas, but it use presentative points as initial centroids
+** steps
+   ~ assignment:
+     assign each point to the nearest medoid
+   ~ update:
+     for each cluster, try to use the other sample to replace the currnet medoid, if the distance is samller
+
+** adv:
+   ~ rubust to the outliers
+   ~  can use vairour distance method: like manhattan distance, euclidean distance, etc.
+** disadv
+   ~ calculation spent
+   ~ it need set k at initial, performance not good at large dataset
+
+
+
+
+
+
+
+

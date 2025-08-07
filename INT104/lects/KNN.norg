@@ -1,0 +1,41 @@
+* KNN (K-Nearest Neighbors)
+**  basic ideal
+*** intro
+    is a algorithm that based on the distance or the likelihood of the data points
+    non-parametric
+    instance-based
+*** situations
+    KNN-Classification: Majority vote
+    KNN-Regression: Average of the k-nearest neighbors or weighted average
+    abnormal-detection: use the neighbors to detect the outliers or extreme values
+** Steps
+   therer is a trianinig set D = {(xi, yi)} that ranges from n to 1
+   and xi is the feature vector of ith sample, yi is the label of the sample
+*** step1
+    normalize / standardize the data
+    - cause' the knn depends on the distance, the different unit will resultt in some feature take hold of the model
+    - Min-Max / Z-Score / ...
+*** step 2 
+    select the value of k
+    usually, the k is a positive and odd number
+    k being too small might result in overfitting
+*** step3
+    for the sample wating to predict, calculate it's distance with all the sample in the training set d(x, xi)
+    usually we use Euclidean distance or Manhatten distance (L1 distance)
+*** step4
+    find k neighbors be a set = Nk(x)
+*** step5
+    y_pred = voting / average
+    return y_pred
+
+** advantages
+   ~ straight forward, understandable
+   ~ no trianing / model assumption
+   ~ can deal with multi-class classification
+   ~ not sensitive to outliers
+** disadvantages
+   ~ compute / storing cost
+   ~ slow when computing high dimesnsional data / large scale
+   ~  when the number of dimension is high, then the distance is almost the same, knn classification down -> use PCA, UMAP, t-SNE to reduce the dimension first
+   ~ sensitive to parameters (k, weight method)
+   ~ no clear boundary: knn only depends on the local data, and it can not generate the smooth boundary, and hard to fit test set

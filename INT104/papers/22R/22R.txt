@@ -1,0 +1,114 @@
+22R
+
+SECTION 2
+1. Aclassification tree was built to predict a dependent variable categorized
+    as “Yes”, ”No”. 80% of the data set were used to train the classification tree
+    and the remaining 20% was used to test the resulting model. The prediction
+    result on the test set is given by the confusion matrix below
+
+(1) The total number of correct predictions is [a] , the total number of
+    incorrect predictions is [b] .
+(2) The overall accuracy is [c] and the precision is [d] .
++-----------+---------------+----------------+
+| n=200     | Prediction=No | Prediction=Yes |
++-----------+---------------+----------------+
+| Actual=No | 47            | 23             |
+| Actual=Yes| 30            | 100            |
++-----------+---------------+----------------+
+
+sol.
+    +------+-------------------------------------------+
+    |  No  |                    ANS                    |
+    +------+-------------------------------------------+
+    |  a   | ( 47 + 100 ) = 147
+    |  b   | 30 + 23 = 53
+    |  c   | ( 47 + 100 ) / 200 = 73.5%
+    |  d   | TP / (TP + FP) = 100 / ( 100 + 23 ) = 81.3%
+    +------+-------------------------------------------+
+
+NOTE:
++------------+---------------------------------------------+----------------------+-----------------------------------------+
+| 指标       | 公式                                        | 也叫做               | 常用场景                                 |
++------------+---------------------------------------------+----------------------+-----------------------------------------+
+| Accuracy   | (TP + TN) / 全样本                           | —                    | 类别均衡、误判成本相近                    |
+| Precision  | TP / (TP + FP)                              | 正预测值 (PPV)       | 欠采样严重、误报成本高（垃圾邮件过滤、癌症筛查） |
+| Recall     | TP / (TP + FN)                              | 灵敏度、TPR          | 漏报成本高（安全警报、病人筛查）          |
+| Specificity| TN / (TN + FP)                              | 真负率 (TNR)         | 关注负类正确率                           |
+| F1-score   | 2 · Precision · Recall / (Precision + Recall)| 调和均值             | 综合 Precision 与 Recall，常用于不平衡数据 |
+| AUC-ROC    | 曲线下面积                                   | —                    | 综合考察阈值变化下的 TPR 与 FPR           |
++------------+---------------------------------------------+----------------------+-----------------------------------------+
+
+
+2.
+ The following code is to create a specific length of Fibonacci list. The
+    Fibonacci sequence is a sequence in which each number is the sum of the two
+    preceding ones. For example, if the input is set to 8, the output is [1, 1, 2, 3, 5, 8, 13, 21]. 
+    Please fill in the blanks to complete the code.
+    def Fibonacci(num):
+        results = []
+        for n in range([e]):
+            if n < 2:
+                results.append(1)
+            else:
+                value = results[[f]] + results[[g]]
+                results.append([h])
+        return results
+SOL.
+    e = num 
+    f = n - 1
+    g = n - 2
+    h = value
+
+
+Section 3 Computation Questions
+The following table shows the preference of golf players for playing golf or not
+    +---------+----------+------------+------------+
+    | Outlook | Humidity | Wind Speed | Preference |
+    +---------+----------+------------+------------+
+    | Rainy   | 80%      | 0.5m/s     | Yes        |
+    | Rainy   | 40%      | 0.2m/s     | Yes        |
+    | Rainy   | 50%      | 5.0m/s     | No         |
+    | Rainy   | 50%      | 0.2m/s     | Yes        |
+    | Rainy   | 75%      | 4.0m/s     | No         |
+    | Sunny   | 70%      | 5.0m/s     | No         |
+    | Sunny   | 75%      | 0.4m/s     | No         |
+    | Sunny   | 80%      | 0.1m/s     | No         |
+    | Sunny   | 50%      | 0.2m/s     | Yes        |
+    | Sunny   | 40%      | 4.0m/s     | Yes        |
+    +---------+----------+------------+------------+
+    Based on the information presented in the table, please answer the follow
+    ing questions.
+    3. Using Naive Bayes, what is the golf player preference under the condition
+    of sunny weather and wind speed is higher than 2.0 m/s?
+
+    P(YES) = 0.5
+    P(NO) = 0.5
+    P(SUNNY | YES) = 0.4
+    P(SUNNY | NO) = 0.6
+    P(>2.0 | YES) = 1 / 5  = 0.20
+    P(>2.0 | NO) = 3 / 5 = 0.60
+
+    P(YES | x) ∝ P(YES) * P(YES | SUNNY) * P(YES | >2.0) = 0.5 * 0.4 * 0.20 = 0.04
+    P(NO  | x) ∝ P(NO)  * P(NO | SUNNY) * P(NO | >2.0) = 0.5 * 0.6 * 0.60  =  0.18
+    noramalization: 
+    Pr(YES) = 0.04 / (0.18 + 0.04) = 0.18182
+    Pr(NO) =  0.18 / (0.18 + 0.04) = 0.81818
+4. What is the golf player preference under the condition of 65% (Humidity)
+    and 3.0 m/s (Wind Speed) in a Sunny day? Please build a kNN system where
+    k =1,k =2 and k =5 respectively. Please comment on which k value among
+    1, 2 and 5 is the best value?
+    Please use City Block distance to calculate the distance between two samples,
+    +---------+----------+------------+------------+
+    | Outlook | Humidity | Wind Speed | Preference |
+    +---------+----------+------------+------------+
+    | Sunny   | 70%      | 5.0m/s     | No         | 5 + 2 = 7
+    | Sunny   | 75%      | 0.4m/s     | No         | 10 + 2.6 = 12.6
+    | Sunny   | 80%      | 0.1m/s     | No         | 15 + 2.9 = 17.9
+    | Sunny   | 50%      | 0.2m/s     | Yes        | 15 + 2.8 = 17.8
+    | Sunny   | 40%      | 4.0m/s     | Yes        | 25 + 1 = 26
+    +---------+----------+------------+------------+
+
+    k=1 then NO: 1 YES: 0
+    k=2 then NO:2  YES:0
+    k=5 then NO:3  YES:2 
+    total: NO

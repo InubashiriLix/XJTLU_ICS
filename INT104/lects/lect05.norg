@@ -1,0 +1,318 @@
+* Lect 5 
+  Unsupervised Learning 1: 
+  GMM and DBScan
+
+** Random Sampling
+*** Sample: A subsset from a larger data set
+*** Population: The larger data set or idea of data set
+*** N(n) the size of the population
+
+*** Random smapling: Drawing elements into a sample at random
+*** Stratum: (pl, strata): A homogeneous sub group of a popluation with common characteristics
+    example: you're from china, I'm from china, we are laoxiang (a stratum)
+*** Simple random sample: The sample that result from random sampling without stratifying the population
+*** Startified sampling: Dividing the population into strata and randomly sampling from each strata
+**** devide the layers (stratum)
+     according to some key variables like ages, school, distinct etc
+**** random sampling in each stratum
+     for each stratum, we simply use random sampling to get the sample accroding to certain rules (like the percents in the whole sample or else)
+**** Conquer the samples
+     conquer the samples that get from each stratum into the whole reseach sample
+
+*** Bias: Systematic error
+    error from sampling or measure or else, it will continously make the pridicted value diff from the real value
+*** Sample bias: a sample that misrepresents the population
+    if the sample method or the rule that creating strata are not reasonable, then 
+    some sample will not be choosed properly, thus the sample cannot represent the population
+** Selection Bias
+*** Selection Bias: Bias resulting from the way in which observation are selected
+    for example: if you want to reaseach the average income of citizens, but you only select the ones who live in rich distinct as sample, then the result obviously can not represent the average level;
+*** Data snooping: Extensive hunting through data in search of something interesting
+    for example: you select the coincidence in the data, but the coincidence can not work for test or val sets
+*** Vast search effect: Bias or nonresproductibility resulting data modeling, or modeling data with large numers predictor variables
+    if you do too many tricks or fine tune on a same set, on the other sets, it will work not as good as it has.
+    in another word: Overfitting
+
+** Sampling Distribution
+*** Sample statistic 
+    the features of the data
+    for example: average, standard deviation, median, etc
+*** Data distribution
+    The frequency distribution of individual values in a data set.
+    or the probability of where is the new data
+    for example: the histogram plot, probability density function, etc
+*** Sampling distribution
+    The frequency distribution of a sample statistic over many samples or resamples.
+    example: for 1000 samples in the data, draw a distribution graph of the each value's frequency
+    example2: pick 1000 person from a population, and calculate the average tall each time, then draw a mean-square distribution graph of the average tall
+*** Central limit theorem
+    The tendency of the sampling distribution to take on a normal shape as sample size rises.
+    if your sample num is big enough, then the sample average's layout is going to Normal Distribution
+*** Standard Error
+    The variability (standard deviation) of a sample statistic over many samples (not to be confused with 
+    standard deviation, which by itself, refers to variability of individual data values).
+    example: the spread level of certain value of samples
+    ^different than Standard Diviation^
+
+*** Confidence Intervals
+    - Confidence Level
+    - Definition :: The pre‑specified long‑run proportion of intervals, constructed by the same method on repeated samples from the same population, that will contain the true parameter.
+    - Key Point :: You choose 90% / 95% / 99% before constructing the interval—not “output” by the model.
+    - Interval Endpoints
+    - Definition :: The lower and upper bounds of the confidence interval calculated from your sample statistic (e.g., mean, regression coefficient) and its sampling distribution.
+    - Example (95% CI for a mean) :: 
+      \[
+    [\bar{x} - z_{0.975}\,\tfrac{s}{\sqrt{n}},\;\;\bar{x} + z_{0.975}\,\tfrac{s}{\sqrt{n}}]
+    \]
+    - Interpretation & Verification
+    - Interpretation :: “A 95% CI means that if we repeated the sampling+interval process many times, ~95% of those intervals would cover the true parameter.”
+    - Verification :: Use Monte Carlo simulation or bootstrap to repeatedly generate samples, construct intervals, and check empirical coverage.
+
+
+** Normal Distribution (Gaussian Distribution)
+*** Error
+    The difference between a data point and a predicted or average value;
+*** Standardize
+    Substract the mean and divede by the standard deviation
+*** Z-score
+    The result of standardizing an individual data point;
+*** Standard normal
+    specify the normal distribution with average = 0 and standard deviation = 1
+    called N(0, 1)
+    all the normal standard distribution can be convert to it throgh z-score
+*** QQ-plot
+    A plot to visualize how close a sample distribution is to a specified destribution 
+    a method that can validatae whether a sample distribution is similar to a theorical distribution
+    the x-axis: the quantiles of theorical distribution
+    the y-axis: the quantiles of sample distribution
+    if the points are on the Diagnonal, then it means the sample distribution is similar to the theorical distribution
+
+** Normal Curve
+   go to the pdf
+   %68 ( u +- 1a )
+   %95 ( u +- 2a )
+   %99.7 ( u +- 3a )
+
+** Machine Learning Methods
+*** labeled data + supervised + category + classification
+    KNN, Logistic Regression, SVM, CART
+*** labeled data + supervised + Quantity + Regression
+    CART, Linear Regression, Ridge Regression, Lasso
+*** No leabled + Unsupervise + group + clastering 
+    K-means, Hierarchical
+*** No leabled + Unsupervise + not group + Dimension reduction 
+    PCA
+
+*** and all the methods above can be integrate together to complete more complex task
+    for example:
+****  Pipeline 
+      eg. do the decomposition (decrease the dimensions) first, then classfication or regression
+      do the clustering first (give sudo flags to the clusters) then use these fake flags to supervised learning
+**** Multi-Task Learning:
+     a model can get multiple outcomes at the same time:
+     for example: how many people in the picture and how to kill them all
+**** Semi-Supervise Learning:
+     use labeled and unlabeled data to train
+     - use unlabeled data to cluster / self-supervised train
+     - use the labeled data to fine-tune
+**** Self-Supervised Pretraining -> Fine-Tune
+     use unlabeed data to get general featuers
+     then run the classification and regression on the labeled data
+**** Deep Clustering
+     - the model optimize the autoencoder and cluster object at same time
+     - it can learn the lower classification and search encode space
+**** mixed loss function
+     in the training, the loss function is defined as 
+     loss = classification loss + regression loss + clustering 
+
+** Unsupervised Learning
+   - Data with only features X, no labels y
+   - Goal: discover interesting patterns or properties of the data
+   - Often used for visualizing or interpreting high‑dimensional data
+
+*** Typical Methods
+**** Clustering
+     ~ K‑means
+     ~ Hierarchical clustering
+     ~ DBSCAN
+**** Dimensionality reduction
+     ~ PCA
+     ~ t‑SNE
+     ~ UMAP
+     ~ Autoencoder
+**** Anomaly detection
+     ~ density‑based (e.g. LOF)
+     ~ reconstruction error (e.g. autoencoder)
+**** Association rule mining
+     ~ Apriori
+     ~ FP‑Growth
+
+** Clustering 
+*** Main thought
+    - to make unlabeled values cluster into several groups automatically
+      in their own features
+    - A set of methods for finding subgroups within a dataset
+    - Observation in the same group share common characteristics
+    - groups differ accross clusters based on data attributes
+
+    - inner cluster similarity should be as less as good
+    - inter cluster dissimiliarity should be as more ad good
+
+*** Methods
+**** Centroid-based Clustering
+***** K-means, K-medoids
+***** principle: peak k centers randomly, then send the new sample to nearest center
+      and update the position of center, until it converges
+**** Hierarchical Clustering
+***** agglomerative clustering (from bottom to top)
+***** devisive  (from top to bottom)
+***** principle: 
+****** agglomerative: each point is a cluster from the begining, 
+       then itegrate the nearest two cluster into an cluster
+****** devisive: every points are a cluster, then devide them into different clusters
+**** Model-based Clustering
+***** GMM
+***** Principle
+**** Hard vs Soft Clustering
+***** Hard: each observation assigned exactly one cluster
+***** Soft: observation may be along to multiple clusters with membership weights
+
+** Practical tips
+   - Standardize or normalize features before clustering
+   - Select number of clusters with elbow method or silhouette score
+   - Use dimensionality reduction (PCA, t‑SNE) for visualization
+
+** GMM
+*** def
+**** first, we model the data as k Gauussian distributions' weighted sum
+**** then, we use the Maximum likelihood estimation
+**** use EM until the result stay at a stable level
+***** E: Expectation: 
+      calculate the responsibility of each cluster for each data point
+***** M: Maximization:
+      use responsibility + weighted to update the uk, sum k and ak
+***** repeat E and M until the result is stable
+*** ( ) the mathmatical resolution
+*** ( ) CODE:
+    @code python 
+    from sklearn.mixture import GaussianMixture
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.datasets import load_iris
+
+    iris = load_iris()
+    X = iris.data[:, :2]
+
+    gmm = GaussianMixture(n_components=3)
+    gmm.fit(X)
+
+    labels = gmm.predict(X)
+
+    plt.scatter(X[:, 0], X[:, 1], c=labels, cmap="viridis")
+    plt.xlabel("Sepal Length")
+    plt.ylabel("Sepal width")
+    plt.title("Gaussian Mixture Model Clustering")
+    plt.show()
+    @end
+
+*** Pro and Cons
+**** Pro:
+     ~ k-means assume every cluster is a ball (the variance is the same in every direction)
+       but GMM use Covariance Matrix (corelations) to discribe each variable's short and long axis, that can fit any shape in ^Ellipse^
+     ~ soft assignment:
+       GMM give each feature label with each feature's probability instead of the hard labels like if I'm not good, then I'm bad
+     ~ can deal with cluster Overlapping data better
+**** Cons:
+     ~ cost of computation:
+       the GMM cost moer than k-means, cause it has more parameters to estimate
+       and iterating EM has also slow the compute
+     ~ you need to find give the number of cluster in advance
+
+**** Sum up 
+     if you need to find the cluster that has different shape and overlapping shit, then use it
+     compute is the shit
+
+** DBSCAN
+*** principles
+    dbscan is an algorithm based on the density, it can find the cluster in any shape
+
+*** main concepts 
+    ~ ε-neighborhood
+      for any point p, its ε-neighborhood Nε(p) is the set that points that in the p distance
+    ~ core point:
+      if Nε(p) has at least MinPts points (including it self), then we call p as core point
+    ~ border point
+      if point q is not the core point but in the core distance of p, then it is the border point of p core point
+    ~ Noise
+      the point that neither core point nor border point
+*** Algorithm procedure
+    ~ iterate every unvisited points
+      get a unvisited point that has not been labeled as core point and border point, then label it as visited
+    ~ looking for ε-neighborhood
+      compute the Nε(p)
+      if |Nε(p)| < MinPts, then label it as noise
+      else, construct a new clusterm, and add q and all the points in the ε-neighborhood into it.
+    ~ expand the cluster
+      for every point q in the cluster that is new added, labled them as visited, then calculate the ε-neighborhood of them, 
+      if |Nε(p)| >= MinPts, which means the q is an core points, then add all the points (no matter visited status) to the cluster
+    ~ goto the next unvisited point
+*** Pro and Cons:
+**** Pro
+     ~ it can find the cluster in any shape (not constrained by ball or other fucking shape)
+     ~ it can find noise point automatically, and not cluster num should be given in advance
+     ~ it works well for the cluster with homogeneous density
+
+**** Cons
+     ~ it is sensitive to ε and MinPts, cluster with different density 
+       will find it harder to cluster with one group of parameters
+     ~ in the high dimensional space, the distance between points is not so meaningful, 
+       thus the ε-neighborhood is not so useful
+     ~ compute cost
+*** When to use
+    ~ for the data that has irregular shape noise and discriminated density relevantly, we can consider it first
+    ~ if the cluster has huge difference in density, we can consider HDBSCAN or Hiearchicla clustering
+
+*** Code
+    @code python
+    import numpy as np
+    import pandas as pd
+
+    from sklearn import datasets
+    from sklearn.cluster import DBSCAN
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    iris = datasets.load_iris()
+
+    data_y = pd.DataFrame(iris.target)
+    data_y.columns = ["original_label"]
+
+    data_X = pd.DataFrame(iris.data)
+    data_X.columns = ["Sepal length", "Sepal width", "Petal length", "Petal width"]
+
+    train = pd.concat([data_X, data_y], axis=1)
+
+    train.head()
+
+    # sns.color_palette("pastel")
+    # sns.pairplot(train, hue="original_label")
+    # plt.show()
+
+    TRAIN_LABEL_COL = "original_label"
+    TRAIN_FEATURES = [col for col in train.columns if col != TRAIN_LABEL_COL]
+    X = train[TRAIN_FEATURES]
+    y = train[TRAIN_LABEL_COL]
+
+    dbscan = DBSCAN(eps=0.5, min_samples=5)
+    y_pred = dbscan.fit_predict(X)
+
+    y_pred_df = pd.DataFrame(y_pred)
+    y_pred_df.columns = ["pred_label"]
+
+    val = pd.concat([X, y_pred_df], axis=1)
+    print(val)
+
+    sns.color_palette("pastel")
+    sns.pairplot(val, hue="pred_label")
+    plt.show()
+    @end

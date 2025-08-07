@@ -1,0 +1,136 @@
+* K-means Hiearchical Clustering 
+** Motivations for Clustering 
+*** Understanding the data better
+    - Grouping web search results into clusters, each of which captrues a particular aspect of the query
+    - Segment the market or customer  of a service
+*** As precursor for some other application
+    - Summariztion and data compression
+    - Recommendation
+
+** Different type of clustering
+*** Partitional 
+    - Divide set of items into non-overlapping subsets
+    - each item will be member of one subset
+*** Overlapping
+    - Divide set of items into ponentially overlapping subsets
+    - Each item can simulataneously belong to multiple subset
+*** Fuzzy
+    - Every tiem belongs to every cluster with a membership weight between 0 (absolutely doees not belong ) and 1 (absolutely belongs)
+    - Usual Csonstraint: sum of weight for each individual itme should be 1
+    - Convert to partitional clustering: assign every item to that cluster for which its membership weight is highest
+*** Hiearchical
+    - Set of nested clusters, where one large cluster can contain smaller clusters
+    - Organized as a tree: dendrogram: leaf nodes are singleton clusters containing individual item, each intermediate node is union of its children sub-clusters
+    - A sequence of partitional clusterings - cur the dendrogram at a certain level to get a partitional clustering
+*** Complete vs partial:
+    - A complete clustering assigns every item to one or more clusters
+    - A partial clustering may not assign some items to any cluster (eg. outliers, items that are not sufficiently similar to any other item)
+*** Prototype-based
+    - Each cluster defined by a prototype (centroid or medoid)
+      the most representative point in the cluster
+    - A cluster is the set of items in which each item is closer to the prototype of this cluster, than to the prototype of any other cluster
+    - exmaple method: K-means
+
+*** Density-based
+    - Assume items distributed in a space where similar itmes are palced close to each other
+    - A cluster is a dense region of items, that is surrounded by a regiion of low density
+    - DBSCAN
+*** Graph-based
+    - Assunmes items represented as a graph / network where items are nodes, and similar items are linked via edges
+    - A cluster is a group of nodes having more and / or better connnections among its members, than between its members and the rest of the network
+    - Also called 'community structyure' in network
+    - Algorithm by Givan dan Newman
+
+** K-means
+*** K-means algorightm:
+    randomly initialize K cluster centroids u1, u2 ... uk 
+    @code 
+    repeat {
+    for i = 1 to m 
+    // cluster assignment 
+        ci = index (from 1 to K) of cluster centroid closeest to xi
+    for k = 1 to K 
+    // move centroid
+        uk = average (mean) of points assigned to cluster k
+    }
+    @end
+
+*** Optimization in K-means
+**** Consider data points in Euclidaen space
+**** ~A measure of cluster quality: Sum of Squared Error (SSE)
+     - Error of each data point: Euclidean distance of the point to its closest centroid
+     - SSE: total sum of the squared error for each point
+     - Will be minimizeed if the centroid of a cluster is the mena  of all data points in that cluster
+     - cause the average of the points is the smallest place to get the SSE in those fucking points
+**** Steps of K-means minimizes SSE (find a local minima)
+**** Sum up of steps
+     ~ place K centers in random     
+     ~ find the center of each points
+     ~ update the average center of each cluster
+     ~ go back to 2, until the center is nealy still
+
+*** Choosing value of K
+**** Based on domain knowledge about suitable number of clusters for a particular problem domain
+     - eg. if you have three level of customer, then give K = 3
+     - pro: fast, straightforward
+     - cons: too subjective, data may have smaller or larger number of clusters
+**** Alternatively, based on some measure of cluster quality,
+     - give a bunch of different K values, and calculate the SSE each time
+     - you can  use "elbow" to find the the proper K (the K ^right after^ the elbow)
+
+*** Choosing initial centroids
+**** Can be selected randomly, but can lead to poor clustering 
+     - pros: simple, 0 costs
+     - cons: unstable
+**** Perform multiple runs, each with a different set of ramdom chosen initail centroids, and select that configuration that yields minimum SSE
+     - procedure
+     ~ choose the centroid randomly -> k-means -> cal SSE
+     ~ run another centroids randomly -> k-means -> cal SSE
+     ~ repeat for some times, select the best result
+     - pros:
+       avoid one shoot shit efficiently
+     - cons:
+       run more times
+**** Use domina knowledge to choose cnetroids, eg while clustering search result, select one research reuslt relevant to each aspect of the query
+     - use your knowledge, drag some classical points as prototype
+
+*** Similarity / closeness between items
+    - Measure of similarity / closeness between itmes depend on the problem domain
+    - Will be performed many times over the course of the algorithm, hence need to be efficient
+    - Example": "
+    - points in euclidean space -> Euclidean distance
+    - Text document -> cosin similarity between term-vector
+
+*** Understanding distance metrix:
+**** Distance metrics in machine learning
+     - Key component of many supervised and unsupervised algorithms
+     - Calculate similarity (or dissimilarity) between data points
+     - Effective metric boosts performance for classification and clustering
+**** Why they matter
+     - Define which items are “close” or “similar”
+     - Shape how models group or label new data
+     -- Poor choice leads to wrong clusters or misclassified samples
+**** How to choose a good metric
+***** Semantic fit to your data
+      ~ Numeric features → Euclidean or Manhattan distance
+      ~ Text documents → Cosine similarity over term vectors
+      ~ Time series → Dynamic Time Warping (DTW)
+**** Computational efficiency
+     ~ Used repeatedly during training or clustering
+     ~ Must be fast enough to avoid slowing down the algorithm
+**** Common applications
+     - Clustering: group points by closeness to one another
+     - k-Nearest Neighbors: classify a sample based on nearest labeled examples
+     - Outlier detection: flag points distant from the normal data distribution
+
+*** Euclidean Distance
+    point q (q1, q2)
+    point p (p1, p2)
+**** d = ((q1 - p1)^2 + (q2 - p2)^2) ^ (1/2)
+     for high dimension, it also works
+
+*** Manhattan Distance
+    point q (q1, q2)
+    point p (p1, p2)
+**** d = |p1 - q1| + |p2 - q2|
+

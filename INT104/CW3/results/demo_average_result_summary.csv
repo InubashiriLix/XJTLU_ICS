@@ -1,0 +1,7 @@
+Model,Feature_Set,Configuration,Mean_Accuracy
+DecisionTree,No Gender,max_depth=5,0.5642187142530314
+NaiveBayes,All features,var_smoothing=1e-06,0.5684969114619081
+KNN,All features,k=9,0.5107298101121025
+Voting,No Gender,hard_voting,0.5664378860672614
+Bagging,No Gender,n_estimators=50,0.5644017387325555
+Stacking,No Gender,default,0.57920384351407
