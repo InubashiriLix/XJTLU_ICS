@@ -16,7 +16,7 @@
 <!-- ──────────────── BADGES ──────────────── -->
 <p align="center">
   <img alt="GitHub last commit"
-       src="https://img.shields.io/github/last-commit/your-username/your-repo?style=flat-square">
+       src="https://img.shields.io/github/last-commit/InubashiriLix/XJTLU_ICS?style=flat-square">
   <img alt="GPL-3.0"
        src="https://img.shields.io/badge/license-GPLv3-blue?style=flat-square">
   <img alt="Made with ❤️"
