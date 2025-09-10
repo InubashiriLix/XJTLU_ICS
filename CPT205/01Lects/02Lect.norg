@@ -1,0 +1,109 @@
+* Mathematics for Computer Graphics
+** Computer representation of objects
+*** Input stage
+    - 3D points of objects => Manipulation of 3D points => Display of points on 2D screen
+    - 你手里有物体的3D点/顶点 → 对这些点做移动/旋转/缩放等操作 → 最终把它们显示为2D屏幕上的点/图元
+*** Process stage
+    - Model f 3D world => Transformation => Projection 
+    - 有一个3D世界模型（物体、相机/观察者、光源等） → 用变换（Transformation）把点从物体坐标系依次变到世界/相机坐标系 → 做投影（Projection）把3D坐标压到2D平面（透视/正交），为显示做准备。
+*** System impl
+    - Storage => Calculation => Display
+    - 数据先存储在内存/显存 → 由CPU/GPU进行计算（矩阵运算、投影、光栅化等） → 把结果写入帧缓冲并显示到显示器
+
+** Cartesian co-ordinate sys
+   - the cartesian coordinate system's x is horizontal, right forward, and y is vertical, upward
+   - but on the computer screen, the y is vertical downward, and x is the same as upper system
+** LINE 
+   eg. A(3, 1) -> B(6, 5), AB, |AB| = sqrt((6-3)^2 + (5-1)^2) = 5
+*** Gradient of a line
+    - Gradient = Δy/Δx
+    - eg.
+      given A(6, 1), B(8, 4), C(3, 5), D(6, 3), and two line consists of them
+      AB, CD
+      Gradient of AB = (1 - 4) / (6 - 8) = -3 / -2 = 1.5
+      Gradient of CD = (5 - 3) / (3 - 6) = 2 / -3 = -0.67
+    - A uphill line has a positive gradient
+    - A downhill line has a negative gradient
+
+*** Perpendicular lines (垂直)
+    - Given that the gradient of AB = 3/2 and gradient of 
+      CD = -2/3, when the two gradients are multiplied 
+      together we have: (3/2) * (-2/3) = -1
+    - ! if two line's gradients multiply to -1, then they are perpendicular
+    - ! also, given two lines (1, 1), (1, -1), cause' 1 x 1 + (-1) x 1 = 0, so they are perpendicular
+
+** Angles and trigonnometry
+   - a right triangle has one Hypotenuse (the longest side) and two other sides (Opposite and Adjacent)
+   - Hypotenuse (斜边), Opposite (对边), Adjacent (邻边)
+   - a complete revolution gices 360 degrees or 2π radians
+
+** Vector
+   - OP = xi + yj
+     where i and j are unit vectors aloong the x- and y-axex, respectively
+   - the magnitude or modulus of OP = 5i + 2j is 
+   |OP| = sqrt(5^2 + 2^2) = 5.39
+   - unit vecctor of OP is (OP) = OP / |OP| =  0.93i + 0.37j
+   - sin(α) = 2 / |OP| = 2/5.39 = 0.37
+   - cos(α) = 5 / |OP| = 5/5.39 = 0.93
+*** Vector addition
+*** Vector subtraction
+*** Vector scaling
+*** Dot product of two vectors
+    v1 * v2 = |v1| * |v2| cos(a) where 0 \<= a \<= 180 degree
+    V1 = 3i + 5j
+    V2 = 2i + j
+    V1•V2 = 3*2 + 5*1 = 11
+    \|V1| = sqrt(32 + 52) = sqrt(34) = 5.831
+    \|V2| = sqrt(22 + 1) = sqrt(5) = 2.236
+    cos(α) = V1•V2 / (|V1||V2|) = 11 / (5.831*2.236) = 0.8437
+    α = 32.47o
+*** Cross product of two vectors
+    - for two vectors V1 and V2, the cross product is the line which is perpendicular to both V1 and V2
+    - the cross product is defineed as:
+      V1 x V2 = |V1| * |V2| sin(a) n
+      where n is a unit vector perpendicular to both V1 and V2, and a is the angle between V1 and V2
+
+    - V1 x V2 = -V2 x V1
+    - V1 x V2 = |V1| * |V2| sin(a) n => |V1 x V2| = |V1||V2|sin(a)
+    - when a = 90, sin(a) = 1, hence ixj = k, jxk = i and kxi = j
+    - from the identity above, the reverse is true, ie
+      kxi = -j, jxk = -i and kxi = -j
+** Matrices
+   - Matrices are techniques for applying transformation
+   - A matrix is simply a set of numbers arranged in a rectangular format.
+   - Each number is known as an element.
+   - Capital letters are used to represent matrices, bold letters when printed M, or underlined when written M
+   - A matrix has dimensions that refer to the number of rows and the number of columns it has.
+*** What is a Matrix?
+    - A matrix is a rectangular array of numbers; each entry is an *element*. 
+    - Used to *apply transformations* in computer graphics. 
+    - A matrix’s *dimensions* are given by number of rows × number of columns. 
+
+*** Dimensions & Shapes
+    - Notation: M(r×c). Example from slides: M1(r1×c1) * M2(r2×c2) → M3(r1×c2) if c1 = r2. 
+
+*** Transpose
+    - Definition: interchange rows and columns to obtain the *transpose* of a matrix. 
+
+*** Square & Symmetric
+    - *Square* matrix: rows = columns. 
+    - *Symmetric* matrix: square matrix with a_ij = a_ji. Equivalently, Aᵀ = A. 
+
+*** Identity Matrix
+    - I is square & symmetric; diagonal entries = 1, others = 0. (Examples given for 2×2, 3×3, 4×4.) 
+
+*** Matrix Operations
+    - *Addition*: allowed only for same-dimension matrices; elementwise; commutative (A + B = B + A). 
+    - *Subtraction*: same dimensions required; not commutative (A - B ≠ B - A). 
+    - *Scalar Multiplication*: multiply every element by a constant. (Covered on multiplication slides.) 
+    - *Matrix Multiplication*:
+    - Rule: columns of first = rows of second; result shape r1×c2. 
+    - Not *commutative*: in general AB ≠ BA. 
+    - Sometimes reversing order is *invalid* because shapes don’t match (see slide note). 
+
+*** Inverse Matrix
+    - If AB = BA = I, then A = B⁻¹ and B = A⁻¹ (A and B are inverses). 
+
+*** CG Tips (Quick Reminders)
+    - Think of matrices as *operators*: model → world → view → projection (order matters due to non-commutativity). 
+    - Always check *shape compatibility* before chaining transforms. 

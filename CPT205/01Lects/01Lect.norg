@@ -1,0 +1,120 @@
+* Lect1: Intro
+
+** FrameBuffer and Pixel
+   - FrameBuffer: A block of memory, dedicated to graphics output, that holds the content of what will be displayed.
+   - pixel: an element of the framebuffer
+
+** RGB:
+   - each pixel consists of 3 original color: red, green, blue
+*** Category of RGB:
+    ~ RGB565: 1 pixel 16 bits: R5 G6 B5
+    ~ RGB555: 1 pixel 15 bits: R5 G5 B5
+    ~ RGB24: 1 pixel 24 bits: R8 G8 B8
+    ~ RGB32: 1 pixel 32 bits: R8 G8 B8 X8 (X: unused byte)
+    ~ RGBA32: 1 pixel 32 bits: R8 G8 B8 A8 (A: alpha channel, transparency)
+
+** FrameBuffer in memory
+   nonesense in ppt
+
+** FrameBuffer bit depths
+***  32 bits per pixel (true color)
+     - 8 bits for red, green, blue and alpha chennel
+     - potential for 256 reds, green and blues
+     - total colors: 2 ^ 24 (alpha channel is not counted)
+*** fresh up of datatype
+    - bit: 0 / 1
+    - byte: 8 bits or 256 values
+    - word: 32 bits
+    - int: 32 bits
+    - float: 32 bits
+    - double: 64 bits
+    - unsigned byte - 8 bits
+*** Graphics card memeory
+    - 640 * 480 * 32 bits = 1,228,800 bytes
+    - 1024 * 768 * 32 bits = 3,145,728 bytes
+    - 1600 * 1200 * 32 bits = 7,680,000 bytes
+
+** Framebuffer to Monitor
+   - The values in the frame bufferws are converted from a digital (1 and 0, the bits)  to an analog signal that goes out to the monitor
+   - this is done automatically by the graphics card hardware (not controled by your code), and the convertion can be done while writing to the framebuffer (how)
+   ~ the gpu has special hardware to read and write at the same time
+   ~ vram are signed for convurrent visiting, which allows the gpu to write and read at the same location
+   ~ ususally, the gpu use double buffer tech, one of the ram is used for reading, the other is used for writing, and they swap their role after each frame is done
+   - no software mutex reasons 
+
+
+** Image quality issues
+   - Screen resolution
+   - Colour
+   - Refresh rate
+   - Brightness
+   - Contrast
+   - Sensitivity of display to viewing angle
+
+** Pixel
+*** Pixel: the most basic addressable image element in a screen 
+    - CRT - colour triad (RGB phosphoer dots)
+    - LCD - Single colour element
+*** Screen Resolution: measure of number of pixels on a screen (m by m)
+    - m - horizontal pixels
+    - n - Vertical screen resolution
+
+
+** Video Formats
+   - NTSC-525x480, 30f/s, interlaced
+   - PAL-625x480, 25f/s, interlaced
+   - VGA-640x480, 60f/s, non-interlaced
+   - SVGA-800x600, 60f/s non-interlaced
+   - RGB-3 independent video signals and synchronization signal, 
+     vary in resolution and refresh rate
+   - Interlaced- scan every other line at a time, or scan odd and 
+     even lines alternatively; the even scan lines are drawn and 
+     then the odd scan lines are drawn on the screen to make up 
+     one video frame
+
+** Cathode ray tubes (CRTs)
+   - Heating element on the yolk
+   - Phosor coated screen screen
+   - Electrons are boiled off the 
+     filament and drawn to the 
+     focusing system.
+   - The electrons are focused 
+     into a beam and “shot” 
+     down the cylinder.
+   - The deflection plates “aim” 
+     the electrons to a specific 
+     position on the screen
+   - Strong electrical fields ad high voltage
+   - Very good resolution
+   - Heavy
+
+** Liquid crystall display
+   - also divided into pixels, it have cells that eighter allow light to flow through, or block it
+   - LCDs use small flat chips which change their transparency properties when a voltage is applied.
+   - LCD elements are arranged in an n x m array called the LCD matrix.
+   - The level of voltage controls grey levels.
+   - LCDs elements do not emit light; use backlights behind the LCD matrix.
+   - Colour is obtained by placing filters in front of each LCD element.
+   - Image quality dependent on viewing angle
+
+** OpenGL
+   - First introduced in 1992.
+   - The OpenGL graphics system is a software interface to graphics 
+     hardware (GL stands for Graphics Library).
+   - For interactive programs that produce colour images of moving 
+     three-dimensional objects. 
+   - It consists of over 400 distinct commands that you can use to 
+     specify the objects and operations needed to produce interactive three-dimensional applications
+   - OpenGL is designed as a streamlined, hardware-independent 
+     interface to be implemented on many different hardware 
+     platforms.
+   - Similarly, OpenGL does not provide high-level commands for 
+     describing models of three-dimensional objects. 
+   - With OpenGL, you must build up your desired model from 
+     a small set of geometric primitives- points, lines, and polygons.
+   - With OpenGL, you can control computer-graphics technology 
+     to produce realistic pictures or ones that depart from reality 
+     in imaginative ways. 
+   - OpenGL has become the industry standard for graphics applications and games.
+
+

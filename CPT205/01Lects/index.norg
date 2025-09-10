@@ -1,0 +1,50 @@
+* CPT205
+** Intro
+   - {:01Lect.norg:}[Open whole lecture]
+
+   - {:01Lect.norg:# FrameBuffer and Pixel}[FrameBuffer and Pixel]
+   - {:01Lect.norg:# RGB}[RGB]
+   - {:01Lect.norg:# FrameBuffer in memory}[FrameBuffer in Memory]
+   - {:01Lect.norg:# FrameBuffer bit depths}[FrameBuffer bit depaths]
+   - {:01Lect.norg:# FrameBuffer to Monitor}[FrameBuffer to Monitor]
+   - {:01Lect.norg:# Image quality issues}[Image quality issues]
+   - {:01Lect.norg:# Pixel}[Pixel]
+   - {:01Lect.norg:# Video Formats}[Video Formats]
+   - {:01Lect.norg:# Cathode Ray Tubes}[Cathode Ray Tubes]
+   - {:01Lect.norg:# Liquid crystall display}[LCD]
+   - {:01Lect.norg:# OpenGL}[OpenGL]
+
+
+** Mathematics for Computer Graphics
+   - {:02Lect.norg:}[Open whole lecture]
+
+   - {:02Lect.norg:# Computer representation of objects}[Computer representation of objects]
+   - {:02Lect.norg:# Input stage}[Input stage]
+   - {:02Lect.norg:# Process stage}[Process stage]
+   - {:02Lect.norg:# System impl}[System impl]
+
+   - {:02Lect.norg:# Cartesian co-ordinate sys}[Cartesian co-ordinate sys]
+
+   - {:02Lect.norg:# LINE}[LINE]
+   - {:02Lect.norg:# Gradient of a line}[Gradient of a line]
+   - {:02Lect.norg:# Perpendicular lines (垂直)}[Perpendicular lines (垂直)]
+
+   - {:02Lect.norg:# Angles and trigonnometry}[Angles and trigonnometry]
+
+   - {:02Lect.norg:# Vector}[Vector]
+   - {:02Lect.norg:# Vector addition}[Vector addition]
+   - {:02Lect.norg:# Vector subtraction}[Vector subtraction]
+   - {:02Lect.norg:# Vector scaling}[Vector scaling]
+   - {:02Lect.norg:# Dot product of two vectors}[Dot product of two vectors]
+   - {:02Lect.norg:# Cross product of two vectors}[Cross product of two vectors]
+
+   - {:02Lect.norg:# Matrices}[Matrices]
+   - {:02Lect.norg:# What is a Matrix?}[What is a Matrix?]
+   - {:02Lect.norg:# Dimensions & Shapes}[Dimensions & Shapes]
+   - {:02Lect.norg:# Transpose}[Transpose]
+   - {:02Lect.norg:# Square & Symmetric}[Square & Symmetric]
+   - {:02Lect.norg:# Identity Matrix}[Identity Matrix]
+   - {:02Lect.norg:# Matrix Operations}[Matrix Operations]
+   - {:02Lect.norg:# Inverse Matrix}[Inverse Matrix]
+   - {:02Lect.norg:# CG Tips (Quick Reminders)}[CG Tips (Quick Reminders)]
+
