@@ -1,0 +1,52 @@
+
+
+* Task1
+** 1)  A straight line segment starts at p1(5, 11) and ends at p2(13, 8). 
+**** a) Draw it in the Cartesian co-ordinate system on a sheet of paper. 
+
+     - .image ./task1ques1.png
+
+**** b) Calculate its length. 
+     the fucking length: sqrt((x2 - x1)^2 + (y2 - y1)^2) = sqrt(64 + 9) = sqrt(73) = 8.54
+**** c) Calculate its gradient. 
+     gradient = (y2 - y1) / (x2 - x1) = (8 - 11) / (13 - 5) = -3 / 8 = -0.375
+
+** 2)  For two vectors p = 10i + 7j and q = 2i – 5j 
+**** a) Calculate the magnitude of p and q respectively. 
+     magnitude = sqrt(x^2 + y^2) 
+     - |p| = sqrt(149) 
+     - |q| = sqrt(29)
+**** b) Calculate p – q. 
+     p - q = (10 - 2)i + (7 - (-5))j = 8i + 12j
+**** c) Calculate the dot product of p and q, p•q:
+     - dot product = x1*x2 + y1*y2 = -15
+**** d) Find the angle between p and q. 
+     angle = arccos((p•q) / (|p| * |q|)) = arccos(-15 / (sqrt(149) * sqrt(29))) = 110.3 degrees
+
+** 3)  For matrices, explain the following 
+**** a) Square matrices 
+     square matrices are matrices that have the same number of rows and columns. For example, a 2x2 matrix or a 3x3 matrix.
+**** b) Identity matrices 
+     identity matrices are square matrices that have 1s on the main diagonal and 0s elsewhere. For example, a 2x2 identity matrix is:
+     \[1 0]
+     \[0 1]
+**** c) Inverse matrices 
+     inverse matrices are matrices that, when multiplied by the original matrix, yield the identity matrix. Not all matrices have inverses. A matrix must be square and have a non-zero determinant to have an inverse.
+
+** 4)  For matrix multiplication,  
+**** a) Explain the rule for matrix multiplication. 
+     explanation: The number of columns in the first matrix must be equal to the number of rows in the second matrix. If A is an m x n matrix and B is an n x p matrix, then their product AB is an m x p matrix.
+**** b) If the rule is satisfied for matrices for both AB and BA, would AB = BA?
+     fuck no, matrix multiplication is not commutative, meaning that in general, AB does not equal BA. The order of multiplication matters.
+**** c for two matrices, A = \[1, 2, 3, 4] and B = \[5, 6, 7, 8]^-1, 
+     would the rule be satisfied for AB and BA? If yes, work out the resultant matrices; if not, explain the reason
+     1x4 cross 4x1 -> 1x1
+     1 * 5 + 2 * 6 + 3 * 7 + 4 * 8 = 70
+     4x1 cross 1x4 => 4 x 4, fuck no
+
+
+* Task2
+** Write a simple program in VC++, which 
+*** (a) takes in x and y coorinates values for two points P1 and P2 in turne frrom the user
+*** (B) clacualte the length of LineP1P2
+*** (c) calcualte the gradient of Line P1P2 and print out the results on screen

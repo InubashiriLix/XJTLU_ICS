@@ -1,0 +1,42 @@
+* Expanation About OpenCV
+
+** glClear
+   @code cpp
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   @end
+*** glClear
+    - glClear 是 OpenGL 用来清除指定缓冲区的函数。
+*** GL_COLOR_BUFFER_BIT and GL_DEPTH_BUFFER_BIT
+    - GL_COLOR_BUFFER_BIT 是一个宏，代表颜色缓冲区（就是屏幕上显示的像素颜色）。
+    - GL_DEPTH_BUFFER_BIT 是另一个宏，代表深度缓冲区（用于记录每个像素的深度信息，帮助实现物体遮挡关系）。
+
+** glLoadIdentity
+   @code cpp
+   glLoadIdentity();
+   @end
+*** exp
+    在 OpenGL 里，矩阵用来做变换（比如平移、旋转、缩放）。glLoadIdentity() 会把当前选中的矩阵（通常是模型视图矩阵或投影矩阵）恢复成初始状态，也就是单位矩阵——所有变换都被清除，相当于什么都没做。
+
+    常见用法：
+    - 在设置新的视图或变换前，先 glLoadIdentity()，保证不会受到之前变换的影响。
+    - 单位矩阵的特点是：乘上任何向量，结果就是原来的向量。
+
+** glutSwapBuffers
+   - glutSwapBuffers() 的作用是“交换前后缓冲区，把绘制好的画面显示出来”。
+
+** GlutInitDisplayMode
+   glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA); 的作用是“设置窗口的显示模式”。
+
+   详细解释：
+   - GLUT_DEPTH：启用深度缓冲区，用于3D场景的遮挡关系计算。
+   - GLUT_DOUBLE：启用双缓冲，防止画面闪烁（需要配合 glutSwapBuffers 使用）。
+   - GLUT_RGBA：使用 RGBA 颜色模式（红、绿、蓝、透明度），让颜色更丰富。
+
+** glutMainLoop
+
+   glutMainLoop() 的作用是“进入主循环，开始处理窗口和事件”。
+
+   详细解释：
+   - 调用 glutMainLoop() 后，程序会一直运行，自动处理窗口刷新、键盘鼠标输入等事件。
+   - 你注册的回调函数（比如显示、重绘、输入处理）会在合适的时候被调用。
+   - 这个函数不会返回，直到窗口关闭，整个程序才会结束。
