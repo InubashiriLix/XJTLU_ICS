@@ -1,0 +1,165 @@
+* Lect1
+
+** What is the network/internet?
+   the network is a group of computers and other devices connected together 
+   to share resources and information. The internet is a global network that 
+   connects millions of private, public, academic, business, and government networks.
+   also, it includes almost all the projects
+
+** terminals (devices / hosts)
+*** hosts = end system: 
+    the devices including computers, phones, iot devices run the internet application
+    they located at the edge of network, and use the socket and TCP / UDP protocols to 
+    commnucate with each other
+*** packet switches:
+    the router and swtiches to transport the data in packets
+    these devices are cores of the internet, and use router and 
+    _forwarding table_ to forward the packets
+*** Communication links:
+    - the physical media: lines, cables, radio spectrum
+**** the key evaluation key is _bandwidth_: how many bytes can be sent in one second
+     but the delay is not included, which depends on the distance, transport, queue, processing
+*** the layers for internet
+    ~ home network: device -> wifi / router + NAT
+    ~ mobile network: device -> base station
+    ~ enterprise network: from the inner network
+    ~ location / local ISP -> global / national ISP: the commcom interlink with each other, 
+      forming the skeleton of the intternet
+    ~ content provider network and data center: the data center of google, facebook, CDN ...
+** Nut and bolts view for internet
+*** Internet = net in net
+    the sum of home network, mobile network, enterprise network, ISP network, content provider network... 
+    are internet
+*** PROTOCOLs are EVERYWHERE
+    the network is based on the protocols, which are the rules for communication
+**** application layer:
+     HTTP, Skype, Streaming video (HLS, DASH), email (SMTP, IMAP), P2P (BitTorrent)
+**** transport layer:
+     TCP, UDP, QUIC
+**** network layer: 
+     IP: which guide the network layer to forward the packets
+**** Link / Access layer:
+     Ethernet, WiFi, PPP, 4G, 5G 
+     they take the responsibility to deliver the packets between two directly connected devices
+*** All depends on guidence: IETF / RFC
+   the protocols are defined by the IETF, and published as RFCs
+    *** relevant concepts
+**** CDN (Content Delivery Network)
+     the distributed servers to deliver the content to users based on their geographic locations
+**** ISP (Internet Service Provider)
+     the company that provides internet access to users
+**** NAT (Network address Translation)
+     convert the private IP address to public IP address, and vice versa
+     home network commonly use NAPT / PAT
+*** Overview:
+    device -> wifi (link layer) + NAT -> local ISP -> global ISP -> CDN / data center
+    HTTP in application layer, TCP UDP -> cable / 4G / 5G
+
+** Protocols
+*** it defines
+     - the format of info
+     - the order of messages sent and received
+     - action after receiving / sending messages
+*** it is everywhere:
+**** the application layer
+      HTTP, DNS, HLS, DASH, RTMP
+**** transport layer
+      TCP, UDP, QUIC
+**** network layer
+      IP
+**** link / access layer:
+      ithernet, WiFi, PPP, 4G, 5G
+
+*** what it is look like?
+     TCP 3-way handshake + HTTP
+     client SYN -> request
+     server <- SYN-ACK (response, OK)
+     cient: ACK -> confirm 
+     client: GET /index.html -> application request
+     server <- 200 OK + data
+
+** Send Data and delay computation
+*** Host sending fucntion:
+    - Takes application message 
+    - Breaks into smaller chunks
+      know as _packets_, of length _L_ bits
+    - transmit packets into access network at _transmission rate R_
+    - link _transmission rate_, aka link _capacity_, aka _bamdwidth_
+
+****  packet transmission delay = time needed to transmit L-bit packet into link = L(bits) / R(bits/sec)
+      paccket trans delay = L / R (seconds)
+      and this is only the bit to lknk layer time delay, and it is different from physical layer delay
+
+** Pysical Layer
+   pysical medias: 
+*** Twisted pair (TP) (双绞线)
+    two insulated copper wires
+    - Category 5: 100 Mbps, 1Gps Ethernet
+    - Category 6: 10 Gbps Ethernet
+
+*** Coaxial cable (同轴电缆)
+    - two concentric copper conductors
+    - bidirectional
+    - broadband
+      multiple channels on cable 
+      HFC
+
+*** Fiber optic cable (光纤)
+    - glass finer carrying light pulses, one pulse = a bit
+    - high-speed operation:
+      high-speed point-to-point transmission (10 - 100 Gbps transmissio rate)
+    -  low error rate:
+       repeaters spaced far apart
+       Not affected by electromagneitc noise
+
+*** radio
+    - Sinal carried in eletromagnetic spectrum 
+
+    - No pjysical wire
+    - Bidiretion 
+    - Propagation environment effects
+      reflection
+      Onbstruction
+      Interference
+**** Radio link types
+     - Wireless LAN (wifi)
+       54Mbps - 9.6Gbps
+     - Wide-area (cellular)
+       4G cellularr 100 Mbps
+       5G cellular 1 Gbps
+     - Satellite 
+       Kbps to 45 Mbps channel (or multiple smaller channels)
+       starink: 1440Mbps
+       270msec end-end delay
+
+** Different methods to access the internet
+   - Early methods
+     PSTN DSL TV net
+   - Modern methods
+     FTTH, Wireless
+*** Dial-up Internet access (PSTN)
+    - use _public switched telephone network_ (PSTN) -> internet service provider (ISP)
+    - connection established via dialing a telephone number
+    - Mordern are require to enabe communication: 
+      decode audio signal to data for computer or routers
+      they encode digital signals back into audio for transmission over phone lines
+
+    - bandwidth 56 Kbps - 10 min for one mp3 music file
+*** Digital Subscriber Line (DSL)
+    - Telephone line based
+      To central office DSL Access Multiplexer (DSLAM)
+      Data over DSL phone line goes to internet
+      Voice over DSL phone line goes to telephone net
+    - Bandwidth
+      Upstream transmission rate ~< 3 Mbps (typically < 1Mbps)
+      Downstream transmission rate ~< 50 Mbps (typically < 10Mbps)
+      ADSL = Asymmetric Digital Subscriber Line
+
+*** FTTH: fiber to the home
+    optic network terminators -> Optical splitter -- Optical fibers --> Center office -> internet
+    Central office + Internet = Optical line terminal 
+    ↑ FTTH usng the passive optial network (PONs) distribution architecture
+
+** How to evaluate the performance?
+
+** Service models
