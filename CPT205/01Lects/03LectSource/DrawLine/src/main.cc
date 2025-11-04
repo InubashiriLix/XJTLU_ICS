@@ -9,12 +9,12 @@ int W = 300, H = 300;
 PixelSet pixel_set;
 
 // 例子：从 (0,0) 到 (100,100)
-Line2D line({0, 0}, {200, 100},
-            Color4f(1.0, 1.0, 1.0, 1.0));  // alpha 改成 1.0
+Line2D line({0, 0}, {200, 100}, Color4f(1.0, 1.0, 1.0, 1.0));  // alpha 改成 1.0
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
-    renderPixelSet(pixel_set);
+    // renderPixelSet(pixel_set);
+    line.renderShitDDA();
     glutSwapBuffers();  // ✅ 双缓冲
 }
 
@@ -37,8 +37,7 @@ int main(int argc, char** argv) {
 
     // 1) 初始化 GLUT
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE |
-                        GLUT_RGBA);  // ✅ 双缓冲 + RGBA
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);  // ✅ 双缓冲 + RGBA
     glutInitWindowSize(W, H);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Lines");

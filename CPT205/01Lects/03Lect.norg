@@ -1,0 +1,59 @@
+* Lect3 Geometry Primitives
+** Topics
+*** Graphics Primitives
+    - Points
+    - Lines
+    - Polygons
+
+*** Line Algorithms
+    - DDA (Digital Differential Analyzer)
+    - Bresenham Algorithm
+    - Circles
+    - Antialiasing
+
+*** Polygon Fill
+    - OpenGL Primitive Drawing
+
+** Line:
+*** Line Characterisations
+**** Implicit
+     @math
+     y = mx + b or F(x,y) = ax + by + c = 0
+     @end
+
+**** Parametric (explicit)
+     @math
+     P(t) = (1 - t)P0 + tP1
+     where P(0) = P0, P(1) = P1
+     @end
+     it can be comprehended like we have two points to specify a line: (0, P0) and (1, P1)
+
+**** Intersection of 2 planes
+    easy to understand, but how to calculate?
+     - ( ) todo: calculate
+
+**** Shortest path between 2 points
+     easy to understand.
+
+**** Convex Hull of 2 discrete points
+     A Convex Hull is the smallest convex polygon (or polyhedron in higher dimensions) that encloses a set of points in a plane (or space). Imagine stretching a rubber band around the outside points—the shape it forms is the convex hull.
+     凸包（Convex Hull）是指在二维平面或更高维空间中，能够包围一组点的最小凸多边形（或凸多面体）。可以想象成用一根橡皮筋把所有点包起来，橡皮筋收紧后形成的形状就是凸包。
+*** Good Discrete Lines
+***** No Gaps in adjacent pixels
+        the pixels are continuous, and no gap is allowed
+***** Pixels close to ideal line
+      the algorightm should minimize the distance between the ideal line and the discrete pixels
+***** Consistent choices; same pixels in same situation
+      the line with the smae dirivation should always shows the same, no random is allowed
+***** Smooth looking
+      relative to the antialiasing
+***** Even brightness in all orientations
+      no matter at what direction the line is drawn, the lines' brightness should look the same
+***** Same line for P0P1 as for P1P0
+      - remember that P0P1 represent the points y corrdicate to x, an P0 represents the x = 0, y = P0
+      - that is to say, the _line_ shoul be the same no matter we draw from P0 to P1 or from P1 to P0
+***** Double pixels stacked up
+      when multiple lines are connected from head to tail, the conection point won't be drawn twice
+      which reuslt in the color is bonded or brightness not the same
+
+
