@@ -1,0 +1,2 @@
+./failed2.py: line 1: syntax error near unexpected token `"this is failed2"'
+./failed2.py: line 1: `print("this is failed2")'
