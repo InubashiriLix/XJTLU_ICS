@@ -1,3 +1,6 @@
+#+AUTHOR: InubashiriLix (Github)
+#+LATEX_CLASS: ctexart
+#+LATEX_COMPILER: xelatex
 * Lect1
 
 ** What is the network/internet?
