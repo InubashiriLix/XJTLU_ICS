@@ -478,7 +478,6 @@ for dest prefix = X:
 * 7. 全讲收束：Network Layer Control Plane 的“心智总图”
 
 ** 7.1 一张“从生到死”的数据包视角
-
 1. 源主机生成 TCP segment → 封成 IP datagram；
 2. 在 *数据平面* 中：
    - 每一跳路由器用 forwarding table 找下一跳；
@@ -505,8 +504,7 @@ for dest prefix = X:
 
 #+begin_example
 Network layer control plane = (OSPF inside AS) + (BGP between ASes)
-  ↳ 在传统模式下，这俩都是“每台路由器自己跑协议”算 forwarding table；
-  ↳ 在 SDN 模式下，算路由的是 controller，路由器/交换机只执行表项。
+  -> 在传统模式下，这俩都是“每台路由器自己跑协议”算 forwarding table；
+  -> 在 SDN 模式下，算路由的是 controller，路由器/交换机只执行表项。
 旁边还有 ICMP 用来抱怨/诊断，SNMP 用来整体运维和监控。
 #+end_example
-

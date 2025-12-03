@@ -118,7 +118,7 @@
        header field name: value cr lf
        header field name: value cr lf
        ...
-     - \r\n
+    - ~\r\n~
      - *body*:
        entier body (human readable or binary)
 ***** Header lines:
@@ -132,7 +132,7 @@
        header field name: value cr lf
        header field name: value cr lf
        ...
-     - \r\n
+    - ~\r\n~
      - *body*:
        entier body (human readable or binary)
 
