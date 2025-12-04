@@ -3,4 +3,143 @@
    ~ mathematics properties of computer hardware and software
    ~ mathematical computation nad algorithms
    ~ limitation of computers, can everything can be computed?
+** Object of this Course: 
+*** Notations for representing formal languages
+    - ways of define them preisely
+    - ways to build compilers that recognize them
+    - way to check whether 
+    ~~ a string of symbols belongs to a language
+    ~~ two alternative descriptions of languages are actually the same language
+** Tools to analyze languages
+*** NL (natural language)
+    recognize valid sentence
+*** PL (programming language)
+    recogmize vlaid program
+
+** What gonna learn
+   - Finite State Automaton
+   - Regular Expression
+   - Context-Free Grammar (CFG)
+   - Pushdown Automaton
+   - Turing Machine
+
+** Language
+*** Informal Definition:
+    a system suitable for the expression of certain ideas, facts, or concepts, including a set of symbols and rules for manipulation.
+    This is not sufficient, we need a precise definition for languages in  the threory of computation (Formal Language)
+**** eg
+***** "An arithmetic expression is constructed from variables and numbers, and infix operators +, -, *, /, and subexpressions may possibly be enclosed in paretheses, in which case every ( must have a corresponding "
+***** "A Comment begins with /* and ends with */
+***** Your password should have 4-8 characters and contain a non-alphabeticc character
+**** Spoken Languages 
+     they are not the formal language, although we can still try to write down rules that work most of the time
+**** Conclusion
+     the variable-name description is a combination of English and examples. We need some notation to express these descriptions more precisely
+**** Formal Languages
+     including the programming languages, database query languages, various file formats.
+*** Formal Definition:
+    we need to introduce several symbols and their definitions.
+**** Alphabet
+     a finite, nonempty set ∑ of symbols.
+     ∑ = {a, b}, then abab, aaaabbba are strings on ∑
+**** String (word)
+     a finite sequence of symbols from the alphabet
+     w = abaaa indicates the string named w has the specific value abaaa
+**** Concatenation
+***** def
+      The concatenation of two strings  is obtained by appending the symbols to the right 
+      end (concatenation is associative). 
+***** eg
+      w= 𝑎1 𝑎2 … 𝑎𝑛
+      𝑣 = 𝑏1 𝑏2 … 𝑏𝑛
+      𝑤𝑣= 𝑎1 𝑎2 … 𝑎𝑛 𝑏1 𝑏2 … 𝑏n
+***** note
+      if u, v, w are string and w=uv, then u is a prefix of w and v is a suffix of w.
+      A proper prefix of w is a prefix that is not equal to ϵ (empty string) of w
+
+**** Empty string (word)
+     the string with no symbol the string with no symbols, denoted as ϵ.ls, denoted as ϵ.
+     \|ϵ| = 0
+     ϵw = wϵ = w
+**** Length of a string 
+     the number of symbols in the string, denoted as |w|
+     \|𝑤1𝑤2| = |𝑤1| + |𝑤2|
+**** Reverse of a string
+     obtained by writing the symbols in reverse order, donated as w^R
+     w = 𝑎1 𝑎2 … 𝑎n
+     w𝑅 = 𝑎𝑛 … 𝑎2 𝑎1
+**** palindrome
+     A palindrome (回文) is a string w satisfying w = w^R
+**** Star Closre of ∑
+     ∑∗ (star closure of ∑) is the set of all strings (words) over the alphabet ∑
+     it is infinite set
+**** Positive Closure of ∑
+     the positive closure of ∑, denoted by ∑+, is the set of all nonempty strings over the alphabet ∑
+     it is infinite set
+*** Formal Language Definition:
+    - A formal language is a set of strings (sequences of symbols) constructed from a
+      finite alphabet, according to a specific set of precise, mathematical rules. The key
+      idea is that it is defined by its form, not its meaning .
+    - a formal language L over alphabet ∑ is a subset of ∑∗
+    - We can express new languages in terms of other languages using concatenation and 
+      closure:
+***** 𝑳1𝑳2 = { 𝑤1𝑤2 ∶ 𝑤1 ∈ 𝑳1 and 𝑤2 ∈ 𝑳2 }
+***** 𝑳∗ = {𝑤1𝑤2 … 𝑤n ∶ n ≥0 and 𝑤1,𝑤2,… 𝑤n ∈ 𝑳}
+
+** Grammars
+*** Def
+    Set of rules for generating syntactically correct programs/sentences
+*** Example
+    - 用一组**产生式规则来生成“句法正确”的句子/程序。
+    - 本例是一个简化的上下文无关文法(Context-Free Grammar)（CFG），能生成一些英语句子。
+**** CFG model
+     - G = (V, Σ, R, S)
+     - V：非终结符集合（可继续展开）→ 例如 S, subject phrase, object phrase, ...
+     - Σ：终结符集合（不能再展开）→ 例如 he, she, a, the, dog, ...
+     - R：产生式规则（A → α）
+     - S：开始符号（start symbol），本例为 S
+
+**** Grammar Rules
+     - S → S and S | subject_phrase Verb object_phrase
+     - subject_phrase → subject_pronoun | Article Noun
+     - object_phrase → object_pronoun | Article Noun
+     - subject_pronoun → he | she
+     - object_pronoun → him | her | me
+     - Article → a | the
+     - Noun → dog | cat | mouse | house
+     - Verb → sees | likes | finds | leaves
+
+**** 读法提示
+     - 竖线 | 表示or, 从左到右任选其一。
+     - 终结符是实际输出的单词（he, a, dog, ...）。
+     - 非终结符是“占位符”，要继续用规则替换，直到全是终结符为止。
+
+**** 示例推导（Derivation）
+     - 目标句：she sees a dog
+       1. S ⇒ subject_phrase Verb object_phrase
+       2. ⇒ subject_pronoun Verb object_phrase
+       3. ⇒ she Verb object_phrase
+       4. ⇒ she sees object_phrase
+       5. ⇒ she sees Article Noun
+       6. ⇒ she sees a Noun
+       7. ⇒ she sees a dog
+
+**** 连词 and 的含义
+     - 规则 S → S and S 允许把两个句子并联：
+     - 例：he likes the cat and she finds a mouse
+     - 这是左递归写法；实际实现解析器时常改写以避免左递归。
+
+**** Notes
+     - 终结符 vs 非终结符别混：*she* 是终结符，*subject_pronoun* 是非终结符。
+     - 这个文法能生成的只是“部分英语句子”，不是全英语；它只覆盖图里列的单词集合。
+     - you can't define natural language completely in this way, but you ccan for programming languages.
+
+*** Application in Programming Languages
+****  {:GrammarAppForProgramLang.norg:}[link]
+      ~ Lexcial Analysis (词法分析)
+      ~ Parsing (语法分析)
+      ~ Code generation (代码生成)
+      ~ Code optimization (代码优化)
+
+
 
