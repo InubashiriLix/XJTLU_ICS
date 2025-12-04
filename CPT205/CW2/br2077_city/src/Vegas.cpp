@@ -15,16 +15,17 @@ float pitch = -15.0f; // 上下俯仰
 const float MOVE_SPEED = 3.0f;
 const float ROT_SPEED = 2.0f;
 
-// ----------- Casino 场景参数 -----------
-const float CASINO_PODIUM_HEIGHT = 12.0f;
-const float CASINO_PODIUM_HALF_W = 60.0f;
-const float CASINO_PODIUM_HALF_D = 40.0f;
+// ----------- Glass + Concrete Building 参数 -----------
+const int NUM_FLOORS = 6;
+const float FLOOR_HEIGHT = 12.0f;
+const float BUILDING_HEIGHT = NUM_FLOORS * FLOOR_HEIGHT;
+const float GLASS_BUILDING_HALF_W = 60.0f;
+const float GLASS_BUILDING_HALF_D = 40.0f;
+const float GLASS_ALPHA = 0.30f; // 玻璃透明度（越小越透）
+const float SLAB_THICKNESS = 1.0f;
+const float COLUMN_SIZE = 2.5f;
 
-const float HOTEL_HEIGHT = 120.0f;
-const float HOTEL_HALF_W = 25.0f;
-const float HOTEL_HALF_D = 15.0f;
-
-// 赌场入口前广场范围
+// 建筑前的混凝土广场范围
 const float PLAZA_HALF_SIZE = 120.0f;
 
 // 雾气（很淡，可以直接改这一行调节；设为 0 就等于关雾）
@@ -37,23 +38,29 @@ float frand(float a, float b) {
 
 // ---------------- 场景元素结构体 ----------------
 struct SlotMachine {
-  float x, z;
+  float x, z, y;
   float rotDeg;
 };
 
 struct Table {
-  float x, z;
+  float x, z, y;
   float rotDeg;
 };
 
 struct Chair {
-  float x, z;
+  float x, z, y;
+  float rotDeg;
+};
+
+struct BarCounter {
+  float x, z, y;
   float rotDeg;
 };
 
 std::vector<SlotMachine> g_slots;
 std::vector<Table> g_tables;
 std::vector<Chair> g_chairs;
+std::vector<BarCounter> g_barCounters;
 
 // ---------------- Camera helpers ----------------
 void getForward2D(float &fx, float &fz) {
@@ -88,30 +95,141 @@ void resetCamera() {
 // ---------------- 场景初始化 ----------------
 void initScene() {
   std::srand(2025);
+  // 让摆放更有秩序：组合单元，留足安全间距避免重叠
+  float marginX = GLASS_BUILDING_HALF_W * 0.78f;
+  float marginZ = GLASS_BUILDING_HALF_D * 0.78f;
 
-  // 在赌场前广场随机散落老虎机 / 桌子 / 椅子
-  for (int i = 0; i < 25; ++i) {
+  // -------- 底层：赌场区（牌桌+4椅+老虎机组合） --------
+  float casinoY = 1.0f;
+  int clusterCols = 2, clusterRows = 2;
+  float clusterSpanX = (marginX * 1.2f) / (clusterCols - 1);
+  float clusterSpanZ = (marginZ * 1.2f) / (clusterRows - 1);
+  float clusterZStart = -marginZ * 0.30f;
+
+  for (int r = 0; r < clusterRows; ++r) {
+    for (int c = 0; c < clusterCols; ++c) {
+      float baseX = -marginX * 0.7f + c * clusterSpanX;
+      float baseZ = clusterZStart + r * clusterSpanZ;
+
+      // 桌子
+      Table t;
+      t.x = baseX;
+      t.z = baseZ;
+      t.y = casinoY;
+      t.rotDeg = (r % 2 == 0) ? 0.0f : 90.0f;
+      g_tables.push_back(t);
+
+      // 椅子四把，朝向桌心
+      float radius = 7.0f; // 增加半径保证不碰撞桌子
+      for (int i = 0; i < 4; ++i) {
+        float angle = 90.0f * i;
+        float rad = angle * PI / 180.0f;
+        Chair ch;
+        ch.x = baseX + radius * std::cos(rad);
+        ch.z = baseZ + radius * std::sin(rad);
+        ch.y = casinoY;
+        ch.rotDeg = angle + 180.0f;
+        g_chairs.push_back(ch);
+      }
+
+      // 老虎机：在桌子一侧排两台，远离椅子
+      for (int i = 0; i < 2; ++i) {
+        SlotMachine s;
+        float offset = (i == 0) ? -3.0f : 3.0f;
+        s.x = baseX + offset;
+        s.z = baseZ - radius - 6.0f;
+        s.y = casinoY;
+        s.rotDeg = 0.0f;
+        g_slots.push_back(s);
+      }
+    }
+  }
+
+  // 补充少量散落老虎机，靠近入口但不重叠
+  for (int i = 0; i < 4; ++i) {
     SlotMachine s;
-    s.x = frand(-PLAZA_HALF_SIZE * 0.8f, PLAZA_HALF_SIZE * 0.8f);
-    s.z = frand(10.0f, PLAZA_HALF_SIZE * 0.9f);
-    s.rotDeg = frand(0.0f, 360.0f);
+    s.x = frand(-marginX * 0.7f, marginX * 0.7f);
+    s.z = frand(-marginZ * 0.95f, -marginZ * 0.6f);
+    s.y = casinoY;
+    s.rotDeg = 0.0f;
     g_slots.push_back(s);
   }
 
-  for (int i = 0; i < 10; ++i) {
-    Table t;
-    t.x = frand(-PLAZA_HALF_SIZE * 0.6f, PLAZA_HALF_SIZE * 0.6f);
-    t.z = frand(-10.0f, PLAZA_HALF_SIZE * 0.7f);
-    t.rotDeg = frand(0.0f, 360.0f);
-    g_tables.push_back(t);
+  // -------- 二层：酒吧休息层（吧台+凳子组合） --------
+  float barY = FLOOR_HEIGHT + 1.0f;
+
+  // 两条长吧台
+  for (int i = 0; i < 2; ++i) {
+    BarCounter b;
+    b.x = (i == 0) ? -marginX * 0.35f : marginX * 0.35f;
+    b.z = 0.0f;
+    b.y = barY;
+    b.rotDeg = (i == 0) ? 90.0f : -90.0f;
+    g_barCounters.push_back(b);
+
+    // 在吧台前沿排布高脚凳
+    int stools = 5;
+    float span = 16.0f / (stools - 1);
+    for (int k = 0; k < stools; ++k) {
+      Chair stool;
+      stool.x = b.x;
+      stool.z = -6.0f + k * span;
+      stool.y = barY;
+      stool.rotDeg = (i == 0) ? 90.0f : -90.0f; // 面向吧台
+      g_chairs.push_back(stool);
+    }
   }
 
-  for (int i = 0; i < 30; ++i) {
-    Chair c;
-    c.x = frand(-PLAZA_HALF_SIZE * 0.8f, PLAZA_HALF_SIZE * 0.8f);
-    c.z = frand(-10.0f, PLAZA_HALF_SIZE * 0.9f);
-    c.rotDeg = frand(0.0f, 360.0f);
-    g_chairs.push_back(c);
+  // 休息沙发组合：2 个小组，每组 2 把面向中心点的椅子（不放咖啡桌以免体积冲突）
+  for (int g = 0; g < 2; ++g) {
+    float centerX = -marginX * 0.35f + g * (marginX * 0.7f);
+    float centerZ = marginZ * 0.45f;
+    for (int i = 0; i < 2; ++i) {
+      Chair seat;
+      seat.x = centerX + (i == 0 ? -4.5f : 4.5f);
+      seat.z = centerZ;
+      seat.y = barY;
+      seat.rotDeg = (i == 0) ? 0.0f : 180.0f;
+      g_chairs.push_back(seat);
+    }
+  }
+
+  // -------- 酒店客房层（3-6层）：床+双灯组合 --------
+  float roomMarginX = GLASS_BUILDING_HALF_W * 0.70f;
+  float roomMarginZ = GLASS_BUILDING_HALF_D * 0.70f;
+  int roomCols = 3, roomRows = 2;
+  float cellX = (roomMarginX * 2.0f) / roomCols;
+  float cellZ = (roomMarginZ * 2.0f) / roomRows;
+
+  for (int floor = 2; floor < NUM_FLOORS; ++floor) {
+    float roomY = floor * FLOOR_HEIGHT + 1.0f;
+    for (int r = 0; r < roomRows; ++r) {
+      for (int c = 0; c < roomCols; ++c) {
+        // 留出中轴走廊
+        if (c == 1 && std::abs(-roomMarginZ + (r + 0.5f) * cellZ) < 4.0f)
+          continue;
+
+        float px = -roomMarginX + (c + 0.5f) * cellX;
+        float pz = -roomMarginZ + (r + 0.5f) * cellZ;
+
+        Table bed; // 床体
+        bed.x = px;
+        bed.z = pz;
+        bed.y = roomY;
+        bed.rotDeg = (c < 1) ? 0.0f : 180.0f;
+        g_tables.push_back(bed);
+
+        // 床头灯两盏，靠床头一侧
+        for (int i = -1; i <= 1; i += 2) {
+          Chair lamp;
+          lamp.x = px + 1.8f * i;
+          lamp.z = pz + ((c < 1) ? 2.0f : -2.0f);
+          lamp.y = roomY + 1.5f;
+          lamp.rotDeg = 0.0f;
+          g_chairs.push_back(lamp);
+        }
+      }
+    }
   }
 }
 
@@ -129,7 +247,7 @@ void drawGround() {
   glVertex3f(-size, y, size);
   glEnd();
 
-  // 赌场前的混凝土广场
+  // 建筑前的混凝土广场
   glBegin(GL_QUADS);
   glColor3f(0.60f, 0.50f, 0.40f);
   glVertex3f(-PLAZA_HALF_SIZE, 0.0f, PLAZA_HALF_SIZE);
@@ -141,130 +259,196 @@ void drawGround() {
   glEnable(GL_LIGHTING);
 }
 
-void drawCasinoPodium() {
-  // 前方赌场大厅（低矮、长条体量）
+void drawGlassBuildingBase() {
+  // 深色地坪，方便看清玻璃内的装饰物
   glPushMatrix();
-  float centerY = CASINO_PODIUM_HEIGHT * 0.5f;
-  glTranslatef(0.0f, centerY, 0.0f);
-  glScalef(CASINO_PODIUM_HALF_W * 2.0f, CASINO_PODIUM_HEIGHT,
-           CASINO_PODIUM_HALF_D * 2.0f);
-  glColor3f(0.55f, 0.48f, 0.42f);
-  glutSolidCube(1.0);
-  glPopMatrix();
-
-  // 入口檐口
-  glPushMatrix();
-  glTranslatef(0.0f, CASINO_PODIUM_HEIGHT + 2.0f, CASINO_PODIUM_HALF_D + 4.0f);
-  glScalef(CASINO_PODIUM_HALF_W * 1.8f, 4.0f, 8.0f);
-  glColor3f(0.50f, 0.42f, 0.36f);
-  glutSolidCube(1.0);
-  glPopMatrix();
-}
-
-void drawHotelTower() {
-  // 后方高酒店塔楼
-  glPushMatrix();
-  float baseY = CASINO_PODIUM_HEIGHT;
-  float centerY = baseY + HOTEL_HEIGHT * 0.5f;
-  glTranslatef(0.0f, centerY, -CASINO_PODIUM_HALF_D + HOTEL_HALF_D);
-
-  glScalef(HOTEL_HALF_W * 2.0f, HOTEL_HEIGHT, HOTEL_HALF_D * 2.0f);
-  glColor3f(0.65f, 0.58f, 0.52f);
-  glutSolidCube(1.0);
-  glPopMatrix();
-
-  // 顶部一些残破结构（简单几个偏移的方块）
-  glPushMatrix();
-  float topY = baseY + HOTEL_HEIGHT;
-  glTranslatef(0.0f, topY + 4.0f, -CASINO_PODIUM_HALF_D + HOTEL_HALF_D);
-  glScalef(HOTEL_HALF_W * 1.6f, 8.0f, HOTEL_HALF_D * 1.6f);
-  glColor3f(0.50f, 0.42f, 0.36f);
-  glutSolidCube(1.0);
-  glPopMatrix();
-
-  glPushMatrix();
-  glTranslatef(HOTEL_HALF_W * 0.8f, topY + 10.0f,
-               -CASINO_PODIUM_HALF_D + HOTEL_HALF_D + 4.0f);
-  glRotatef(-25.0f, 0.0f, 0.0f, 1.0f);
-  glScalef(20.0f, 6.0f, 8.0f);
-  glColor3f(0.40f, 0.34f, 0.30f);
-  glutSolidCube(1.0);
-  glPopMatrix();
-}
-
-void drawNeonSign() {
-  // 赌场前的竖立霓虹牌（略微破损）
-  float signHeight = 40.0f;
-  float signWidth = 18.0f;
-  float signThickness = 3.0f;
-
-  // 牌身
-  glPushMatrix();
-  glTranslatef(-CASINO_PODIUM_HALF_W - 15.0f, signHeight * 0.5f + 5.0f,
-               CASINO_PODIUM_HALF_D * 0.4f);
-  glRotatef(-10.0f, 0.0f, 0.0f, 1.0f);
-  glScalef(signWidth, signHeight, signThickness);
-  glColor3f(0.35f, 0.30f, 0.28f);
-  glutSolidCube(1.0);
-  glPopMatrix();
-
-  // 边缘霓虹框（只用线条）
   glDisable(GL_LIGHTING);
-  glPushMatrix();
-  glTranslatef(-CASINO_PODIUM_HALF_W - 15.0f, signHeight * 0.5f + 5.0f,
-               CASINO_PODIUM_HALF_D * 0.4f + signThickness * 0.6f);
-  glRotatef(-10.0f, 0.0f, 0.0f, 1.0f);
-  glScalef(signWidth * 0.8f, signHeight * 0.8f, 1.0f);
-
-  glLineWidth(2.0f);
-  glColor3f(0.95f, 0.60f, 0.25f); // 橙色霓虹
-  glBegin(GL_LINE_LOOP);
-  glVertex3f(-0.5f, -0.5f, 0.0f);
-  glVertex3f(0.5f, -0.5f, 0.0f);
-  glVertex3f(0.5f, 0.5f, 0.0f);
-  glVertex3f(-0.5f, 0.5f, 0.0f);
+  glBegin(GL_QUADS);
+  glColor3f(0.20f, 0.20f, 0.22f);
+  glVertex3f(-GLASS_BUILDING_HALF_W, 0.05f, -GLASS_BUILDING_HALF_D);
+  glVertex3f(GLASS_BUILDING_HALF_W, 0.05f, -GLASS_BUILDING_HALF_D);
+  glVertex3f(GLASS_BUILDING_HALF_W, 0.05f, GLASS_BUILDING_HALF_D);
+  glVertex3f(-GLASS_BUILDING_HALF_W, 0.05f, GLASS_BUILDING_HALF_D);
   glEnd();
+  glEnable(GL_LIGHTING);
+  glPopMatrix();
+}
 
-  // 中间 "CASINO" 字样
-  glScalef(0.06f, 0.06f, 1.0f);
-  glTranslatef(-350.0f, -50.0f, 0.0f);
-  const char *text = "CASINO";
-  for (const char *p = text; *p; ++p) {
-    glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+void drawConcreteFrameAndSlabs() {
+  glColor3f(0.45f, 0.44f, 0.42f); // 混凝土灰
+
+  // 四角立柱
+  auto drawColumn = [](float x, float z) {
+    glPushMatrix();
+    glTranslatef(x, BUILDING_HEIGHT * 0.5f, z);
+    glScalef(COLUMN_SIZE, BUILDING_HEIGHT, COLUMN_SIZE);
+    glutSolidCube(1.0);
+    glPopMatrix();
+  };
+
+  drawColumn(-GLASS_BUILDING_HALF_W, -GLASS_BUILDING_HALF_D);
+  drawColumn(GLASS_BUILDING_HALF_W, -GLASS_BUILDING_HALF_D);
+  drawColumn(GLASS_BUILDING_HALF_W, GLASS_BUILDING_HALF_D);
+  drawColumn(-GLASS_BUILDING_HALF_W, GLASS_BUILDING_HALF_D);
+
+  // 底部混凝土裙座，加厚基座视觉
+  glPushMatrix();
+  glTranslatef(0.0f, 3.0f, 0.0f);
+  glScalef(GLASS_BUILDING_HALF_W * 2.0f + 6.0f, 6.0f,
+           GLASS_BUILDING_HALF_D * 2.0f + 6.0f);
+  glColor3f(0.42f, 0.40f, 0.38f);
+  glutSolidCube(1.0);
+  glPopMatrix();
+
+  // 中轴电梯核心
+  glPushMatrix();
+  glTranslatef(0.0f, BUILDING_HEIGHT * 0.5f, 0.0f);
+  glScalef(12.0f, BUILDING_HEIGHT, 12.0f);
+  glColor3f(0.35f, 0.34f, 0.33f);
+  glutSolidCube(1.0);
+  glPopMatrix();
+
+  // 每层楼板
+  for (int i = 0; i <= NUM_FLOORS; ++i) {
+    float y = i * FLOOR_HEIGHT;
+    glPushMatrix();
+    glTranslatef(0.0f, y, 0.0f);
+    glScalef(GLASS_BUILDING_HALF_W * 2.0f + 2.0f, SLAB_THICKNESS,
+             GLASS_BUILDING_HALF_D * 2.0f + 2.0f);
+    glColor3f(0.50f, 0.49f, 0.47f);
+    glutSolidCube(1.0);
+    glPopMatrix();
   }
 
-  glPopMatrix();
-  glEnable(GL_LIGHTING);
-}
+  // 楼层腰线：在每层上方加混凝土外檐
+  for (int i = 1; i <= NUM_FLOORS; ++i) {
+    float y = i * FLOOR_HEIGHT - 0.5f;
+    glPushMatrix();
+    glTranslatef(0.0f, y, 0.0f);
+    glScalef(GLASS_BUILDING_HALF_W * 2.0f + 4.0f, 0.8f,
+             GLASS_BUILDING_HALF_D * 2.0f + 4.0f);
+    glColor3f(0.46f, 0.45f, 0.44f);
+    glutSolidCube(1.0);
+    glPopMatrix();
+  }
 
-void drawBrokenBillboard() {
-  // 半塌的广告牌 / 雕塑：一个大矩形板倾斜躺倒
+  // 垂直混凝土肋板：前后立面各 5 片
+  auto drawRibStrip = [](float x, float zSign) {
+    for (int i = 0; i < 5; ++i) {
+      float offset = -GLASS_BUILDING_HALF_W + (i + 0.5f) *
+                                         (GLASS_BUILDING_HALF_W * 2.0f / 5.0f);
+      glPushMatrix();
+      glTranslatef(offset, BUILDING_HEIGHT * 0.5f, zSign * (GLASS_BUILDING_HALF_D + 0.6f));
+      glScalef(3.0f, BUILDING_HEIGHT, 1.2f);
+      glColor3f(0.43f, 0.42f, 0.41f);
+      glutSolidCube(1.0);
+      glPopMatrix();
+    }
+  };
+  drawRibStrip(0.0f, 1.0f);
+  drawRibStrip(0.0f, -1.0f);
+
+  // 侧面竖向翼墙各两片，提升混凝土存在感
+  for (int side = -1; side <= 1; side += 2) {
+    for (int i = 0; i < 2; ++i) {
+      float z = -GLASS_BUILDING_HALF_D + (i + 0.5f) *
+                                    (GLASS_BUILDING_HALF_D * 2.0f / 2.0f);
+      glPushMatrix();
+      glTranslatef(side * (GLASS_BUILDING_HALF_W + 0.6f), BUILDING_HEIGHT * 0.5f, z);
+      glScalef(1.2f, BUILDING_HEIGHT, 6.0f);
+      glColor3f(0.43f, 0.42f, 0.41f);
+      glutSolidCube(1.0);
+      glPopMatrix();
+    }
+  }
+
+  // 屋顶女儿墙
   glPushMatrix();
-  glTranslatef(CASINO_PODIUM_HALF_W + 35.0f, 25.0f,
-               CASINO_PODIUM_HALF_D * 0.2f);
-  glRotatef(70.0f, 0.0f, 0.0f, 1.0f); // 倒下
-  glRotatef(15.0f, 0.0f, 1.0f, 0.0f);
-  glScalef(50.0f, 30.0f, 2.0f);
-  glColor3f(0.40f, 0.33f, 0.30f);
+  glTranslatef(0.0f, BUILDING_HEIGHT + 1.0f, 0.0f);
+  glScalef(GLASS_BUILDING_HALF_W * 2.0f + 3.0f, 2.0f,
+           GLASS_BUILDING_HALF_D * 2.0f + 3.0f);
+  glColor3f(0.44f, 0.43f, 0.42f);
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 支撑架子几根残留钢梁
+  // 外环梁线（简单线条强调层次）
   glDisable(GL_LIGHTING);
+  glColor3f(0.60f, 0.58f, 0.55f);
   glBegin(GL_LINES);
-  glColor3f(0.6f, 0.55f, 0.5f);
-  glVertex3f(CASINO_PODIUM_HALF_W + 15.0f, 0.0f, CASINO_PODIUM_HALF_D * 0.1f);
-  glVertex3f(CASINO_PODIUM_HALF_W + 35.0f, 20.0f, CASINO_PODIUM_HALF_D * 0.2f);
+  for (int i = 0; i <= NUM_FLOORS; ++i) {
+    float y = i * FLOOR_HEIGHT;
+    glVertex3f(-GLASS_BUILDING_HALF_W, y, -GLASS_BUILDING_HALF_D);
+    glVertex3f(GLASS_BUILDING_HALF_W, y, -GLASS_BUILDING_HALF_D);
 
-  glVertex3f(CASINO_PODIUM_HALF_W + 20.0f, 0.0f, CASINO_PODIUM_HALF_D * 0.4f);
-  glVertex3f(CASINO_PODIUM_HALF_W + 35.0f, 20.0f, CASINO_PODIUM_HALF_D * 0.2f);
+    glVertex3f(GLASS_BUILDING_HALF_W, y, -GLASS_BUILDING_HALF_D);
+    glVertex3f(GLASS_BUILDING_HALF_W, y, GLASS_BUILDING_HALF_D);
+
+    glVertex3f(GLASS_BUILDING_HALF_W, y, GLASS_BUILDING_HALF_D);
+    glVertex3f(-GLASS_BUILDING_HALF_W, y, GLASS_BUILDING_HALF_D);
+
+    glVertex3f(-GLASS_BUILDING_HALF_W, y, GLASS_BUILDING_HALF_D);
+    glVertex3f(-GLASS_BUILDING_HALF_W, y, -GLASS_BUILDING_HALF_D);
+  }
   glEnd();
   glEnable(GL_LIGHTING);
+}
+
+void drawCurtainWall() {
+  glPushMatrix();
+  glColor4f(0.55f, 0.82f, 1.0f, GLASS_ALPHA);
+  glDepthMask(GL_FALSE); // 避免完全遮挡内部装饰
+
+  int colsLong = 8;
+  int colsShort = 6;
+  float panelH = FLOOR_HEIGHT - 1.5f;
+  float spanX = GLASS_BUILDING_HALF_W * 2.0f;
+  float spanZ = GLASS_BUILDING_HALF_D * 2.0f;
+
+  // 正反面（沿 x）
+  for (int side = -1; side <= 1; side += 2) {
+    for (int floor = 0; floor < NUM_FLOORS; ++floor) {
+      float y0 = floor * FLOOR_HEIGHT + 0.5f;
+      float y1 = y0 + panelH;
+      for (int c = 0; c < colsLong; ++c) {
+        float x0 = -GLASS_BUILDING_HALF_W + (spanX / colsLong) * c + 0.4f;
+        float x1 = -GLASS_BUILDING_HALF_W + (spanX / colsLong) * (c + 1) - 0.4f;
+        float z = side * GLASS_BUILDING_HALF_D;
+        glBegin(GL_QUADS);
+        glVertex3f(x0, y0, z);
+        glVertex3f(x1, y0, z);
+        glVertex3f(x1, y1, z);
+        glVertex3f(x0, y1, z);
+        glEnd();
+      }
+    }
+  }
+
+  // 侧面（沿 z）
+  for (int side = -1; side <= 1; side += 2) {
+    for (int floor = 0; floor < NUM_FLOORS; ++floor) {
+      float y0 = floor * FLOOR_HEIGHT + 0.5f;
+      float y1 = y0 + panelH;
+      for (int c = 0; c < colsShort; ++c) {
+        float z0 = -GLASS_BUILDING_HALF_D + (spanZ / colsShort) * c + 0.4f;
+        float z1 = -GLASS_BUILDING_HALF_D + (spanZ / colsShort) * (c + 1) - 0.4f;
+        float x = side * GLASS_BUILDING_HALF_W;
+        glBegin(GL_QUADS);
+        glVertex3f(x, y0, z0);
+        glVertex3f(x, y0, z1);
+        glVertex3f(x, y1, z1);
+        glVertex3f(x, y1, z0);
+        glEnd();
+      }
+    }
+  }
+
+  glDepthMask(GL_TRUE);
+  glPopMatrix();
 }
 
 void drawSlotMachine(const SlotMachine &s) {
   glPushMatrix();
-  glTranslatef(s.x, 0.0f, s.z);
+  glTranslatef(s.x, s.y, s.z);
   glRotatef(s.rotDeg, 0.0f, 1.0f, 0.0f);
 
   // 底座
@@ -296,7 +480,7 @@ void drawSlotMachine(const SlotMachine &s) {
 
 void drawTable(const Table &t) {
   glPushMatrix();
-  glTranslatef(t.x, 0.0f, t.z);
+  glTranslatef(t.x, t.y, t.z);
   glRotatef(t.rotDeg, 0.0f, 1.0f, 0.0f);
 
   // 桌面
@@ -326,7 +510,7 @@ void drawTable(const Table &t) {
 
 void drawChair(const Chair &c) {
   glPushMatrix();
-  glTranslatef(c.x, 0.0f, c.z);
+  glTranslatef(c.x, c.y, c.z);
   glRotatef(c.rotDeg, 0.0f, 1.0f, 0.0f);
 
   // 坐垫
@@ -344,6 +528,50 @@ void drawChair(const Chair &c) {
   glColor3f(0.30f, 0.30f, 0.32f);
   glutSolidCube(1.0);
   glPopMatrix();
+
+  glPopMatrix();
+}
+
+void drawBarCounter(const BarCounter &b) {
+  glPushMatrix();
+  glTranslatef(b.x, b.y, b.z);
+  glRotatef(b.rotDeg, 0.0f, 1.0f, 0.0f);
+
+  // 吧台主体
+  glPushMatrix();
+  glTranslatef(0.0f, 2.5f, 0.0f);
+  glScalef(18.0f, 5.0f, 3.5f);
+  glColor3f(0.26f, 0.23f, 0.22f);
+  glutSolidCube(1.0);
+  glPopMatrix();
+
+  // 台面亮色
+  glPushMatrix();
+  glTranslatef(0.0f, 5.0f, 0.0f);
+  glScalef(18.5f, 0.8f, 3.8f);
+  glColor3f(0.85f, 0.76f, 0.60f);
+  glutSolidCube(1.0);
+  glPopMatrix();
+
+  // 背景瓶架（用小立方体模拟）
+  for (int i = -3; i <= 3; ++i) {
+    glPushMatrix();
+    glTranslatef(i * 2.2f, 6.0f, -2.0f);
+    glScalef(0.6f, 1.8f, 0.6f);
+    glColor3f(0.6f, 0.8f, 0.9f);
+    glutSolidCube(1.0);
+    glPopMatrix();
+  }
+
+  // 高脚凳
+  for (int i = -3; i <= 3; ++i) {
+    glPushMatrix();
+    glTranslatef(i * 2.6f, 0.0f, 2.8f);
+    glScalef(1.0f, 3.0f, 1.0f);
+    glColor3f(0.22f, 0.22f, 0.24f);
+    glutSolidCube(1.0);
+    glPopMatrix();
+  }
 
   glPopMatrix();
 }
@@ -377,10 +605,8 @@ void display() {
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmb);
 
   drawGround();
-  drawCasinoPodium();
-  drawHotelTower();
-  drawNeonSign();
-  drawBrokenBillboard();
+  drawGlassBuildingBase();
+  drawConcreteFrameAndSlabs();
 
   for (const auto &s : g_slots)
     drawSlotMachine(s);
@@ -388,6 +614,11 @@ void display() {
     drawTable(t);
   for (const auto &c : g_chairs)
     drawChair(c);
+  for (const auto &b : g_barCounters)
+    drawBarCounter(b);
+
+  // 最后绘制玻璃外壳，确保内部内容透过玻璃可见
+  drawCurtainWall();
 
   glutSwapBuffers();
 }
@@ -520,7 +751,7 @@ int main(int argc, char **argv) {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(1280, 720);
-  glutCreateWindow("Radioactive Las Vegas Casino Ruins (FreeGLUT)");
+  glutCreateWindow("Radioactive Las Vegas Glass Tower (FreeGLUT)");
 
   initGL();
 

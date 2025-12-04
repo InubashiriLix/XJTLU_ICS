@@ -24,7 +24,23 @@ add_executable(Vegas
     src/Vegas.cpp
 )
 
+add_executable(Spinner
+    src/Spinner.cpp
+)
+
+add_executable(Stella
+    src/Stella.cpp
+)
+
+add_executable(City
+    src/City.cpp
+)
+
 target_link_libraries(Mesa PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
 target_link_libraries(LAPD PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
 target_link_libraries(Dam PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
 target_link_libraries(Vegas PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
+target_link_libraries(Spinner PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
+target_link_libraries(Stella PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
+target_link_libraries(City PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
+
