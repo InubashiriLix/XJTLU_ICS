@@ -63,8 +63,8 @@ GLuint loadBMP(const char *imagepath) {
 float camX = 0.0f;
 float camY = 40.0f;
 float camZ = 140.0f;
-float yaw = 0.0f;     // 左右转动
-float pitch = -10.0f; // 上下俯仰
+float yaw = 0.0f;     // Yaw left/right
+float pitch = -10.0f; // Pitch up/down
 
 const float MOVE_SPEED = 2.0f;
 const float ROT_SPEED = 2.5f;
@@ -103,9 +103,9 @@ void resetCamera() {
 void drawGround() {
   glDisable(GL_LIGHTING);
 
-  // 夜晚深色地面
+  // Dark nighttime ground
   glBegin(GL_QUADS);
-  glColor3f(0.06f, 0.06f, 0.08f); // 深灰偏蓝
+  glColor3f(0.06f, 0.06f, 0.08f); // Dark gray-blue
   float size = 400.0f;
   glVertex3f(-size, 0.0f, -size);
   glVertex3f(size, 0.0f, -size);
@@ -113,7 +113,7 @@ void drawGround() {
   glVertex3f(-size, 0.0f, size);
   glEnd();
 
-  // 通往大楼的道路（比地面稍亮一点）
+  // Road leading to the tower (slightly brighter than ground)
   glBegin(GL_QUADS);
   glColor3f(0.16f, 0.17f, 0.20f);
   glVertex3f(-12.0f, 0.01f, 160.0f);
@@ -196,26 +196,26 @@ void drawTexturedBox(float w, float h, float d) {
 
 class LAPDBuilding {
 private:
-  // ---------------- LAPD building 参数 ----------------
-  // 基座（podium）
+  // ---------------- LAPD building parameters ----------------
+  // Podium
   const float PODIUM_HEIGHT = 20.0f;
   const float PODIUM_HALF_W = 30.0f;
   const float PODIUM_HALF_D = 30.0f;
 
-  // 竖直塔身
+  // Vertical tower shaft
   const float TOWER_HEIGHT = 80.0f;
   const float TOWER_HALF_W = 20.0f;
   const float TOWER_HALF_D = 20.0f;
 
-  // 顶部倒梯台
+  // Inverted frustum crown
   const float FRUSTUM_HEIGHT = 40.0f;
   const float FRUSTUM_BOTTOM_HALF_W = TOWER_HALF_W;
   const float FRUSTUM_BOTTOM_HALF_D = TOWER_HALF_D;
   const float FRUSTUM_TOP_HALF_W = 40.0f;
   const float FRUSTUM_TOP_HALF_D = 40.0f;
-  const float FRUSTUM_TOP_OFFSET_Z = 10.0f; // 顶部整体向前悬挑
+  const float FRUSTUM_TOP_OFFSET_Z = 10.0f; // Crown overhang toward front
 
-  // 一些派生高度
+  // Derived heights
   const float PODIUM_Y0 = 0.0f;
   const float PODIUM_Y1 = PODIUM_Y0 + PODIUM_HEIGHT;
 
@@ -235,9 +235,9 @@ private:
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
 
-    // 大门
+    // Main entrance
     glDisable(GL_LIGHTING);
-    glColor3f(0.02f, 0.02f, 0.03f); // 深色门洞背景
+    glColor3f(0.02f, 0.02f, 0.03f); // Dark door recess
 
     float doorW = 16.0f;
     float doorH = 12.0f;
@@ -251,7 +251,7 @@ private:
     glVertex3f(-doorW / 2, doorY + doorH, doorZ);
     glEnd();
 
-    // 门上的玻璃条
+    // Door glass strips
     glColor3f(0.6f, 0.85f, 1.0f);
     glLineWidth(2.0f);
     glBegin(GL_LINES);
@@ -273,9 +273,9 @@ private:
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
 
-    // 夜景发光窗带（不用光照，让它自发光）
+    // Nighttime glowing window bands (self-lit, no lighting)
     glDisable(GL_LIGHTING);
-    glColor3f(0.75f, 0.9f, 1.0f); // 亮蓝白
+    glColor3f(0.75f, 0.9f, 1.0f); // Bright blue-white
 
     float winH = 2.0f;
     float gapY = 4.0f;
@@ -395,10 +395,10 @@ private:
   }
 
   void drawHelipad() {
-    // 顶部六边形停机坪
+    // Hexagonal helipad on top
     glDisable(GL_LIGHTING);
     glPushMatrix();
-    glColor3f(0.0f, 0.95f, 0.45f); // 霓虹绿
+    glColor3f(0.0f, 0.95f, 0.45f); // Neon green
 
     glTranslatef(0.0f, FRUSTUM_Y1 + 0.1f, FRUSTUM_TOP_OFFSET_Z);
 
@@ -431,11 +431,11 @@ private:
     float y = FRUSTUM_Y1 + 1.0f;
 
     int t = glutGet(GLUT_ELAPSED_TIME);
-    bool on = (t % 1000) < 500; // 1s 闪烁周期
+    bool on = (t % 1000) < 500; // 1s flash cycle
 
     glDisable(GL_LIGHTING);
 
-    // 支柱
+    // Support columns
     glColor3f(0.6f, 0.6f, 0.6f);
     glLineWidth(3.0f);
     glBegin(GL_LINES);
@@ -550,9 +550,9 @@ void display() {
   glLoadIdentity();
   applyCamera();
 
-  // ---- 夜晚光照：月光 + 城市环境光 (Brightened) ----
+  // ---- Night lighting: moonlight + city ambient (brightened) ----
   // Directional moonlight
-  GLfloat moonDir[] = {-0.3f, -1.0f, -0.4f, 0.0f};   // 来自左上后方
+  GLfloat moonDir[] = {-0.3f, -1.0f, -0.4f, 0.0f};   // From upper-left rear
   GLfloat moonDiffuse[] = {0.8f, 0.8f, 0.9f, 1.0f};  // Brighter diffuse
   GLfloat moonAmbient[] = {0.3f, 0.3f, 0.4f, 1.0f};  // Brighter ambient
   GLfloat moonSpecular[] = {0.5f, 0.5f, 0.6f, 1.0f}; // Brighter specular
@@ -561,7 +561,7 @@ void display() {
   glLightfv(GL_LIGHT0, GL_AMBIENT, moonAmbient);
   glLightfv(GL_LIGHT0, GL_SPECULAR, moonSpecular);
 
-  // 全局环境光稍微有点城市泛光的感觉 (Brightened)
+  // Global ambient with a hint of city glow (brightened)
   GLfloat globalAmbient[] = {0.4f, 0.4f, 0.5f, 1.0f};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
 
@@ -671,33 +671,16 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 32.0f);
 
-  // 夜晚深蓝天空 (Lightened)
+  // Deep blue night sky (lightened)
   glClearColor(0.15f, 0.15f, 0.25f, 1.0f);
 
-  // ---- 雾气设置（指数雾）----
+  // ---- Fog settings (exponential) ----
   GLfloat fogColor[4] = {0.15f, 0.15f, 0.25f, 1.0f};
   glEnable(GL_FOG);
   glFogfv(GL_FOG_COLOR, fogColor);
   glFogi(GL_FOG_MODE, GL_EXP2);
-  glFogf(GL_FOG_DENSITY, 0.002f); // 数值越大雾越浓 (Reduced density)
-  glHint(GL_FOG_HINT, GL_NICEST); // 要求比较好看的雾
+  glFogf(GL_FOG_DENSITY, 0.002f); // Larger = thicker fog (reduced density)
+  glHint(GL_FOG_HINT, GL_NICEST); // Request best-looking fog
 
   texConcrete = loadBMP("../textures/concrete.bmp");
-}
-
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("LAPD Brutalist Tower - Night & Fog (FreeGLUT)");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-
-  glutMainLoop();
-  return 0;
 }

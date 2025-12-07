@@ -9,32 +9,94 @@ const float PI = 3.14159265f;
 float camX = 0.0f;
 float camY = 60.0f;
 float camZ = 220.0f;
-float yaw = 0.0f;     // 左右转动
-float pitch = -15.0f; // 上下俯仰
+float yaw = 0.0f;     // Yaw left/right
+float pitch = -15.0f; // Pitch up/down
 
 const float MOVE_SPEED = 3.0f;
 const float ROT_SPEED = 2.0f;
 
-// ---------------- Trash Mesa 参数 ----------------
-const float MESA_TOP_Y = 8.0f;        // 垃圾高地顶部高度
-const float MESA_THICKNESS = 16.0f;   // Mesa 厚度
-const float MESA_HALF_SIZE = 260.0f;  // 高地半宽（扩大覆盖范围）
-const float MESA_BUMP_HEIGHT = 60.0f; // Mesa mound 额外高度
-const float DUNE_BASE_Y = -30.0f;     // 沙面基准高度
+// ---------------- Trash Mesa parameters ----------------
+const float MESA_TOP_Y = 8.0f;       // Top height of trash mesa
+const float MESA_THICKNESS = 16.0f;  // Mesa thickness
+const float MESA_HALF_SIZE = 200.0f; // Half-width of the raised area
+const float MESA_BUMP_HEIGHT =
+    70.0f; // Extra bump height for the central mound
+const float DUNE_BASE_Y =
+    30.0f; // Base sand height (raised for more dramatic terrain)
 
-// ---------------- 雾气参数（你可以直接改这里） ----------------
-float g_fogDensity = 0.002f; // 越大雾越浓，改一个数字就行
+// ---------------- Fog parameters (tweak here) ----------------
+float g_fogDensity = 0.002f; // Higher = thicker fog
 
-// ---------------- 小工具函数 ----------------
+// ---------------- Small helpers ----------------
 float frand(float a, float b) {
   return a + (b - a) * (std::rand() / (float)RAND_MAX);
 }
 
-// Base ground height (flattened — no surrounding dunes)
+// Perlin-like noise for dune variation
+float noiseHash(int x, int z) {
+  int n = x * 374761393 + z * 668265263;
+  n = (n << 13) ^ n;
+  return (1.0f - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) /
+                     1073741824.0f);
+}
+
+float smoothNoise(float x, float z) {
+  int ix = (int)std::floor(x);
+  int iz = (int)std::floor(z);
+  float fx = x - ix;
+  float fz = z - iz;
+
+  // Smooth interpolation
+  fx = fx * fx * (3.0f - 2.0f * fx);
+  fz = fz * fz * (3.0f - 2.0f * fz);
+
+  float a = noiseHash(ix, iz);
+  float b = noiseHash(ix + 1, iz);
+  float c = noiseHash(ix, iz + 1);
+  float d = noiseHash(ix + 1, iz + 1);
+
+  return a * (1.0f - fx) * (1.0f - fz) + b * fx * (1.0f - fz) +
+         c * (1.0f - fx) * fz + d * fx * fz;
+}
+
+float duneNoise(float x, float z) {
+  float scale1 = 0.02f;
+  float scale2 = 0.05f;
+  float scale3 = 0.1f;
+
+  return smoothNoise(x * scale1, z * scale1) * 8.0f +
+         smoothNoise(x * scale2, z * scale2) * 4.0f +
+         smoothNoise(x * scale3, z * scale3) * 2.0f;
+}
+
+// Base ground height with realistic dune variation and beach transition
 float getDuneHeight(float x, float z) {
-  (void)x;
-  (void)z;
-  return DUNE_BASE_Y;
+  float baseHeight = DUNE_BASE_Y + duneNoise(x, z);
+
+  // Create beach transition: gradually lower height toward the ocean side
+  // Beach should touch ocean edge. Desert extends deeper away from ocean
+  const float desertEdge = 100.0f; // Desert interior edge (moved from 85.0f)
+  const float beachWidth =
+      30.0f; // Beach transition width (increased from 10.0f)
+  const float beachEnd =
+      desertEdge + beachWidth; // Outer beach edge at z=130 (touches ocean)
+
+  if (z < desertEdge) {
+    // Interior desert - full height
+    return baseHeight;
+  } else if (z < beachEnd) {
+    // Beach transition zone - smoothly decrease to just above sea level
+    float t = (z - desertEdge) / beachWidth; // 0..1
+    t = t * t * (3.0f - 2.0f * t);           // Smoothstep for natural curve
+
+    const float seaLevel = 5.0f;               // Updated from -3.0f
+    const float beachHeight = seaLevel + 2.0f; // Beach at Y≈7
+
+    return baseHeight * (1.0f - t) + beachHeight * t;
+  } else {
+    // Beyond beach - at sea level
+    return 7.0f; // Updated from -1.0f
+  }
 }
 
 // Helper to get the height of the central Mesa Dune at (x, z)
@@ -76,7 +138,7 @@ void strafe(float amount) {
   camZ += rz * amount;
 }
 
-// ---------------- 垃圾场类 ----------------
+// ---------------- Trash yard class ----------------
 class TrashYard {
 public:
   TrashYard() = default;
@@ -92,9 +154,9 @@ public:
   }
 
   void update(float dt) {
-    // 垃圾船绕场转圈
+    // Garbage barges circle the yard
     for (auto &s : ships_) {
-      s.angleDeg += s.speedDeg * dt * 60.0f; // 把 dt 大致折算回“帧”
+      s.angleDeg += s.speedDeg * dt * 60.0f; // Roughly convert dt into "frames"
       if (s.angleDeg > 360.0f)
         s.angleDeg -= 360.0f;
     }
@@ -116,12 +178,60 @@ public:
       drawShip(s);
   }
 
+  void drawDunes() {
+    glDisable(GL_LIGHTING);
+    glColor3f(0.76f, 0.70f, 0.50f); // Sand color
+
+    // Desert should be smaller and not overlap ocean
+    // In local coords: ocean is at positive Z, so desert extends into negative
+    // Z
+    float sizeX = 450.0f;   // Half-width in X: -400 to +400 (total 800)
+    float zStart = -400.0f; // Start from -400 (away from ocean)
+    float zEnd = 150.0f;    // End at +150 (closer to ocean, was 100.0f)
+
+    int stepsX = 80;
+    int stepsZ = 50;
+    float stepSizeX = (sizeX * 2.0f) / stepsX;
+    float stepSizeZ = (zEnd - zStart) / stepsZ;
+
+    for (int z = 0; z < stepsZ; ++z) {
+      glBegin(GL_TRIANGLE_STRIP);
+      for (int x = 0; x <= stepsX; ++x) {
+        float xPos = -sizeX + x * stepSizeX;
+        float zPos = zStart + z * stepSizeZ;
+        float zPosNext = zStart + (z + 1) * stepSizeZ;
+
+        // Realistic dune heights with variation
+        float y1 = getDuneHeight(xPos, zPos);
+        float y2 = getDuneHeight(xPos, zPosNext);
+
+        // Calculate normals for proper lighting
+        float delta = 2.0f;
+        float hL = getDuneHeight(xPos - delta, zPos);
+        float hR = getDuneHeight(xPos + delta, zPos);
+        float hD = getDuneHeight(xPos, zPos - delta);
+        float hU = getDuneHeight(xPos, zPos + delta);
+
+        float nx = (hL - hR) / (2.0f * delta);
+        float nz = (hD - hU) / (2.0f * delta);
+        float len = std::sqrt(nx * nx + 1.0f + nz * nz);
+        glNormal3f(nx / len, 1.0f / len, nz / len);
+
+        glVertex3f(xPos, y1, zPos);
+        glVertex3f(xPos, y2, zPosNext);
+      }
+      glEnd();
+    }
+    glEnable(GL_LIGHTING);
+  }
+
 private:
   struct DebrisChunk {
     float x, z;
     float sx, sy, sz;
     float rotY;
-    float gray; // 用来稍微变一下颜色
+    float gray; // Slight color variation
+    bool isBox; // true = box, false = cylinder
   };
 
   struct CarWreck {
@@ -142,10 +252,10 @@ private:
   };
 
   struct Ship {
-    float angleDeg; // 绕中心旋转角
-    float radius;   // 轨道半径
-    float height;   // 基础高度
-    float speedDeg; // 每帧角速度
+    float angleDeg; // Angular position around center
+    float radius;   // Orbit radius
+    float height;   // Base height
+    float speedDeg; // Angular speed per frame
   };
 
   std::vector<DebrisChunk> debris_;
@@ -185,9 +295,9 @@ private:
     return false;
   }
 
-  // ---------- 初始化 ----------
+  // ---------- Initialization ----------
   void initDebris() {
-    // 散落在 Mesa 顶部的碎块
+    // Debris scattered across the mesa top
     const int NUM_DEBRIS = 650;
     debris_.reserve(NUM_DEBRIS);
     for (int i = 0; i < NUM_DEBRIS; ++i) {
@@ -208,6 +318,7 @@ private:
       d.sz = frand(1.0f, 4.0f);
       d.rotY = frand(0.0f, 360.0f);
       d.gray = frand(0.22f, 0.58f);
+      d.isBox = (frand(0.0f, 1.0f) < 0.7f); // 70% boxes, 30% cylinders
       debris_.push_back(d);
     }
   }
@@ -256,41 +367,15 @@ private:
       s.angleDeg = frand(0.0f, 360.0f);
       s.radius =
           (MESA_HALF_SIZE + 60.0f) + i * 40.0f; // stay outside enlarged mesa
-      s.height = 90.0f + i * 10.0f;
+      s.height =
+          150.0f + i * 15.0f; // Increased from 90.0f to avoid Vegas collision
       s.speedDeg = 0.12f + 0.04f * i;
       ships_.push_back(s);
     }
   }
 
-  // ---------- 绘制 ----------
-  void drawDunes() {
-    glDisable(GL_LIGHTING);
-    glColor3f(0.76f, 0.70f, 0.50f); // Sand color
-
-    float size = 800.0f;
-    int steps = 100;
-    float stepSize = size * 2.0f / steps;
-
-    for (int z = 0; z < steps; ++z) {
-      glBegin(GL_TRIANGLE_STRIP);
-      for (int x = 0; x <= steps; ++x) {
-        float xPos = -size + x * stepSize;
-        float zPos = -size + z * stepSize;
-        float zPosNext = -size + (z + 1) * stepSize;
-
-        // Flat ground at base height
-        float y1 = DUNE_BASE_Y;
-        float y2 = DUNE_BASE_Y;
-
-        // Normal straight up for flat ground
-        glNormal3f(0.0f, 1.0f, 0.0f);
-        glVertex3f(xPos, y1, zPos);
-        glVertex3f(xPos, y2, zPosNext);
-      }
-      glEnd();
-    }
-    glEnable(GL_LIGHTING);
-  }
+  // ---------- Rendering ----------
+  // drawDunes moved to public
 
   void drawMesa() {
     // Draw the central Mesa as a large dune
@@ -345,9 +430,9 @@ private:
     glTranslatef(d.x, y + d.sy * 0.5f + 0.2f, d.z);
     glRotatef(d.rotY, 0.0f, 1.0f, 0.0f);
     float g = d.gray;
-    // 70% chance: box; 30% chance: crushed cylinder look
-    float choice = frand(0.0f, 1.0f);
-    if (choice < 0.7f) {
+
+    // Use stored shape type instead of re-randomizing every frame
+    if (d.isBox) {
       glScalef(d.sx, d.sy, d.sz);
       glColor3f(g * 1.05f, g * 0.95f, g * 0.9f);
       glutSolidCube(1.0);
@@ -460,7 +545,7 @@ private:
   void drawCrane(const Crane &c) {
     float baseY = MESA_TOP_Y;
 
-    // 塔柱（灰沉色）
+    // Tower column (dark gray)
     glPushMatrix();
     glTranslatef(c.x, baseY + c.height * 0.5f, c.z);
     glScalef(2.2f, c.height, 2.2f);
@@ -468,7 +553,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 水平臂
+    // Horizontal arm
     glPushMatrix();
     float armY = baseY + c.height + 2.0f;
     glTranslatef(c.x, armY, c.z);
@@ -477,7 +562,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 吊钩钢缆
+    // Hoist cable
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(0.25f, 0.25f, 0.25f);
@@ -491,7 +576,7 @@ private:
   void drawCrusher(const Crusher &cr) {
     float y = getMesaY(cr.x, cr.z);
 
-    // 机体（粉碎箱）- main body
+    // Main crusher body
     glPushMatrix();
     glTranslatef(cr.x, y + 6.0f, cr.z);
     glScalef(cr.width, 12.0f, cr.depth);
@@ -499,7 +584,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 顶部护栏
+    // Top guard rail
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(0.75f, 0.75f, 0.75f);
@@ -517,7 +602,7 @@ private:
     glEnd();
     glEnable(GL_LIGHTING);
 
-    // 进料口
+    // Feed port
     glPushMatrix();
     glTranslatef(cr.x, y + 5.0f, cr.z - cr.depth * 0.6f);
     glScalef(cr.width * 0.8f, 6.0f, cr.depth * 0.6f);
@@ -525,7 +610,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 内部牙齿线条 + 侧面铆钉
+    // Inner teeth lines + side rivets
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(0.85f, 0.85f, 0.85f);
@@ -548,7 +633,7 @@ private:
     glEnd();
     glEnable(GL_LIGHTING);
 
-    // 排料传送带
+    // Discharge conveyor
     glPushMatrix();
     glTranslatef(cr.x, y + 1.5f, cr.z + cr.depth * 0.6f);
     glRotatef(-18.0f, 1.0f, 0.0f, 0.0f);
@@ -562,9 +647,9 @@ private:
     float rad = s.angleDeg * PI / 180.0f;
     float x = std::cos(rad) * s.radius;
     float z = std::sin(rad) * s.radius;
-    float y = s.height + std::sin(rad * 0.7f) * 2.0f; // 轻微上下起伏
+    float y = s.height + std::sin(rad * 0.7f) * 2.0f; // Gentle bobbing
 
-    // 是否正在倾倒垃圾
+    // Whether it is dumping trash
     bool dumping = std::sin(rad * 2.0f) > 0.6f;
 
     glPushMatrix();
@@ -581,7 +666,7 @@ private:
     float shipHeight = 10.0f;
     float shipWidth = 16.0f;
 
-    // 船壳（分层收腰）
+    // Hull with tapered layers
     glPushMatrix();
     glScalef(shipLen, shipHeight * 0.65f, shipWidth);
     glColor3f(0.28f, 0.29f, 0.31f);
@@ -595,7 +680,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 甲板货舱
+    // Deck cargo hold
     glPushMatrix();
     glTranslatef(-5.0f, shipHeight * 0.4f, 0.0f);
     glScalef(shipLen * 0.7f, shipHeight * 0.6f, shipWidth * 0.8f);
@@ -603,7 +688,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 驾驶楼
+    // Bridge / pilothouse
     glPushMatrix();
     glTranslatef(-shipLen * 0.15f, shipHeight * 0.9f, 0.0f);
     glScalef(shipLen * 0.25f, shipHeight * 0.8f, shipWidth * 0.6f);
@@ -611,7 +696,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 烟囱
+    // Funnel
     glPushMatrix();
     glTranslatef(-shipLen * 0.05f, shipHeight * 1.4f, 0.0f);
     glColor3f(0.45f, 0.20f, 0.18f);
@@ -621,9 +706,9 @@ private:
     glutSolidCylinder(1.2, 1.2, 10, 1);
     glPopMatrix();
 
-    // （移除装饰线条，保持简洁）
+    // Decoration strips removed for simplicity
 
-    // 船首斜切
+    // Beveled bow
     glPushMatrix();
     glTranslatef(shipLen * 0.5f, shipHeight * 0.25f, 0.0f);
     glRotatef(20.0f, 0.0f, 1.0f, 0.0f);
@@ -632,10 +717,10 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 倾倒垃圾：一串小方块
+    // Dumping trash: a stream of small cubes
     if (dumping) {
       glPushMatrix();
-      glTranslatef(0.0f, -shipHeight * 0.5f, 0.0f); // 船底为原点
+      glTranslatef(0.0f, -shipHeight * 0.5f, 0.0f); // Origin at ship bottom
       int pieces = 14;
       for (int i = 0; i < pieces; ++i) {
         glPushMatrix();
@@ -651,9 +736,9 @@ private:
       glPopMatrix();
     }
 
-    // 防撞灯
+    // Anti-collision light
     glColor3f(1.0f, 0.2f, 0.2f);
-    glutSolidSphere(1.0, 12, 12); // 船头
+    glutSolidSphere(1.0, 12, 12); // Bow
     glPushMatrix();
     glTranslatef(shipLen * 0.25f, shipHeight * 0.7f, shipWidth * 0.4f);
     glutSolidSphere(0.8, 12, 12);
@@ -668,7 +753,7 @@ private:
   }
 };
 
-// 全局垃圾场实例
+// Global trash yard instance
 TrashYard g_trashYard;
 
 // ---------------- Camera transform ----------------
@@ -678,7 +763,7 @@ void applyCamera() {
   glTranslatef(-camX, -camY, -camZ);
 }
 
-// ---------------- GLUT 回调 ----------------
+// ---------------- GLUT callbacks ----------------
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -686,7 +771,7 @@ void display() {
   glLoadIdentity();
   applyCamera();
 
-  // 阴沉的灰黄雾天光照
+  // Overcast gray-yellow foggy lighting
   GLfloat sunDir[] = {-0.4f, 0.8f, 0.3f, 0.0f};
   GLfloat sunDiffuse[] = {0.8f, 0.75f, 0.6f, 1.0f};
   GLfloat sunAmbient[] = {0.35f, 0.32f, 0.25f, 1.0f};
@@ -793,12 +878,12 @@ void special(int key, int, int) {
 }
 
 void timer(int) {
-  g_trashYard.update(0.016f); // 简单当成 60 FPS
+  g_trashYard.update(0.016f); // Treat as ~60 FPS
   glutPostRedisplay();
   glutTimerFunc(16, timer, 0);
 }
 
-// ---------------- OpenGL 初始化 ----------------
+// ---------------- OpenGL initialization ----------------
 void initGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -814,11 +899,11 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0f);
 
-  // 阴沉灰黄天空
+  // Overcast gray-yellow sky
   GLfloat fogColor[] = {0.45f, 0.42f, 0.32f, 1.0f};
   glClearColor(fogColor[0], fogColor[1], fogColor[2], fogColor[3]);
 
-  // 雾使用全局变量 g_fogDensity
+  // Fog uses global g_fogDensity
   glEnable(GL_FOG);
   glFogfv(GL_FOG_COLOR, fogColor);
   glFogi(GL_FOG_MODE, GL_EXP2);
@@ -829,23 +914,4 @@ void initGL() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   g_trashYard.init();
-}
-
-// ---------------- main ----------------
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("Trash Mesa - Flooded San Diego (FreeGLUT)");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-  glutTimerFunc(16, timer, 0);
-
-  glutMainLoop();
-  return 0;
 }

@@ -9,36 +9,36 @@ const float PI = 3.14159265f;
 float camX = 0.0f;
 float camY = 80.0f;
 float camZ = 260.0f;
-float yaw = 0.0f;     // 左右转
-float pitch = -20.0f; // 上下俯仰
+float yaw = 0.0f;     // Yaw left/right
+float pitch = -20.0f; // Pitch up/down
 
 const float MOVE_SPEED = 5.0f;
 const float ROT_SPEED = 2.0f;
 
 // ---------------- City grid ----------------
-const int GRID_N = 25;         // 25×25 格子
-const float CELL_SIZE = 32.0f; // 每格大小
+const int GRID_N = 25;         // 25×25 grid
+const float CELL_SIZE = 32.0f; // Cell size
 const int GRID_CENTER = GRID_N / 2;
 const float CITY_HALF_SIZE = GRID_N * CELL_SIZE * 0.5f;
 
 bool g_isRoadRow[GRID_N];
 bool g_isRoadCol[GRID_N];
 
-// 统一窗户基础颜色（冷青色）
+// Base window color (cool teal)
 const float WINDOW_BASE_COLOR[3] = {0.25f, 0.85f, 1.0f};
 
 struct Building {
-  float x, z;        // 世界坐标中心
-  float w, d, h;     // 前面基块的宽、深、高（窗户就贴这个面）
-  float rotationDeg; // 绕 Y 轴旋转（0/90/180/270）
-  float tint;        // 整体颜色微调
-  int footprintType; // 0: box, 1: slab(+后延), 2: L-ish（后侧延）
+  float x, z;        // World-space center
+  float w, d, h;     // Front block width/depth/height (windows stick to this face)
+  float rotationDeg; // Rotate around Y (0/90/180/270)
+  float tint;        // Small overall color tweak
+  int footprintType; // 0: box, 1: slab (+rear extension), 2: L-ish (rear/side extension)
   int windowStyle;   // 0: none, 1: vertical strips, 2: grid
 };
 
 std::vector<Building> g_buildings;
 
-// ---------------- 小工具 ----------------
+// ---------------- Small helpers ----------------
 float frand(float a, float b) {
   return a + (b - a) * (std::rand() / (float)RAND_MAX);
 }
@@ -66,7 +66,7 @@ void resetCamera() {
   pitch = -20.0f;
 }
 
-// ---------------- Grid 规划：道路 ----------------
+// ---------------- Grid layout: roads ----------------
 void initRoadGrid() {
   for (int i = 0; i < GRID_N; ++i) {
     g_isRoadRow[i] = false;
@@ -75,9 +75,9 @@ void initRoadGrid() {
 
   int c = GRID_CENTER;
 
-  // 三条水平主路（包含一条中心 + 上下各一条）
+  // Three horizontal arterials (center plus one above and below)
   int rows[] = {c - 6, c, c + 6};
-  // 三条竖直主路
+  // Three vertical arterials
   int cols[] = {c - 6, c, c + 6};
 
   for (int r : rows) {
@@ -90,21 +90,21 @@ void initRoadGrid() {
   }
 }
 
-// ---------------- 城市初始化：建筑 ----------------
+// ---------------- City init: buildings ----------------
 void initCity() {
   std::srand(2077);
   initRoadGrid();
   g_buildings.clear();
 
-  float jitter = CELL_SIZE * 0.2f; // 每格内的小偏移
+  float jitter = CELL_SIZE * 0.2f; // Small per-cell offset
 
   for (int i = 0; i < GRID_N; ++i) {
     for (int j = 0; j < GRID_N; ++j) {
-      // 道路格子不摆楼
+      // Skip road tiles
       if (g_isRoadCol[i] || g_isRoadRow[j])
         continue;
 
-      // 中心广场预留给地标建筑
+      // Reserve central plaza for landmarks
       if (std::abs(i - GRID_CENTER) <= 2 && std::abs(j - GRID_CENTER) <= 2)
         continue;
 
@@ -113,7 +113,7 @@ void initCity() {
       b.x = gridToWorld(i) + frand(-jitter, jitter);
       b.z = gridToWorld(j) + frand(-jitter, jitter);
 
-      // 这里的 w,d 是“前脸”基块尺寸（决定窗户范围）
+      // w,d are the front-face block dimensions (define window extent)
       b.w = frand(14.0f, 28.0f);
       b.d = frand(12.0f, 30.0f);
       b.h = frand(25.0f, 80.0f);
@@ -123,11 +123,11 @@ void initCity() {
 
       float rFoot = frand(0.0f, 1.0f);
       if (rFoot < 0.65f)
-        b.footprintType = 0; // 单块盒子
+        b.footprintType = 0; // Single box
       else if (rFoot < 0.90f)
-        b.footprintType = 1; // slab + 后延
+        b.footprintType = 1; // Slab with rear extension
       else
-        b.footprintType = 2; // L-ish（后+侧）
+        b.footprintType = 2; // L-ish (rear + side)
 
       float rWin = frand(0.0f, 1.0f);
       if (rWin < 0.45f)
@@ -146,7 +146,7 @@ void initCity() {
 void drawGroundAndRoads() {
   glDisable(GL_LIGHTING);
 
-  // 整体地面
+  // Overall ground plane
   glBegin(GL_QUADS);
   glColor3f(0.02f, 0.03f, 0.06f);
   glVertex3f(-CITY_HALF_SIZE, 0.0f, -CITY_HALF_SIZE);
@@ -160,7 +160,7 @@ void drawGroundAndRoads() {
 
   float roadHalf = CELL_SIZE * 0.4f;
 
-  // 水平道路
+  // Horizontal roads
   for (int j = 0; j < GRID_N; ++j) {
     if (!g_isRoadRow[j])
       continue;
@@ -171,7 +171,7 @@ void drawGroundAndRoads() {
     glVertex3f(-CITY_HALF_SIZE - 10.0f, 0.01f, z + roadHalf);
   }
 
-  // 垂直道路
+  // Vertical roads
   for (int i = 0; i < GRID_N; ++i) {
     if (!g_isRoadCol[i])
       continue;
@@ -184,7 +184,7 @@ void drawGroundAndRoads() {
 
   glEnd();
 
-  // 中心广场（你放 LAPD 的舞台）
+  // Central plaza (space to place LAPD or other landmark)
   glBegin(GL_QUADS);
   glColor3f(0.05f, 0.07f, 0.10f);
   float plaza = 90.0f;
@@ -197,7 +197,7 @@ void drawGroundAndRoads() {
   glEnable(GL_LIGHTING);
 }
 
-// ---------------- 窗户（统一配色 & 贴墙） ----------------
+// ---------------- Windows (uniform palette & flush to wall) ----------------
 void drawBuildingWindows(const Building &b) {
   if (b.windowStyle == 0)
     return;
@@ -206,18 +206,18 @@ void drawBuildingWindows(const Building &b) {
   glTranslatef(b.x, 0.0f, b.z);
   glRotatef(b.rotationDeg, 0.0f, 1.0f, 0.0f);
 
-  // 前脸基块的正面平面
+  // Front face plane of the primary block
   float zFront = b.d * 0.5f;
   float yBottom = 2.5f;
   float yTop = b.h - 2.5f;
 
   glDisable(GL_LIGHTING);
   glEnable(GL_POLYGON_OFFSET_FILL);
-  // 稍稍往摄像机靠一点，避免和墙自己打架，但还是共面
+  // Nudge slightly toward camera to avoid z-fighting while staying coplanar
   glPolygonOffset(-1.0f, -1.0f);
 
   if (b.windowStyle == 1) {
-    // 竖条灯带窗（统一冷青色，只改亮度）
+    // Vertical strip lights/windows (cool teal, vary brightness only)
     float usableWidth = b.w * 0.6f;
     float x1 = -usableWidth * 0.5f;
     float x2 = usableWidth * 0.5f;
@@ -249,7 +249,7 @@ void drawBuildingWindows(const Building &b) {
 
     glEnd();
   } else if (b.windowStyle == 2) {
-    // 网格窗
+    // Grid windows
     int nCols = 4;
     int nRows = (int)((yTop - yBottom) / 6.0f);
     if (nRows < 3)
@@ -293,7 +293,7 @@ void drawBuildingWindows(const Building &b) {
   glPopMatrix();
 }
 
-// ---------------- 建筑本体 ----------------
+// ---------------- Building masses ----------------
 void drawBuildingBody(const Building &b) {
   glPushMatrix();
   glTranslatef(b.x, b.h * 0.5f, b.z);
@@ -301,10 +301,10 @@ void drawBuildingBody(const Building &b) {
 
   float base = 0.12f * b.tint;
 
-  // 所有形状的“前脸”都用 (b.w, b.h, b.d) 这块，窗户就贴这个
-  // 额外体量都往后/侧边长，不会盖住前脸，也不会比前脸更靠前
+  // All shapes share this front block (b.w, b.h, b.d); windows attach here.
+  // Extra masses extend backward/sideways so they never cover the front face.
 
-  // 前脸基块
+  // Front block
   glPushMatrix();
   glScalef(b.w, b.h, b.d);
   glColor3f(base + 0.03f, base + 0.05f, base + 0.08f);
@@ -312,15 +312,15 @@ void drawBuildingBody(const Building &b) {
   glPopMatrix();
 
   if (b.footprintType == 1) {
-    // slab：在后面延伸一块体量
+    // Slab: extend a mass behind
     glPushMatrix();
-    glTranslatef(0.0f, -b.h * 0.05f, -b.d * 0.5f); // 往后拉
+    glTranslatef(0.0f, -b.h * 0.05f, -b.d * 0.5f); // Pull backward
     glScalef(b.w * 0.8f, b.h * 0.6f, b.d * 0.9f);
     glColor3f(base + 0.05f, base + 0.07f, base + 0.10f);
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 顶部机房块（也在后一点）
+    // Rooftop mechanical block (also set back)
     glPushMatrix();
     glTranslatef(0.0f, b.h * 0.3f, -b.d * 0.15f);
     glScalef(b.w * 0.5f, b.h * 0.25f, b.d * 0.5f);
@@ -328,8 +328,8 @@ void drawBuildingBody(const Building &b) {
     glutSolidCube(1.0);
     glPopMatrix();
   } else if (b.footprintType == 2) {
-    // L-ish：后侧撑出去一点
-    // 侧翼在右后方，不超过前脸
+    // L-ish: extend backward/right
+    // Wing sits rear-right, never ahead of the front face
     glPushMatrix();
     glTranslatef(b.w * 0.35f, -b.h * 0.05f, -b.d * 0.25f);
     glScalef(b.w * 0.6f, b.h * 0.75f, b.d * 0.7f);
@@ -337,7 +337,7 @@ void drawBuildingBody(const Building &b) {
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 背部小块
+    // Small rear block
     glPushMatrix();
     glTranslatef(-b.w * 0.25f, 0.0f, -b.d * 0.5f);
     glScalef(b.w * 0.5f, b.h * 0.5f, b.d * 0.8f);
@@ -356,9 +356,9 @@ void drawBuildings() {
   }
 }
 
-// ---------------- 拱形高架桥（避开中心） ----------------
+// ---------------- Arched overpass (away from center) ----------------
 void drawOverpass() {
-  // 选一条远离中心广场的主路：GRID_CENTER + 6
+  // Pick an arterial away from the plaza: GRID_CENTER + 6
   int row = GRID_CENTER + 6;
   if (row >= GRID_N)
     return;
@@ -373,12 +373,12 @@ void drawOverpass() {
   float xEnd = gridToWorld(colEnd);
   float deckWidth = CELL_SIZE * 0.7f;
   float deckThick = 2.5f;
-  float archH = 18.0f; // 拱高（中心位置）
-  int segments = 80;   // 越多越平滑
+  float archH = 18.0f; // Arch height at center
+  int segments = 80;   // More segments = smoother
 
   auto centerY = [&](float t) {
-    // t in [0,1]，两端在地面，中心最高
-    // 让 y(t) 的底边在 y=0，顶面从 0 到 archH+deckThick
+    // t in [0,1]; ends on ground, highest at center
+    // Keep y(t) base at 0, top from 0 to archH+deckThick
     float mid = deckThick * 0.5f + archH * std::sin(PI * t);
     return mid;
   };
@@ -404,38 +404,38 @@ void drawOverpass() {
     float y1Top = cy1 + deckThick * 0.5f;
     float y1Bot = cy1 - deckThick * 0.5f;
 
-    // 顶面
+    // Top face
     glVertex3f(x0, y0Top, zL);
     glVertex3f(x1, y1Top, zL);
     glVertex3f(x1, y1Top, zR);
     glVertex3f(x0, y0Top, zR);
 
-    // 底面
+    // Bottom face
     glVertex3f(x0, y0Bot, zR);
     glVertex3f(x1, y1Bot, zR);
     glVertex3f(x1, y1Bot, zL);
     glVertex3f(x0, y0Bot, zL);
 
-    // 左侧面
+    // Left face
     glVertex3f(x0, y0Bot, zL);
     glVertex3f(x1, y1Bot, zL);
     glVertex3f(x1, y1Top, zL);
     glVertex3f(x0, y0Top, zL);
 
-    // 右侧面
+    // Right face
     glVertex3f(x0, y0Bot, zR);
     glVertex3f(x1, y1Bot, zR);
     glVertex3f(x1, y1Top, zR);
     glVertex3f(x0, y0Top, zR);
 
-    // 起点端面
+    // Start endcap
     if (i == 0) {
       glVertex3f(x0, y0Bot, zL);
       glVertex3f(x0, y0Bot, zR);
       glVertex3f(x0, y0Top, zR);
       glVertex3f(x0, y0Top, zL);
     }
-    // 终点端面
+    // End endcap
     if (i == segments - 1) {
       glVertex3f(x1, y1Bot, zR);
       glVertex3f(x1, y1Bot, zL);
@@ -446,15 +446,15 @@ void drawOverpass() {
 
   glEnd();
 
-  // 立柱：在拱形中间区域每隔一段放一个柱子
+  // Piers: place columns periodically through the middle span
   int pillarCount = 10;
   for (int k = 1; k <= pillarCount; ++k) {
-    float t = (float)k / (float)(pillarCount + 1); // 不贴两端
+    float t = (float)k / (float)(pillarCount + 1); // Avoid both ends
     float x = xStart + (xEnd - xStart) * t;
     float cy = centerY(t);
     float yBot = cy - deckThick * 0.5f;
 
-    // 底部尽量落在 y=0 左右
+    // Try to land bases near y=0
     float pillarH = yBot;
     if (pillarH < 1.0f)
       continue;
@@ -467,7 +467,7 @@ void drawOverpass() {
     glPopMatrix();
   }
 
-  // 两端在地面上的“桥台”，更粗一点
+  // Thicker abutments at both ground ends
   float endYCenter0 = centerY(0.0f);
   float endYCenter1 = centerY(1.0f);
   float baseH0 = endYCenter0 + deckThick * 0.5f;
@@ -491,7 +491,7 @@ void drawOverpass() {
   glPopMatrix();
 }
 
-// ---------------- 通信塔 / 基建 ----------------
+// ---------------- Communication towers / infrastructure ----------------
 void drawTowers() {
   struct Tower {
     float x, z, h;
@@ -503,7 +503,7 @@ void drawTowers() {
   };
 
   for (auto &t : ts) {
-    // 主塔身
+    // Main tower shaft
     glPushMatrix();
     glTranslatef(t.x, t.h * 0.5f, t.z);
     glScalef(8.0f, t.h, 8.0f);
@@ -511,7 +511,7 @@ void drawTowers() {
     glutSolidCube(1.0f);
     glPopMatrix();
 
-    // 顶部加粗段
+    // Thickened top segment
     glPushMatrix();
     glTranslatef(t.x, t.h + 6.0f, t.z);
     glScalef(5.0f, 12.0f, 5.0f);
@@ -519,7 +519,7 @@ void drawTowers() {
     glutSolidCube(1.0f);
     glPopMatrix();
 
-    // 顶端发光球（方块世界里唯一的球）
+    // Glowing sphere at the tip (the only sphere in this blocky world)
     glDisable(GL_LIGHTING);
     glPushMatrix();
     glTranslatef(t.x, t.h + 14.0f, t.z);
@@ -530,15 +530,15 @@ void drawTowers() {
   }
 }
 
-// ---------------- 整体城市 ----------------
+// ---------------- Whole city ----------------
 void drawCity() {
   drawGroundAndRoads();
   drawBuildings();
   drawOverpass();
   drawTowers();
 
-  // 这里的中心广场（0,0）预留给你放 LAPD / Stelline / Spinner 等地标
-  // 在这里插入 drawLAPD() 之类的即可
+  // The central plaza at (0,0) is reserved for landmarks like LAPD/Stelline/Spinner
+  // Insert drawLAPD() etc. here if needed
 }
 
 // ---------------- Camera transform ----------------
@@ -548,7 +548,7 @@ void applyCamera() {
   glTranslatef(-camX, -camY, -camZ);
 }
 
-// ---------------- GLUT 回调 ----------------
+// ---------------- GLUT callbacks ----------------
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -556,7 +556,7 @@ void display() {
   glLoadIdentity();
   applyCamera();
 
-  // 冷色调未来城市主光
+  // Cool-tone key light for the futuristic city
   GLfloat sunDir[] = {-0.5f, 0.8f, -0.3f, 0.0f};
   GLfloat sunDiffuse[] = {0.9f, 0.95f, 1.0f, 1.0f};
   GLfloat sunAmbient[] = {0.25f, 0.28f, 0.30f, 1.0f};
@@ -663,7 +663,7 @@ void timer(int) {
   glutTimerFunc(16, timer, 0);
 }
 
-// ---------------- OpenGL 初始化 ----------------
+// ---------------- OpenGL initialization ----------------
 void initGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -679,10 +679,10 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 32.0f);
 
-  // 暗蓝未来城天空
+  // Dark blue futuristic city sky
   glClearColor(0.02f, 0.03f, 0.06f, 1.0f);
 
-  // 轻雾
+  // Light fog
   GLfloat fogColor[] = {0.02f, 0.03f, 0.06f, 1.0f};
   glEnable(GL_FOG);
   glFogfv(GL_FOG_COLOR, fogColor);
@@ -694,23 +694,4 @@ void initGL() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   initCity();
-}
-
-// ---------------- main ----------------
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("Planned Futuristic City Background (FreeGLUT)");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-  glutTimerFunc(16, timer, 0);
-
-  glutMainLoop();
-  return 0;
 }

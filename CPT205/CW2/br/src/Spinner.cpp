@@ -8,19 +8,31 @@ const float PI = 3.14159265f;
 float camX = 0.0f;
 float camY = 35.0f;
 float camZ = 120.0f;
-float yaw = 0.0f;     // 左右转
-float pitch = -15.0f; // 上下俯仰
+float yaw = 0.0f;     // Yaw left/right
+float pitch = -15.0f; // Pitch up/down
 
 const float MOVE_SPEED = 2.5f;
 const float ROT_SPEED = 2.0f;
+const float SPINNER_MOVE_SPEED = 3.0f;
+const float SPINNER_ASCEND_SPEED = 1.5f;
+const float SPINNER_CAMERA_DISTANCE = 32.0f;
+const float SPINNER_CAMERA_HEIGHT = 12.0f;
 
-// ---------------- Spinner 类 ----------------
+// Spinner camera toggle state
+static bool g_spinnerCameraAttached = false;
+static float g_savedCamX = camX;
+static float g_savedCamY = camY;
+static float g_savedCamZ = camZ;
+static float g_savedYaw = yaw;
+static float g_savedPitch = pitch;
+
+// ---------------- Spinner class ----------------
 class Spinner {
 public:
   float x, y, z;
-  float yawDeg;     // 车头朝向
-  float hoverPhase; // 悬停相位
-  float sirenPhase; // 警灯相位
+  float yawDeg;     // Heading
+  float hoverPhase; // Hover phase
+  float sirenPhase; // Siren phase
 
   Spinner()
       : x(0.0f), y(6.0f), z(0.0f), yawDeg(0.0f), hoverPhase(0.0f),
@@ -38,7 +50,7 @@ public:
   void draw() {
     glPushMatrix();
 
-    // 悬停轻微上下起伏
+    // Gentle vertical bob while hovering
     float hoverOffset = std::sin(hoverPhase) * 0.6f;
     glTranslatef(x, y + hoverOffset, z);
     glRotatef(yawDeg, 0.0f, 1.0f, 0.0f);
@@ -56,12 +68,12 @@ public:
 
 private:
   void drawBody() {
-    // 主车身底盘：厚重装甲块
-    float hullLen = 30.0f; // Z 向
-    float hullW = 14.0f;   // X 向
-    float hullH = 4.0f;    // Y 向
+    // Main body: chunky armored block
+    float hullLen = 30.0f; // Along Z
+    float hullW = 14.0f;   // Along X
+    float hullH = 4.0f;    // Along Y
 
-    // 底盘
+    // Chassis
     glPushMatrix();
     glTranslatef(0.0f, hullH * 0.5f, 0.0f);
     glScalef(hullW, hullH, hullLen);
@@ -69,16 +81,16 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 楔形车头（在前半部分，用倾斜方块模拟）
+    // Wedge nose in the front half, faked with a tilted block
     glPushMatrix();
     glTranslatef(0.0f, hullH * 0.9f, hullLen * 0.20f);
-    glRotatef(-18.0f, 1.0f, 0.0f, 0.0f); // 朝下倾斜
+    glRotatef(-18.0f, 1.0f, 0.0f, 0.0f); // Tilt downward
     glScalef(hullW * 0.9f, hullH * 1.1f, hullLen * 0.7f);
     glColor3f(0.19f, 0.20f, 0.22f);
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 车身侧裙装甲
+    // Side skirt armor
     glPushMatrix();
     glTranslatef(0.0f, hullH * 0.4f, 0.0f);
     glScalef(hullW * 1.1f, hullH * 0.5f, hullLen * 0.9f);
@@ -86,7 +98,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 车头前下方防撞块
+    // Front lower bumper block
     glPushMatrix();
     glTranslatef(0.0f, hullH * 0.25f, hullLen * 0.55f);
     glScalef(hullW * 0.7f, hullH * 0.4f, hullLen * 0.15f);
@@ -96,11 +108,11 @@ private:
   }
 
   void drawCabin() {
-    // 驾驶舱舱盖 + 侧窗
+    // Cockpit canopy + side windows
     float hullLen = 30.0f;
     float hullH = 4.0f;
 
-    // 舱盖主体（稍微透一点的深蓝/灰）
+    // Canopy body (slightly transparent deep blue/gray)
     glPushMatrix();
     glTranslatef(0.0f, hullH + 2.0f, -hullLen * 0.05f);
     glScalef(10.0f, 3.0f, 12.0f);
@@ -108,7 +120,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 舱盖顶部圆滑一点，用球压扁
+    // Rounded top of canopy using a squashed sphere
     glPushMatrix();
     glTranslatef(0.0f, hullH + 3.0f, -hullLen * 0.05f);
     glScalef(6.5f, 2.5f, 8.0f);
@@ -116,7 +128,7 @@ private:
     glutSolidSphere(1.0, 22, 16);
     glPopMatrix();
 
-    // 侧窗区域线条（用线表示剪刀门轮廓）
+    // Window outline lines (suggesting scissor-door contour)
     glDisable(GL_LIGHTING);
     glPushMatrix();
     glTranslatef(0.0f, hullH + 2.0f, -hullLen * 0.05f);
@@ -127,14 +139,14 @@ private:
     float h = 2.0f;
     float z = 5.0f;
 
-    glBegin(GL_LINE_LOOP); // 左侧
+    glBegin(GL_LINE_LOOP); // Left side
     glVertex3f(-w, h, z);
     glVertex3f(-w, -h, z);
     glVertex3f(-w, -h, -z);
     glVertex3f(-w, h, -z * 0.2f);
     glEnd();
 
-    glBegin(GL_LINE_LOOP); // 右侧
+    glBegin(GL_LINE_LOOP); // Right side
     glVertex3f(w, h, z);
     glVertex3f(w, -h, z);
     glVertex3f(w, -h, -z);
@@ -146,21 +158,21 @@ private:
   }
 
   void drawSideEnginePod(float sideSign) {
-    // 侧面发动机舱（sideSign = +1 左 / -1 右）
+    // Side engine pod (sideSign = +1 left / -1 right)
     float hullLen = 30.0f;
     float hullW = 14.0f;
 
     glPushMatrix();
     glTranslatef(sideSign * (hullW * 0.7f), 4.5f, -hullLen * 0.05f);
 
-    // 舱体
+    // Pod body
     glPushMatrix();
     glScalef(4.0f, 4.0f, 14.0f);
     glColor3f(0.14f, 0.15f, 0.17f);
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 前端进气圈
+    // Front intake ring
     glDisable(GL_LIGHTING);
     glColor3f(0.40f, 0.42f, 0.45f);
     glLineWidth(2.0f);
@@ -177,14 +189,14 @@ private:
     glEnd();
     glEnable(GL_LIGHTING);
 
-    // 后端喷口 + 发光
+    // Rear nozzle with glow
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, -7.3f);
     glColor3f(0.10f, 0.11f, 0.13f);
     glutSolidSphere(1.3f, 16, 12);
     glPopMatrix();
 
-    // 发光圈
+    // Glow ring
     glDisable(GL_LIGHTING);
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, -7.4f);
@@ -210,7 +222,7 @@ private:
   }
 
   void drawRearEngine() {
-    // 尾部主喷口
+    // Main rear thruster
     float hullLen = 30.0f;
 
     glPushMatrix();
@@ -222,14 +234,14 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 中央喷口
+    // Central nozzle
     glPushMatrix();
     glTranslatef(0.0f, 0.5f, -2.4f);
     glColor3f(0.10f, 0.11f, 0.13f);
     glutSolidSphere(1.6f, 18, 14);
     glPopMatrix();
 
-    // 蓝色尾焰
+    // Blue exhaust flame
     int seg = 28;
     glDisable(GL_LIGHTING);
     glPushMatrix();
@@ -251,7 +263,7 @@ private:
   }
 
   void drawBottomThrusters() {
-    // 底部反重力喷口（四个）
+    // Bottom anti-gravity thrusters (four)
     float hullLen = 30.0f;
     float hullW = 14.0f;
 
@@ -268,11 +280,11 @@ private:
       glPushMatrix();
       glTranslatef(positions[i][0], positions[i][1], positions[i][2]);
 
-      // 喷口本体
+      // Thruster body
       glColor3f(0.12f, 0.12f, 0.14f);
       glutSolidSphere(0.7f, 10, 8);
 
-      // 向下的发光圈
+      // Downward glow ring
       glDisable(GL_LIGHTING);
       glBegin(GL_TRIANGLE_FAN);
       glColor4f(0.3f * (0.5f + 0.5f * glow), 0.9f * (0.7f + 0.3f * glow), 1.0f,
@@ -294,24 +306,24 @@ private:
   }
 
   void drawLightBar() {
-    // 车顶警灯模块
+    // Roof light-bar module
     float hullLen = 30.0f;
     float hullH = 4.0f;
 
     glPushMatrix();
     glTranslatef(0.0f, hullH + 4.5f, -hullLen * 0.25f);
 
-    // 灯条底座
+    // Light bar base
     glPushMatrix();
     glScalef(6.0f, 1.0f, 2.0f);
     glColor3f(0.12f, 0.12f, 0.14f);
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 左右两块灯罩
+    // Two lamp covers
     float blink = std::sin(sirenPhase);
 
-    // 左：红
+    // Left: red
     glDisable(GL_LIGHTING);
     glPushMatrix();
     glTranslatef(-1.6f, 0.6f, 0.0f);
@@ -323,7 +335,7 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 右：蓝
+    // Right: blue
     glPushMatrix();
     glTranslatef(1.6f, 0.6f, 0.0f);
     glScalef(2.4f, 1.0f, 1.4f);
@@ -339,7 +351,7 @@ private:
   }
 
   void drawDetails() {
-    // 车身顶部编号块
+    // Top ID plate
     float hullLen = 30.0f;
     float hullH = 4.0f;
 
@@ -350,14 +362,66 @@ private:
     glutSolidCube(1.0);
     glPopMatrix();
 
-    // 左侧文字已移除
+    // Left-side lettering removed
   }
 };
 
-// 全局 Spinner 实例
+// Global Spinner instance
 Spinner g_spinner;
 
-// ---------------- 环境：地面 + 简单城市块 ----------------
+// Keep the chase camera locked to the spinner when attached
+static void updateSpinnerFollowCamera() {
+  if (!g_spinnerCameraAttached)
+    return;
+
+  // Keep spinner heading in sync with the view direction
+  g_spinner.yawDeg = yaw;
+
+  float radYaw = yaw * PI / 180.0f;
+  float forwardX = std::sin(radYaw);
+  float forwardZ = -std::cos(radYaw);
+
+  camX = g_spinner.x - forwardX * SPINNER_CAMERA_DISTANCE;
+  camZ = g_spinner.z - forwardZ * SPINNER_CAMERA_DISTANCE;
+  camY = g_spinner.y + SPINNER_CAMERA_HEIGHT;
+}
+
+static void attachCameraToSpinner() {
+  if (g_spinnerCameraAttached)
+    return;
+
+  g_savedCamX = camX;
+  g_savedCamY = camY;
+  g_savedCamZ = camZ;
+  g_savedYaw = yaw;
+  g_savedPitch = pitch;
+
+  g_spinnerCameraAttached = true;
+  yaw = g_spinner.yawDeg;   // Match spinner heading
+  pitch = -12.0f;           // Slight downward angle
+  updateSpinnerFollowCamera();
+}
+
+static void detachCameraFromSpinner() {
+  if (!g_spinnerCameraAttached)
+    return;
+
+  g_spinnerCameraAttached = false;
+  camX = g_savedCamX;
+  camY = g_savedCamY;
+  camZ = g_savedCamZ;
+  yaw = g_savedYaw;
+  pitch = g_savedPitch;
+}
+
+static void toggleSpinnerView() {
+  if (g_spinnerCameraAttached)
+    detachCameraFromSpinner();
+  else
+    attachCameraToSpinner();
+}
+
+// ---------------- Environment: ground + simple city block ----------------
 void drawGround() {
   glDisable(GL_LIGHTING);
   glBegin(GL_QUADS);
@@ -369,7 +433,7 @@ void drawGround() {
   glVertex3f(-size, 0.0f, size);
   glEnd();
 
-  // 简单路面线条
+  // Simple road markings
   glLineWidth(1.5f);
   glColor3f(0.4f, 0.4f, 0.4f);
   glBegin(GL_LINES);
@@ -389,15 +453,16 @@ void applyCamera() {
   glTranslatef(-camX, -camY, -camZ);
 }
 
-// ---------------- GLUT 回调 ----------------
+// ---------------- GLUT callbacks ----------------
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  updateSpinnerFollowCamera();
   applyCamera();
 
-  // 灯光：偏冷、但强度高一点
+  // Lighting: cool but fairly strong
   GLfloat sunDir[] = {-0.4f, 0.8f, -0.3f, 0.0f};
   GLfloat sunDiffuse[] = {0.9f, 0.95f, 1.0f, 1.0f};
   GLfloat sunAmbient[] = {0.25f, 0.27f, 0.30f, 1.0f};
@@ -438,63 +503,137 @@ void reshape(int w, int h) {
 }
 
 void keyboard(unsigned char key, int, int) {
-  switch (key) {
-  case 27: // ESC
-    std::exit(0);
-    break;
-  case 'w':
-  case 'W': {
-    float radYaw = yaw * PI / 180.0f;
-    camX += std::sin(radYaw) * MOVE_SPEED;
-    camZ += -std::cos(radYaw) * MOVE_SPEED;
-  } break;
-  case 's':
-  case 'S': {
-    float radYaw = yaw * PI / 180.0f;
-    camX -= std::sin(radYaw) * MOVE_SPEED;
-    camZ -= -std::cos(radYaw) * MOVE_SPEED;
-  } break;
-  case 'a':
-  case 'A': {
-    float radYaw = yaw * PI / 180.0f;
-    camX += std::cos(radYaw) * -MOVE_SPEED;
-    camZ += std::sin(radYaw) * -MOVE_SPEED;
-  } break;
-  case 'd':
-  case 'D': {
-    float radYaw = yaw * PI / 180.0f;
-    camX += std::cos(radYaw) * MOVE_SPEED;
-    camZ += std::sin(radYaw) * MOVE_SPEED;
-  } break;
-  case 'q':
-  case 'Q':
-    camY -= MOVE_SPEED;
-    break;
-  case 'e':
-  case 'E':
-    camY += MOVE_SPEED;
-    break;
-  case 'r':
-  case 'R':
-    camX = 0.0f;
-    camY = 35.0f;
-    camZ = 120.0f;
-    yaw = 0.0f;
-    pitch = -15.0f;
-    break;
-  default:
-    break;
+  bool shouldRedisplay = true;
+
+  // Toggle chase camera on/off
+  if (key == '\\') {
+    toggleSpinnerView();
+    glutPostRedisplay();
+    return;
   }
-  glutPostRedisplay();
+
+  if (g_spinnerCameraAttached) {
+    float radYaw = g_spinner.yawDeg * PI / 180.0f;
+    float fx = std::sin(radYaw);
+    float fz = -std::cos(radYaw);
+    float rx = std::cos(radYaw);
+    float rz = std::sin(radYaw);
+
+    switch (key) {
+    case 27: // ESC
+      std::exit(0);
+      break;
+    case 'w':
+    case 'W':
+      g_spinner.x += fx * SPINNER_MOVE_SPEED;
+      g_spinner.z += fz * SPINNER_MOVE_SPEED;
+      break;
+    case 's':
+    case 'S':
+      g_spinner.x -= fx * SPINNER_MOVE_SPEED;
+      g_spinner.z -= fz * SPINNER_MOVE_SPEED;
+      break;
+    case 'a':
+    case 'A':
+      g_spinner.x -= rz * SPINNER_MOVE_SPEED;
+      g_spinner.z += rx * SPINNER_MOVE_SPEED;
+      break;
+    case 'd':
+    case 'D':
+      g_spinner.x += rz * SPINNER_MOVE_SPEED;
+      g_spinner.z -= rx * SPINNER_MOVE_SPEED;
+      break;
+    case 'q':
+    case 'Q':
+      g_spinner.y -= SPINNER_ASCEND_SPEED;
+      if (g_spinner.y < 2.0f)
+        g_spinner.y = 2.0f; // keep above ground
+      break;
+    case 'e':
+    case 'E':
+      g_spinner.y += SPINNER_ASCEND_SPEED;
+      break;
+    case 'r':
+    case 'R':
+      detachCameraFromSpinner();
+      camX = 0.0f;
+      camY = 35.0f;
+      camZ = 120.0f;
+      yaw = 0.0f;
+      pitch = -15.0f;
+      break;
+    default:
+      shouldRedisplay = false;
+      break;
+    }
+
+    updateSpinnerFollowCamera();
+  } else {
+    switch (key) {
+    case 27: // ESC
+      std::exit(0);
+      break;
+    case 'w':
+    case 'W': {
+      float radYaw = yaw * PI / 180.0f;
+      camX += std::sin(radYaw) * MOVE_SPEED;
+      camZ += -std::cos(radYaw) * MOVE_SPEED;
+    } break;
+    case 's':
+    case 'S': {
+      float radYaw = yaw * PI / 180.0f;
+      camX -= std::sin(radYaw) * MOVE_SPEED;
+      camZ -= -std::cos(radYaw) * MOVE_SPEED;
+    } break;
+    case 'a':
+    case 'A': {
+      float radYaw = yaw * PI / 180.0f;
+      camX += std::cos(radYaw) * -MOVE_SPEED;
+      camZ += std::sin(radYaw) * -MOVE_SPEED;
+    } break;
+    case 'd':
+    case 'D': {
+      float radYaw = yaw * PI / 180.0f;
+      camX += std::cos(radYaw) * MOVE_SPEED;
+      camZ += std::sin(radYaw) * MOVE_SPEED;
+    } break;
+    case 'q':
+    case 'Q':
+      camY -= MOVE_SPEED;
+      break;
+    case 'e':
+    case 'E':
+      camY += MOVE_SPEED;
+      break;
+    case 'r':
+    case 'R':
+      camX = 0.0f;
+      camY = 35.0f;
+      camZ = 120.0f;
+      yaw = 0.0f;
+      pitch = -15.0f;
+      break;
+    default:
+      shouldRedisplay = false;
+      break;
+    }
+  }
+
+  if (shouldRedisplay)
+    glutPostRedisplay();
 }
 
 void special(int key, int, int) {
   switch (key) {
   case GLUT_KEY_LEFT:
     yaw -= ROT_SPEED;
+    if (g_spinnerCameraAttached)
+      g_spinner.yawDeg = yaw;
     break;
   case GLUT_KEY_RIGHT:
     yaw += ROT_SPEED;
+    if (g_spinnerCameraAttached)
+      g_spinner.yawDeg = yaw;
     break;
   case GLUT_KEY_UP:
     pitch += ROT_SPEED;
@@ -509,6 +648,8 @@ void special(int key, int, int) {
   default:
     break;
   }
+  if (g_spinnerCameraAttached)
+    updateSpinnerFollowCamera();
   glutPostRedisplay();
 }
 
@@ -518,7 +659,7 @@ void timer(int) {
   glutTimerFunc(16, timer, 0);
 }
 
-// ---------------- OpenGL 初始化 ----------------
+// ---------------- OpenGL initialization ----------------
 void initGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -534,28 +675,9 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 32.0f);
 
-  // 夜里但光比较足的赛博蓝
+  // Night sky in bright cyber blue
   glClearColor(0.03f, 0.04f, 0.08f, 1.0f);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-// ---------------- main ----------------
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("Police Spinner - FreeGLUT");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-  glutTimerFunc(16, timer, 0);
-
-  glutMainLoop();
-  return 0;
 }

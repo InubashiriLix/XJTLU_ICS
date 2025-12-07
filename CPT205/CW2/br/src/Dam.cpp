@@ -1,11 +1,10 @@
-
 #include <GL/freeglut.h>
 #include <cmath>
 #include <cstdlib>
 
 const float PI = 3.14159265f;
 
-// --------------------- 简单向量工具 ---------------------
+// --------------------- Simple vector helpers ---------------------
 struct Vec3 {
   float x, y, z;
   Vec3(float xx = 0.0f, float yy = 0.0f, float zz = 0.0f)
@@ -28,12 +27,12 @@ Vec3 normalize(const Vec3 &v) {
   return Vec3(v.x / len, v.y / len, v.z / len);
 }
 
-// --------------------- 相机 ---------------------
+// --------------------- Camera ---------------------
 float camX = 0.0f;
 float camY = 30.0f;
 float camZ = 150.0f;
-float yaw = 180.0f;   // 左右转动（度）
-float pitch = -10.0f; // 上下俯仰（度）
+float yaw = 180.0f;   // Yaw left/right in degrees
+float pitch = -10.0f; // Pitch up/down in degrees
 
 const float MOVE_SPEED = 2.0f;
 const float ROT_SPEED = 2.0f;
@@ -74,22 +73,22 @@ void resetCamera() {
   pitch = -10.0f;
 }
 
-// --------------------- 海浪高度函数 ---------------------
+// --------------------- Wave height function ---------------------
 float waveHeight(float x, float z, float t) {
-  // 多重正弦波叠加，做出暴风海浪的混乱感
+  // Multiple sine waves stacked to create stormy chaotic waves
   float h1 = std::sin(0.04f * x + 1.3f * t) * 2.2f;
   float h2 = std::cos(0.07f * z + 1.7f * t) * 1.8f;
   float h3 = std::sin(0.025f * (x + z) + 0.8f * t) * 1.4f;
-  float base = h1 + h2 + h3; // 范围大致在 [-5, 5] 附近
+  float base = h1 + h2 + h3; // Roughly within [-5, 5]
 
-  // 靠近海堤处（z 接近 OCEAN_NEAR_Z）稍微衰减，避免穿墙
+  // Fade near the seawall (z close to OCEAN_NEAR_Z) to avoid clipping
   const float OCEAN_NEAR_Z = -80.0f;
   if (z > OCEAN_NEAR_Z - 30.0f) {
     float tBlend = (z - (OCEAN_NEAR_Z - 30.0f)) / 30.0f; // 0..1
     base *= (1.0f - 0.25f * tBlend);
   }
 
-  // 反射/回波：靠近海堤叠加一个相位反转的微波，制造拍墙感
+  // Reflection/echo: add a phase-inverted ripple near the wall for impact feel
   if (z > OCEAN_NEAR_Z - 20.0f) {
     float rBlend = (z - (OCEAN_NEAR_Z - 20.0f)) / 20.0f; // 0..1
     float reflected = std::sin(0.06f * x - 1.5f * t + 1.2f) * 1.3f;
@@ -98,7 +97,7 @@ float waveHeight(float x, float z, float t) {
   return base;
 }
 
-// --------------------- 基础几何：无纹理盒子 ---------------------
+// --------------------- Basic geometry: untextured box ---------------------
 void drawBox(float w, float h, float d) {
   float hw = w * 0.5f;
   float hh = h * 0.5f;
@@ -144,19 +143,23 @@ void drawBox(float w, float h, float d) {
   glEnd();
 }
 
-// --------------------- 海面绘制 ---------------------
+// --------------------- Ocean rendering ---------------------
 void drawOcean(float timeSec) {
-  // 海在海堤外侧：z 负方向
-  const float OCEAN_HALF_X = 600.0f;
-  const float OCEAN_NEAR_Z = -80.0f; // 距离海堤不远
+  // Ocean sits outside the seawall toward negative Z (surface only)
+  const float OCEAN_HALF_X =
+      450.0f; // Width matches dam (Dam: 9×100=900, halfWidth=450)
+  const float OCEAN_NEAR_Z =
+      -60.0f; // Starts at dam slope toe (matches OCEAN_SLOPE_Z)
   const float DX = 20.0f;
   const float DZ = 20.0f;
-  const int COLS = 60; // x 方向网格数
-  const int ROWS = 60; // z 方向网格数
+  const int COLS = 45; // Grid columns along X (450×2/20=45)
+  const int ROWS = 40; // Grid rows along Z (ocean depth ≈500)
 
-  float baseY = -3.0f; // 海平面基准（波谷在更低）
+  float baseY = 5.0f; // Mean sea level (troughs dip lower) - raised from -3.0f
 
-  glColor3f(0.12f, 0.28f, 0.40f); // 更亮的蓝绿色海面
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glColor4f(0.12f, 0.28f, 0.40f, 0.85f); // Semi-transparent blue-green water
 
   glBegin(GL_TRIANGLES);
   for (int ix = 0; ix < COLS; ++ix) {
@@ -177,14 +180,14 @@ void drawOcean(float timeSec) {
       Vec3 p11(x1, h11, z1);
       Vec3 p01(x0, h01, z1);
 
-      // 三角形 1: p00, p10, p01
+      // Triangle 1: p00, p10, p01
       Vec3 n1 = normalize(cross(p10 - p00, p01 - p00));
       glNormal3f(n1.x, n1.y, n1.z);
       glVertex3f(p00.x, p00.y, p00.z);
       glVertex3f(p10.x, p10.y, p10.z);
       glVertex3f(p01.x, p01.y, p01.z);
 
-      // 三角形 2: p10, p11, p01
+      // Triangle 2: p10, p11, p01
       Vec3 n2 = normalize(cross(p11 - p10, p01 - p10));
       glNormal3f(n2.x, n2.y, n2.z);
       glVertex3f(p10.x, p10.y, p10.z);
@@ -193,18 +196,19 @@ void drawOcean(float timeSec) {
     }
   }
   glEnd();
+  glDisable(GL_BLEND);
 }
 
-// --------------------- 海堤绘制 ---------------------
+// --------------------- Seawall rendering ---------------------
 const float WALL_HEIGHT = 60.0f;
-const float WALL_SEG_LENGTH = 120.0f; // 缩短单段长度以整体减小海堤水平延展
-const int WALL_SEG_COUNT = 3;       // 每侧 3 段，合计 7 段，整体更短
-const float CITY_SIDE_Z = 10.0f;    // 城市侧垂直面 z
-const float TOP_WALK_Z = -5.0f;     // 顶部平台靠海侧位置
-const float OCEAN_SLOPE_Z = -60.0f; // 海侧坡脚位置
-const float CITY_SLIDE_OUT = 42.0f; // 城市侧滑坡延伸距离
+const float WALL_SEG_LENGTH = 100.0f; // Single segment length
+const int WALL_SEG_COUNT = 4;    // 4 segments each side (9 total), width ≈ 900
+const float CITY_SIDE_Z = 10.0f; // City-facing vertical plane Z
+const float TOP_WALK_Z = -5.0f;  // Top walkway toward ocean
+const float OCEAN_SLOPE_Z = -60.0f; // Ocean-side slope foot
+const float CITY_SLIDE_OUT = 42.0f; // City-side ramp extension
 
-// 城市侧装饰：细分缝、装饰条
+// City-side ornament: seams and trims
 void drawCitySideDetail(float centerX) {
   float halfLen = WALL_SEG_LENGTH * 0.5f;
   float H = WALL_HEIGHT;
@@ -213,7 +217,7 @@ void drawCitySideDetail(float centerX) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  // 细分缝（竖线）
+  // Vertical seams
   glLineWidth(2.0f);
   glColor4f(0.80f, 0.83f, 0.87f, 0.6f);
   glBegin(GL_LINES);
@@ -225,7 +229,7 @@ void drawCitySideDetail(float centerX) {
   glVertex3f(x2, H, CITY_SIDE_Z + 0.05f);
   glEnd();
 
-  // 装饰条（水平）
+  // Horizontal trims
   glLineWidth(3.0f);
   glColor4f(0.86f, 0.88f, 0.92f, 0.65f);
   glBegin(GL_LINES);
@@ -238,12 +242,12 @@ void drawCitySideDetail(float centerX) {
   glEnable(GL_LIGHTING);
 }
 
-// 城市侧大坡面（像滑坡/缓冲带）
+// City-side broad slope (acts like a berm/buffer)
 void drawCitySlide(float centerX) {
   float halfLen = WALL_SEG_LENGTH * 0.5f;
   float H = WALL_HEIGHT;
 
-  // 坡从墙中上部缓缓向城市地面下降
+  // Slope eases down from mid-wall to the city ground
   Vec3 v0(centerX - halfLen, H * 0.65f, CITY_SIDE_Z);
   Vec3 v1(centerX + halfLen, H * 0.65f, CITY_SIDE_Z);
   Vec3 v2(centerX + halfLen, 0.0f, CITY_SIDE_Z + CITY_SLIDE_OUT);
@@ -260,7 +264,7 @@ void drawCitySlide(float centerX) {
   glVertex3f(v3.x, v3.y, v3.z);
   glEnd();
 
-  // 侧边封板
+  // Side end caps
   glBegin(GL_QUADS);
   Vec3 nL = normalize(cross(v3 - v0, Vec3(0, 1, 0)));
   glNormal3f(nL.x, nL.y, nL.z);
@@ -282,8 +286,8 @@ void drawWallSegment(float centerX) {
   float halfLen = WALL_SEG_LENGTH * 0.5f;
   float H = WALL_HEIGHT;
 
-  // ---- 城市侧垂直面 ----
-  glColor3f(0.60f, 0.64f, 0.68f); // 亮一些的混凝土
+  // ---- City-side vertical face ----
+  glColor3f(0.60f, 0.64f, 0.68f); // Slightly brighter concrete
   glBegin(GL_QUADS);
   glNormal3f(0.0f, 0.0f, 1.0f);
   glVertex3f(centerX - halfLen, 0.0f, CITY_SIDE_Z);
@@ -292,7 +296,7 @@ void drawWallSegment(float centerX) {
   glVertex3f(centerX - halfLen, H, CITY_SIDE_Z);
   glEnd();
 
-  // ---- 顶部平台（从城市侧到稍微靠海一点）----
+  // ---- Top platform (from city side slightly toward ocean) ----
   glColor3f(0.50f, 0.54f, 0.58f);
   glBegin(GL_QUADS);
   glNormal3f(0.0f, 1.0f, 0.0f);
@@ -302,11 +306,11 @@ void drawWallSegment(float centerX) {
   glVertex3f(centerX - halfLen, H, TOP_WALK_Z);
   glEnd();
 
-  // ---- 海侧大斜坡 ----
+  // ---- Ocean-facing large slope ----
   glColor3f(0.55f, 0.58f, 0.63f);
   glBegin(GL_QUADS);
 
-  // 计算坡面的法线：用左下->右下，左下->左上 两个向量叉乘
+  // Compute slope normal via cross product of bottom/side edges
   Vec3 v0(centerX - halfLen, 0.0f, OCEAN_SLOPE_Z);
   Vec3 v1(centerX + halfLen, 0.0f, OCEAN_SLOPE_Z);
   Vec3 v2(centerX + halfLen, H, TOP_WALK_Z);
@@ -320,10 +324,10 @@ void drawWallSegment(float centerX) {
   glVertex3f(v3.x, v3.y, v3.z);
   glEnd();
 
-  // ---- 底部厚度（把平台和坡连成实体）----
+  // ---- Bottom thickness tying platform and slope into a solid ----
   glColor3f(0.46f, 0.50f, 0.54f);
   glBegin(GL_QUADS);
-  // 底面（连接城市侧脚线与海侧坡脚）
+  // Bottom face connecting city footer to ocean slope toe
   glNormal3f(0.0f, -1.0f, 0.0f);
   glVertex3f(centerX - halfLen, 0.0f, CITY_SIDE_Z);
   glVertex3f(centerX + halfLen, 0.0f, CITY_SIDE_Z);
@@ -331,7 +335,7 @@ void drawWallSegment(float centerX) {
   glVertex3f(centerX - halfLen, 0.0f, OCEAN_SLOPE_Z);
   glEnd();
 
-  // 左侧侧面
+  // Left side face
   glBegin(GL_QUADS);
   Vec3 a(centerX - halfLen, 0.0f, CITY_SIDE_Z);
   Vec3 b(centerX - halfLen, 0.0f, OCEAN_SLOPE_Z);
@@ -345,7 +349,7 @@ void drawWallSegment(float centerX) {
   glVertex3f(d.x, d.y, d.z);
   glEnd();
 
-  // 右侧侧面
+  // Right side face
   glBegin(GL_QUADS);
   Vec3 a2(centerX + halfLen, 0.0f, CITY_SIDE_Z);
   Vec3 b2(centerX + halfLen, 0.0f, OCEAN_SLOPE_Z);
@@ -363,20 +367,20 @@ void drawWallSegment(float centerX) {
   drawCitySlide(centerX);
 }
 
-// 顶部维护灯
+// Top maintenance lights
 void drawTopLights() {
   float H = WALL_HEIGHT;
   float halfLen = WALL_SEG_LENGTH * 0.5f;
 
   glDisable(GL_LIGHTING);
-  glColor3f(0.9f, 0.85f, 0.6f); // 暖黄小灯
+  glColor3f(0.9f, 0.85f, 0.6f); // Warm yellow lamps
 
-  // 把灯柱基座抬起一点，避免与顶面穿插
+  // Raise lamp base slightly to avoid z-fighting with platform
   float yBase = H + 0.15f;
   float poleH = 4.0f;
   float lampLift = 1.0f;
 
-  // 将灯放在顶平台的中线上，略向海侧，分三排
+  // Lamps run along centerline of top deck, slightly toward ocean, three rows
   float zCenterTop = 0.5f * (CITY_SIDE_Z + TOP_WALK_Z);
   float zStep = 3.0f;
 
@@ -386,13 +390,13 @@ void drawTopLights() {
       float z = zCenterTop + j * zStep;
       float x = cx - halfLen * 0.7f + (j + 1) * halfLen * 0.7f;
 
-      // 小柱子
+      // Post
       glBegin(GL_QUADS);
       float w = 0.5f;
       float y0 = yBase;
       float y1 = yBase + poleH;
 
-      // 四个面（简单直立柱）
+      // Four faces of the upright post
       // Front
       glVertex3f(x - w, y0, z + w);
       glVertex3f(x + w, y0, z + w);
@@ -415,7 +419,7 @@ void drawTopLights() {
       glVertex3f(x + w, y1, z + w);
       glEnd();
 
-      // 顶部灯头
+      // Light head
       glBegin(GL_QUADS);
       float ly0 = y1;
       float ly1 = ly0 + lampLift;
@@ -446,7 +450,7 @@ void drawTopLights() {
   glEnable(GL_LIGHTING);
 }
 
-// 城市侧服务路（地面上沿着海堤）
+// City-side service road running along the seawall
 void drawServiceRoad() {
   float roadWidth = 14.0f;
   float roadZ0 = CITY_SIDE_Z + 2.0f;
@@ -463,11 +467,11 @@ void drawServiceRoad() {
   glEnd();
 }
 
-// 通往顶部的平台楼梯（设在 x=0）
+// Stairway to the top platform (placed at x=0)
 void drawStairs() {
   const int STEPS = 22;
   const float totalRise = WALL_HEIGHT;
-  // 起点放在城市侧滑坡的末端，使楼梯与滑坡无缝衔接
+  // Start at the end of the city-side ramp to connect seamlessly
   const float startZ = CITY_SIDE_Z + CITY_SLIDE_OUT;
   const float endZ = CITY_SIDE_Z + 2.0f;
   const float width = 16.0f;
@@ -475,7 +479,7 @@ void drawStairs() {
   float stepH = totalRise / STEPS;
   float stepD = (startZ - endZ) / STEPS;
 
-  // 楼梯稍微提亮，便于辨认
+  // Slightly brighter stairs for readability
   glColor3f(0.52f, 0.56f, 0.60f);
 
   for (int i = 0; i < STEPS; ++i) {
@@ -483,7 +487,7 @@ void drawStairs() {
     float zBack = zFront - stepD;
     float zCenter = 0.5f * (zFront + zBack);
 
-    // 让每一级台阶延伸到地面：高度随级数累积
+    // Each step extends to ground with accumulated height
     float stepTop = (i + 1) * stepH;
     float yCenter = stepTop * 0.5f;
 
@@ -493,7 +497,7 @@ void drawStairs() {
     glPopMatrix();
   }
 
-  // 顶部连接平台，把楼梯接到海堤顶
+  // Top landing connects the stair to the seawall deck
   float landingD = 6.0f;
   float landingH = stepH;
   float landingZCenter = endZ - landingD * 0.5f;
@@ -503,16 +507,16 @@ void drawStairs() {
   drawBox(width, landingH, landingD);
   glPopMatrix();
 
-  // 侧向连接栏杆：让楼梯与海堤平台视觉上绑定在一起
+  // Side guard rails visually tie stair to the top platform
   glDisable(GL_LIGHTING);
   glLineWidth(4.0f);
   glColor3f(0.82f, 0.85f, 0.88f);
-  float railLift = 3.6f; // 扶手离踏步的高度
+  float railLift = 3.6f; // Handrail height above treads
 
   for (int side = -1; side <= 1; side += 2) {
     float x = side * (width * 0.5f + 0.6f);
 
-    // 立柱：每个踏步前缘一个，再加平台前缘一个
+    // Posts: one at each step front edge plus one at landing edge
     glBegin(GL_LINES);
     for (int i = 0; i <= STEPS; ++i) {
       float yBase = i * stepH;
@@ -524,7 +528,7 @@ void drawStairs() {
     glVertex3f(x, totalRise + railLift, endZ - landingD);
     glEnd();
 
-    // 扶手：连接所有立柱顶部，贯穿到平台前缘
+    // Handrail: connects all post tops through to the landing
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i <= STEPS; ++i) {
       float zBase = startZ - i * stepD;
@@ -538,7 +542,7 @@ void drawStairs() {
 }
 
 void drawSeaWall() {
-  // 多段海堤拼成近乎无限的墙体
+  // Stitch multiple seawall segments into a near-infinite wall
   for (int i = -WALL_SEG_COUNT; i <= WALL_SEG_COUNT; ++i) {
     float cx = i * WALL_SEG_LENGTH;
     drawWallSegment(cx);
@@ -546,7 +550,8 @@ void drawSeaWall() {
   drawTopLights();
   drawServiceRoad();
 
-  // 在不同 x 位置布置多组楼梯，覆盖缩短后的墙长
+  // Place several stair groups at different X positions to cover the shortened
+  // wall
   const float stairPositions[] = {-WALL_SEG_LENGTH * 1.5f, 0.0f,
                                   WALL_SEG_LENGTH * 1.5f};
   const int stairCount = sizeof(stairPositions) / sizeof(stairPositions[0]);
@@ -558,7 +563,7 @@ void drawSeaWall() {
   }
 }
 
-// 顶部护栏和玻璃挡板，提升精致感
+// Top guardrail and glass panels for refinement
 void drawGlassRail() {
   float totalHalfX = WALL_SEG_LENGTH * (WALL_SEG_COUNT + 0.5f);
   float railZ = TOP_WALK_Z - 0.6f;
@@ -569,7 +574,7 @@ void drawGlassRail() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glDisable(GL_LIGHTING);
 
-  // 玻璃面板
+  // Glass panels
   glColor4f(0.70f, 0.86f, 0.95f, 0.26f);
   glBegin(GL_QUADS);
   glNormal3f(0.0f, 0.0f, 1.0f);
@@ -579,7 +584,7 @@ void drawGlassRail() {
   glVertex3f(-totalHalfX, baseY + glassH, railZ);
   glEnd();
 
-  // 立柱
+  // Posts
   glColor4f(0.85f, 0.88f, 0.90f, 0.9f);
   const float postW = 0.6f;
   const float postStep = 18.0f;
@@ -612,7 +617,7 @@ void drawGlassRail() {
   }
   glEnd();
 
-  // 顶部扶手
+  // Top handrail
   glColor4f(0.92f, 0.93f, 0.95f, 1.0f);
   float barY0 = baseY + glassH + 0.8f;
   float barY1 = barY0 + 0.6f;
@@ -644,12 +649,12 @@ void drawGlassRail() {
   glDisable(GL_BLEND);
 }
 
-// 海浪拍打海堤形成的泡沫带
+// Foam bands formed by waves hitting the seawall
 void drawWaveFoam(float timeSec) {
-  const float OCEAN_HALF_X = 600.0f;
+  const float OCEAN_HALF_X = 450.0f;
   const float OCEAN_NEAR_Z = -80.0f;
-  const float CONTACT_Z = OCEAN_SLOPE_Z + 0.4f; // 紧贴海侧斜坡面
-  float baseY = -3.0f;
+  const float CONTACT_Z = OCEAN_SLOPE_Z + 0.4f; // Right on the ocean slope
+  float baseY = 5.0f;                           // Raised from -3.0f
 
   glDisable(GL_LIGHTING);
   glEnable(GL_BLEND);
@@ -670,9 +675,9 @@ void drawWaveFoam(float timeSec) {
   glEnable(GL_LIGHTING);
 }
 
-// 海水拍打墙体的竖向溅射（与波高相关）
+// Vertical splash against the wall (scaled by wave height)
 void drawSplashLine(float timeSec) {
-  const float OCEAN_HALF_X = 600.0f;
+  const float OCEAN_HALF_X = 450.0f;
   const float OCEAN_NEAR_Z = -80.0f;
   const float CONTACT_Z = OCEAN_SLOPE_Z + 0.35f;
 
@@ -699,10 +704,10 @@ void drawSplashLine(float timeSec) {
   glEnable(GL_LIGHTING);
 }
 
-// 斜坡表面的贴附泡沫（沿着坡面分布的小块）
+// Small foam patches clinging to the slope surface
 void drawSlopeFoam(float timeSec) {
-  const float OCEAN_HALF_X = 600.0f;
-  // 在坡面下部 1/3 区域铺一些贴附泡沫
+  const float OCEAN_HALF_X = 450.0f;
+  // Scatter patches over the lower third of the slope
   const float Z_MIN = OCEAN_SLOPE_Z + 2.0f;
   const float Z_MAX = OCEAN_SLOPE_Z + (TOP_WALK_Z - OCEAN_SLOPE_Z) * 0.35f;
 
@@ -716,7 +721,8 @@ void drawSlopeFoam(float timeSec) {
     float yBase = WALL_HEIGHT * tSlope;
     for (float x = -OCEAN_HALF_X; x <= OCEAN_HALF_X; x += 22.0f) {
       float jitter = std::sin(0.7f * timeSec + 0.18f * x + 0.3f * z) * 0.35f;
-      float h = 0.6f + 0.8f * (0.5f + 0.5f * std::sin(0.4f * timeSec + 0.11f * x));
+      float h =
+          0.6f + 0.8f * (0.5f + 0.5f * std::sin(0.4f * timeSec + 0.11f * x));
       glColor4f(0.90f, 0.95f, 1.0f, 0.16f);
       glVertex3f(x - 2.5f, yBase + jitter, z);
       glVertex3f(x + 2.5f, yBase + jitter, z);
@@ -731,7 +737,7 @@ void drawSlopeFoam(float timeSec) {
   glEnable(GL_LIGHTING);
 }
 
-// --------------------- 地面 & 远处平面（让城市侧不至于一片空）
+// --------------------- Ground & distant planes (so city side isn’t empty)
 // ---------------------
 void drawCityGround() {
   float size = 800.0f;
@@ -745,14 +751,14 @@ void drawCityGround() {
   glEnd();
 }
 
-// --------------------- 相机变换 ---------------------
+// --------------------- Camera transform ---------------------
 void applyCamera() {
   glRotatef(-pitch, 1.0f, 0.0f, 0.0f);
   glRotatef(-yaw, 0.0f, 1.0f, 0.0f);
   glTranslatef(-camX, -camY, -camZ);
 }
 
-// --------------------- GLUT 回调 ---------------------
+// --------------------- GLUT callbacks ---------------------
 void display() {
   float timeSec = glutGet(GLUT_ELAPSED_TIME) * 0.001f;
 
@@ -762,8 +768,9 @@ void display() {
   glLoadIdentity();
   applyCamera();
 
-  // ---- 灰蓝风暴天的光照 ----
-  GLfloat dirPos[] = {-0.4f, 1.0f, 0.2f, 0.0f}; // 类似风暴云层透下来的光
+  // ---- Gray-blue stormy lighting ----
+  GLfloat dirPos[] = {-0.4f, 1.0f, 0.2f,
+                      0.0f}; // Like light filtering through storm clouds
   GLfloat dirDiffuse[] = {0.60f, 0.65f, 0.78f, 1.0f};
   GLfloat dirAmbient[] = {0.14f, 0.16f, 0.20f, 1.0f};
   GLfloat dirSpecular[] = {0.48f, 0.52f, 0.68f, 1.0f};
@@ -776,7 +783,7 @@ void display() {
   GLfloat globalAmbient[] = {0.12f, 0.13f, 0.15f, 1.0f};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
 
-  // 场景
+  // Scene
   drawCityGround();
   drawSeaWall();
   drawOcean(timeSec);
@@ -871,10 +878,10 @@ void special(int key, int, int) {
 }
 
 void idle() {
-  glutPostRedisplay(); // 不断重绘，实现海浪动画
+  glutPostRedisplay(); // Keep redrawing to animate the ocean
 }
 
-// --------------------- 初始化 ---------------------
+// --------------------- Initialization ---------------------
 void initGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -890,34 +897,16 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 48.0f);
 
-  // 让天空更明亮清爽的蓝色
+  // Brighter, cleaner blue sky
   glClearColor(0.35f, 0.48f, 0.65f, 1.0f);
 
-  // 雾气：更浅的蓝灰，密度略低
+  // Fog: lighter blue-gray with slightly lower density
   GLfloat fogColor[4] = {0.35f, 0.48f, 0.65f, 1.0f};
   glEnable(GL_FOG);
   glFogfv(GL_FOG_COLOR, fogColor);
   glFogi(GL_FOG_MODE, GL_EXP2);
-  glFogf(GL_FOG_DENSITY, 0.00012f); // 数值越大雾越浓
+  glFogf(GL_FOG_DENSITY, 0.00012f); // Larger = thicker fog
   glHint(GL_FOG_HINT, GL_NICEST);
 
   resetCamera();
-}
-
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("Sepulveda Sea Wall - Stormy Ocean (FreeGLUT)");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-  glutIdleFunc(idle);
-
-  glutMainLoop();
-  return 0;
 }

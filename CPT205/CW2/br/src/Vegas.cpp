@@ -9,34 +9,34 @@ const float PI = 3.14159265f;
 float camX = 0.0f;
 float camY = 50.0f;
 float camZ = 200.0f;
-float yaw = 0.0f;     // 左右转动
-float pitch = -15.0f; // 上下俯仰
+float yaw = 0.0f;     // Yaw left/right
+float pitch = -15.0f; // Pitch up/down
 
 const float MOVE_SPEED = 3.0f;
 const float ROT_SPEED = 2.0f;
 
-// ----------- Glass + Concrete Building 参数 -----------
+// ----------- Glass + Concrete Building parameters -----------
 const int NUM_FLOORS = 6;
 const float FLOOR_HEIGHT = 12.0f;
 const float BUILDING_HEIGHT = NUM_FLOORS * FLOOR_HEIGHT;
 const float GLASS_BUILDING_HALF_W = 60.0f;
 const float GLASS_BUILDING_HALF_D = 40.0f;
-const float GLASS_ALPHA = 0.30f; // 玻璃透明度（越小越透）
+const float GLASS_ALPHA = 0.30f; // Glass opacity (smaller = more transparent)
 const float SLAB_THICKNESS = 1.0f;
 const float COLUMN_SIZE = 2.5f;
 
-// 建筑前的混凝土广场范围
+// Concrete plaza footprint in front of the building
 const float PLAZA_HALF_SIZE = 120.0f;
 
-// 雾气（很淡，可以直接改这一行调节；设为 0 就等于关雾）
+// Fog (very light; set to 0 to disable)
 float g_fogDensity = 0.003f;
 
-// ---------------- 小工具函数 ----------------
+// ---------------- Small utility function ----------------
 float frand(float a, float b) {
   return a + (b - a) * (std::rand() / (float)RAND_MAX);
 }
 
-// ---------------- 场景元素结构体 ----------------
+// ---------------- Scene element structs ----------------
 struct SlotMachine {
   float x, z, y;
   float rotDeg;
@@ -92,14 +92,14 @@ void resetCamera() {
   pitch = -15.0f;
 }
 
-// ---------------- 场景初始化 ----------------
+// ---------------- Scene initialization ----------------
 void initScene() {
   std::srand(2025);
-  // 让摆放更有秩序：组合单元，留足安全间距避免重叠
+  // Arrange elements in clusters with safe spacing to avoid overlap
   float marginX = GLASS_BUILDING_HALF_W * 0.78f;
   float marginZ = GLASS_BUILDING_HALF_D * 0.78f;
 
-  // -------- 底层：赌场区（牌桌+4椅+老虎机组合） --------
+  // -------- Ground floor: casino clusters (table + 4 chairs + slot machines) --------
   float casinoY = 1.0f;
   int clusterCols = 2, clusterRows = 2;
   float clusterSpanX = (marginX * 1.2f) / (clusterCols - 1);
@@ -111,7 +111,7 @@ void initScene() {
       float baseX = -marginX * 0.7f + c * clusterSpanX;
       float baseZ = clusterZStart + r * clusterSpanZ;
 
-      // 桌子
+      // Table
       Table t;
       t.x = baseX;
       t.z = baseZ;
@@ -119,8 +119,8 @@ void initScene() {
       t.rotDeg = (r % 2 == 0) ? 0.0f : 90.0f;
       g_tables.push_back(t);
 
-      // 椅子四把，朝向桌心
-      float radius = 7.0f; // 增加半径保证不碰撞桌子
+      // Four chairs facing the table center
+      float radius = 7.0f; // Extra radius to avoid colliding with the table
       for (int i = 0; i < 4; ++i) {
         float angle = 90.0f * i;
         float rad = angle * PI / 180.0f;
@@ -132,7 +132,7 @@ void initScene() {
         g_chairs.push_back(ch);
       }
 
-      // 老虎机：在桌子一侧排两台，远离椅子
+      // Slot machines: two placed on one side of the table away from chairs
       for (int i = 0; i < 2; ++i) {
         SlotMachine s;
         float offset = (i == 0) ? -3.0f : 3.0f;
@@ -145,7 +145,7 @@ void initScene() {
     }
   }
 
-  // 补充少量散落老虎机，靠近入口但不重叠
+  // Add a few scattered slots near the entrance without overlap
   for (int i = 0; i < 4; ++i) {
     SlotMachine s;
     s.x = frand(-marginX * 0.7f, marginX * 0.7f);
@@ -155,10 +155,10 @@ void initScene() {
     g_slots.push_back(s);
   }
 
-  // -------- 二层：酒吧休息层（吧台+凳子组合） --------
+  // -------- Second floor: bar lounge (counter + stools) --------
   float barY = FLOOR_HEIGHT + 1.0f;
 
-  // 两条长吧台
+  // Two long bar counters
   for (int i = 0; i < 2; ++i) {
     BarCounter b;
     b.x = (i == 0) ? -marginX * 0.35f : marginX * 0.35f;
@@ -167,7 +167,7 @@ void initScene() {
     b.rotDeg = (i == 0) ? 90.0f : -90.0f;
     g_barCounters.push_back(b);
 
-    // 在吧台前沿排布高脚凳
+    // Line bar stools along the front edge
     int stools = 5;
     float span = 16.0f / (stools - 1);
     for (int k = 0; k < stools; ++k) {
@@ -175,12 +175,12 @@ void initScene() {
       stool.x = b.x;
       stool.z = -6.0f + k * span;
       stool.y = barY;
-      stool.rotDeg = (i == 0) ? 90.0f : -90.0f; // 面向吧台
+      stool.rotDeg = (i == 0) ? 90.0f : -90.0f; // Facing the bar
       g_chairs.push_back(stool);
     }
   }
 
-  // 休息沙发组合：2 个小组，每组 2 把面向中心点的椅子（不放咖啡桌以免体积冲突）
+  // Lounge seating: two small groups, each with two chairs facing the center (no coffee table to avoid overlap)
   for (int g = 0; g < 2; ++g) {
     float centerX = -marginX * 0.35f + g * (marginX * 0.7f);
     float centerZ = marginZ * 0.45f;
@@ -194,7 +194,7 @@ void initScene() {
     }
   }
 
-  // -------- 酒店客房层（3-6层）：床+双灯组合 --------
+  // -------- Hotel room floors (3-6): bed + twin lamps --------
   float roomMarginX = GLASS_BUILDING_HALF_W * 0.70f;
   float roomMarginZ = GLASS_BUILDING_HALF_D * 0.70f;
   int roomCols = 3, roomRows = 2;
@@ -205,21 +205,21 @@ void initScene() {
     float roomY = floor * FLOOR_HEIGHT + 1.0f;
     for (int r = 0; r < roomRows; ++r) {
       for (int c = 0; c < roomCols; ++c) {
-        // 留出中轴走廊
+        // Leave a central corridor
         if (c == 1 && std::abs(-roomMarginZ + (r + 0.5f) * cellZ) < 4.0f)
           continue;
 
         float px = -roomMarginX + (c + 0.5f) * cellX;
         float pz = -roomMarginZ + (r + 0.5f) * cellZ;
 
-        Table bed; // 床体
+        Table bed; // Bed body
         bed.x = px;
         bed.z = pz;
         bed.y = roomY;
         bed.rotDeg = (c < 1) ? 0.0f : 180.0f;
         g_tables.push_back(bed);
 
-        // 床头灯两盏，靠床头一侧
+        // Two bedside lamps near the headboard
         for (int i = -1; i <= 1; i += 2) {
           Chair lamp;
           lamp.x = px + 1.8f * i;
@@ -233,12 +233,12 @@ void initScene() {
   }
 }
 
-// ---------------- 绘制函数 ----------------
+// ---------------- Drawing functions ----------------
 void drawGround() {
-  // 远处是辐射沙漠 + 城市废墟的地基
+  // Background: radioactive desert and city ruins base
   glDisable(GL_LIGHTING);
   glBegin(GL_QUADS);
-  glColor3f(0.55f, 0.40f, 0.25f); // 橙褐色沙土
+  glColor3f(0.55f, 0.40f, 0.25f); // Orange-brown sand
   float size = 1000.0f;
   float y = -5.0f;
   glVertex3f(-size, y, -size);
@@ -247,7 +247,7 @@ void drawGround() {
   glVertex3f(-size, y, size);
   glEnd();
 
-  // 建筑前的混凝土广场
+  // Concrete plaza in front of the tower
   glBegin(GL_QUADS);
   glColor3f(0.60f, 0.50f, 0.40f);
   glVertex3f(-PLAZA_HALF_SIZE, 0.0f, PLAZA_HALF_SIZE);
@@ -260,7 +260,7 @@ void drawGround() {
 }
 
 void drawGlassBuildingBase() {
-  // 深色地坪，方便看清玻璃内的装饰物
+  // Dark floor to make interior decorations visible through glass
   glPushMatrix();
   glDisable(GL_LIGHTING);
   glBegin(GL_QUADS);
@@ -275,9 +275,9 @@ void drawGlassBuildingBase() {
 }
 
 void drawConcreteFrameAndSlabs() {
-  glColor3f(0.45f, 0.44f, 0.42f); // 混凝土灰
+  glColor3f(0.45f, 0.44f, 0.42f); // Concrete gray
 
-  // 四角立柱
+  // Corner columns
   auto drawColumn = [](float x, float z) {
     glPushMatrix();
     glTranslatef(x, BUILDING_HEIGHT * 0.5f, z);
@@ -291,7 +291,7 @@ void drawConcreteFrameAndSlabs() {
   drawColumn(GLASS_BUILDING_HALF_W, GLASS_BUILDING_HALF_D);
   drawColumn(-GLASS_BUILDING_HALF_W, GLASS_BUILDING_HALF_D);
 
-  // 底部混凝土裙座，加厚基座视觉
+  // Thick concrete plinth at the base
   glPushMatrix();
   glTranslatef(0.0f, 3.0f, 0.0f);
   glScalef(GLASS_BUILDING_HALF_W * 2.0f + 6.0f, 6.0f,
@@ -300,7 +300,7 @@ void drawConcreteFrameAndSlabs() {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 中轴电梯核心
+  // Central elevator core
   glPushMatrix();
   glTranslatef(0.0f, BUILDING_HEIGHT * 0.5f, 0.0f);
   glScalef(12.0f, BUILDING_HEIGHT, 12.0f);
@@ -308,7 +308,7 @@ void drawConcreteFrameAndSlabs() {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 每层楼板
+  // Floor slabs
   for (int i = 0; i <= NUM_FLOORS; ++i) {
     float y = i * FLOOR_HEIGHT;
     glPushMatrix();
@@ -320,7 +320,7 @@ void drawConcreteFrameAndSlabs() {
     glPopMatrix();
   }
 
-  // 楼层腰线：在每层上方加混凝土外檐
+  // Concrete banding just above each floor
   for (int i = 1; i <= NUM_FLOORS; ++i) {
     float y = i * FLOOR_HEIGHT - 0.5f;
     glPushMatrix();
@@ -332,13 +332,14 @@ void drawConcreteFrameAndSlabs() {
     glPopMatrix();
   }
 
-  // 垂直混凝土肋板：前后立面各 5 片
+  // Vertical concrete ribs: 5 per front/back facade
   auto drawRibStrip = [](float x, float zSign) {
     for (int i = 0; i < 5; ++i) {
-      float offset = -GLASS_BUILDING_HALF_W + (i + 0.5f) *
-                                         (GLASS_BUILDING_HALF_W * 2.0f / 5.0f);
+      float offset = -GLASS_BUILDING_HALF_W +
+                     (i + 0.5f) * (GLASS_BUILDING_HALF_W * 2.0f / 5.0f);
       glPushMatrix();
-      glTranslatef(offset, BUILDING_HEIGHT * 0.5f, zSign * (GLASS_BUILDING_HALF_D + 0.6f));
+      glTranslatef(offset, BUILDING_HEIGHT * 0.5f,
+                   zSign * (GLASS_BUILDING_HALF_D + 0.6f));
       glScalef(3.0f, BUILDING_HEIGHT, 1.2f);
       glColor3f(0.43f, 0.42f, 0.41f);
       glutSolidCube(1.0);
@@ -348,13 +349,14 @@ void drawConcreteFrameAndSlabs() {
   drawRibStrip(0.0f, 1.0f);
   drawRibStrip(0.0f, -1.0f);
 
-  // 侧面竖向翼墙各两片，提升混凝土存在感
+  // Two vertical wing walls per side to emphasize concrete mass
   for (int side = -1; side <= 1; side += 2) {
     for (int i = 0; i < 2; ++i) {
-      float z = -GLASS_BUILDING_HALF_D + (i + 0.5f) *
-                                    (GLASS_BUILDING_HALF_D * 2.0f / 2.0f);
+      float z = -GLASS_BUILDING_HALF_D +
+                (i + 0.5f) * (GLASS_BUILDING_HALF_D * 2.0f / 2.0f);
       glPushMatrix();
-      glTranslatef(side * (GLASS_BUILDING_HALF_W + 0.6f), BUILDING_HEIGHT * 0.5f, z);
+      glTranslatef(side * (GLASS_BUILDING_HALF_W + 0.6f),
+                   BUILDING_HEIGHT * 0.5f, z);
       glScalef(1.2f, BUILDING_HEIGHT, 6.0f);
       glColor3f(0.43f, 0.42f, 0.41f);
       glutSolidCube(1.0);
@@ -362,7 +364,7 @@ void drawConcreteFrameAndSlabs() {
     }
   }
 
-  // 屋顶女儿墙
+  // Roof parapet
   glPushMatrix();
   glTranslatef(0.0f, BUILDING_HEIGHT + 1.0f, 0.0f);
   glScalef(GLASS_BUILDING_HALF_W * 2.0f + 3.0f, 2.0f,
@@ -371,7 +373,7 @@ void drawConcreteFrameAndSlabs() {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 外环梁线（简单线条强调层次）
+  // Perimeter line beams to emphasize layering
   glDisable(GL_LIGHTING);
   glColor3f(0.60f, 0.58f, 0.55f);
   glBegin(GL_LINES);
@@ -396,7 +398,7 @@ void drawConcreteFrameAndSlabs() {
 void drawCurtainWall() {
   glPushMatrix();
   glColor4f(0.55f, 0.82f, 1.0f, GLASS_ALPHA);
-  glDepthMask(GL_FALSE); // 避免完全遮挡内部装饰
+  glDepthMask(GL_FALSE); // Avoid fully occluding interior decor
 
   int colsLong = 8;
   int colsShort = 6;
@@ -404,7 +406,7 @@ void drawCurtainWall() {
   float spanX = GLASS_BUILDING_HALF_W * 2.0f;
   float spanZ = GLASS_BUILDING_HALF_D * 2.0f;
 
-  // 正反面（沿 x）
+  // Front/back faces (along x)
   for (int side = -1; side <= 1; side += 2) {
     for (int floor = 0; floor < NUM_FLOORS; ++floor) {
       float y0 = floor * FLOOR_HEIGHT + 0.5f;
@@ -423,14 +425,15 @@ void drawCurtainWall() {
     }
   }
 
-  // 侧面（沿 z）
+  // Side faces (along z)
   for (int side = -1; side <= 1; side += 2) {
     for (int floor = 0; floor < NUM_FLOORS; ++floor) {
       float y0 = floor * FLOOR_HEIGHT + 0.5f;
       float y1 = y0 + panelH;
       for (int c = 0; c < colsShort; ++c) {
         float z0 = -GLASS_BUILDING_HALF_D + (spanZ / colsShort) * c + 0.4f;
-        float z1 = -GLASS_BUILDING_HALF_D + (spanZ / colsShort) * (c + 1) - 0.4f;
+        float z1 =
+            -GLASS_BUILDING_HALF_D + (spanZ / colsShort) * (c + 1) - 0.4f;
         float x = side * GLASS_BUILDING_HALF_W;
         glBegin(GL_QUADS);
         glVertex3f(x, y0, z0);
@@ -451,7 +454,7 @@ void drawSlotMachine(const SlotMachine &s) {
   glTranslatef(s.x, s.y, s.z);
   glRotatef(s.rotDeg, 0.0f, 1.0f, 0.0f);
 
-  // 底座
+  // Base
   glPushMatrix();
   glTranslatef(0.0f, 1.0f, 0.0f);
   glScalef(3.0f, 2.0f, 2.0f);
@@ -459,7 +462,7 @@ void drawSlotMachine(const SlotMachine &s) {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 上半机身
+  // Upper body
   glPushMatrix();
   glTranslatef(0.0f, 3.5f, 0.0f);
   glScalef(2.5f, 4.0f, 1.8f);
@@ -467,7 +470,7 @@ void drawSlotMachine(const SlotMachine &s) {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 屏幕位置（用深一点的灰）
+  // Screen area (slightly darker gray)
   glPushMatrix();
   glTranslatef(0.0f, 4.0f, 1.0f);
   glScalef(1.6f, 1.4f, 0.1f);
@@ -483,7 +486,7 @@ void drawTable(const Table &t) {
   glTranslatef(t.x, t.y, t.z);
   glRotatef(t.rotDeg, 0.0f, 1.0f, 0.0f);
 
-  // 桌面
+  // Table top
   glPushMatrix();
   glTranslatef(0.0f, 2.0f, 0.0f);
   glScalef(10.0f, 1.0f, 6.0f);
@@ -491,7 +494,7 @@ void drawTable(const Table &t) {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 桌脚（四个小立方体）
+  // Table legs (four small cubes)
   glColor3f(0.18f, 0.18f, 0.18f);
   float legX = 4.0f, legZ = 2.5f;
   float legH = 2.0f;
@@ -513,7 +516,7 @@ void drawChair(const Chair &c) {
   glTranslatef(c.x, c.y, c.z);
   glRotatef(c.rotDeg, 0.0f, 1.0f, 0.0f);
 
-  // 坐垫
+  // Seat cushion
   glPushMatrix();
   glTranslatef(0.0f, 1.0f, 0.0f);
   glScalef(2.0f, 0.8f, 2.0f);
@@ -521,7 +524,7 @@ void drawChair(const Chair &c) {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 椅背
+  // Chair back
   glPushMatrix();
   glTranslatef(0.0f, 2.4f, -0.6f);
   glScalef(2.0f, 3.0f, 0.5f);
@@ -537,7 +540,7 @@ void drawBarCounter(const BarCounter &b) {
   glTranslatef(b.x, b.y, b.z);
   glRotatef(b.rotDeg, 0.0f, 1.0f, 0.0f);
 
-  // 吧台主体
+  // Bar body
   glPushMatrix();
   glTranslatef(0.0f, 2.5f, 0.0f);
   glScalef(18.0f, 5.0f, 3.5f);
@@ -545,7 +548,7 @@ void drawBarCounter(const BarCounter &b) {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 台面亮色
+  // Bright countertop
   glPushMatrix();
   glTranslatef(0.0f, 5.0f, 0.0f);
   glScalef(18.5f, 0.8f, 3.8f);
@@ -553,7 +556,7 @@ void drawBarCounter(const BarCounter &b) {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 背景瓶架（用小立方体模拟）
+  // Back bottle rack (simulated with small cubes)
   for (int i = -3; i <= 3; ++i) {
     glPushMatrix();
     glTranslatef(i * 2.2f, 6.0f, -2.0f);
@@ -563,7 +566,7 @@ void drawBarCounter(const BarCounter &b) {
     glPopMatrix();
   }
 
-  // 高脚凳
+  // Bar stools
   for (int i = -3; i <= 3; ++i) {
     glPushMatrix();
     glTranslatef(i * 2.6f, 0.0f, 2.8f);
@@ -583,7 +586,7 @@ void applyCamera() {
   glTranslatef(-camX, -camY, -camZ);
 }
 
-// ---------------- GLUT 回调 ----------------
+// ---------------- GLUT callbacks ----------------
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -591,7 +594,7 @@ void display() {
   glLoadIdentity();
   applyCamera();
 
-  // 强烈的橙色阳光（脏弹后的雾天但光很猛）
+  // Intense orange sunlight (dusty post-blast haze but strong light)
   GLfloat sunDir[] = {-0.4f, 0.8f, 0.1f, 0.0f};
   GLfloat sunDiffuse[] = {1.0f, 0.85f, 0.65f, 1.0f};
   GLfloat sunAmbient[] = {0.55f, 0.40f, 0.30f, 1.0f};
@@ -617,7 +620,7 @@ void display() {
   for (const auto &b : g_barCounters)
     drawBarCounter(b);
 
-  // 最后绘制玻璃外壳，确保内部内容透过玻璃可见
+  // Draw glass shell last so interior remains visible through it
   drawCurtainWall();
 
   glutSwapBuffers();
@@ -708,12 +711,12 @@ void special(int key, int, int) {
 }
 
 void timer(int) {
-  // 暂时没有动画，这里只是驱动重绘；以后要加飞舞尘土可以从这里下手
+  // No animation yet; timer simply drives redraw (hook for future dust motes)
   glutPostRedisplay();
   glutTimerFunc(16, timer, 0);
 }
 
-// ---------------- OpenGL 初始化 ----------------
+// ---------------- OpenGL initialization ----------------
 void initGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -729,11 +732,11 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 32.0f);
 
-  // 橙色放射性沙尘天空
+  // Orange radioactive dust sky
   GLfloat fogColor[] = {0.80f, 0.60f, 0.40f, 1.0f};
   glClearColor(fogColor[0], fogColor[1], fogColor[2], fogColor[3]);
 
-  // 很淡的雾 - 想更淡就把 g_fogDensity 调得更小或设为 0
+  // Very light fog; reduce g_fogDensity or set to 0 to disable
   glEnable(GL_FOG);
   glFogfv(GL_FOG_COLOR, fogColor);
   glFogi(GL_FOG_MODE, GL_EXP2);
@@ -744,23 +747,4 @@ void initGL() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   initScene();
-}
-
-// ---------------- main ----------------
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("Radioactive Las Vegas Glass Tower (FreeGLUT)");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-  glutTimerFunc(16, timer, 0);
-
-  glutMainLoop();
-  return 0;
 }

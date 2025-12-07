@@ -9,8 +9,8 @@ const float PI = 3.14159265f;
 float camX = 0.0f;
 float camY = 40.0f;
 float camZ = 160.0f;
-float yaw = 0.0f;     // 左右转
-float pitch = -15.0f; // 上下俯仰
+float yaw = 0.0f;     // Yaw left/right
+float pitch = -15.0f; // Pitch up/down
 
 const float MOVE_SPEED = 3.0f;
 const float ROT_SPEED = 2.0f;
@@ -31,7 +31,7 @@ struct Snow {
 std::vector<Snow> g_snow;
 const int SNOW_COUNT = 900;
 
-// 随机工具
+// Random helper
 float frand(float a, float b) {
   return a + (b - a) * (std::rand() / (float)RAND_MAX);
 }
@@ -65,7 +65,7 @@ void initSnow() {
     Snow s;
     s.x = frand(-200.0f, 200.0f);
     s.z = frand(-200.0f, 200.0f);
-    s.y = frand(10.0f, 120.0f);
+    s.y = frand(100.0f, 250.0f); // Raised from 10-120 to 100-250
     s.vy = frand(0.4f, 1.2f);
     g_snow.push_back(s);
   }
@@ -73,10 +73,10 @@ void initSnow() {
 
 void updateSnow(float dt) {
   for (auto &s : g_snow) {
-    s.y -= s.vy; // 简单向下飘
+    s.y -= s.vy; // Simple downward drift
     if (s.y < 0.5f) {
-      // 重新从天上刷下来
-      s.y = frand(60.0f, 130.0f);
+      // Respawn above the scene
+      s.y = frand(150.0f, 250.0f); // Raised from 60-130 to 150-250
       s.x = frand(-200.0f, 200.0f);
       s.z = frand(-200.0f, 200.0f);
       s.vy = frand(0.4f, 1.2f);
@@ -98,7 +98,7 @@ void drawSnow() {
 
 // ---------------- Ground & environment ----------------
 void drawGround() {
-  // 大片雪地/混凝土场
+  // Large snowy/concrete field
   glDisable(GL_LIGHTING);
   glBegin(GL_QUADS);
   glColor3f(0.28f, 0.30f, 0.33f);
@@ -111,35 +111,7 @@ void drawGround() {
   glEnable(GL_LIGHTING);
 }
 
-// 近建筑雪场，带柔和渐隐
-void drawSnowField() {
-  glDisable(GL_LIGHTING);
-  glEnable(GL_BLEND);
-  float inner = 170.0f; // 纯雪区域
-  float outer = 260.0f; // 渐隐到无
-
-  auto v = [](float x, float z, float a) {
-    glColor4f(0.82f, 0.84f, 0.88f, a);
-    glVertex3f(x, 0.04f, z);
-  };
-
-  glBegin(GL_TRIANGLE_STRIP);
-  v(-outer, -outer, 0.0f);
-  v(-inner, -inner, 0.85f);
-  v(outer, -outer, 0.0f);
-  v(inner, -inner, 0.85f);
-  v(outer, outer, 0.0f);
-  v(inner, inner, 0.85f);
-  v(-outer, outer, 0.0f);
-  v(-inner, inner, 0.85f);
-  v(-outer, -outer, 0.0f);
-  v(-inner, -inner, 0.85f);
-  glEnd();
-
-  glEnable(GL_LIGHTING);
-}
-
-// 前广场硬质铺装，衔接地面与台阶
+// Forecourt hardscape connecting ground to steps
 void drawPlaza() {
   glDisable(GL_LIGHTING);
   glBegin(GL_QUADS);
@@ -155,11 +127,11 @@ void drawPlaza() {
   glEnable(GL_LIGHTING);
 }
 
-// ---------------- Stelline 记忆实验楼 ----------------
+// ---------------- Stelline memory lab ----------------
 
-// 宽台阶
+// Wide steps
 void drawStairs() {
-  const float startZ = 44.0f; // 最下面那级台阶前缘大约在 z≈46
+  const float startZ = 44.0f; // Front edge of lowest step is around z≈46
 
   // Solid cheek walls to visually anchor stairs to ground
   float wallThickness = 1.4f;
@@ -189,12 +161,12 @@ void drawStairs() {
     glPushMatrix();
     glTranslatef(0.0f, hCenter, zCenter);
     glScalef(STEP_W, STEP_H, STEP_DEPTH);
-    glColor3f(0.82f, 0.82f, 0.84f); // 覆雪混凝土
+    glColor3f(0.82f, 0.82f, 0.84f); // Snow-covered concrete
     glutSolidCube(1.0);
     glPopMatrix();
   }
 
-  // 台阶顶部到建筑前的缓坡平台
+  // Gentle ramped platform from stair top to the facade
   float topY = NUM_STEPS * STEP_H;
   glPushMatrix();
   glTranslatef(0.0f, topY + 0.01f, 4.0f);
@@ -217,14 +189,14 @@ void drawStairs() {
   glEnable(GL_LIGHTING);
 }
 
-// 主体混凝土楼（粗野主义方块）
+// Main concrete block (brutalist mass)
 void drawMainBuilding() {
-  float baseY = FOUNDATION_H; // 台阶顶高度与基础一体
+  float baseY = FOUNDATION_H; // Stair top and foundation are unified
   float bodyH = 22.0f;
   float bodyW = 60.0f;
   float bodyD = 40.0f;
 
-  // 单一整体方块（含基础与上部），避免拼接感
+  // Single monolithic block (foundation + upper) to avoid seams
   glPushMatrix();
   float totalH = FOUNDATION_H + bodyH;
   glTranslatef(0.0f, totalH * 0.5f, -bodyD * 0.3f);
@@ -233,7 +205,7 @@ void drawMainBuilding() {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 顶部偏移的小体块，增加粗野感
+  // Small offset block on top for extra brutalist character
   glPushMatrix();
   glTranslatef(-10.0f, baseY + bodyH + 5.0f, -bodyD * 0.6f);
   glScalef(bodyW * 0.6f, 10.0f, bodyD * 0.7f);
@@ -241,7 +213,7 @@ void drawMainBuilding() {
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 屋顶设备箱体
+  // Rooftop equipment box
   glPushMatrix();
   glTranslatef(12.0f, baseY + bodyH + 2.0f, -bodyD * 0.2f);
   glScalef(14.0f, 3.0f, 8.0f);
@@ -257,14 +229,14 @@ void drawMainBuilding() {
   glPopMatrix();
 }
 
-// 玻璃幕墙 + 入口
+// Curtain wall + entry
 void drawFrontFacade() {
   float baseY = FOUNDATION_H;
   float bodyD = 40.0f;
   float bodyFaceZ =
-      -bodyD * 0.3f + bodyD * 0.5f; // 主体前立面世界坐标（约 z=8）
+      -bodyD * 0.3f + bodyD * 0.5f; // World Z of front facade (~8)
 
-  // 玻璃幕墙：偏冷灰蓝、半透明，正对台阶
+  // Curtain wall: cool gray-blue, semi-transparent, facing the steps
   glPushMatrix();
   glTranslatef(0.0f, baseY + 8.0f, bodyFaceZ + 0.05f);
   glScalef(34.0f, 14.0f, 0.6f);
@@ -273,7 +245,7 @@ void drawFrontFacade() {
   glPopMatrix();
   glEnable(GL_LIGHTING);
 
-  // 幕墙竖向分格线
+  // Vertical mullions
   glDisable(GL_LIGHTING);
   glLineWidth(1.5f);
   glColor3f(0.6f, 0.6f, 0.65f);
@@ -287,7 +259,7 @@ void drawFrontFacade() {
     glEnd();
   }
 
-  // 横向分格
+  // Horizontal mullions
   for (int j = 0; j <= 2; ++j) {
     float y = y0 + j * 6.5f;
     glBegin(GL_LINES);
@@ -296,10 +268,10 @@ void drawFrontFacade() {
     glEnd();
   }
 
-  // 入口门：双扇玻璃门 + 深色框
+  // Entry doors: double glass leaves with dark frame
   float doorW = 2.6f;
   float doorH = 4.4f;
-  float doorZ = bodyFaceZ + 0.45f; // 外凸于幕墙，显式在玻璃之外
+  float doorZ = bodyFaceZ + 0.45f; // Protrudes in front of the glazing
   // Frame
   glLineWidth(6.0f);
   glColor3f(0.30f, 0.30f, 0.32f);
@@ -338,7 +310,7 @@ void drawFrontFacade() {
   glEnable(GL_LIGHTING);
 }
 
-// 周围低矮混凝土附属建筑
+// Low concrete annex buildings around the core
 void drawAnnexBuildings() {
   struct Block {
     float x, z;
@@ -359,7 +331,7 @@ void drawAnnexBuildings() {
   }
 }
 
-// 附属楼窗带
+// Annex window bands
 void drawAnnexWindows() {
   struct Block {
     float x, z;
@@ -403,9 +375,9 @@ void drawAnnexWindows() {
   glEnable(GL_LIGHTING);
 }
 
-// 附属楼出入口
+// Annex entrances
 void drawAnnexDoors() {
-  // 在最靠前的两栋做服务门
+  // Service doors on the two frontmost blocks
   struct DoorTarget {
     float x, z, w, d, h;
   } doors[] = {{55.0f, 35.0f, 35.0f, 22.0f, 11.0f},
@@ -436,7 +408,7 @@ void drawAnnexDoors() {
   glEnable(GL_LIGHTING);
 }
 
-// 广场上的矮柱灯
+// Short bollard lights on the plaza
 void drawBollardLights() {
   float z = 80.0f; // move away from stairs/building
   glDisable(GL_LIGHTING);
@@ -458,7 +430,7 @@ void drawBollardLights() {
   glEnable(GL_LIGHTING);
 }
 
-// 简单侧立面窗带
+// Simple side-elevation window bands
 void drawSideWindows() {
   float baseY = FOUNDATION_H;
   float bodyD = 40.0f;
@@ -467,7 +439,7 @@ void drawSideWindows() {
   glColor3f(0.32f, 0.38f, 0.46f);
   float yStart = baseY + 4.0f;
   float yEnd = baseY + bodyH - 3.0f;
-  // 左右两侧各画两条水平窗带
+  // Two horizontal bands on each side
   for (int side = -1; side <= 1; side += 2) {
     float x = side * 30.0f;
     for (int band = 0; band < 2; ++band) {
@@ -483,7 +455,7 @@ void drawSideWindows() {
   glEnable(GL_LIGHTING);
 }
 
-// 入口雨棚
+// Entry canopy
 void drawCanopy() {
   float baseY = FOUNDATION_H;
   float bodyD = 40.0f;
@@ -497,7 +469,7 @@ void drawCanopy() {
   glEnable(GL_LIGHTING);
 }
 
-// 夜间暖光的立面灯带
+// Warm facade light strips for night
 void drawStripLights() {
   float baseY = FOUNDATION_H;
   float bodyD = 40.0f;
@@ -513,15 +485,16 @@ void drawStripLights() {
   glEnable(GL_LIGHTING);
 }
 
-  // 台阶上的躺倒人影（超简化剪影）
+// Simplified fallen figure on the steps
 void drawFallenMan() {
-  // 选择台阶中段位置
+  // Place near the middle of the staircase
   const int stepIndex = 5;
   const float stepH = STEP_H;
   const float stepDepth = STEP_DEPTH;
   const float startZ = 44.0f;
 
-  float stepY = (stepIndex + 1) * stepH - 0.25f; // sink slightly into tread so body sits lower
+  float stepY = (stepIndex + 1) * stepH -
+                0.25f; // sink slightly into tread so body sits lower
   float stepZ = startZ - stepIndex * stepDepth - stepDepth * 0.5f;
   float slopeDeg = std::atan(STEP_H / STEP_DEPTH) * 180.0f / PI; // ≈11.3°
 
@@ -532,22 +505,22 @@ void drawFallenMan() {
   // tilt to stair slope: head higher toward building (negative z direction)
   glRotatef(slopeDeg, 1.0f, 0.0f, 0.0f);
 
-  // 身体（长大衣）沿 z 方向
+  // Body (long coat) aligned along z
   glPushMatrix();
   glScalef(1.4f, 0.55f, 6.0f); // flatter profile
   glColor3f(0.20f, 0.20f, 0.22f);
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 腿
+  // Legs
   glPushMatrix();
-  glTranslatef(0.0f, -0.25f, 2.6f); // feet朝下坡方向（+z）
+  glTranslatef(0.0f, -0.25f, 2.6f); // Feet point downhill (+z)
   glScalef(1.2f, 0.55f, 3.2f);
   glColor3f(0.18f, 0.18f, 0.20f);
   glutSolidCube(1.0);
   glPopMatrix();
 
-  // 头（朝向建筑，位于上坡端）
+  // Head faces the building at the uphill end
   glPushMatrix();
   glTranslatef(0.0f, 0.45f, -3.4f); // head toward building (-z)
   glColor3f(0.22f, 0.22f, 0.24f);
@@ -557,10 +530,9 @@ void drawFallenMan() {
   glPopMatrix();
 }
 
-// 整体建筑
+// Whole building assembly
 void drawStelline() {
   drawPlaza();
-  drawSnowField();
   drawBollardLights();
   drawStairs();
   drawMainBuilding();
@@ -580,7 +552,7 @@ void applyCamera() {
   glTranslatef(-camX, -camY, -camZ);
 }
 
-// ---------------- GLUT 回调 ----------------
+// ---------------- GLUT callbacks ----------------
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -588,7 +560,7 @@ void display() {
   glLoadIdentity();
   applyCamera();
 
-  // 灰白天空下、略偏冷的散射光
+  // Cool diffuse skylight under a gray-white sky
   GLfloat sunDir[] = {-0.3f, 0.9f, 0.2f, 0.0f};
   GLfloat sunDiffuse[] = {0.45f, 0.50f, 0.65f, 1.0f};
   GLfloat sunAmbient[] = {0.12f, 0.14f, 0.18f, 1.0f};
@@ -693,12 +665,12 @@ void special(int key, int, int) {
 }
 
 void timer(int) {
-  updateSnow(0.016f); // 约 60 FPS
+  updateSnow(0.016f); // ~60 FPS
   glutPostRedisplay();
   glutTimerFunc(16, timer, 0);
 }
 
-// ---------------- OpenGL 初始化 ----------------
+// ---------------- OpenGL initialization ----------------
 void initGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -714,10 +686,10 @@ void initGL() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 24.0f);
 
-  // 夜色天空：深蓝灰
+  // Night sky: deep blue-gray
   glClearColor(0.08f, 0.10f, 0.12f, 1.0f);
 
-  // 轻微雾，让远处慢慢消失
+  // Light fog to gently fade distant scenery
   GLfloat fogColor[] = {0.08f, 0.10f, 0.12f, 1.0f};
   glEnable(GL_FOG);
   glFogfv(GL_FOG_COLOR, fogColor);
@@ -729,23 +701,4 @@ void initGL() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   initSnow();
-}
-
-// ---------------- main ----------------
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1280, 720);
-  glutCreateWindow("Stelline Memory Lab - Snowfield (FreeGLUT)");
-
-  initGL();
-
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(special);
-  glutTimerFunc(16, timer, 0);
-
-  glutMainLoop();
-  return 0;
 }
