@@ -1,0 +1,248 @@
+
+\documentclass[conference]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\hypersetup{colorlinks=true, urlcolor=cyan, linkcolor=black, citecolor=black}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{4pt}
+\setlength{\textfloatsep}{8pt}
+
+% ---------- Easy-to-edit metadata ----------
+\newcommand{\ModuleCode}{CPT205}
+\newcommand{\ModuleTitle}{Computer Graphics}
+\newcommand{\StudentName}{Xinrong Li}
+\newcommand{\StudentID}{2363123}
+\newcommand{\Programme}{Information and Computing Science}
+% -------------------------------------------
+
+\title{\ModuleCode~--~\ModuleTitle: Interactive Greeting Card with FreeGLUT}
+\author{\StudentName~(\StudentID)\\ \Programme}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report documents the design, implementation and evaluation of a two-scene interactive greeting card written in modern C++ (C++17) using FreeGLUT and fixed-function OpenGL. It highlights the graphics techniques (gradient sky, layered clouds, parametric sun, polygonal landmark, wind-driven grass, balloons, and stroked vector text), the event-driven structure, and the runtime interactions. A concise README is included for compilation and usage.
+\end{abstract}
+
+\section{Introduction}
+\textbf{Basic info.} Module code \ModuleCode, title \ModuleTitle. Author: \StudentName~(\StudentID), Programme: \Programme.
+
+\textbf{Card idea.} The card presents a calm campus landscape that the user can interact with: clicking the background releases balloons; clicking the paper enters a \emph{congratulatory} scene that displays formatted stroked text. The program runs with an orthographic 2D camera for crisp resolution-independent vector rendering.
+
+\textbf{Feature list (techniques)}:
+\begin{itemize}[leftmargin=1.2em]
+\item Gradient sky with multi-layer drifted clouds (parallax).
+\item Parametric sun with rotating rays and pulsation.
+\item Landmark building drawn from polygonal facets with seam sealing.
+\item Wind-swaying grass patches with per-blade segmentation.
+\item Interactive balloons with vertical rise and off-screen culling.
+\item Clickable paper/card (AABB hit test) and a formatted text poster using GLUT stroke fonts.
+\item Two scene modes: \texttt{BG\_ONLY} and \texttt{CONGETS}; 60~Hz timer-driven redraw.
+\end{itemize}
+
+\textbf{Runtime controls}: \texttt{q} Quit; \texttt{r} Reset clouds; L/R mouse: interact (see Sec.~III-C, IV).
+
+\section{System Design and Structure}
+\subsection{Program Architecture}
+The program follows a clean object-centric layering: low-level \emph{flat} drawing helpers (rect fill/stroke, strokes text), a set of drawable entities (\emph{Sky}, \emph{Sun}, \emph{CentralBuilding}, \emph{GrassField}/\emph{GrassPatch}, \emph{Tree}, \emph{Balloon}, \emph{Paper}, \emph{PaperWithText}, \emph{TextLine}), and a light scene controller that calls each entity's \verb|render()| in the \verb|display| callback. Window size is clamped and an orthographic projection is installed once in \verb|reshape|.
+
+\subsection{Mathematical Model for Transformations}
+We use an orthographic projection \verb|glOrtho(0,W,0,H,-1,1)|, mapping model coordinates directly into window pixels. For time-dependent animation (with time $t$ in seconds):
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Sun Rays.} For $N$ rays with base radius $R$ and rotation speed $\omega$, the $i$-th ray direction angle is
+$\theta_i(t)=\frac{2\pi i}{N}+\omega t$, and its tip lies at
+$ \mathbf{p}_i(t)=\mathbf{c}+(R+A\sin(2\pi f t))[\cos\theta_i,\sin\theta_i]$,
+giving combined rotation and pulsation.
+\item \textbf{Cloud Drift (Parallax).} For each layer $\ell$ with speed $s_\ell$ and wrap width $W$, cloud $k$ has $x_{k,\ell}(t)=x_{k,\ell}(0)+s_\ell t \bmod W$; higher layers use larger $s_\ell$ to create depth.
+\item \textbf{Grass Sway.} Each blade is a polyline with $S$ segments. Lateral offset uses a phase-shifted sinusoid: $\Delta x(y,t)=A\sin(ky+\omega t+\phi)$, producing wind-like motion while keeping the base anchored.
+\item \textbf{Balloon Motion.} Balloons rise as $y(t)=y_0+v t$ with a gentle horizontal oscillation $x(t)=x_0+a\sin(\Omega t+\psi)$; when $y$ exceeds the screen, they are culled.
+\item \textbf{Paper Hit-Testing.} Axis-aligned rectangle test: a click at $(x,y)$ hits the paper if $x\in[x_0,x_0+w],~y\in[y_0,y_0+h]$.
+\end{itemize}
+
+\subsection{Event-Driven Structure}
+We register FreeGLUT callbacks: \verb|display| (draw), \verb|reshape| (install orthographic view and clamp size), \verb|keyboard| (hotkeys), \verb|mouse| (click interactions), and a periodic \verb|timer| to step the global time $t\!\leftarrow\!t+\Delta t$ (nominal $\Delta t\!=\!0.016$\,s). The scene state machine toggles between \texttt{BG\_ONLY} and \texttt{CONGETS} depending on click targets.
+
+\section{Scene Design and Animation Logic}
+\subsection{Scene Composition}
+The scene layers, back-to-front: \textbf{Sky} $\rightarrow$ \textbf{Sun} $\rightarrow$ \textbf{Ground} $\rightarrow$ \textbf{Central Building} $\rightarrow$ \textbf{Trees} $\rightarrow$ \textbf{Grass Field} $\rightarrow$ \textbf{Paper} $\rightarrow$ \textbf{Balloons} $\rightarrow$ \textbf{Text Bar} $\rightarrow$ (optional) \textbf{PaperWithText} in \texttt{CONGETS}.
+
+\subsection{Animation Logic by Element}
+For each element we summarise: (1) description \& animation, (2) algorithm, (3) demo picture.
+
+\subsubsection*{\textbf{Sky \& Clouds}}
+(1) Gradient sky with three drifting cloud layers (left-to-right). (2) Layered wrap-around drift with parallax speeds; clouds are billboard ovals composing soft clusters. (3) The implementation is shown in Fig.~\ref{fig:sky_clouds}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\linewidth]{statics/Sky with clouds.png}
+  \caption{Sky with multilayer clouds.}
+  \label{fig:sky_clouds}
+\end{figure}
+
+\subsubsection*{\textbf{Sun}} 
+(1) Radiant sun that rotates and breathes. (2) $N$ equally spaced rays with rotating angle and sinusoidal length modulation (see Sec.~II-B). (3) The parametric sun design is illustrated in Fig.~\ref{fig:sun}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{statics/Parametric Sun.png}
+  \caption{Parametric sun.}
+  \label{fig:sun}
+\end{figure}
+
+\subsubsection*{\textbf{Ground}} 
+(1) A soft green strip establishes the lawn baseline. (2) Single quad spanning the bottom 140\,px; draws before mid-ground geometry. (3) The ground strip rendering is shown in Fig.~\ref{fig:ground}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.88\linewidth]{statics/Ground Strip.png}
+  \caption{Ground strip.}
+  \label{fig:ground}
+\end{figure}
+
+\subsubsection*{\textbf{Central Building}} 
+(1) Landmark composed of polygonal parts; seams are \emph{sealed} by over-stroking selected edges. (2) Triangulated facets in model space scaled to window; a seam list is stroked with a few pixels thickness to hide sampling gaps. (3) The polygonal building structure is depicted in Fig.~\ref{fig:building}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.88\linewidth]{statics/Central Building Polygons.png}
+  \caption{Central building polygons.}
+  \label{fig:building}
+\end{figure}
+
+\subsubsection*{\textbf{Trees}} 
+(1) A small forest of simple shapes in mid-ground. (2) Instanced draw with per-tree transforms (position/scale), ordered back-to-front for correct overlap. (3) The three different tree styles are presented in Fig.~\ref{fig:trees}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{statics/trees_three_styles.png}
+  \caption{Trees.}
+  \label{fig:trees}
+\end{figure}
+
+\subsubsection*{\textbf{Grass Field}} 
+(1) One or more animated grass patches with wind sway. (2) Each patch owns $B$ blades, each a $S$-segment polyline perturbed by $\Delta x(y,t)$ (Sec.~II-B). Parameters include amplitude, speed, direction, and color. (3) The wind-swaying grass implementation is demonstrated in Fig.~\ref{fig:grass}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\linewidth]{statics/grass patchs.png}
+  \caption{Grass patches.}
+  \label{fig:grass}
+\end{figure}
+
+\subsubsection*{\textbf{Paper}} 
+(1) A clickable, rounded-rect card in the center foreground; entering \texttt{CONGETS} is triggered by clicking inside it. (2) Drawn with fill + thin border; AABB hit test $(x,y)\in[x_0,x_0+w]\times[y_0,y_0+h]$. (3) The clickable paper element is shown in Fig.~\ref{fig:paper}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\linewidth]{statics/clickable paper.png}
+  \caption{Clickable paper.}
+  \label{fig:paper}
+\end{figure}
+
+\subsubsection*{\textbf{Balloons}} 
+(1) Random balloons rise from clicks on the background; off-screen balloons are removed. (2) One-way vertical motion with gentle lateral oscillation and a life-state (\emph{alive}/culled). (3) The balloon animation effect is illustrated in Fig.~\ref{fig:balloons}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\linewidth]{statics/balloons.png}
+  \caption{Balloons.}
+  \label{fig:balloons}
+\end{figure}
+
+\subsubsection*{\textbf{Text Bar}} 
+(1) A bottom banner showing simple stroked text; updates every frame. (2) Uses GLUT stroke fonts with per-frame color/time modulation. (3) The text bar rendering is displayed in Fig.~\ref{fig:textbar}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\linewidth]{statics/TextBar.png}
+  \caption{Text bar.}
+  \label{fig:textbar}
+\end{figure}
+
+\subsubsection*{\textbf{PaperWithText} (CONGETS only)} 
+(1) A formatted poster with a headline and body text; click outside to return. (2) Typeset by computing margins, line width, and stroke scaling; optional ribbon can overlay. (3) The CONGETS scene layout is presented in Fig.~\ref{fig:paperwithtext}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\linewidth]{statics/PaperWithText.png}
+  \caption{PaperWithText scene.}
+  \label{fig:paperwithtext}
+\end{figure}
+
+\subsection{Keyboard and Mouse Controls}
+\paragraph*{Description} Keyboard hotkeys provide program-level actions; mouse clicks drive scene transitions and spawn balloons. Left or right click on the background creates a balloon; clicking the paper toggles into the text scene; clicking anywhere \emph{outside} the poster returns to the background.
+
+\begin{table}[H]
+\centering
+\caption{Keyboard \& Mouse Interaction Summary}
+\label{tab:controls}
+\begin{tabular}{@{}llp{4.2cm}@{}}
+\toprule
+\textbf{Input} & \textbf{Context} & \textbf{Effect} \\\midrule
+\texttt{q} & Global & Quit the program.\\
+\texttt{r} & Global & Reset/reseed the clouds.\\
+L/R Click (background) & \texttt{BG\_ONLY} & Spawn a rising balloon at the click $x$.\\
+L/R Click (paper) & \texttt{BG\_ONLY} & Enter \texttt{CONGETS} (show poster).\\
+L/R Click (outside poster) & \texttt{CONGETS} & Return to \texttt{BG\_ONLY}.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Runtime Demonstration}
+\subsection{BG\_ONLY Mode}
+\paragraph*{(a) Description and Animation Logic}
+The background scene continuously animates the sky, sun, trees and grass. The paper remains clickable. User clicks on the background generate balloons that rise and get culled when exiting the screen. The bottom text bar renders every frame.
+
+\begin{table}[H]
+\centering
+\caption{Typical Interactions in \texttt{BG\_ONLY}}
+\label{tab:bgonly_demo}
+\begin{tabular}{@{}p{2.1cm}p{5.5cm}@{}}
+\toprule
+\textbf{Action} & \textbf{Observed Behaviour} \\\midrule
+Idle & Clouds drift; sun rotates/pulses; grass sways; text bar updates.\\
+Click background & A new balloon appears and starts rising; stale balloons are culled.\\
+Click paper & Transition to \texttt{CONGETS}; poster is shown.\\
+Press \texttt{r} & Clouds reset positions/seeds.\\
+Press \texttt{q} & Program exits.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Wide screenshot showing BG_ONLY mode
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{statics/BG_ONLY mode overview.png}
+  \caption{BG\_ONLY mode overview.}
+  \label{fig:bg_overview}
+\end{figure}
+
+\subsection{CONGETS Mode}
+\paragraph*{(a) Description and Animation Logic}
+In CONGETS mode, the formatted poster with congratulatory text is displayed over the background. The poster contains a headline and body text rendered using GLUT stroke fonts. Users can click anywhere outside the poster to return to BG\_ONLY mode. The background animation continues to run underneath the poster overlay.
+
+% CONGETS mode demonstration showing the formatted poster
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\linewidth]{statics/PaperWithTextScene.png}
+  \caption{CONGETS mode demonstration with formatted poster.}
+  \label{fig:congets_demo}
+\end{figure}
+
+\section{Performance Analysis and Discussions}
+\subsection{Frame Rate and Timing}
+Rendering is timer-driven at 16\,ms per tick ($\approx 60$\,Hz). Fixed-function draws (quads/lines/polylines) are lightweight; the primary costs scale with the number of blades, balloons and clouds. The per-frame complexity is roughly linear in entity counts $O(B + N_{\text{balloons}} + N_{\text{clouds}})$. Double buffering and multisampling improve visual quality at negligible CPU overhead on modern machines.
+
+\subsection{Visual Quality vs. Cost}
+Anti-aliased stroke text and multisampling produce clean edges. Grass sway and cloud parallax add depth while keeping geometry simple. Seam sealing on the building hides polygon cracks at scale 1.0, avoiding \emph{z}-fighting or sampling gaps.
+
+\subsection{Numerical Stability}
+Time is accumulated in a single precision float; for long sessions, periodic re-basing (e.g., subtracting an integer number of seconds) can reduce drift. Trigonometric updates remain stable at the target rate.
+
+\subsection{Profiling \& Optimisation Ideas}
+Batching cloud sprites per layer and limiting maximum alive balloons cap worst-case cost. If needed, grass segments can be reduced on low-end machines. Future work could port hot paths to VBO/modern OpenGL for further efficiency while preserving the current API.
+
+\subsection{Maintainability and Extensibility}
+The code separates concerns: entities encapsulate state and a \verb|render| method; the scene controller orchestrates order and interaction; callbacks are short and declarative. New elements (e.g., fireworks) can be added as another drawable with minimal coupling. Configuration structs (colors, speeds, counts) make it straightforward to tune visuals without touching logic.
+
+\section{Conclusion}
+We presented a compact, maintainable, and visually pleasing interactive card with a clear event-driven architecture. The scene layers, parametric animations and simple interactions achieve an engaging effect while keeping the implementation approachable and extensible.
+\end{document}
