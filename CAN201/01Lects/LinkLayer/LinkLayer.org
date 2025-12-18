@@ -1,0 +1,419 @@
+* LinkLayer
+** Intro:
+- *nodes*: hosts, routers, etc
+- *links*: the communication channels that connect two nodes (wireless or wired)
+- *link protocols*: rules that govern how data is transmitted over a link (e.g., Ethernet, Wi-Fi)
+the link layer only response for current hop: send a datagram from one node to another node
+
+** The Context in the whole Network:
+cuase' the link layer only response for how to send the datagram from one to another node,
+in the network like node1 --wifi--> node2 --ethernet--> node3,
+- the links might be different in different hops
+- different link provides different services, 
+
+for the network layer, it just response for path selection and forwarding.
+
+** Services Provided by Link Layer:
+*** Framing + Link Access:
+- framing + link access: encapsulate *datagram* into *frame*, adding header / trailer
+- there will be MAC address in the frame header to identify the sourcce / destination nodes
+  - the ip is used to find the destination node in the network layer, and mac address is used to find the destination node in the link layer
+*** Reliable Delivery:
+the link layer can provide reliable transportaion 
+- but! due to different link protocols, the reliable delivery is not guaranteed on
+  - low delay tolerance link and low bit error rate (e.g., fiber optic)
+  - the wifi link has high bit error rate, so consider the raliable transportation more ususally
+- fast comprehension:
+  - end-to-end reliability: we can use TCP for reliable delivery
+  - link-layer reliability: (wifi...):
+    fix the frame on the high error rate link, reduce the end-to-end retransmission delay
+
+*** Flow Control:
+- the link layer can also response for the flow control 
+  pacing between adjacent sending and receiving nodes
+
+*** Error detection / correction:
+- Error detection:
+  the recieving node can detect the error and request retransmission
+- Error Correction:
+  stronger, the recieving node can correct the error without requesting retransmission
+*** Half-duplex vs Full-duplex:
+- Half-duplex: both sides can send or receive, but can not do both at the same time
+- Full-duplex: both sides can send and receive at the same time
+
+** Error Detection Correction (EDC):
+*** definition:
+EDC: error detection and correction bits: (eg. redundancy bits)
+D: data protected by error checking
+
+the whole pipline like this:
+tx: datagram [D][EDC] -> bit-error prone link -> rx datagram [D'][EDC'] -> all bits in D' OK? 
+NO -> detect error
+YES -> datagram
+
+noted that detection not 100% available 
+- protocol may miss some errors, but rarely
+- larger EDC field yields better detection and correction 
+*** Partity Check:
+**** Single bit parity:
+- even parity:
+  - sender: set parity bit so there is an even number of 1s in the data + parity bits
+  - recv: check the number of 1s in the data and parity bits are even or not.
+- odd parity:
+  - sender set parity bit so there is an odd number of 1s in the data + parity bits
+  - recv: check the number of 1s in the data and parity bits are odd or not.
+- drawbacks: when there are 2 bit errors, then the parity check still will recognize the error data as correct.
+**** 2-D parity:
+[[./statics/graphics/2dParity.png]]
+2d:  
+- add rows and colum parity bits
+- detect and correct single bit errors without retransmission
+- if one bit error there, it can locate the error bit using the coincident of error line idx and error col idx;
+  the fig below depict how it works:
+[[./statics/graphics/2dParityCorrection.png]]
+*** Checksum:
+detect errors (eg. flipped bits) in transmitted segment
+**** sender
+- treat the contents of UDP segment (including UDP header fields and IP address) as sequence of 16-bit integers
+- checksum: addition (one's complement sum) of segment contents
+- checksum value put into UDP checksum field
+**** Receiver
+- compute checksum of received segment
+- check if computed checksxum equals checksum field value:
+  noted that when equal, no error detected, but not guranteed no error
+**** Example: checksum calculation:
+#+BEGIN_text checksumExample
+1 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0
+1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1
+-------------------------------
+1 0 1 1 1 0 1 1 1 0 1 1 1 0 1 1 + 1 (wraparound)
+-------------------------------
+1 0 1 1 1 0 1 1 1 0 1 1 1 1 0 0
+---- convert to complement ----
+0 1 0 0 0 1 0 0 0 1 0 0 0 0 1 1
+#+END_text
+
+*** CRC (Cyclic Redundancy Checks):
+- powerfull error-detection coding
+- widely used in practice: ethernet, wifi, etc
+- all CRC calculations aerdone in modulo 2 arthmetic (no carries, no borrows)
+- modulo-2 Arithmetic:
+  - Addition = Subtraction = XOR
+    #+BEGIN_text True Table Of AdditionOps in modulo-2 Arithmetic
+    | value | 1     | 0     |
+    | ----- | ----- | ----- |
+    | 1     | False | True  |
+    | 0     | True  | False |
+    #+END_text
+- Key Concepts:
+  - D: Data: data bits (given, think of these as a binary number)
+  - G: Bit Pattern (generator): of r+1 bits (given, specified in CRC standard)
+    the CRC standard defines the generator polynomials for different CRC variants
+    and ends should follow the standard so that the verrification can work properly. 
+- Sender: Given D and G(r + 1) bits, append r bits R such that D x 2ʳXOR R is devisible by G (mod2)
+- receiver: known G, deivide <D, R> by G. if remainder not equal to 0, error detected!
+  - can detect single-bit-error, double bit erorr, all burst erorrs less than r + 1 bits 
+  - widely seds in practice
+**** Formula:
+[[./statics/graphics/CrcFormula.png]]
+
+**** Example:
+Data: 1101011011
+Generator: 10011
+rule: append r zeros to the tail of data, where r is len(gen) - 1 = 4
+
+- step1: append 4 zeros to the data
+  #+BEGIN_text step1
+  11010110110000
+  #+END_text
+
+- step2: 
+   modulo-2 long division of data by generator
+  enumerate the data (not including the appended zeros) by bit, when encounter 1, XOR the following bits with the generator
+  when encounter 0, do nothing (XOR with 0s)
+  #+BEGIN_text step1
+  11010110110000
+  #+END_text
+  - step 2.1: 
+  #+BEGIN_text step2.1
+  11010110110000
+  ^
+  10011
+  --------------
+  01001110110000
+  #+END_text
+
+  - step 2.2:
+  #+BEGIN_text step2.2
+  01001110110000
+   ^ 
+   10011
+  --------------
+  00000010110000
+  #+END_text
+
+  - step 2.3:
+  #+BEGIN_text step2.3
+  00000010110000
+        ^
+        10011
+  --------------
+  00000000101000
+  #+END_text
+
+  - step 2.4:
+  #+BEGIN_text step2.4
+  00000000101000
+          ^
+          10011
+  --------------
+  00000000001110
+  #+END_text
+
+hit the end of data(not includin the appended zeros), the remainder is 1110
+we append the remainder to the original data to form the transmitted frame:
+*1101011011 | 1110*
+
+** Multiple Access Links, Protocols:
+*** Intro:
+there are two kinds of links:
+- point-to-point link: 
+  a line or a logic link links two devices (nodes).
+- Braodcast / Shared Medium
+  a bunch of devices (nodes) share the same communication channel;
+  e.g. the old school iternet, wifi
+  - issues: 
+    1. the broadcast will cuase collisions when two nodes send data at the same time
+
+therefore there is a rule: Multiple Access Protocols (multiple access control (MAC))
+
+*** Idealized Multiple Access Channel:
+assuming that the shared channel's max Rate is R.
+in idealized multiple access channel:
+- when only one node sending, the speed should be R. (full utilization)
+- when there is M nodes to send, each node can get R/M rate. (fairness)
+- distributed: no special node to coordinate transmissions
+- easy to imple
+
+*** Three kinds of MAC Protocols:
+**** Channel Partitioning Protocols:
+[[./ChannelPartitioning.org]]
+- TDMA (Time Division Multiple Access): time slice based
+- FDMA (Frequency Division Multiple Access): specturm slice based
+
+*feature*
+- low efficiency in low load
+- stable
+
+****  Random Access Protocols:
+[[./RandomAccess.org]]
+
+- ALOHA, ALOHA slotted: send and recv any time, low efficiency
+- CSMA: 
+  - CSMA/CD: Collision Detection 
+  - CSMA/CA: Collision Avoidance
+
+*feature*
+- high efficency in low load;
+- high load result in probablity of collisions increase;
+
+**** TakingTurns Protocols:
+[[./TakingTurns.org]]
+Token Passing, Polling
+
+*feature*
+- high load: stabler then random access;
+- low lad: less waste, but require the extra ost of take turn machinism;
+
+
+** LAN:
+*** Intro & Definition:
+- IP address (32-bits): 
+  used for internet layer forwarding (routing), 
+  guiding the transportation throught multiple hops
+  (like the post address)
+- MAC Address (48-bits):
+  - within the local network send the frame from one interface to another interface
+  - each network card in the LAN has its unique 48-bits MAC address, and a local IP
+  - the distribution of MAC is controlled by IEEE, the factory will buy out a MAC address
+  - like ID of device (fixed)
+*** APR (Address Resolution Protocol): 
+- store in the cache
+- store the projection data like <IP, MAC, TTL>. 
+- will forgot the item after TTL Timeout (usually 20 minutes)
+  
+each host/router has APR table, 
+
+**** Procedure of ARP within the same LAN (Local Area Network):
+0. assuming that we got host A and B in the same LAN, and A want to send datagram to B without B's MAC address info in current ARP table;
+1. A will send a *ARP broadcast Query*
+   - Destination MAC address: FF:FF:FF:FF:FF:FF (broadcast specific MAC address)
+   - all the nodes on the LAN will recv this query
+2. B recv the query, then reply an *ARP unicast Reply* to A
+   - Destination MAC address: A's MAC address
+   - content: B's MAC address
+3. A will store <B_IP, B_MAC, TTL> into its ARP table
+
+**** Procedue of ARP accross different LANS;
+0. A, B are not in the same LAN; A got the folowing infos:
+   - B's IP
+   - B's first hop's router(R)s IP
+   - R's MAC
+1. A' will send the msg to B like
+   - IP header: B's IP
+   - the desti MAC in the frame: R's MAC 
+     (the first hop will depend on the router R)
+
+*** Ethernet (以太网):
+**** Intro:
+previous: bus:
+- easy to collite;
+current: switched
+- each Spoke is a unique end-to-end link;
+- each node will not happed collisions when sending data;
+**** Frame' structure;
+the network board will send the following structure frame when sending data;
+- Destination Mac Address (6 bytes)
+- Source MAC: the sender's MAC address (6 bytes)
+- Type(Length): protocol type (almost IP, but something else also possible) (2 bytes)
+- Payload: the data to be sent (46-1500 bytes)
+- Preamble: used to synchronize the receiver's clock (7 bytes)
+- CRC: cyclic redundancy check for error detection (4 bytes)
+
+**** When recving:
+if the destination MAC is node itself or MAC is broadcast MAC, 
+then process the paylaod throught internet layer, 
+1. remove the ethernet header and tail, only reamain the IP pkg (IP header + Payload);
+2. if recved ip is fragmented, reassemble the fragments;
+3. check the TTL
+4. if the host is router: 
+   - check the roouting table to get the next hop;
+    if no router -> ICMP destination unreachable message back to the sender;
+   - rememeber to decrease the TTL by 1;
+5. deliver to the upper protocol layer: (TCP, UDP, ICMP ...)
+   let the transport layer process the IP payload;
+6. if the next's hop MAC is required. the host will use ARP (IPV4) or ND (IPV6) to get the next hop's MAC address;
+else drop the frame directly.
+
+**** Ethernet's Service model:
+- connection less: 
+  assuming that network board A want to send data to network Broad B:
+  A will not establish a connection with B before sending data;
+- unreliable:
+   NO ACK / NAK after receving data;
+  not maintain the sequence, the upper protocol layer (TCP) will handle the reliability;
+- Bus era MAC protocol: CSMA/CD:
+  listen first, then send; if collision happend, backoff exponentially and retry;
+** Switches 
+*** Role
+switch is a link-layer device: takes and active role
+1. Store, forward Ethernet Frames;
+   it stores the incoming frame in buffer, then forward the frame to the destination MAC or port;
+2. Examine incoming frame's MAC address, selectively forward frame to one-or-more outgoing links 
+   when frame is to be forwarded on segment,
+   uses CSMA/CD to access segment;
+   send the data according to the switch table;
+   - forward the frame according to the MAC address;
+3. transparent / plug-and-play / self-learning:
+   teh host does not fell the existence of the switch;
+   the switch will learn the MAC and learn the switch table by itself;
+*** Multiple Simultaneous Transmissions:
+- each link are dedicated direct connection;
+- each link is its own collision domain;
+- each link can be full-duplex;
+- each link are parrallel;
+noted that it is not fully parrallel wehn two hosts sned data to the same host at the same time;
+like (A -> C and B -> C), C need to queue the frames and process them one by one;
+
+*** Switch Table:
+there is a switch table in the switch to store the mapping between MAC address and the port (interface)
+<MAC, interface/port, Time Stamp>
+
+- learning machinism: 
+  record the source MAC of each incoming frame along with the port it arrived on;
+  
+- learning example: A want to send msg to B
+  1. A send frame to switch S;
+     switch S record <A_MAC, port1, TimeStamp> into the switch table;
+  2. the S is required to find out the port of B. but it does not known B's port yet;
+     so S will broadcast (flood) the frame to all the ports except port1;
+  3. B recv the frame then reply an ACK frame to A through S:
+     S will also record the <B_MAC, port2, TimeStamp> into the switch table;
+  in this stage, teh switch has add A adn B in to its switch table;  
+*** Frame Filter / forwarding rule:
+it can be compreheneded as the differences between the switch and hub;
+- hub: broadcast all the frame.
+- switch: 
+  - learn the <SRC_MAC, SRC_port, timestamp> in the income frame
+  - find the destination port of frame target
+    - if found: then forward the frame
+    - if not: broadcast (flood) the frame except the src port.
+    - if found to be the SRC: drop the farme
+      
+*** Issue: Broadcast Storm:
+- the switchers ca nbe connected like a tree;
+- but as switchs connect to the circle structure:
+  - the broadcast frame will be send align the circle and branchs, 
+    and be sent circle and circle.
+- solution: 
+  - STP
+  - RSTP
+    
+*** Switch VS Router: 
+- both store and forward
+- Router: 
+  - network layer
+  - IP based
+  - routing algorithm -> routing table
+- Switch: 
+  - link layer
+  - MAC based.
+  - flooding + learning -> switch table
+** VLAN:
+**** motivation:
+- separate the traffic in the same switcher / network
+- move node: only require to change VLAN, not requiring changing port and line
+- simplier management: group the nodes by department or role instead of the physical position
+  
+*** Grouping: (Port-based VLAN)
+- switch will allocate some port to VLAN1, some other ports to VLAN2
+- the port in the same VLAN just like in the same virtual switch / LAN
+*** Communication Accoss or not the VLAN:
+- Same VLAN: A and B share the same subnet/VLAN; the switch only does Layer‑2
+  forwarding via its MAC table. Path is simply A → access switch (same VLAN) →
+  B. No routing happens.
+- Different VLANs: A and B are in different subnets/VLANs, so a Layer‑3 device
+  is required (router or multilayer switch). The packet experiences two L2
+  hops and one L3 decision—not “three forwardings” or a “new switch”. Typical
+  flow:
+  1. A sends to its default gateway on VLAN10 (e.g., 10.0.10.1); switch
+     L2‑forwards to the gateway.
+  2. The gateway routes from VLAN10 to VLAN20 (or subinterface), rewrites
+     source/dest MAC, keeps IPs as A→B.
+  3. Frame enters VLAN20; switch L2‑forwards to B.
+*** Multiple Switchs for single VLAN
+- when a VLAN has to accross multiple Switchers,
+  the links between the switchers must support multiple VLANs
+- *Solution*:
+  thunk port: label the frame by "VLAN" so that the switcher known that
+  which VLAN this fram belongs to;
+  
+** Data Center Network:
+*** Structure:
+**** Hierarchical Structure Part:
+- Rack (机架)
+- ToR (Top of Rack) switch: 
+  each rack has a ToR switch, use switch to connect the server in the rack;
+- Tier-2 Switchs: 
+  multiple ToR switchs connect to a Tier-2 switch;
+- Tier-1 Switchs:
+  Multiple Tier-2 switchs connect to a Tier-1 switch;
+**** Communication Part:
+- outside world to inner world:
+  - Load Balancer -> Firewall -> Router -> Internet
+  - Load Balancer: distribute the traffic to multiple servers;
+  - Border router: connect to the internet;
+  - Access router: connect to the inside data center network;
+
+  
+

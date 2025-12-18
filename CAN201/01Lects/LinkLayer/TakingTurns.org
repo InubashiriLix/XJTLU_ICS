@@ -1,0 +1,28 @@
+* Taking Trurns:
+** Key Idea: 
+Polling the nodes one by one to see if they have data to send.
+- there is usually an AP or master to control;
+
+** Pros:
+- basically no collision;
+- fair and controlable;
+** Cons:
+polling costs;
+control is single point of failure;
+polling delay;
+
+** Token Passing:
+- send only when holding the token;
+- pass the token to the next node after sending;
+
+*** Pros:
+- less collisions;
+- fair, distributed control;
+*** Cons:
+token lost/restore;
+cost of passing token;
+topology limitation and complecity;
+
+** Summary
+- high load: stabler then random access;
+- low lad: less waste, but require the extra ost of take turn machinism;

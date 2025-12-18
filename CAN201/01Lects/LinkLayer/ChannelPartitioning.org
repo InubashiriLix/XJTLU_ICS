@@ -1,0 +1,28 @@
+* Channel Partitioning Protocol:
+** Core Idea:
+partition the channel into several parts. each node can get one part, fairness;
+
+** TDMA (Time Division Multiple Access):
+- times are sliced into slots;
+- each node's distribution is fixed to get multiple or single slot.
+- each node can only send data in its own time slot.
+*** Pros:
+- Almost no collisions;
+- Stable in high load;
+*** Cons:
+- low efficiency in low load:
+  node can not send data even the other nodes are idle;
+  (unless dynamic slot allocation is used, but it is complex)
+- need time synchronization among nodes;
+** FDMA (Frequency Division Multiple Access):
+*** Key Idea:
+- chop the Spectrum into multiple frequency bands;
+- each node gets one band to send data;
+*** Pros:
+- Almost no collisions;
+- Stable in high load: each node takes its own frequency band;
+*** Cons:
+- low efficiency in low load:
+  node can not send data even the other nodes are idle;
+  (unless dynamic slot allocation is used, but it is complex)
+- need complex spectrum segmnetation design;

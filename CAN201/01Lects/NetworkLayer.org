@@ -1,0 +1,11 @@
+* NetworkLayer
+** Functions:
+- Routing:
+  determine route taken by packets from source to destination -> control plane
+  [[./NetworkLayer/ControlPlane.org]]
+- forwarding:
+  move packets from route's input to appropriate output -> data plane
+  [[./NetworkLayer/DataPlane.org]]
+
+
+

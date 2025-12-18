@@ -1,0 +1,84 @@
+* Random Access Protocols:
+*
+** Key Idea:
+- how to decrease the collisions
+- how to restore after collisions
+
+** ALOHA Protocol: (naive version)
+- no pre-allocate resorce, the nodes send data immediately when they have;
+- if collision, happeds, then the nodes wait for a random amount of time, then resend the data;
+*** Cons:
+- the max *throughout* is low *18.4*;
+- for *slotted ALOHA*, the max *throughout* is improved to *36.8%*; still bad;
+
+** CSMA (Carrier Sense Multiple Access) Protocol:
+*** Key Idea:
+- each node will listen to the channel before sending data;
+- if the channel has been idle for a period of time, then the node can send data;
+  else, the node will defer for a while.
+
+*** Collision Case:
+the CSMA will still collide: Propagation delay;
+- as A start to send data, B still not detected the change (still in Propagation delay);
+- B thinks the channel is idle, then B starts to send data;
+- Collision happens;
+*** Solutions against Collision:
+- 1-persistent:
+  send immediately when the channel is idle;
+- non-persistent:
+  if not idle, wait for a random amount of time, then check again;
+  *drawbacks*: stable but high delay;
+- p-persistent:
+  send with propability p when the channel is idle;
+  else, wait for the next time slot and check again;
+
+** CSMA/CD (Rare Currently):
+
+*** Key Idea:
+if the channel 
+- empty: send;
+- buzy: defer;
+*** Collision Detection:
+do sending and monitoring at the same time;
+collision happens: 
+- stop sending immediately (not restore entire frame to saving resources);
+  - wait algorithm: exponential backoff;
+    - collision count = 1:
+        retry randomly in [0,1] * slot_time;
+    - collision count = 2:
+      randomly in [0,3] * slot_time;
+    - collision coutn = k:
+      randomly in [0, 2^k -1] * slot_time;
+  *Delay Limit*: there is a upper limit for dealy;
+
+*** Notes:
+- why CSMA/CS is rare currently?
+  the internet now are consists with switchs and full-duplex links;
+  - each link is point-to-point;
+  - sending and receiving can haaped at the same time;
+  - no collisions;
+
+** CSMA/CA (Rare Currently):
+- usage: WiFi (802.11);
+- why not CSMA/CD?
+  - the sending power is much higher than receiving power;
+    - when sending, the device can not detect the channel status correctly;
+  - hidden terminal problem:
+    the two nodes can not hear each other, but can hear the AP;
+    [[./statics/graphics/HiddenTerminalProblem.png]]
+
+*** Key Idea:
+- listen the channel before sending;
+- if empty:
+  - wait for a DIFS (Distributed Inter-Frame Space) time;
+  - defer for a random backoff time;
+  - countdown the backoff time when the channel is idle;
+- the recv node will reply ACK msg;
+- RTS/CTS to reduce the hidden terminal problem:
+  - RTS: Request to Send;
+  - CTS: Clear to Send;
+
+** For CSMA:
+high efficency in low load;
+high load result in probablity of collisions increase;
+
