@@ -1,0 +1,404 @@
+* Control Plane:
+- belongs to Network Layer
+- determine route taken by packets from source to destination -> control plane
+** AS: Autonomous Systems and protocols (Hierarchical OSPF)
+- Intro: Issue
+  - as no world idealized:
+     we want all the router identical, and make network flat
+    - scalability issue: 
+      there are billions of destinations
+      you can't store all the destination in routing tables.
+      and exchanging link-state or DV informatoin would swamp links.
+- Solution: *Administrative Autonomy* ("Autonomous System (AS)")
+  - make internet a network of networks
+  - each network admin may want to control routing in its own network.
+- Internet Approch to Scalablue Routing
+  Aggregate routers into region called "Autonomous System (AS)"
+
+***  Autonomous System (AS, aka. domains)
+- definition: An autonomous system is a system that can sense, decide, and act by itself without continuous human control. 
+  suppose we have many AS, noted by AS1, AS2 ... ASn
+
+**** Intra-AS (aka. "intra-domain")
+routing among routers within same AS ("network")
+- same intra-domain protocol for all routers within the same AS
+- different AS, different intra-domain protocol
+- gateway router: connect different AS'es
+
+***** *tasks*
+- recieve datagram from outside AS:
+  - requires: AS1 must learn which destination are reachable throught AS2
+    which through AS3
+  - requires: propagate this reachability info to all routers in AS
+  - these requires depend on inter-AS routing protocol
+    -> routing within AS:
+
+***** Routing within AS: routing protocols
+****** RIP: Routing Information Protocol [RFC 1723]
+  - classic DV: DVs excahngeed every 30 seconds
+  - no longer widely used
+
+****** OSPF: Open Shortest Path First [RFC 2328]
+  *features*:
+  - open: publicly available
+  - classic link-state:
+    - each router floods OSPF link-state advertisement 
+      (directly over IP rather then TCP / UDP)
+      to all othere routers in entire AS
+    - multiple link costs metrics possible (bandwidth, delay, etc)
+    - each router has full topology, uses Dijkstra's algotithm to compute shortest path to all destinations
+  - security: 
+    all OSPF messages authenticated.
+*briefly*:
+- classic link-state routing
+- IS-IS protocl (ISO standard, not RFC standard) essentially same as OSPF
+
+****** Hierarchical OSPF
+[[./statics/graphics/HierarchicalOSPF.png]]
+- two-level hierarchy:
+  - local area, backbone
+  - link-state advertisement flooded with area, or backbone
+  - each node has detailed area topology; only knows diretion to reach other destinations (AS)
+
+- the Area Border Router (ABR):
+  connect the local area to the backbone
+  it will summarize the cost to other area, and send to backbone.
+- the Backbone Router:
+  only run te backbone OSPF
+  link the area together
+- Boundary Router:
+  connnet to other AS 
+  rec and send info to other AS
+
+to be brief:
+AS is still too big: solution: OSPF hierarchical OSPF:
+routers -> ABR -> backbone -> other area -> routers
+backbone -> Boundary router -> other AS
+
+****** EIGRP: Enhanced Interior Gateway Routing Protocol
+- DV based
+- becomes open in 2013 [RFC 7868]
+
+**** Inter-AS (aka. "inter-domain")
+gateway perform inter-domin routing (as well as intra-domain routing)
+
+*** Interconnected ASes
+for each router in the AS has:
+- intra-AS routing table (algorithm)
+  determines entries for destination within AS
+- inter-AS routing table (algorithm)
+  entries for external desitinations 
+
+*comprehension*:
+router like resident in the community:
+it has to know how to reach local destinations (intra-AS routing table)
+and it also has to know how to reach outside world (inter-AS routing table)
+
+** Internet inter-AS routing: BSG
+- BGP (Border Gateway Protocol): the de facto inter-domain routing protocol
+- allows subnet to advertise its existence, and the destinations it ccan reach, to rest of the Internet
+  it will glue the AS together;
+- two types of BGP:
+*** eBGP: external BGP
+[[./statics/graphics/eBGPiBGPExample.png]]
+- obtains teh destination reachability information from *neighboring ASes* (eBGP)
+- determine routes to other networks based on reachability infomation and *policy*
+- be brief, it support the ASes to communicate with each other
+- noted that the eBGP and iBGP often run on the same router
+**** BGP session:
+[[./statics/graphics/BgpBasic_Session.png]]
+two BGP routers ("peers", "speakers") exchange BGP messages over semi-permanet TCP connection
+- semi-permanent TCP Connection
+- msg: advertising paths to different destination network prefixes. 
+  (e.g. to a destination /16 networks)
+- BSG is a path vector protocol
+- when AS3 gateway 3a advertises path AS3, X to AS2 gateway 2c:
+  - AS3 *promises* to AS2 it will forward datagrams toward X
+
+- A *promise* represents the eventual completion or failure of an asynchronous
+    operation.
+  - It can be in one of three states: pending, fulfilled (resolved), or
+    rejected.
+  - Promises allow attaching callbacks for success (.then) and failure (.catch).
+  - They enable chaining asynchronous operations more cleanly than callbacks.
+  - Once settled, a promise’s state and value/error are immutable.
+**** BGP's protocol messages
+- BGP messages exchange between peers over TCP connection 
+  - Open: 
+    opens TCP connection to remote BGP peers and authenticates sending BGP peer
+  - Update: 
+    advertises new path (or withdraw old)
+  - KEEPALIVE: 
+    keeps connection alive in absense of UPDATES, 
+    also ACKS the OPEN request
+  - NOTIFICATION: 
+    report errors in previous messages, also used to close connection
+**** BGP's Attributes and BGP Routes
+***** BGP advertises path: prefix + attributes = "route"
+  - prefix: destination being advertised, it is a region like (203.0.113.0/24)
+  - attributes:
+    - AS-PATH: list of ASes throught which prefix advertisement has passed
+      like AS2, AS3 means "to get to the prefix, go through AS2 then AS3"
+      it can prevent the routing loop: if current AS finds its own AS in AS-PATH, it will drop the advertisement
+      it can also be used to selecte route (policy may define the prefered AS path)
+    - NEXT-HOP: indicates internal-AS router that to nex-hop AS
+      the next step, teh next step can be AS (gateway) or router within AS
+  e.g. lets way AS3 has a Network-segment: 10.9.0.0/16
+  then in the AS3 advertises to AS2:
+  - the prefix is 10.9.0.0/16
+  - AS-PATH = AS3
+  - NEXT-HOP = the boundary router 3a's IP address (AS2 should contact to AS3 through router 3a)
+  then in the AS2, AS2 will add its own AS number to the AS-PATH so that it can be advertised to other ASes
+  - prefix: 10.9.0.0/16 (still the destination Network-segment)
+  - AS-PATH = AS2, AS3 (you may want to go through me first to contact the AS3)
+  - NEXT-HOP = AS2's boundary router 2c's IP address (contact 2c to contact me)
+***** Policy-based routing:
+- router recieving route advertisement to destination X uses policy to accept or reject a path (e.g. never route throught AS W, or country X)
+- router uses policy to decide whether to advertise path to neighboring AS Z 
+  well, it is like commercial advertisement:
+  "if you pay me, I will advertise your path to my (some specific) neightbors, else, I can advertise you or not anyway I like": policy
+***** Advertisement Example:
+****** Single Path Advertisement
+[[./statics/graphics/BgpSinglePathAdvertisement.png]]
+if AS2 want to advertise AS3 to AS1:
+then AS1 will publish path:
+- prefix: X,
+- AS-PATH = AS3
+- NEXT-HOP = 3a
+  and then, the AS2 will recieve the published paht from AS3 through 2c by its policy, then it will advertise to AS1:
+- prefix: X
+- AP-PATH: AS2, AS3
+- NEXT-HOP = 2a
+****** Multiple Path Advertisement
+[[./statics/graphics/BgpMultiPathAdvertisement.png]]
+same senario as Single Path Advertisement:
+but AS1 know two path to X:
+AS-PATH1: AS2, AS3 (reach X through AS2)
+AS-PATH: AS3 (directly)
+based on the policy of AS1, AS1 gateway path AS3, X adn advertises path within AS1 via iBGP
+***** Achieving Policy via Advertisement
+[[./statics/graphics/BgpArchievingPolicy.png]]
+the policy enforces x does not want to route from B to C via x
+- so x will not advertise to B a route to C
+
+*** iBGP: internal BGP
+[[./statics/graphics/eBGPiBGPExample.png]]
+- *propagate* reachability information to inner routers (iBGP)
+- *advertise* (to neighboring networks) destinations reachability info.
+- be brief, it support the routers within AS to communicate with each other
+- noted that the eBGP and iBGP often run on the same router
+
+[[./statics/graphics/iBgpPopulatingForwardingTables.png]]
+in the grapphics, if the 1b, 1d want to contact with X
+- first, throght OSPF, 1b should go to X (1c)
+- second, OSPF tells 1b to go through interface 1 in order to get 1c
+  therefore there are two lines new in the forwarding table of AS1:
+  des = 1c -> interface = 1 (1d to 1c's path)
+  des = X -> interface = 1 (when the outside send to X, the datagram should go to 1c through interface 1)
+- That is: BGP show the gateway router, OSPF find the path to gateway router, and write to the forwwarding table. 
+
+***** *Hot Potato Routing*, OSPF and BGP interaction
+****** what is Hot potato Routing?
+inner the AS, when sending, teh AS only find the minimum cost to send the datagram to the nearest gateway router,
+as for the neighboring AS, current AS does not care about.
+
+Just like you're holding a hot potato,
+you just want to throw it to the neaest person as soon as possible,
+no matter how many people it will kill.
+
+*choose local gateway that has least intra-domain cost*
+
+****** Example:
+[[./statics/graphics/HotPotatoRouting.png]]
+look at the picture, we can find out that 2d has serveral ways to raech X:
+AS2 -> AS1 -> AS3 -> X
+AS2 -> AS3 -> X
+but for the cost of other AS, AS2 does not care at all.
+and it will choose the minimum cost path to the nearest gateway router 2d->2a (201) to AS1
+** Reason why using BGP for intra-AS routing and using OSPF for inter-AS routing
+*** Policy:
+inter-AS: OSPF
+- inter-AS admins wants control over how its traffics is routed, and who routes through its network
+  for example, I don't want my neighbor using my network to transport huge files to the other every fucking day. so OSPF! ban this shit!
+  for example, you might not want to encounter exciting R18-G works when you are surfing the internet.
+- intra: single admin, so policy less of an issue:
+  in the same Company, the bussiness works should be done as fast as possible. 
+*** Scale: reducing forwarding table size, routing update traffics
+if the internet is flatten or stupid enough, then the forwarding tbale would flooded the bandwidth
+and so the routing update traffics do
+*solution*: be hierarchical routing, and BGP routing to CIDRized networks
+*** Performance:
+- intra-AS: can focus on performance
+- inter-AS: policy dominates over performance
+
+**  Software Defined Networking (SDN)
+internet network layer: 
+- historically, has been implemented vais distributed, per-router approch
+  like all the monoliithic router contains switch hardware, 
+  runs proprietary implementation of Internet standard protocols (IP, RIP, IS-IS...) in proprietary router OS 
+  different "middleboxes" for different network layer functions: firewall, NAT boxes
+*** Per-router control plane
+[[./statics/graphics/Per-routerControlPlane.png]]
+individual routing algorithm ccomponents in each and every router interact with each other in control plane to compute forwarding tables
+- Traffic engineering Issue:
+  let's say we want to specify the traffic path.
+  then you have to configure each and every router along the path.
+
+*** Logiaclly Centralized Control Plane
+[[./statics/graphics/LogicallyCentralizedControlPlane.png]]
+A distinct (typically remote) controller interacts with local contrl agents (CAS) in routers to compute forwarding tables
+**** Benefitial:
+- Easier network maneagement: avoid router misconfiguration, 
+  greater flexibility of traffic flows
+- Open (non-proprietary) implementation of control plane
+- Table-based forwarding (recall OpenFlow API) flows "programmming routers"
+  - Centralized programming easier; compute tables centrally and distribute
+  - Comparsion: Distributed programming more difficult; 
+    compute tables as result of distributed algorithm (protocols) implemented in each and every router
+
+*** Key Characteristics of SDN Architecture
+[[./statics/graphics/KeyCharacteristicsOfSDNArchitecture.png]]
+1. genralized flow-based forwarding:
+   - tranditional: ip prefix routing
+   - SDN: can source and destiniation IP, port, protocol ... to forward.
+2. control / data plane separation:
+   - the device only reponse for forwarding (data plane)
+   - the controler only response for control and compute rule (control plane)
+3. control plane functions external to switchs:
+   control logic is not in router, but generalized in the switch's software.
+4. programmable control plane.
+   you can imple these using control
+    - routing
+    - access control
+    - load balance
+*** SDN Perspective: SDN Controller
+- Maintains network state inforamtion
+- northbound API: the api to upper web applictions
+  supporting what traffic strategy I want
+- sourthbound API: how to interact with the network devices liks switchers and routers
+  controller will send the rule to the network devices: forwarding table, changing configurations
+
+** Internet Control Message Protocol
+- used by hosts and routers to communicate network-layer information
+  - detect and report the status of target
+  - error reporting: unreachable host, network, port, protocol
+  - echo request/reply: ping
+
+#+BEGIN_text options
+| type   | code | target | desc                                                                                          |
+| ------ | ---- | ------ | --------------------------------------------------------------------------------------------- |
+| ping   |      |        | ping related                                                                                  |
+| 0      | 0    | host   | echo reply (ping)                                                                             |
+| 8      | 0    |        | echo request                                                                                  |
+| type3  |      |        | errors                                                                                        |
+| 3      | 0    | dest   | network unreachable                                                                           |
+| 3      | 1    | dest   | host unreachable                                                                              |
+| 3      | 2    | dest   | portocol unreachable                                                                          |
+| 3      | 3    | dest   | port unreachable (like you send UDP to dest port, but target port not available (no service)) |
+| 3      | 6    | dest   | network unknonw (old)                                                                         |
+| 3      | 7    | dest   | host unknown (old)                                                                            |
+|        |      |        |                                                                                               |
+| 4      | 0    | source | quench (congresion control - not used now)                                                    |
+| router |      |        | router related, like advertisement... currently not used                                      |
+| 9      | 0    |        | route advertisement                                                                           |
+| 10     | 0    |        | route discovered                                                                              |
+|        |      |        |                                                                                               |
+| other  |      |        |                                                                                               |
+| 11     | 0    |        | TTL expired (the msg has hop too much on the router, then router will reply this)             |
+| 12     | 0    |        | bad IP header                                                                                 |
+#+END_text
+
+*** Traceroute and ICMP
+[[./statics/graphics/Traceroute&ICMP.png]]
+
+- TTL (time to Lie)
+  - store in the IP header
+  - each time the msg pass through a router, then the router will minus 1 from TTL
+  - when the TTL reachs 0, the router will drop the packet and return a ICMP time Excceeded ICMP message to the soruce
+
+- *Traceroute*:
+  *traceroute*: show the path from src to dest 
+  - it will send multiple groups of UDP packts with different TTL values, from 1 to n
+    we can find that each hop will send 3 packets with the same TTL values, 3 in the fig. 
+    it is used to measure the RTT (round trip time)
+
+  - packet with TTL = 1:
+    1. the src send 3 UDP packets with TTL = 1 to dest
+    2. when these packets reach the first router, the TTL will be 0, 
+    3. the first router will drop these packets, and reply ICMP Time Exceeded message to src
+    4. as the src receive 3 ICMP messages form the first router, it will known
+       - the first hop is router 1
+       - the RTT from src to router 1
+  - packets with TTL = 2:
+    same with TTL = 1;
+    the src will get the second reouter's address and RTT
+  - packets with TTL = n:
+    Similar with packets TTL = 1, 2 
+
+  *Stopping critiria*: what is the end?
+  - the tracerouter's classical strategy is:
+  - send packets through increasing TTL values with a very high port (like 33434, which is usually not used), through UDP
+  as the TTL gets large enough, the packet will reach the host
+  - the target host will reply with ICMP port unreachable message
+    - Destination Unreachable
+    - ICMP type3 code3
+  - as the src receive the ICMP port unreachable msg, it will known the traceroute has reach the end.
+
+** Network Management: SNMP
+- bullshits:
+  "Network management includes the deployment, integration 
+  and coordination of the hardware, software, and human 
+  elements to monitor, test, poll, configure, analyze, evaluate, 
+  and control the network and element resources to meet the 
+  real-time, operational performance, and Quality of Service 
+  requirements at a reasonable cost."             -- Saydam 1996
+
+
+- core idea:
+  network = devices (router, switch, hosts, firewall, server, AP ...), 
+  and network manager is to make them work stably, can be controlled, fix in time, and control the cost.
+  1. management contains the human resource, software, hardware.
+  2. actions: monitor, test, poll, configure, analyze, evaluate, control
+     1. monitor: check the link status, cpu usage, memory usage ...
+     2. poll: go ask the device's data like interface traffic
+     3. configure: router strategy, VLAN, downsend ACL, firewall rules
+     4. evaluate and analyze: find the congrestion point, error, SLA
+     5. control: limit the traffic, change the routing, etc.
+  3. target:
+     1. fullfill the operational performance
+     2. fullfill the QoS requirement
+     3. reasonable cost
+
+*** Infrastructure for Network Management
+[[./statics/graphics/InfrastructureNetworkManagement.png]]
+1. managing enetity:
+   the Network Management System (NMS), Zabbix, Nagios ... 
+   - go ask the device's status
+   - send control to the device (like arguments, interfaces up/down)
+2. Managed Entities: (Managed decices)
+   - contains the managed objets whose data is gathered into a Management Information Base (MIB)
+   the devices like router, switch, AP, or even the printers, servers
+3. agent:
+   the service / process running on the menaged entity
+   1. convert the stauts in the device to the reable data
+   2. recieve the management msg and reply
+   3. trap in some status 
+
+*** SNMP (Simple network Management Protocol):
+[[./statics/graphics/SNMP.png]]
+**** request / response mode:
+the manager (NMS) send request to the agent then the agent will reply with response using MIB
+**** trap mode:
+in some situations like emergency, the agent will send trap msg to the manager without being requested (fit the emergency situation better)
+**** Message type:
+#+BEGIN_text options
+| Message Type                                 | function                                              |
+| -------------------------------------------- | ----------------------------------------------------- |
+| GetRequest / GetNextRequest / GetBulkRequest | manager to agent: "get me data"                       |
+| InformRequest                                | manager-to-manager: "here's MIB value                 |
+| SetRequest                                   | manager-to-agent: set MIB value                       |
+| Response                                     | Agent-to-manager: value, response to Request          |
+| Trap                                         | Agent-to-manager: infrom manager of exceptional event |
+#+END_text
+**** Message format
+[[./statics/graphics/SNMPProtocolFormat.png]]
