@@ -1,0 +1,48 @@
+* Network Security:
+** What is Network Security?
+*** Confidentiality:
+only sender, intended receiver should "understand" the message
+- sender encrypts msg
+- reader decrypts msg
+*** Integrity:
+sender, receiver want to ensure message *not altered* (in transit, or afterward) witout detection
+*** Authentication:
+sender, recv want to confirm identiry of each other
+*** Access and Availability:
+services must be accessible and available to users
+
+** Principles of Encyrption
+*** The Language of cryptography
+A -> plaintext (original msg) -> KeyA (Encryption) -> ciphertext -> KeyB -> plaintext (decryption algorithm) -> B
+- m: plaintext msg
+- K_A(m): ciphertext, encrypted msg using Key A
+- m = K_B(K_A(m)): decryption of ciphertext using Key B to get original msg m
+
+** Symmetric Key Cryptography
+[[./SymmetricKeyCryptography.org]]
+both side use the same key for encryption and decryption
+
+- Caesar Cipher
+- Monoalphabetic Substitution Cipher
+- DES (Data Ecnryption Standard)
+- AES (Advanced Encryption Standard)
+
+** Public key crypto: 
+[[./PublicKeyCrypto.org]]
+*feature*: no first time shared secret key needed
+have a public key and a private key
+- public key: known to everyone, used for encryption
+- private key: known only to owner, used for decryption
+- RSA Algorithm:
+
+** Comparision Symmetric vs Public Key Cryptography
+#+BEGIN_text options
+| Crypto                  | Con                                                                                                                                                               | Pro  |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| Symmetric crypto        | 1. you have to share the same secret key with another end, 2. requiring safe way to deliver this. 3. N's user sending to each other requiring (N-1)*N shared keys | fast |
+| asymmetric / public-key | 1. slow. computing cost high. 2. still have confirmation and trust issues. 3. length of key, imple hard.                                                          | fast |
+| current solution:       | hybrid encryption: use asymmetric / public-key to establish the safe channnel for symmetric key. then use symmetric key to transport the data.                    |      |
+#+END_text
+
+** Authentication:
+[[./Authentication.org]]

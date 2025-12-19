@@ -1,0 +1,26 @@
+* Symmetric Key Cryptography
+both side use the same key for encryption and decryption
+
+*some ancient cryptographic techniques*
+** Caesar Cipher
+move all the char to some bits down the alphabet
+- simple and stupid
+  
+** Monoalphabetic Substitution Cipher
+- substitute each letter with another letter
+  
+  *Modern Cryptographic Techniques*
+** DES (Data Encryption Standard) (historical):
+- US encryption standard [NIST 1993]
+- 56-bit symmetric key, 64-bit plaintext input
+- block cipher with cipher block chaining
+- how secure is DES:
+  - DES chanllenge: 56-bit-key-encrypted phrase decrypted (brute-force) in less than a day
+  - Weak by modern standards
+- making DES more secure:
+  - 3DES: encrypt 3 times with 3 different keys
+    
+** AES: Advanced Encryption Standard (current):
+- symmetric-key NIST standard, replaced DES (NOV 2001)
+- processes data in 128 bit blocks, key length 128, 192, 256
+- brute-force infeasible for all key lengths
