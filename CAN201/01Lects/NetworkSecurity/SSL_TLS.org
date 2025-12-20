@@ -1,0 +1,100 @@
+* SSL (Secure Socket Layer) / TLS (Transport Layer Security)
+[[./SSL_TLS.org]]
+** what is SSL / TlS?
+- fullfills:
+  - confidentiality / secrecy: the other could not understand the data
+  - integrity: the data has not been altered
+  - authentication: confirm the server's identity
+- SLL located between Appliction Layer and TCP layer
+  Application -> SSL -> TCP -> IP -> Link Layer
+- SSL provide api (lib/interfaces) for application layer to use
+  
+** SSL Phrases:
+1. handshape phrase:
+   use CA/private key to certificate, and exchange a shared secret / master secret
+2. key derivation: 
+   use shared secret to derive session keys
+3. data transfer:
+   chop the *TCP bytes flows* into *segments of records*
+4. Connection closure:
+   use special msg to close the connection, avoiding truncation attack
+   
+** 1. Handshake Phrase:
+1. establish security connection:
+   establish TCP connection first
+2. certificate the server:
+   use CA / public key to certificate the server' identity
+3. send master secret to server:
+   0.1: client sends list of algorithsm it supports, along with client nonce
+   0.2 server choose algorithms from list, sends back: choice + certificate + server nonce
+   0.3 client verifies certificate, extracts servers' public key, generates pre-master-secret, 
+   encrypts with server's public key, sends to server
+   0.4 client and server independently compute encryption and MAC keys from pre-master-secret and nonces
+   1. the client generate a random numner R_C
+   2. client send the R_C to server through server's public key K_S
+   3. server recv and decrypt the R_C using private key
+   4. each side has the same pre-master secret
+      
+** 2. Key Derivation Phrase:
+*** why requiring key derivation? & secret key kinds (in ppt)
+- using the same shared secret for long time is not secure
+- and secret keys can be categorized for different uses:
+    - data direction:
+      - client -> server
+      - server -> client
+    - MAC keys:
+      - client -> server
+      - server -> client
+** 3. Data Transfer Phrase:
+
+*** Fullfills:
+- confidentiality / secrecy
+- integrity
+- -authentication- (has been solved in handshake phrase)
+- avoiding replay attack / sequencing attack
+- Streaming Process:
+  do not require to wait for the entire data to vertify the integrity
+  
+*** MAC (Msg Authentication Code):
+- CRC: detection and correction of random errors happening in the transmission
+- MAC: detection of intentional alteration of the msg
+  
+*** replay attack / fused sequencing attack:
+MAC has "sequence" || "data" attribute
+besides, both side maintain a sequence number for each direction
+when recv a record, check the sequence number
+
+for replay attack:
+each connection has its own random number "nonce" so that the old record in the old conection cannot be used again
+besides, the different nonce leads to different MAC and secret keys.
+
+*** Truncation Attack:
+the man in the middle may terminate the connection early: send TCP FIN early
+TLS use special "close_notify" msg to close the connection properly
+and it may in the MAC:
+MAC = H(Mx, sequence || type || data)
+
+*** Why *record*?
+- the TCP is byte stream oriented, no message boundary
+- TLS will chop the byte stream into records that containing:
+  - length
+  - data
+  - MAC: integrity verificcation label
+    MAC  = H(Mx, sequence || type || data)
+    
+** 4. Connection Closure:
+to prevent the truncation attack, use special "close_notify" msg to close the connection properly
+the close notification should also be verified by keys in MAC
+and MAC has been designed with special type field to indicate the close_notify msg
+MAC  = H(Mx, sequence || type || data)
+
+** Cipher Suites:
+- public-key algorithms:
+  RSA
+- symmetric-key algorithms;
+  DES, 3DES, AES, RC2, RC4;
+- MAC algorithms;
+  
+** ALL: PROCEDURE OF SSL / TLS
+[[./statics/graphics/SSL_whole_procedure.png]]
+[[./statics/graphics/Real_SSL_Procedure.png]]

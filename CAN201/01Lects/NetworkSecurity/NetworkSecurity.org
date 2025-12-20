@@ -46,3 +46,31 @@ have a public key and a private key
 
 ** Authentication:
 [[./Authentication.org]]
+
+** Security of Mail
+[[./MailExample.org]]
+*** *fullfills*:
+- confidentiality / secrecy: the other could not read the mail
+- sender authentication: can confirm the sender of the mail
+- message integrity: confirm the mail has not been altered
+
+** SSL (Secure Socket Layer) / TLS (Transport Layer Security)
+[[./SSL_TLS.org]]
+*** what is SSL / TlS?
+- fullfills:
+  - confidentiality / secrecy: the other could not understand the data
+  - integrity: the data has not been altered
+  - authentication: confirm the server's identity
+- SLL located between Appliction Layer and TCP layer
+  Application -> SSL -> TCP -> IP -> Link Layer
+- SSL provide api (lib/interfaces) for application layer to use
+
+*** SSL Phrases:
+1. handshape phrase:
+   use CA/private key to certificate, and exchange a shared secret / master secret
+2. key derivation: 
+   use shared secret to derive session keys
+3. data transfer:
+   chop the *TCP bytes flows* into *segments of records*
+4. Connection closure:
+   use special msg to close the connection, avoiding truncation attack

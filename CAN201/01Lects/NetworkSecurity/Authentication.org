@@ -1,0 +1,97 @@
+* Authentication:
+** Motivation:
+1. Data origin authentication: confirm the true sendder of the msg
+2. Message Integrity: Confirm the msg has not been altered on its way.
+
+** History:
+*** AP2.0:
+use IP to confirm the sender
+- problem: IP can be spoofed
+*** AP3.0:
+use plaintext password to confirm the sender
+- problem: password can be sniffed and replay by attacker
+*** AP3.1:
+use ciphertext password to confirm the sender
+- problem: palyback attack still possible
+*** AP4.0
+intro the nonce (random number used once)
+- server send a nonce to the user 
+- user use symmetric key to encrypt the nonce and send it back to the user
+- server decrypt the ciphertext: if match the key, confirm the user
+- problem: how to distribute the symmetric key.
+*** AP5.0:
+- Bob send nonce R to Alice
+- Alice use private key K_A to R
+- Bob use publicc key to decrypt the ciphertext and confirm the R so that confirm Alice's identity
+
+- problem:
+  Man-in-the-middle attack possible:
+  Trudy intercept the nonce R from Bob, and tell Alice that she is Bob
+  then swap the key, let both sides think they are talking to the right person
+  -> CA and authentication chain needed
+
+
+** Certificate Authority (CA):
+public key should be trustable, and the certifacte is to verify the public key.
+- bind the Entiry E (someone, server, router) with its public key K_E
+- and use CA's private key to form digital certificate Cert_E
+
+when Alice wants Bob's public key:
+- get Bob's certificate Cert_B first
+- use CA's public key to verify Digital Signiture
+- if pass, then use Bob's public key K_B to communicate with Bob
+
+*** Hash (Message digest)
+a function (message: str) -> list[number];
+input: the msg with any length
+output: fixed length hash value (digits)
+it can also be the figure print or the digest(summary) of the msg
+
+*features*
+- Preimage Resistance:
+  it is hard to use hash to defer the original msg
+- Second Preimage Resistance:
+  given a known msg m1. it is hard to find another msg m2 that hash(m1) == hash(m2)
+- Collision Resistance:
+  it is hard to find two msgs m1 != m2 that Hash(m1) == Hash(m2)
+
+*hash vs internet checksum*:
+- the attackers can easily find another msg with the same checksum
+- but hash cannot. 
+
+*algorithms*
+- MD5 
+- SHA-1 
+- SHA-256
+
+*** MAC vs CA:
+*MAC*: 
+- Data origin authentication
+- Data integrity
+- sender will use symmetric key K to generate MAC code for msg m: MAC = f(K, m)
+  reciever use the same key K to generate MAC' = f(K, m)
+  if the MAC == MAC', confirm the sender and integrity
+
+*CA*: (Powerful)
+- the certifaction can be verify and cannot be faked;
+- reciever can use it to authority to verify the sender's public key
+- the whole procedure is:
+  1. Bob sign the msg with his private key K_B
+  2. Alice use Bob's public key K_B to verify the signiture
+
+*Message digest*: (How to make it slight)
+for the long msg, computing hash can be costing, so
+we apply hash to msg m, then sign the hash with private key to form the digital signiture.
+
+if Bob want Alice believe that the msg is from him:
+1. compute the digest H(m) first
+2. use private key K_B to sign the digest: S = f(K_B, H(m))
+3. bob send (m, S) to Alice
+4. Alice compute the digist H(m)'
+   use Bob's public key K_B to match S to get H(m)
+
+*fullfills*
+- integrity
+- origin authentication
+
+

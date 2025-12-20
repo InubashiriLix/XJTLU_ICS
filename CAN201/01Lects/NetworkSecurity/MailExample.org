@@ -1,0 +1,70 @@
+* Security of Mail
+** requiring:
+- confidentiality / secrecy: the other could not read the mail
+- sender authentication: can confirm the sender of the mail
+- message integrity: confirm the mail has not been altered
+  
+** Confidentiality / Secrecy:
+we use *hybrid encryption* to ensure confidentiality
+reason*:
+- the mail could be big, and public key encryption is slow and computing cost high
+- so we use hybrid encryption:
+  - use symmetric key encryption to encrypt the mail (fast)
+  - use public key to encrypt the symmetric key (passing the key safely)
+    
+Procedure*:
+- for *Sender*:
+  1. generate a ramdom symmetric key K_S
+  2. use K_S to encrypt the *main text* of mail M: C_M = K_S
+  3. use Bob's public key K⁺B to encrypt K_S: E = K⁺B(K_S)
+- for receiver Bob:
+  1. decrypt E using his private Key K⁻B to get K_S: K_S = K⁻B(E)
+  2. use K_S to decrypt the mail's main text part: M = K_S(C_M)
+     
+** Sender Authentication & Msg Integrity:
+noted that for this task, we can prefer not to encrypt the main text of main M
+cause' what we want to confirm is 1. the sender, 2. the msg has not been altered
+Procedure*:
+- for *Sender*:
+  1. get the hash value of the mail text: 
+     h = H(M) (get the digest of M)
+  2. use her (Alice here) private Key K⁻A to sign the hash value:
+     sig = K⁻A(h)
+  3. send the plaintext mail + sig to Bob
+- for *Receiver* Bob:
+  1. computing the digest of the mail main text 
+     h' = H(M)
+  2. use Alice's public key K⁺A to decrypt the signiture to get h:
+     h" = K⁺A(sig)
+  3. confirm that h' == h"
+     if equal, confirm the sender is Alice and the mail has not been altered
+     
+** Confidentiality + Authentication + Integrity:
+- Confidentiality:
+  we use Bob's public key to encrypt the Symmetric Key K_S
+- Secrecy:
+  we use K_S to encrypt the main text of mail M so that the other can not read it
+- Authentication:
+  we use Alice's private key to sign the digest of mail M
+Procedure*:
+- *Sender*
+  1. compute the signature of mail M:
+     sig = K⁻A(H(M))
+  2. pack the <Mail, sig> together as P
+     use K_S to encrypt P: C_P = K_S(P)
+  3. use Bob's public key K⁺B to encrypt K_S: E = K⁺B(K_S)
+- *Receiver*:
+  1. use private key to decrypt E to ge K_S:
+     K_S = K⁻B(E) 
+  2. use K_S to decrypt the C_P <Mail, Sig>;
+     - use Alice's public key K⁺A to decrypt sig to get h:
+       h = K⁺A(sig)
+     - compute the digest of Mail M:
+       h' = H(M)
+  3. check if h == h'
+     
+** How to deal with *HITM*:
+We use CA (Certificate Authority) to deal with HITM attack
+CA response for bind the Entity E with its public key, 
+the certifaction is signed by CA
+
