@@ -164,6 +164,84 @@
     ↑ FTTH usng the passive optial network (PONs) distribution architecture
 
 ** How to evaluate the performance?
+- loss
+- delay
+- throughput
+
+*** Causes of Delay and Loss
+when the router's input has been overloaded, the packets will stored in the router's buffer
+- when arrival rate > output link capacity:
+  packets queue in the buffer -> delay
+  if newest packets arrive when buffer full -> loss
+
+*** Delay:
+the time from the packets be recv, queuing, transmit, propagate to the next node
+d_nodal = d_proc + d_queue + d_trans + d_prop
+
+- d_proc (nodal processing delay): 
+  - check bytes errors
+  - which port output
+- d_queue (queuing delay):
+  the delay caused by waiting
+  depends on the router's congestion level
+- d_trans:
+  the transmission time for pushing all the bytes in the pakcets into the links
+  transmission delay = length of packets (L) / link bandwidth (R)
+  d_trans = L / R
+- d_prop (propagation delay):
+  the time for signals to propagate in the physical medium
+  d_prop = distance of link / propagation speed
+  d_prop = d / s
+  s is usually 2.9x10^8 m/s
+
+**** NOTE: Queueing Delay:
+why once the congestion happens, the delay will be very high?
+Traffic_intensity = L_a / R
+L_a: average packet arrival rate
+R: link bandwidth
+- L_a / R ~= 0: the queueing delay very small
+- L_a / R -> 1: the queueing delay very large
+- L_a / R > 1: the queueing delay infinite, the packets will be dropped
+
+*** Loss
+the link's buffer is limited.
+if packet arrives when buffer full, it will be dropped (lost)
+
+*** Troughput (吞吐量):
+troughput is sender and receiver's rate of transmit (bits/time unit)
+- instantaneous throughput: rate at given point in time
+- average throughput: rate over longer period of time
+
+- if sender's rate < recveiver's upper limit rate:
+  the throughput = sender's rate
+- if sender's rate > receiver's upper limit rate:
+  the throughput = receiver's upper limit rate
+  which is also called *Bottleneck Link*
+
+**** Multiple links' bottleneck
+throughput = min{R_c, Rs, R/N}
 
 ** Service models
+What are TCP/IP layers providing services?
  
+*** Internet protocol stack:
+- application layer:
+  supporting network applications
+- transport:
+  process-process data transfer
+- network:
+  routing of datagrams from source to destination
+- link:
+  data transfer between neightboring network elements
+- physical:
+  bits on the wire
+*** OSI model vs Internet Stack:
+there are presentation layer and session layers in the OSI model
+- presentation layer:
+  let application intepret the meaning of the data
+- session:
+  synchronize, checkpointing, recovery
+
+*** Encapsulation:
+application layer data -> transport layer data -> network layer -> link layer data
+msg --Ht--> segment --Hn--> datagram --Hl--> frame --bits--> bits

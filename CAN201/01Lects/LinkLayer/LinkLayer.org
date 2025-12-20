@@ -415,5 +415,3 @@ it can be compreheneded as the differences between the switch and hub;
   - Border router: connect to the internet;
   - Access router: connect to the inside data center network;
 
-  
-
