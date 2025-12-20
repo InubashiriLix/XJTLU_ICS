@@ -1,0 +1,217 @@
+#+title: Lecture 12 (Week 13) — Network Security 3 Notes (IPsec / Firewalls / IDS)
+#+startup: overview
+#+options: toc:2 num:t
+#+keywords: network-security ipsec vpn esp ah ike firewall ids
+#+filetags: :netsec:final:
+
+* 0. Chapter Roadmap
+- Two big parts:
+  1) *Network-layer security*: IPsec (重点)
+  2) *Operational security*: Firewalls + IDS
+
+* 1. Network-layer Confidentiality: TLS vs IPsec
+** 1.1 TLS (HTTPS) — “per connection”
+- Protects *one application connection* (e.g., browser ↔ website).
+- Needs the application to “speak TLS”.
+
+** 1.2 IPsec — “blanket coverage across apps”
+- Protects *all IP datagrams* between endpoints (or gateways), regardless of app.
+- Idea: encrypt/authenticate at IP layer → TCP/UDP/ICMP/etc. all get protected.
+
+** 1.3 What is encrypted?
+- In IPsec (ESP), you encrypt the *IP payload* (and in tunnel mode, often the *entire original IP datagram* gets encapsulated/encrypted).
+
+* 2. VPN Basics (Why we use it)
+** 2.1 Motivation
+- Dedicated private network is expensive (routers/links/DNS infra etc.).
+- VPN uses public Internet but creates a “logical private network”.
+
+** 2.2 Key idea
+- Traffic goes over the public Internet
+- Before entering public Internet: *encrypt*
+- Achieve logical isolation (looks like a private WAN)
+
+** 2.3 Typical VPN scenarios
+- Site-to-site VPN: gateway ↔ gateway (HQ router ↔ branch router)
+- Remote access VPN: laptop ↔ HQ gateway
+
+* 3. IPsec Services + AH vs ESP (必背)
+** 3.1 Security services
+- *Integrity*: detect tampering
+- *Origin authentication*: verify who sent it
+- *Replay prevention*: stop old packet replay
+- *Confidentiality*: encryption
+
+** 3.2 AH vs ESP
+- *AH*: integrity + authentication (+ replay), *NO confidentiality*
+- *ESP*: integrity + authentication + replay + *confidentiality*
+- ESP is more commonly used in practice.
+
+* 4. IPsec Modes: Tunnel vs Host (Transport/E2E)
+** 4.1 Tunnel mode (common for VPN)
+- IPsec-aware gateways (routers/firewalls) do encryption/authentication
+- Used for *gateway-to-gateway* protection (site-to-site VPN)
+- Often: original datagram is encapsulated; new outer IP header used for routing.
+
+** 4.2 Host mode (end-to-end)
+- End hosts run IPsec
+- True E2E encryption between hosts
+
+* 5. Security Association (SA) — “the state”
+** 5.1 What is an SA?
+- Agreement on *how to secure* traffic in ONE direction:
+  - algorithms (encryption + integrity)
+  - keys
+  - replay parameters, etc.
+
+** 5.2 Key property: SA is *simplex* (单工)
+- One SA = one direction
+- So A→B needs an SA; B→A needs another SA.
+
+** 5.3 SA counting trick (常考)
+- HQ gateway R1 ↔ branch gateway R2: 2 SAs (R1→R2, R2→R1)
+- Each remote laptop ↔ R1: 2 SAs per laptop
+- Total in R1: *2 + 2n* (n = number of remote users)
+
+* 6. SAD (Security Association Database)
+** 6.1 What SAD stores per SA
+- SPI (Security Parameters Index, 32-bit): identifies an SA
+- SA endpoints (src/dst interface IP)
+- Encryption algorithm + key (e.g., 3DES-CBC + key)
+- Integrity algorithm + key (e.g., HMAC-MD5 + key)
+- (Plus replay-related info)
+
+** 6.2 How it is used
+- Sender: consult SAD → apply correct security processing
+- Receiver: read SPI from packet → lookup SAD → decrypt + verify MAC
+
+* 7. SPD (Security Policy Database) — “what to do”
+** 7.1 SPD decides
+- For each outgoing packet:
+  - use IPsec or “vanilla IP”
+  - if IPsec: which SA to use
+- Policy match fields often include:
+  - src/dst IP, protocol number, ports, etc.
+
+** 7.2 SPD vs SAD (一句话必背)
+- *SPD*: what to do (protect? which SA?)
+- *SAD*: how to do it (algorithms + keys + params)
+
+* 8. ESP Tunnel Mode Datagram Format (重点画图题)
+** 8.1 High-level structure
+- Outer IP header (new)
+- ESP header (SPI, Seq#)
+- Encrypted payload (the “enchilada”):
+  - original IP header + original payload + ESP trailer (inside encryption)
+- ESP MAC (integrity/auth over enchilada)
+
+** 8.2 ESP header fields
+- *SPI*: tells receiver which SA to use
+- *Sequence Number*: anti-replay
+
+** 8.3 How R1 creates an ESP tunnel packet (流程题)
+1) Append ESP trailer to the original datagram
+2) Encrypt (using SA’s encryption algorithm + key)
+3) Add ESP header in front (SPI, Seq#)
+4) Compute MAC over the enchilada (using SA integrity key)
+5) Add new outer IP header for routing over Internet
+
+** 8.4 What can the attacker (Trudy) see/do in between R1 and R2?
+- Can see: outer (new) IP header fields → gateway-to-gateway addresses, traffic volume patterns
+- Cannot see: inner (original) header + payload (encrypted)
+- Cannot modify without detection: MAC will fail (no key)
+- Cannot masquerade as R1: cannot forge valid MAC
+- Replay is blocked: sequence number + replay checks
+
+* 9. IKE (Internet Key Exchange) — why we need it
+- Manual SA/key configuration doesn’t scale (many VPN endpoints).
+- IKE automates:
+  - negotiating algorithms
+  - establishing SAs
+  - deriving/exchanging keys
+
+* 10. Operational Security: Firewalls
+** 10.1 Firewall: what it does
+- Sits between internal network and Internet
+- Allows some packets; blocks others
+
+** 10.2 Why we need firewalls (typical threats)
+- DoS (e.g., SYN flood)
+- Unauthorized access/modification of internal resources
+- Enforce access control (only authorized hosts/users)
+
+** 10.3 Three types (按层次记)
+*** (1) Stateless packet filters (network layer-ish)
+- Decides per packet (no memory)
+- Checks header fields:
+  - src/dst IP, ports
+  - protocol (TCP/UDP/ICMP)
+  - TCP flags (SYN/ACK), ICMP type
+
+Example rules to remember:
+- Block UDP or telnet traffic by matching protocol/ports
+- Block inbound TCP with ACK=0 (blocks externally initiated connections)
+
+*** (2) Stateful packet filters (transport-layer-ish)
+- Tracks TCP connection state:
+  - SYN (start), FIN (end), timeouts
+- Only allows packets that “make sense” for known connections
+
+*** (3) Application gateways (application layer)
+- Deep inspection at application layer (proxy-like)
+- Example: telnet/HTTP proxy requires user auth at gateway, then gateway connects outward
+- More control, more overhead
+
+* 11. IDS (Intrusion Detection Systems)
+** 11.1 Why packet filtering alone is not enough
+- Packet filters mainly look at headers
+- Limited cross-flow correlation
+
+** 11.2 IDS capabilities
+- Deep packet inspection (inspect payload signatures)
+- Correlation across packets/flows/time
+- Detect:
+  - port scanning
+  - network mapping
+  - DoS patterns
+  - known malware/attack strings
+
+** 11.3 Typical deployment idea (DMZ)
+- Place sensors at:
+  - Internet edge
+  - DMZ boundary
+  - internal network boundary
+- DMZ hosts: public services (web/ftp/dns), separated from internal network
+
+* 12. Final Exam “Must Memorize” Checklist
+- TLS vs IPsec: per-connection vs blanket IP-layer coverage
+- IPsec services: integrity/auth/replay/confidentiality
+- AH vs ESP: ESP provides confidentiality (common)
+- SA is simplex; SA count trick: 2 + 2n
+- SPI used to index SAD
+- SPD vs SAD: what vs how
+- ESP tunnel structure: new IP hdr + ESP hdr + encrypted inner datagram + MAC
+- Trudy analysis: can’t read/forge/modify/replay successfully (but sees outer hdr)
+- Firewall types: stateless/stateful/app gateway
+- IDS: deep inspection + correlation (port scan, mapping, DoS)
+
+* 13. Practice Questions (for self-test)
+** IPsec
+- Explain TLS vs IPsec with one example each.
+- Draw ESP tunnel packet format and label encrypted vs visible parts.
+- Why do we need 2 SAs for bidirectional communication?
+- In a VPN with HQ, branch, and n remote users, why does HQ need 2+2n SAs?
+- What does SPI do? Where is it used?
+
+** Firewalls / IDS
+- Give one stateless filtering rule that blocks “externally initiated TCP connections”.
+- Compare stateless vs stateful filtering with one concrete scenario.
+- What can IDS detect that packet filters often miss?
+- What is a DMZ and why put public servers there?
+
+* 14. Mini Mnemonics
+- *SPD* = “Policy” → *what* to do
+- *SAD* = “Details” → *how* to do it
+- *ESP* = “Encrypt + Secure/Sign”
+- *AH* = “Authenticate Header (no encryption)”
+

@@ -74,3 +74,6 @@ have a public key and a private key
    chop the *TCP bytes flows* into *segments of records*
 4. Connection closure:
    use special msg to close the connection, avoiding truncation attack
+
+** IPSec & VPN + Operational Security
+[[./IPsecVPN_FirewallsIDS.org]]
