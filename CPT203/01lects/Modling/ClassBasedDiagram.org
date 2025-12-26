@@ -1,0 +1,124 @@
+* Week 6: Class-based Model (Domain Model) — Exam Cheat Sheet
+** What is a Domain Model
+- A domain model illustrates meaningful conceptual classes in a problem domain.
+- It represents real-world concepts, NOT software components.
+- Focuses on WHAT exists in the domain, not HOW it is implemented.
+
+** Features of a Domain Model
+*** Domain Classes
+- Each domain class represents a type of real-world object.
+- It describes a set of things sharing common features.
+
+*** Attributes
+- Attributes describe properties of a domain class.
+- Each object instance holds its own attribute values.
+- Attributes preserve information required by the system.
+
+*** Associations
+- Associations describe relationships between domain classes.
+- They show how object instances are linked.
+- Associations can define roles and multiplicity.
+
+** Steps to Create a Domain Model
+1. Identify candidate conceptual classes.
+2. Draw them using a UML Class Diagram.
+3. Add necessary associations to capture relationships.
+4. Add attributes required to retain essential information.
+
+** Types of Domain Classes
+- External entities (e.g. customer, clerk)
+- Physical things (e.g. product, court)
+- Events or occurrences (e.g. reservation, payment)
+- Roles (e.g. member, instructor)
+- Organizational units (e.g. department, school)
+- Places (e.g. classroom, stadium)
+- Structures (e.g. timetable, schedule)
+
+** Identifying Classes
+*** Analyze Requirements
+- Examine use cases to find key entities.
+- Look for objects that retain important information.
+
+*** Noun–Verb Analysis
+- Nouns → candidate classes.
+- Verbs → candidate operations or responsibilities.
+
+*** Domain Knowledge
+- Use understanding of the problem domain.
+- Identify common entities and relationships.
+
+*** Identify Responsibilities
+- Each class should have one clear responsibility.
+- Avoid classes that do too many unrelated things.
+
+*** Identify Relationships
+- Look for:
+  - Aggregation / Composition (whole–part)
+  - Inheritance (generalization–specialization)
+
+** Class Selection Characteristics (Exam Favorite)
+A class should be selected if it has:
+1. Retained information (data must be remembered)
+2. Needed services (operations required by system)
+3. Multiple attributes (not just a single value)
+4. Common attributes across instances
+5. Common operations across instances
+6. Essential role in system requirements
+
+** Class Naming Rules
+- Use nouns as class names.
+- Use meaningful, pronounceable names.
+- Use CamelCase naming style.
+- Avoid ambiguous or obscure abbreviations.
+- Avoid digits in class names.
+- If you cannot read it aloud clearly, rename it.
+
+** Associations
+- An association represents a relationship between classes.
+- Common meaning: “has a” or “uses”.
+- Associations connect two or more classes.
+
+*** Association Name
+- Use verbs to name associations.
+- Arrows can be used to improve readability.
+
+*** Multiplicity
+- Defines how many instances can participate.
+- Common multiplicities:
+  - *       → zero or more
+  - 1..*    → one or more
+  - 1       → exactly one
+  - 1..40   → one to forty
+  - 3,5,8   → exactly 3 or 5 or 8
+
+** Association vs Aggregation vs Composition
+*** Association
+- Objects are aware of each other.
+- Objects have independent lifecycles.
+- Example: Employee uses Equipment.
+
+*** Aggregation
+- A weak “has-a” relationship.
+- Contained objects can exist independently.
+- Example: Department has Employees.
+
+*** Composition
+- A strong “part-of” relationship.
+- Contained objects depend on container lifecycle.
+- If container is destroyed, parts are destroyed.
+- Example: Company contains Departments.
+
+** Implementation Perspective (Conceptual Only)
+- Association: object holds a reference to another object.
+- Aggregation: object contains other objects but does not manage lifecycle.
+- Composition: object creates and destroys contained objects.
+
+** Attributes
+- Attributes describe an object’s state.
+- Selected from use cases and requirements.
+- Must retain information required for system operation.
+- Data types and access modifiers are NOT required at analysis stage.
+
+** One-Line Exam Summary
+- A class-based (domain) model represents real-world concepts using classes, attributes, and relationships to describe the problem domain.
+

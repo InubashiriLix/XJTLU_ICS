@@ -1,0 +1,87 @@
+* Week 6: Activity Diagram — Exam Cheat Sheet
+** What is an Activity Diagram
+- An activity diagram models the workflow of a system or business process.
+- It shows activities, decisions, concurrency, and synchronization.
+- Commonly used in requirements analysis and system modeling.
+
+** Basic Elements
+*** Action
+- Represents a single atomic step in a process.
+- Cannot be decomposed further in the diagram.
+
+*** Control Flow
+- Arrows show the flow of control from one action to another.
+- Indicates execution order.
+
+*** Start Node
+- Represented by a filled black circle.
+- Marks the beginning of an activity.
+
+*** Activity Final Node
+- Represented by a bull’s eye (black dot with outer circle).
+- Terminates the entire activity, including all concurrent flows.
+
+*** Flow Final Node
+- Terminates only the current flow.
+- Other parallel flows may continue.
+
+** Decision and Merge
+*** Decision Node
+- Represented by a diamond.
+- Used to choose one path based on conditions.
+- Outgoing flows have guards written in square brackets [ ].
+
+*** Merge Node
+- Represented by a diamond.
+- Combines alternative paths back into one.
+- Only one incoming path is active.
+- Logical meaning: OR (one of many).
+
+** Concurrency: Fork and Join
+*** Fork Node
+- Represented by a thick horizontal or vertical bar.
+- Splits one flow into multiple concurrent flows.
+- All outgoing flows execute in parallel.
+
+*** Join Node
+- Represented by a thick bar.
+- Synchronizes concurrent flows.
+- All incoming flows must complete before continuing.
+- Logical meaning: AND (all must finish).
+
+*** Merge vs Join (Must Remember)
+- Merge:
+  - Combines alternative paths.
+  - Does NOT wait.
+  - OR logic.
+- Join:
+  - Synchronizes parallel paths.
+  - WAITS for all paths.
+  - AND logic.
+
+** Signals
+*** Send Signal
+- Represents sending a signal/event to another activity or system.
+- Used for asynchronous communication.
+
+*** Receive Signal
+- Represents waiting for a signal/event before continuing.
+- Execution pauses until the signal is received.
+
+** Swimlanes
+- Used to represent responsibility or roles.
+- Each swimlane shows which actor/system performs an action.
+- Control flow can cross swimlane boundaries.
+
+** Time Events
+- Trigger activities based on time conditions.
+- Example: after a delay or at a specific time.
+
+** When to Use Activity Diagrams
+- To describe business workflows.
+- To model complex logic with decisions and parallel steps.
+- To clarify system behavior from start to finish.
+
+** One-Line Exam Summary
+- Activity diagrams show how actions flow, branch, run in parallel, and synchronize in a process.
+

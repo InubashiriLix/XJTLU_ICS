@@ -1,0 +1,94 @@
+* Week 6: Sequence Diagram — Exam Cheat Sheet
+** What is a Sequence Diagram
+- A sequence diagram models interactions between objects over time.
+- It focuses on message flow and time ordering.
+- Commonly used to describe scenarios from use cases.
+
+** Use Case vs Scenario
+- Use Case:
+  - A collection of possible interactions between actors and the system.
+- Scenario:
+  - One specific execution path through a use case.
+  - A sequence diagram usually represents ONE scenario.
+
+** Key Idea (Must Remember)
+- Horizontal axis: participants (objects/actors)
+- Vertical axis: time (top → bottom means forward in time)
+- Emphasis is on the ORDER of messages.
+
+** Participants (Objects)
+- A participant represents an object or entity in the interaction.
+- Drawn as a rectangle at the top of the diagram.
+- Naming format:
+  - objectName:ClassName
+  - :ClassName (anonymous object)
+- Each participant has a lifeline (vertical dashed line).
+
+** Lifeline
+- A dashed vertical line below a participant.
+- Represents the existence of an object over time.
+
+** Messages
+- Messages represent communication between objects.
+- Shown as arrows between lifelines.
+- Message name and arguments are written above the arrow.
+
+*** Synchronous Message
+- Normal method call.
+- Sender waits until the receiver finishes.
+- Drawn with a solid arrow.
+
+*** Asynchronous Message
+- Sender does NOT wait for completion.
+- Used for concurrent or event-driven calls.
+- Drawn with an open arrowhead.
+
+*** Return Message
+- Shows the return of control or data.
+- Drawn as a dashed arrow pointing back.
+
+** Activation (Execution Specification)
+- Shown as a narrow rectangle on a lifeline.
+- Indicates that an object is executing a method.
+- Nested activations represent nested calls or recursion.
+
+** Control Structures (Frames)
+- Frames are boxes drawn around parts of the diagram.
+- Used to represent logic such as selection and loops.
+
+*** Optional (opt)
+- Represents an if condition without else.
+- Executed only when condition is true.
+
+*** Alternative (alt)
+- Represents if/else logic.
+- Conditions are separated by a dashed horizontal line.
+- Only one branch executes.
+
+*** Loop
+- Represents repeated execution.
+- Guard specifies loop condition or collection being iterated.
+
+** Found Message
+- A message with no explicit sender.
+- Used when the sender is outside the scope of the diagram.
+
+** Concurrency
+- Asynchronous messages indicate concurrent behavior.
+- Multiple activations can overlap in time.
+
+** When to Use Sequence Diagrams
+- To describe how objects collaborate to perform a task.
+- To clarify complex logic and message ordering.
+- To visualize interactions that are hard to explain in text.
+- Useful for team discussion and design validation.
+
+** Why Not Just Code
+- Sequence diagrams are language-independent.
+- Easier for non-programmers to understand.
+- Show interactions among many objects on one page.
+- Stay at a higher level than actual code.
+
+** One-Line Exam Summary
+- A sequence diagram shows how objects communicate with each other in time order to realize a specific scenario.
+

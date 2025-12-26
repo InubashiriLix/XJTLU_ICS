@@ -1,0 +1,251 @@
+* System Modeling — Exam Quick Notes (Week 5–6)
+** 1) Why modeling matters
+- Modeling abstracts a complex system to an appropriate level of detail, making it easier to understand. 
+- Software failures are often caused by poorly understood requirements, late discovery of problems, and complexity causing performance issues. 
+
+** 2) What “system modeling” is
+- System modeling = developing abstract models of a system, each showing a different view/perspective. 
+- Today, modeling usually means graphical notations, mostly UML-based. 
+- Models help analysts understand system functionality and help communication with customers/stakeholders. 
+
+** 3) Existing vs planned system models
+- Existing system models (during requirements): clarify what current system does; discuss strengths/weaknesses → derive requirements for new system. 
+- Planned/new system models (during design): explain proposed requirements, discuss design, document for implementation. 
+- In model-driven engineering, full/partial implementation may be generated from models. 
+
+** 4) Four system perspectives (high-frequency list)
+- External perspective: context/environment of the system. 
+- Interaction perspective: interactions between system & environment OR among system components. 
+- Structural perspective: organization of system / data structure. 
+- Behavioral perspective: dynamic behavior; how system responds to events. 
+
+** 5) UML diagram types to remember
+- Activity diagram: activities in a process / data processing flow. 
+- Use case diagram: interactions between system and its environment (actors). 
+- Sequence diagram: interactions over time between actors/system/components. 
+- Class diagram: object classes + associations. 
+- State machine diagram: system reaction to internal/external events via state transitions. 
+
+** 6) Uses of graphical models (3 purposes)
+- Facilitate discussion: incomplete/incorrect models are OK if they support conversation. 
+- Document an existing system: should be accurate but not necessarily complete. 
+- Generate implementation: must be correct and complete. 
+
+Context Models (External view)
+** 7) What context models show
+- Context models illustrate the operational context: what lies outside system boundaries. 
+- They show other systems that the system uses or depends on, but not exactly how it’s used. 
+
+** 8) System boundary (very exam-worthy)
+- System boundary defines what is inside vs outside the system. 
+- Boundary position strongly affects requirements. 
+- Defining boundary is often a political judgment (workload/influence shifts). 
+
+** 9) Business process modeling link
+- Context models are often used with business process models; UML activity diagrams can model processes. 
+
+Interaction Models
+** 10) Why interaction modeling
+- User interaction modeling helps identify user requirements. 
+- System-to-system interaction modeling reveals communication problems. 
+- Component interaction modeling helps evaluate performance & dependability of a proposed structure. 
+
+** 11) Use case diagrams (what to write)
+- Use cases originated for requirements elicitation and are now part of UML. 
+- Each use case represents a discrete task involving external interaction with the system. 
+- Actors can be people or other systems. 
+- Use case diagrams give an overview; details often written in text/table form (Actor/Description/Data/Stimulus/Response/Comments). 
+
+** 12) Sequence diagrams (what they show)
+- UML diagram for interaction sequences in a particular use case. 
+- Actors/objects at the top; vertical lifelines; arrows show messages between objects. 
+
+Structural Models
+** 13) Structural model definition
+- Structural models show the organization of a system: components + relationships. 
+- Can be static (design structure) or dynamic (structure during execution). 
+- Used to discuss/design system architecture. 
+
+** 14) Class diagrams (core points)
+- Used in OO modeling to show classes and associations between them. 
+- Class = general definition of a kind of system object. 
+- Association = relationship link between classes. 
+- Early-stage models: objects represent real-world entities (patient, doctor, prescription, etc.). 
+
+Common relationship types shown:
+- Association multiplicity (e.g., 1..*, 1)
+- Generalization (inheritance hierarchy)
+- Aggregation (whole–part, “has-a”) 
+
+Behavioral Models
+** 15) Behavioral model definition
+- Behavioral models describe dynamic behavior of an executing system: what happens when responding to stimuli. 
+
+** 16) Stimuli types (must remember)
+- Data: some data arrives and must be processed. 
+- Events: something triggers processing (may include data). 
+
+** 17) Data-driven modeling
+- Many business systems are data-processing driven by input data, with relatively little event processing. 
+- Data-driven models show end-to-end sequence of actions from input → output. 
+- Useful during requirements analysis; commonly modeled with activity diagrams and sequence diagrams. 
+
+
+** 18) Event-driven modeling
+- Real-time systems are often event-driven (e.g., phone switching responds to “off hook”). 
+- Assumption: system has a finite number of states; events cause transitions between states. 
+
+
+** 19) State machine diagrams (statecharts)
+- Show system behavior in response to internal/external events. 
+- States are nodes; events are arcs; event occurrence triggers state transition. 
+- Statecharts are UML notation for state machine models. 
+
+
+** 20) “Key points” summary (good for last-minute review)
+- A model is an abstract view that ignores details; multiple models show context, interactions, structure, behavior. 
+- Context models show system positioning in environment with other systems/processes. 
+- Use cases describe system–actor interactions; sequence diagrams show interactions between system objects over time. 
+- Structural models show architecture; class diagrams show classes and associations. 
+- Behavioral models: data-driven (activity) vs event-driven (state diagrams).
+  
+* Chinese version
+** 为什么建模重要（Why modeling important）
+- 建模通过“抽象”把复杂系统简化到合适的细节层级，方便理解与讨论。
+- 软件开发失败常见原因：
+  - 需求理解不清（poorly understood requirements）
+  - 问题发现太晚（problems discovered late）
+  - 复杂性导致性能问题（complexity → performance issues）
+
+** 系统建模是什么（System modeling）
+- 系统建模：为一个系统建立“抽象模型”，每个模型提供一个不同的视角/观点。
+- 现代系统建模通常指用图形化记法表达系统，基本都基于 UML。
+- 模型帮助分析员理解系统功能，也用于与客户沟通。
+
+** 现有系统模型 vs 新系统模型（Existing vs planned system models）
+- 现有系统模型（需求工程阶段）：
+  - 澄清现有系统做什么
+  - 讨论优缺点
+  - 推导新系统需求 
+- 新系统模型（系统设计阶段）：
+  - 向干系人解释拟定需求
+  - 讨论设计方案
+  - 为实现提供文档 
+- 模型驱动工程（MDE）：可从系统模型生成部分或全部实现。
+
+** 系统四种视角（System perspectives，必背）
+- External：建模系统的上下文/环境。
+- Interaction：建模系统与环境的交互，或系统组件之间的交互。
+- Structural：建模系统组织结构，或系统处理的数据结构。
+- Behavioral：建模系统的动态行为，以及它如何响应事件。
+
+** UML 常见图（UML diagram types）
+- Activity diagram：表示流程中的活动/数据处理活动。
+- Use case diagram：表示系统与环境（actor）的交互。
+- Sequence diagram：表示 actor 与系统、或系统组件间的交互（按顺序/时间）。
+- Class diagram：表示系统中的类以及类之间的关联。
+- State machine diagram：表示系统对内部/外部事件的反应。
+
+** 图形模型的用途（Use of graphical models）
+- 用于促进讨论（facilitate discussion）：
+  - 模型不完整/不正确也可以，只要能支撑讨论。
+- 用于记录现有系统（document existing system）：
+  - 模型应准确，但不一定要完整。
+- 用于生成实现（generate implementation）：
+  - 模型必须正确且完整。
+
+* Context Models（上下文模型 / 外部视角）
+** Context model 的作用
+- 用于展示系统的运行上下文：系统边界之外有什么。
+- 社会与组织因素会影响系统边界如何划分。
+
+** 系统边界（System boundaries，考点）
+- 系统边界用于定义什么在系统内、什么在系统外。
+- 边界位置会深刻影响系统需求。
+- 定义边界是一种“政治判断”（political judgment）：
+  - 组织内部可能施压，让边界增加/减少某些部门影响力或工作量。
+
+** Context model 的特点
+- 只展示环境中其他系统，不展示“系统在环境中怎么被使用”。
+- 常与业务流程模型一起使用；UML 活动图可用于定义业务流程模型。
+
+* Interaction Models（交互模型 / 交互视角）
+** 为什么要做交互建模
+- 用户交互建模能帮助识别用户需求。
+- 系统与系统的交互建模能突出潜在通信问题。
+- 组件交互建模可评估结构能否达到所需性能与可靠性。
+- 交互建模常用：用例图 + 时序图。
+
+** Use case diagram（用例图）
+- 用例最初用于需求获取（requirements elicitation），现已纳入 UML。
+- 每个用例代表一个“离散任务”（discrete task），涉及系统外部交互。
+- Actor 可以是人或其他系统。
+- 用例图提供概览，细节可用更详细的文本形式描述。
+- 表格化用例描述（常见字段）：
+  - Actors / Description / Data / Stimulus / Response / Comments 
+
+** Sequence diagram（时序图）
+- 时序图用于建模 actor 与系统内对象之间的交互。
+- 表示某个用例中发生的交互序列（sequence of interactions）。
+- 典型画法：
+  - 顶部列出对象与 actor
+  - 每个对象向下画垂直虚线（lifeline）
+  - 用带注释的箭头表示交互消息 
+
+* Structural Models（结构模型 / 结构视角）
+** Structural model 定义
+- 展示系统由哪些组件构成、以及它们之间的关系（组织结构）。
+- 可以是静态模型（设计结构）或动态模型（运行时组织结构）。
+- 通常在讨论/设计系统架构时创建结构模型。
+
+** Class diagram（类图）
+- 类图用于面向对象系统建模：展示类以及类之间的关联。
+- Object class：一种系统对象的通用定义。
+- Association：类之间的链接，表示存在某种关系。
+- 早期建模阶段：对象常代表现实世界实体（patient/doctor/prescription 等）。
+- 常见关系（图里会出现）：
+  - generalization（继承层次）
+  - aggregation（聚合：整体-部分关系）
+
+* Behavioral Models（行为模型 / 行为视角）
+** Behavioral model 定义
+- 行为模型描述系统运行时的动态行为：系统响应环境刺激时会发生什么/应该发生什么。
+
+** 刺激（Stimuli）两类（必背）
+- Data：有数据到达，需要系统处理。
+- Events：发生某个事件触发系统处理（事件可带数据，也可能不带）。
+
+** Data-driven modeling（数据驱动）
+- 很多业务系统主要由数据驱动：以数据输入控制系统，外部事件处理较少。
+- 数据驱动模型展示：处理输入数据并产生输出的动作序列。
+- 对需求分析特别有用，可展示端到端处理流程。
+- 常用图：Activity diagram + Sequence diagram。
+
+** Event-driven modeling（事件驱动）
+- 实时系统常事件驱动，数据处理较少（例：电话交换系统响应“摘机”生成拨号音）。
+- 事件驱动建模关注系统如何响应内外事件。
+- 基本假设：系统状态有限；事件可导致状态迁移。
+
+** State machine diagram / Statecharts（状态机图）
+- 描述系统对内外事件的行为响应，常用于实时系统建模。
+- 表达方式：状态=节点（nodes），事件=边（arcs）；事件发生 → 状态迁移。
+- UML 中用 Statecharts 表示状态机模型。
+
+  
+* 5 Model Diagrams
+** Class Based Diagrams
+[[./Modling/ClassBasedDiagram.org]]
+
+** State Machine Diagrams
+[[./Modling/StateMachineDiagram.org]]
+
+
+** Sequence Diagrams
+[[./Modling/SequenceDiagram.org]]
+
+
+** Use Case Diagrams
+[[./Modling/UsageDiagram.org]]
+
+** Activity Diagrams:
+[[./Modling/ActivityDiagram.org]]

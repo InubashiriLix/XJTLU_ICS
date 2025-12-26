@@ -1,0 +1,112 @@
+* Week 6: Use Case Diagram — Exam Cheat Sheet
+** What is a Use Case Diagram
+- A use case diagram shows how actors interact with a system.
+- It gives an overview of system functionality from a user perspective.
+- It focuses on WHAT the system does, not HOW it is implemented.
+- Diagrams are helpful but secondary to textual use case descriptions.
+
+** Purpose of Use Case Diagrams
+- Define the system boundary.
+- Capture functional requirements.
+- Identify user goals.
+- Support system design and test case generation.
+- Built early in the development lifecycle.
+
+** Core Elements
+*** Actor
+- An actor represents a role that interacts with the system.
+- An actor can be a human or an external system.
+- An actor must be external to the system.
+
+*** Types of Actors
+- Primary actor:
+  - Has goals fulfilled by the system.
+- Supporting actor:
+  - Provides a service to the system.
+- Offstage actor:
+  - Has an interest in the system but does not directly interact.
+
+*** Use Case
+- A use case represents a system function or process.
+- Named using a verb or verb phrase.
+- Each use case describes a user goal.
+- A use case may be automated or manual.
+
+*** System Boundary
+- Represented as a rectangle.
+- Defines what is inside and outside the system.
+- Actors are always outside the system boundary.
+
+*** Association
+- A line connecting an actor to a use case.
+- Indicates communication or interaction.
+- No arrow direction is usually required.
+
+** Finding Actors
+- Ask:
+  - Who are the primary users?
+  - Who needs system support for daily tasks?
+  - Which external systems interact with the system?
+  - Who has an interest in the system output?
+- One real-world entity may play multiple actor roles.
+
+** Finding Use Cases
+- Identify user goals.
+- Look for services the system must provide.
+- Use verbs to describe actions.
+- One goal usually maps to one use case.
+
+** Relationships Between Use Cases
+*** Include Relationship
+- Used to represent mandatory behavior.
+- The base use case always executes the included use case.
+- The included use case cannot stand alone.
+- Used to avoid duplication of common behavior.
+- Logical meaning: MUST happen.
+
+*** Extend Relationship
+- Used to represent optional or conditional behavior.
+- The base use case can execute without the extension.
+- Extension happens only under certain conditions.
+- Logical meaning: MAY happen.
+
+*** Generalization
+- Represents inheritance between use cases or actors.
+- The child inherits behavior from the parent.
+- The child may add or specialize behavior.
+- Used to represent variations of a general use case.
+
+** Include vs Extend (Very Important)
+- Include:
+  - Mandatory
+  - Reusable behavior
+  - Tight coupling
+- Extend:
+  - Optional
+  - Conditional behavior
+  - Loose coupling
+
+** Use Case Levels
+- High-level use cases:
+  - Describe business goals.
+- User-goal level use cases:
+  - Describe tasks completed by a user.
+- Sub-function use cases:
+  - Support higher-level use cases.
+
+** Common Mistakes (Exam Traps)
+- Using nouns instead of verbs for use case names.
+- Modeling UI steps as use cases.
+- Putting actors inside the system boundary.
+- Using include when behavior is optional.
+- Using extend when behavior is mandatory.
+
+** When to Use Use Case Diagrams
+- To communicate system scope.
+- To discuss requirements with stakeholders.
+- To validate system functionality.
+- To identify missing requirements.
+
+** One-Line Exam Summary
+- A use case diagram shows actors, their goals, and how they interact with a system within a defined boundary.
+

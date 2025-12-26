@@ -1,0 +1,106 @@
+* Week 6: State Machine Diagram — Exam Cheat Sheet
+** What is a State Machine Diagram
+- A state machine diagram models the dynamic behavior of a system or object.
+- It shows how an object changes state in response to events.
+- Focuses on behavior over time rather than structure.
+
+** Why State Machine Diagrams Are Needed
+- Use case diagrams show WHAT the system does.
+- Class diagrams show WHAT the system is made of.
+- State machine diagrams show HOW the system behaves over time.
+- Especially useful for reactive and real-time systems.
+
+** Key Concepts
+*** State
+- A state represents a condition or situation during the life of an object.
+- An object behaves differently depending on its current state.
+- A class may have one or more states.
+
+*** Event (Trigger)
+- An event is something that happens at a point in time.
+- Events may come from:
+  - user input
+  - messages
+  - hardware signals
+  - time conditions
+- An event may cause a state change.
+
+*** Transition
+- A transition represents a change from one state to another.
+- Triggered by an event.
+- May include a condition (guard).
+- May execute an action during the transition.
+
+** Start and Terminate
+*** Start State
+- Indicates creation of an object.
+- Represented by a filled black circle.
+- Only one start state is allowed.
+
+*** Terminate State
+- Indicates destruction of an object.
+- Represented by a bull’s eye.
+- Marks the end of the object’s life.
+
+** State Behavior
+*** Entry Action
+- Executed once when entering a state.
+- Used for initialization.
+
+*** Do Activity
+- Executed continuously while the object remains in the state.
+- Represents ongoing behavior.
+
+*** Exit Action
+- Executed once when leaving a state.
+- Used for cleanup.
+
+** Event and State Relationship
+- An event must occur to trigger a transition.
+- Without an event, the object remains in its current state.
+- Conditions may restrict whether a transition occurs.
+
+** Passive vs Active State
+*** Passive State
+- Describes the current values of an object’s attributes.
+- Example: studentID, name, enrollmentDate.
+
+*** Active State
+- Describes what the object is doing.
+- Example: New, Enrolled, Suspended, Graduated.
+
+** State Hierarchy
+*** Superstate
+- A higher-level state that contains substates.
+- Used to simplify complex diagrams.
+
+*** Substate
+- A state inside a superstate.
+- Inherits behavior from the superstate.
+
+** Benefits of State Hierarchy
+- Reduces diagram complexity.
+- Groups related states.
+- Improves readability and reuse.
+
+** Modeling Guidelines
+- Identify states from use case scenarios.
+- Identify events that cause state changes.
+- Ensure each state has valid incoming and outgoing transitions.
+- Avoid modeling trivial states.
+
+** When to Use State Machine Diagrams
+- Systems with event-driven behavior.
+- Objects with complex life cycles.
+- Real-time or embedded systems.
+- Situations where order of events matters.
+
+** Common Exam Mistakes
+- Confusing states with actions.
+- Forgetting events on transitions.
+- Putting implementation details into states.
+- Using state diagrams for purely data-driven logic.
+
+** One-Line Exam Summary
+- A state machine diagram shows how an object changes state in response to events throughout its lifetime.
+
