@@ -1,0 +1,340 @@
+#+title: CAN201TC (S1 2021/22) Final Exam - Question Sheet (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201TC - Introduction to Networking
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: Closed-book; only English solutions accepted. :contentReference[oaicite:1]{index=1}
+
+* Question 1 (20 points) 
+Accessing web pages through a browser is one of the most commonly used network operations.
+
+** Q1.1 (5 points)
+- Description:
+  Suppose the IP address for the associated URL is not cached in your local host and n DNS servers are visited before your host receives the IP address from DNS; the successive visits incur an RTT of RTT1,...,RTTn.
+  Let RTT0 denote the RTT between the local host and the server containing the object.
+  Assuming zero transmission time of the object.
+  Web page associated with the link contains exactly one object, consisting of a small amount of HTML text.
+  How much time elapses from when the client clicks on the link until the client receives the object?
+- Ans: 
+  - DNS lookup time:
+    RTT_DNS = RTT1 + RTT2 + ... + RTTn
+  - After IP is obtained, for *non-persistent* HTTP over TCP* (one smalle object):
+    (HTTP (mentioned HTML there) use TCP as transport Layer protocol)
+    - 1 RTT0 to establish TCP connection
+    - 1 RTT0 for HTTP request and first byte of resonse to return
+    RTT_HTTP = 2 * RTT0
+  - Total time:
+    Total Time = RTT_DNS + RTT_HTTP = RTT1 + RTT2 + ... + RTTn + 2 * RTT0
+
+** Q1.2 (15 points)
+- Description:
+  Suppose your computer is connected to the Internet through a router, and you enter:
+  https://www.xjtlu.edu.cn/
+  in the address bar of your browser and open the homepage of the university, which contains texts and images.
+  Please briefly introduce all the related protocols in different layers of IP stack used in the mentioned webpage visiting.
+  Tips: You should consider the provided network condition and the type of web address.
+- Ans: 
+  - Application Layer:
+    - DNS: revolve "www.xjtlu.edu.cn" -> IP
+      typically DNS over UDP / 53 (sometimes TCP / 53 if response is large or for some cases)
+    - HTTP/HTTPS: HTTPS (HTTP over SSL / TLS to request to get the web page)
+      HTTP: GET / POST, headers, body, cookies, etc.
+  - Transport Layer:
+    - TCP: used by HTTP commonly
+      reliable byte stream, congestion control, flow control, retransmission, etc
+    - UDP: used by DNS queries commonly
+  - Network Layer:
+    - IP  (IPV4 / IPV6): address + routing across routers
+    - ICMP: may appear for error reporting (e.g. unreachable, TTL excceeded)
+  - Link Layer:
+    - Ethernet / Wi-Fi: framing on local link
+    - ARP: map next-hop IP (default gateway) -> MAP address before senind frmaes 
+  - Physical Layer:
+    - actual transmission over sopper / fiber / wireless, etc
+
+* Question 2 (20 points) 
+Due to the issues such as interferences and device errors, bit errors often occur in networking communication.
+In order to receive the correct information through the internet, error detection and correction methods are applied in some layers.
+
+** Q2.1 (5 points)
+- Description:
+  Please list error detection methods for all IP stack five layers.
+  If no error detection method is used for some layers, please indicate them.
+- Ans: 
+  - Appliction Layer:
+    - Usually none in plain HTTP; 
+    - For HTTPS / TLS it includes intetgrith checks (MAC / AEAD tag)
+  - Transport Layer:
+    - TCP checksum: (16-bit one's complement) for error checks
+    - UDP chceksim: (optional in IPv4, madatory in IPv6) for error detection
+  - Network Layer:
+    - IPv4 header checksun: (detect errors in IPv4 header only)
+    - IPv6: no header checksum at IP layer
+  - Link Layer:
+    - Frame Check Sequence (FCS using CRC) (e.g. Ethernet CRC-32; Wi-Fi also uses CRC)
+  - Physical Layer:
+    - Ofen use FEC (e.g. Wi-Fi)
+    - In the pure "Internet stack" abstraction, sometimes stated as "no explictit error detecction here"
+
+
+** Q2.2 (10 points)
+- Description:
+  Suppose you have the following three 16-bit bytes:
+  - 0101001101010011
+  - 1011010011001100
+  - 1001010000001100
+  What is the 1s complement of the sum of these 16-bit bytes?
+- Ans: 
+  - conver to 16-bit bytes:
+  #+BEGIN_text options
+   0101001101010011
+   1011010011001100
+   1001010000001100
+   ----------------
+1. 1's-complement addition
+  11001110000101011
+   ----------------
+2. 1's Complement of sum:
+   1001110000101100
+   ----------------
+3. Bindary
+   0110001111010011
+  #+END_text
+
+** Q2.3 (5 points) 
+- Description:
+  Cyclic redundancy check (CRC) is also widely used in network communication.
+  Please briefly introduce features of CRC.
+- Ans: 
+  Cyclic redundancy check treas the bit strin as coefficient of a polynomial over GF(2) (e.g., modulo-2 arithmetic).
+  Sender append r CRC bits (remainder) so that transmitted message is divisible by generator polynomial G.
+  Receiver divides by the same G(x); non-zero remainder => error detected
+  - Strong at detecting: 
+    - all single-bit errors (if G(x) has at least two terms)
+    - many multi-bit errors depending on G(x)
+    - brust errors up to length r (gurantteed detect) and longer bruste with high propability
+  - Widely used at lnik layer (Ethernet, WiFi, etc)
+
+* Question 3 (20 points) 
+Complete the following table using Dijkstra’s algorithm.
+Compute the shortest path from node Z to all network nodes shown in Fig. 3.
+Note: Possible ties are broken in favor of the leftmost column.
+
+** Provided table (fill blanks for steps 3..7)
+[[./graphics/21_22_F/Dijkstra.png]]
+
+| Step | N'  | D(S), p(S) | D(T), p(T) | D(U), p(U) | D(V), p(V) | D(W), p(W) | D(X), p(X) | D(Y), p(Y) |
+|------+-----+------------+------------+------------+------------+------------+------------+------------|
+| 0    | Z   | ∞          | 3, Z       | ∞          | ∞          | ∞          | ∞          | 10, Z      |
+| 1    | ZT  | 5, T       | Done       | 5, T       | 10, T      | ∞          | ∞          | 8, T       |
+| 2    | ZTS | Done       |            | 5, T       | 10, T      | ∞          | ∞          | 8, T       |
+| 3    |     |            |            |            |            |            |            |            |
+| 4    |     |            |            |            |            |            |            |            |
+| 5    |     |            |            |            |            |            |            |            |
+| 6    |     |            |            |            |            |            |            |            |
+| 7    |     |            |            |            |            |            |            |            |
+
+- Ans: 
+- step1: Z
+    - T: 3, Z (selected)
+    - Y: 10, Z
+
+- step2: ZT
+    - T: 3, Z (done)
+    - S: 5, T (selected)
+    - U: 5, T
+    - Y: 8, T
+    - V: 10, T
+
+- step3: ZTS
+    - T: 3, Z (done)
+    - S: 5, T (done)
+    - U: 5, T (selected)
+    - Y: 8, T
+    - V: 10, T
+
+- step4: ZTSU
+    - T: 3, Z (done)
+    - S: 5, T (done)
+    - U: 5, T (done)
+    - V: 6, U (selected)
+    - Y: 8, T
+    - W: 8, U
+
+- step5: ZTSUV
+    - T: 3, Z (done)
+    - S: 5, T (done)
+    - U: 5, T (done)
+    - V: 6, U (done)
+    - Y: 7, V (selected)
+    - W: 8, U (noted that ZTUW and ZTUVW are both 8)
+
+- step6: ZTSUVY
+    - T: 3, Z (done)
+    - S: 5, T (done)
+    - U: 5, T (done)
+    - V: 6, U (done)
+    - Y: 7, V (done)
+    - W: 8, U (selected)
+    - X: 12, Y
+
+- step7: ZTSUVYW
+    - T: 3, Z (done)
+    - S: 5, T (done)
+    - U: 5, T (done)
+    - V: 6, U (done)
+    - Y: 7, V (done)
+    - W: 8, U (done)
+    - X: 9, W (done)
+* Question 4 (20 points) 
+Consider Fig. 4, where several subnets are interconnected by two routers (R1 and R2).
+[[./graphics/21_22_F/SubNets.png]]
+
+** Q4.1 (6 points)
+- Description:
+  If the interface of R1 in subnet 2 has an IP address 192.168.2.1,
+  assign IP addresses to all the other interfaces in subnet 2,
+  and also show the network mask you used for those IP addresses.
+- Ans: 
+  in the subnet2: 
+  host c's network board, host d's network board, R1's connection interface to subnet2 R2's connection interface to subnet2 
+  (usually, the switcher does not require IP address)
+  require ip
+  waht we need is to is make sure the ip address can store four ips
+  so:
+  Network (Subnet2): 192.168.2.0/24
+  Mask: 255.255.255.0
+  R1 (Subnet 2 interface): 192.168.2.1
+  R2 (Subnet 2 interface): 192.168.2.2
+  Host C: 192.168.2.3
+  Host D: 192.168.2.4
+
+** Q4.2 (8 points)
+- Description:
+  Assuming:
+  - Interface of A: IP 192.168.1.2, MAC aa-aa-aa-aa-aa-aa
+  - Interface of R1 in subnet 1: IP 192.168.1.1, MAC 11-11-11-11-11-11
+  Now consider sending an IP datagram from Host A to Host E.
+  Suppose A has an empty ARP table, while R1 and R2 both have up-to-date ARP tables and routing tables respectively.
+  Enumerate all the steps for sending the IP datagram.
+- note:
+  what we need to pay attention to is:
+  in the whole process, src IP, dest IP, will not change, only the MACs and TTL will change
+- Ans: 
+  (step1 - 3): the ARP update / broadcast process
+  - step1:
+    A finds out that IP(E) does not belong to 192.168.1.x web
+    A should send the datagram to router R1
+  - step2:
+    the ARP table in A is empty, A broadcast an ARP request:
+    dst MAC: ff-ff-ff-ff-ff-ff
+    src MAC: aa-aa-aa-aa-aa-aa
+    mean: who has 192.168.1.1's MAC? reply me.
+  - step3:
+    R1 reply:
+    dst MAC: aa-aa-aa-aa-aa-aa
+    src MAC: 11-11-11-11-11-11
+    and A will store the mapping into its ARP table
+  (step4 - 9): datagram sending procedure
+  - step4: 
+    A send (to the R1) IP datagram to R1
+    - IP Datagram:
+      src IP: 192.169.1.2
+      dst IP: IP(E)
+    - Ethernet Frame:
+      src MAC: aa-aa-aa-aa-aa-aa
+      dst MAC: 11-11-11-11-11-11
+  
+  - step5: 
+    R1: 
+    1. get the IP datagram from A
+    2. TTL -- and update checksum
+    3. look up routing tbale to find next hop for IP(E) -> R2
+    4. the ARP table in R1 is up to date, get R2's MAC address
+    - Ethernet Frame to send to R2:
+      dst MAC: R2' MAC
+      src MAC: R1' MAC
+      payload: the oringal IP datagram (src = A, dst = E)
+
+  - step6: 
+    R2 receive the fram from R1
+    1. TTL --, update checksum
+    2. look up the routing tbale to find next hop for IP(E) -> Host E
+    3. cause R2' ARP table is also up to date, get Host E's MAC address
+    - Ethernet Frame to send to R2:
+      dst MAC: MAC(E)
+      src MAC: MAC(R2's interface to subnet3) (noted that the MAC is attached to the interface instead of the router itself)
+      payload: the oringal IP datagram (src = A, dst = E)
+  - step 7:
+    E recv the frame, and find out that the desIP is itself
+    -> send to the uppler layer (like application layer)
+
+** Q4.3 (6 points)
+- Description:
+  If we replace the center switch (the device between R1 and R2) with a router R3,
+  then how many subnets are in this figure? List them.
+- Ans: 
+  switcher enable multiple devices to be in the same subnet
+  router's each interface is in the different subnet
+  so:
+  subnet1: A, B, R1's interface to subnet1
+  subnet2: R1's interface to subnet2, R3's interface to subnet2
+  subnet3: R3's interface to subnet3, Host C
+  subnet4: R3's interface to subnet4, Host D
+  subnet5: R3's interface to subnet5, R2's interface to subnet5
+  subnet6: R2's interface to subnet6, host E, F
+
+* Question 5 (20 points) 
+Alice wants to communicate with Bob using symmetric-key cryptography (e.g., DES) with a session-key KS.
+In lectures, public-key cryptography (e.g., RSA) is used to distribute a session key KS from Alice to Bob.
+Private keys: kA, kB. Public keys: KA, KB.
+Assume Alice and Bob already have each other’s public key through a trusty method.
+
+** Q5.1 (5 points)
+- Description:
+  What is the main advantage of first distributing a session key and then using symmetric-key cryptography
+  rather than using public-key cryptography techniques for the whole communication?
+- Ans: 
+  main advantages:
+  - efficiency / performance:
+    symmetric-key cryptography (e.g., DES, AES) is generally much faster than public-key cryptography (e.g., RSA, ECC)
+    for large data encryption/decryption
+  - public key crypto is used only for small key exchange, while buld data uses symmetric key crypto
+  - integrity, confidentiality, authentication when using publickey crypto to distribute session key
+
+
+** Q5.2 (7 points)
+- Description:
+  Draw a diagram that shows the message exchange between Alice and Bob which achieves this,
+  i.e., using the public-key cryptography to distribute a symmetric session-key.
+- Ans: 
+  Alice generate session key KS
+  Alice -> Bob: E_ = {KB}(KS)
+  Bob decrypts with kB to get KS
+  KS = {Kb}(E_)
+  Alice -> Bob: E_{KS}(M1)
+  Bob -> Alice: E_{KS}(M2)
+
+** Q5.3 (8 points)
+- Description:
+  Describe the difference between confidentiality and integrity (using digital signature)
+  using public-key cryptography.
+- Ans: 
+  - Confidentiality (secrecy):
+    - Goal: only the intended receiver can read the message.
+    - Method (public-key): Alice encrypts message using Bob's public key:
+      C = E_{KB}(M)
+      Only Bob can decrypt with private key kB: M = D_{kB}(C)
+  - Integrity + Authentication (digital signature):
+    - Goal: message not altered, and proves it came from Alice.
+    - Method: Alice signs the message (usually sign hash):
+      S = Sig_{kA}(H(M))
+      Bob verifies using Alice's public key KA:
+      Verify_{KA}(H(M), S) => valid/invalid
+    - Provides integrity, sender authentication, and often non-repudiation.
+  - Combination (common secure design):
+    - Sign then encrypt (or encrypt then sign depending on protocol design) to get both confidentiality and integrity.

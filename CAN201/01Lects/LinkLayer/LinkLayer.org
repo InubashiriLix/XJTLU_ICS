@@ -96,7 +96,7 @@ detect errors (eg. flipped bits) in transmitted segment
 *** CRC (Cyclic Redundancy Checks):
 - powerfull error-detection coding
 - widely used in practice: ethernet, wifi, etc
-- all CRC calculations aerdone in modulo 2 arthmetic (no carries, no borrows)
+- all CRC calculations are done in modulo 2 arthmetic (no carries, no borrows)
 - modulo-2 Arithmetic:
   - Addition = Subtraction = XOR
     #+BEGIN_text True Table Of AdditionOps in modulo-2 Arithmetic

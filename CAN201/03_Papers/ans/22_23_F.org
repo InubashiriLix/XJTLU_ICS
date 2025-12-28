@@ -1,0 +1,373 @@
+#+title: CAN201 2022/23 S1 Final Exam (Org-mode Question Sheet)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201 - Introduction to Networking
+- Time allowed: 2 Hours
+- Total marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: closed-book; no penalty for wrong answers; only English solutions accepted
+
+* Question 1 (20 points)
+- Topic: Message segmentation in packet-switched networks (store-and-forward).
+  [[./graphics/22_23_F/End2EndMsgTransport.png][ Fig1: End-to-End Message Transport ]]
+
+** Q1.1 (3 points)
+- Description:
+  Consider sending a 12×10^6-bit message from source to destination in Fig.1 without message segmentation.
+  Each link is 2 Mbps. Ignore propagation/queuing/processing delays.
+  Each switch uses store-and-forward packet switching.
+  How long does it take to move the message from source to destination?
+- Ans: 
+  - from Source to PacketSwitch1:
+    T_1 = 12*10^6 bits / 2*10^6 bps = 6 seconds
+  - from PacketSwitch1 to PacketSwitch2:
+    T_2 = 12*10^6 bits / 2*10^6 bps = 6 seconds
+  - from packetSwitch2 to Destination:
+    T_3 = 12*10^6 bits / 2*10^6 bps = 6 seconds
+  TotalTime = T_1 + T_2 + T_3 = 18 seconds
+  
+** Q1.2 (4 points)
+- Description:
+  Message is segmented into 1,200 packets, each 10,000 bits.
+  (1) How long does it take to move the first packet from source to the first (left-most) switch?
+  (2) Assuming timestamps start when source sends the first packet:
+      when the first packet is being sent from switch 1 to switch 2, the second packet is being sent from source to switch 1.
+      At what time will the second packet be fully received by the first switch?
+- Ans: 
+  1. using store-and-forward, time to send first packet from source to switch 1:
+     T_packet = 10,000 bits / 2*10^6 bps = 5 * 10^-3 = 0.005 seconds
+  2. 
+     - at the beginning of the first packet is start to send to the second switch,
+       the second packet is being sent from source to switch 1.
+       timestamp_1_1 = 0.005 seconds
+    - then the second packet is sending to the swicher 1:
+       t_send_2_1 = 10,000 bits / 2*10^6 bps = 0.005 seconds
+    - total time when the second packet is fully received by the first switch:
+       timestamp_2_1 = timestamp_1_1 + t_send_2_1 = 0.005 + 0.005 = 0.01 seconds
+
+** Q1.3 (3 points)
+- Description:
+  How long does it take to move the file from source to destination when message segmentation is used?
+- Ans: 
+  the link time cost for passing single packet is:
+  t_link = 10000 bits / 2*10^6 bps = 0.005 seconds
+  T_total= (K + N - 1) * L / R
+         = (3 + 1200 - 1) * 0.005 = 6.01 seconds
+  how to under stand this formula:
+  K: the pipline link number = 3
+  N: the total packet number
+  L / R: the time cost for passing single packet, we use t to represent it here
+  #+BEGIN_LANG options
+  ( 1 ) -> ( 2 ) -> ( 3 ) -> ( 4 )
+    1
+    2        1
+    3        2        1
+    4        3        2        1
+  #+END_LANG
+for the first packet, it require to run through all the links, so it require K * t time
+for the rest packets, you can imagin they are on the (K-1)th node,
+all they need to do is to wait for the previous packet to move to the next node
+thus: (N - 1) * t
+there fore, (N - 1 + K ) * t
+
+** Q1.4 (5 points)
+- Description:
+  In addition to reducing delay, what are the reasons for using message segmentation?
+- Ans: 
+  - fairness: huge msg will block the link for a long time, while segmentation can allow other msgs to use links in the same time
+  - reduce retransmission cost: when error occurs, only the error segment required to be retransmitted instead of the whole msg
+  - adapt to the network MTU: the link layer and network layer may have max frame size limitation, segmentation can adapt to different MTU
+  - better utilization of pipelining: raise throughput through pipelining
+  - routing / switching efficiency: smaller packets can run through different routes more easily
+
+** Q1.5 (5 points)
+- Description:
+  Discuss the drawbacks of message segmentation.
+- Ans: 
+  - header overhead increase: each segment needs its own header (IP, transport layer, link layer), which reduces effective data rate
+  - reassembly may needed: the recv node should cache, sort and wait for the missing segments, which increase complexity and delay
+  - longer waiting time for missing / error segments
+  need complex segmentation index management (like TCP ...)
+  require error control for each segment
+
+* Question 2 (20 points)
+- Topic: HTTP GET message analysis from Wireshark capture.
+
+** Given HTTP GET message (as shown in paper)
+#+BEGIN_html html_example
+GET /can201/index.html HTTP/1.1<cr><lf>
+Host: sat.xjtlu.edu.cn<cr><lf>
+User-Agent: Mozilla/5.0 (Windows;U; Windows NT 7.1; en-US; rv:1.7.2) Gecko/20040804 Netscape/7.2 (ax) <cr><lf>
+Accept: text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8, image/png, */*;q=0.5 <cr><lf>
+Accept-Language: en-us,en;q=0.5<cr><lf>
+Accept-Encoding: zip,deflate<cr><lf>
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7<cr><lf>
+Keep-Alive: 300<cr><lf>
+Connection: keep-alive<cr><lf>
+<cr><lf>
+#+END_html 
+
+** Q2.1 (3 points)
+- Description:
+  What is the URL of the document requested by the browser?
+  (Indicate where in the HTTP GET message you find the answer.)
+- Ans: 
+  http://sat.xjtlu.edu.cn/can201/index.html
+
+** Q2.2 (2 points)
+- Description:
+  Which version of HTTP is the browser running?
+  (Indicate where in the HTTP GET message you find the answer.)
+- Ans: 
+  HTTP/1.1
+
+** Q2.3 (3 points)
+- Description:
+  Does the browser request a non-persistent or a persistent connection?
+  (Indicate where in the HTTP GET message you find the answer.)
+- Ans: 
+  persistent connection:
+  Connnection: keep-alive
+
+** Q2.4 (7 points)
+- Description:
+  What is the IP address of the client host where the browser is running?
+  How does the browser get the web server’s IP address?
+- Ans: 
+  client IP is the source IP address in IP datagram carrying this HTTP GET
+  Browser: send dns query to local dn (UDP / 53) to get the IP address of sat.xjtlu.edu.cn
+  if in the cache, then get from cache
+  else, the local dn will query other dns servers to get the IP address recursively or iteratively
+
+** Q2.5 (5 points)
+- Description:
+  What type of browser initiates this message?
+  Why is the browser type needed in an HTTP request message?
+- Ans: 
+  Mozilla/5.0
+  different browser has different support for html / css /js, server will choose adapted page / encoding / zip strategy
+
+* Question 3 (20 points)
+- Topic: Dijkstra’s algorithm.
+- Task: Compute shortest path from node S to all nodes in Fig.3.
+- Note: ties broken in favor of the leftmost column.
+[[./graphics/22_23_F/Dijkstra.png][fig2: Dijkstra Graph]]
+
+** Fig.3 (topology transcribed to text)
+- Nodes: S, T, U, V, W, X, Y, Z
+- Undirected weighted edges:
+  - S--1--T
+  - S--2--U
+  - T--2--Z
+  - T--3--V
+  - U--4--V
+  - U--6--W
+  - V--5--Z
+  - V--3--W
+  - Z--3--Y
+  - Y--7--W
+  - Y--5--X
+  - W--2--X
+
+** Dijkstra table (fill blanks for steps 3..7)
+| Step | N'     | D(T), p(T) | D(U), p(U) | D(Z), p(Z) | D(V), p(V) | D(Y), p(Y) | D(W), p(W) | D(X), p(X) |
+|------+--------+------------+------------+------------+------------+------------+------------+------------|
+| 0    | S      | 1, S       | 2, S       | ∞          | ∞          | ∞          | ∞          | ∞          |
+| 1    | ST     | Done       | 2, S       | 3, T       | 4, T       | ∞          | ∞          | ∞          |
+| 2    | STU    | Done       | Done       | 3, T       | 4, T       | ∞          | 8, U       | ∞          |
+| 3    | STUZ   | Done       | Done       | Done       | 4, T       | 6, Z       | 8, U       | ∞          |
+| 4    | STUZV  | Done       | Done       | Done       | Done       | 6, Z       | 7, V       | ∞          |
+| 5    | STUZVY | Done       | Done       | Done       | Done       | Done       | 7, V       | 11, Y      |
+| 6    | STUZVYW| Done       | Done       | Done       | Done       | Done       | Done       | 9, W       |
+| 7    | STUZVYWX| Done      | Done       | Done       | Done       | Done       | Done       | Done       |
+
+- Ans: 
+  - step0: S
+    T: 1, S (next)
+    U: 2, S
+  - step1: ST
+    T: 1, S (current)
+    U: 2, S (next)
+    Z: 3, T
+    V: 4, T
+  - step2: STU
+    T: 1, S (done)
+    U: 2, S (current)
+    Z: 3, T (next)
+    V: 4, T
+    W: 8, U
+  - step3: STUZ
+    T: 1, S (done)
+    U: 2, S (done)
+    Z: 3, T (current)
+    V: 4, T (next)
+    Y: 6, Z
+    W: 8, U
+  - step4: STUZV
+    T: 1, S (done)
+    U: 2, S (done)
+    Z: 3, T (done)
+    V: 4, T (current)
+    Y: 6, Z (next)
+    W: 7, V
+  - step5: STUZVY
+    T: 1, S (done)
+    U: 2, S (done)
+    Z: 3, T (done)
+    V: 4, T (done)
+    Y: 6, Z (current)
+    W: 7, V (next)
+    X: 11, Y
+  - step6: STUZVYW
+    T: 1, S (done)
+    U: 2, S (done)
+    Z: 3, T (done)
+    V: 4, T (done)
+    Y: 6, Z (done)
+    W: 7, V (current)
+    X: 9, W
+  - step7: STUZVYWX
+    T: 1, S (done)
+    U: 2, S (done)
+    Z: 3, T (done)
+    V: 4, T (done)
+    Y: 6, Z (done)
+    W: 7, V (done)
+    X: 9, W (done)
+
+* Question 4 (20 points)
+- Topic: Subnets + IP addressing + ARP forwarding.
+- Fig.4 topology (transcribed):
+  - Left LAN: Host1 + Host2 -> Switch1 -> Router1
+  - Up link: Host3 directly connected to Router1
+  - Right LAN: Router1 -> Switch2 -> Host4 + Host5
+[[./graphics/22_23_F/SubNets.png][fig3: Subnet Graph]]
+
+** Q4.1 (8 points)
+- Description:
+  How many subnets in this network? List them in terms of network interfaces.
+- Ans: 
+  switcher response for connecting devices to the same subnet
+  router's different interfaces connect different subnets
+  so
+  subnet1: Switch1, Host1, Host2, Router1 (left interface)
+  subnet2: Switch2, Host4, Host5, Router1 (right interface)
+  subnet3: Host3, Router1 (up interface)
+
+** Q4.2 (4 points)
+- Description:
+  If the interface of Router1 linked with Host3 has IP address 10.0.2.1/25,
+  what is the largest IP address that can be assigned to Host3’s interface,
+  and the corresponding network mask?
+- Ans: 
+  the corresponding network mask is 255.255.255.128
+  Network ID: 10.0.2.0
+  Braodcast address: 10.0.2.127
+  available host IP:
+  10.0.2.1 - 126
+  largest host IP: 10.0.2.126
+
+** Q4.3 (8 points)
+- Description:
+  Given:
+  - Host1 interface: IP 10.0.1.2, MAC aa-aa-aa-aa-aa-aa
+  - Router1 interface connected to Switch1: IP 10.0.1.1, MAC 11-11-11-11-11-11
+  Send an IP datagram from Host1 to Host5.
+  Assume Host1 ARP table empty, Router1 has up-to-date ARP table and routing table.
+  Describe all steps to successfully send the IP datagram.
+- Ans: 
+1. first, Host1 check the destination IP address Host5 IP(H5) is not in the same subnet
+   then, it require the router's MAC address to send the datagram
+   but the ARP tbale is empty, so it will broadcast an ARP request to ask R1's MAC address
+   using this frame format:
+   dst MAC: ff-ff-ff-ff-ff-ff
+   src MAC: aa-aa-aa-aa-aa-aa
+   content? what is the MAC address is IP 10.0.1.1
+
+   the 10.0.1.1 will receive the ARP request, then reply (unicast) an ARP response to Host1
+   frame:
+   dst MAC: aa-aa-aa-aa-aa-aa
+   src MAC: 11-11-11-11-11-11
+   content: the MAC address of R1 is 11-11-11-11-11-11
+   host cache: 10.0.1.1 -> 11-11-11-11-11-11
+
+   then the Host1 will send this msg
+   IP datagram:
+   dst IP: IP(H5)
+   src IP: 10.0.1.2
+   frame: 
+   dst MAC: 11-11-11-11-11-11
+   src MAC: aa-aa-aa-aa-aa-aa
+   payload: IP datagram
+
+2. the R1 recv the datagram
+   R1 check the IP datagram and decapsulates the frame, decrease the TTL and searching the dest IP address in the routing table, 
+   find out the IP(H5) is in the subnet connected to Switch2
+   then R1 will check the ARP table to find the MAC address of Host5
+   then R1 will send the IP datagram to Host5
+   frame:
+   dst: MAC(H5)
+   src: MAC(Router1 right interface)
+   IP datagram (payload): 
+   dst IP: IP(H5)
+   src IP: 10.0.1.2
+
+3. H5 recv the datagram
+   H5 decapsulate, and deliver the datgram up the protocol stack
+
+* Question 5 (20 points)
+- Topic: Symmetric-key session key distribution using public-key crypto + CA.
+
+** Background
+Alice communicates with Bob using symmetric-key crypto (e.g., DES) with session-key KS.
+Public-key crypto (e.g., RSA) can distribute KS.
+Private keys: kA-, kB- ; Public keys: KA+, KB+.
+Assume Alice and Bob obtain each other’s public key via a certificate authority (CA).
+
+** Q5.1 (4 points)
+- Description:
+  Describe the main problem for using symmetric-key cryptography.
+- Ans: 
+  - problem1: the symmetric key distribution problem:
+    require a secure way to distribute the symmetric key to both parties
+  - problem2: the key management problem:
+    the key storage become huge as the communication parties increase
+
+** Q5.2 (4 points)
+- Description:
+  Describe the main disadvantage of using public-key cryptography instead of symmetric-key cryptography for the whole communication.
+- Ans: 
+  - cost: encrypt and decrypt using public-key cryptography is much slower than symmetric-key cryptography, and computation cost is higher
+  - suitable for small data size, like handsake, not suitable for large data communication
+
+** Q5.3 (6 points)
+- Description:
+  Draw a diagram to show how Alice would use public-key cryptography to distribute the symmetric session-key KS to Bob.
+- Ans: 
+  Alice generate KS
+  Alice -> Bob: E_KB+(KS)
+  Bob decrypt using KB-: KS = D_KB-(E_KB+(KS))
+  then use symmetric E_KS(M)
+
+  #+BEGIN_text options
+    Alice                                 Bob
+    |--- E_{KB+}(KS) --------------------->|
+    |                                      |  (decrypt with kB- to get KS)
+    |--- E_{KS}(data) -------------------->|
+    |<-- E_{KS}(reply) --------------------|
+  #+END_text
+
+** Q5.4 (6 points)
+- Description:
+  Describe the problem when there is no CA distributing the public keys.
+- Ans: 
+  - man in the middle attack
+    an attacker can pretend to be Bob when communicating with Alice
+    and pretend to be Alice when communicating with Bob
+    using fake public keys to intercept the session key KS
+ - using certification authority (CA) can solve this problem
+    - the CA is a trusted third party
+    - CA will issue digital certificates to bind public keys with user identities
+

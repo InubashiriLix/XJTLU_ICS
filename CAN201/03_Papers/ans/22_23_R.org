@@ -1,0 +1,300 @@
+#+title: CAN201 2022/23 S1 Resit Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201 - Introduction to Networking
+- Semester: 2022/23 S1 (Resit Examination)
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: closed-book; no penalty for wrong answers; only English solutions accepted 
+
+* Question 1 (20 points) 
+Browsing website through a browser is one of the daily used network operations.
+
+** Q1.1 (5 points)
+- Description:
+  Suppose the IP address for the associated URL is not cached in your local host
+  and *n* DNS servers are visited before your host receives the IP address from DNS;
+  the successive visits incur an RTT of RTT1,...,RTTn.
+  Let RTT0 denote the RTT between the local host and the server containing the object.
+  Assuming zero transmission time of the object.
+  Web page associated with the link contains exactly one object, consisting of a small amount of HTML text.
+  How much time elapses from when the client clicks on the link until the client receives the object?
+- Ans: 
+  - the client should visit DNS servers one by one to get the IP address of the web server, 
+    which takes Time_DNS = RTT1 + RTT2 + ... + RTTn
+    Time_DNS = RTT1 + RTT2 + ... + RTTn
+  - after getting the IP address of the web server, 
+    require use TCP + HTTP (non-persistent, one small object, ignore transmission time)
+    1 RTT for TCP 3-way handsake + 1 RTTo for HTTP request / response
+  T_HTTP = 2 * RTTO
+  - Total Time = Time_DNS + Time_HTTP = RT1 + RTT2 + ... + RTTn + 2 * RTT0
+
+** Q1.2 (15 points)
+- Description:
+  Suppose your computer is connected to the Internet directly.
+  You enter http://www.baidu.com/ in the address bar of your browser and open the homepage of Baidu,
+  which contains texts and images.
+  Your browser completed many processes.
+  Please briefly introduce all the related protocols in different layers of IP stack used in the mentioned webpage visiting.
+  Tips: You should consider the provided network condition and the type of web address.
+- Ans: 
+  - Application Layer:
+    - DNS Protocol:
+      revolve website URL (www.baidu.com) to get the corresponding IP address of Baidu web server.
+    - HTTP Protocol: HTTP/1.1 or HTTP/2 is used to request and receive the web page (texts and images) from the Baidu web server.
+      contains methods like GET, POST, etc.
+    - HTTPS (HTTP using TLS / SSL): If the URL is https://www.baidu.com/,
+      HTTPS is used to ensure secure communication between the browser and the web server.
+  - Transport Layer:
+    - TCP Portocol: 
+      TCP is used to provide reliable, ordered, and error-checked delivery of data between the browser and the web server.
+      It establishes a connection using a three-way handshake before data transfer.
+      the HTTP / HTTPS messages are encapsulate in to TCP segments in transport layer
+    - UDP Protocol:
+      UDP does not garanttee raliable delivery, usually used in streaming, gaming, etc, including DNS query.
+  - Network Layer:
+    - IP protocols:
+      IPv4, IPv6: addresses + routing across routers
+    - ICMP protocol: 
+      usually for report error like unreachable host, availability, etc.
+  - Link Layer:
+    - Ethernet Protocol / WiFI
+    - ARP: map next hop IP -> Map addresses before sending frames
+  - Physical Layer:
+    fiber / wire / sopper, etc ...
+
+* Question 2 (20 points) 
+Due to the issues such as interferences and device errors, bit errors often occur in networking communication.
+In order to receive the correct information through the internet, error detection and correction methods are applied in some layers.
+
+** Q2.1 (10 points)
+- Description:
+  Suppose you have the following three 8-bit bytes:
+  - 01010011
+  - 11001100
+  - 00001100
+  What is the 1s complement of the sum of these 8-bit bytes?
+- Ans: 
+  #+BEGIN_text options
+            01010011
+            11001100
+            00001100
+           ---------
+       sum:100101011
+           ---------
+wraparound: 00101100
+            --------
+1's comple  11010011
+  #+END_text
+
+** Q2.2 (10 points)
+- Description:
+  With the 1s complement scheme, how does the receiver detect errors?
+  Is it possible that a 1-bit error will go undetected?
+  How about a 2-bit error?
+- Ans: 
+  - 1-bit error:
+    the error will be detected because the sum will change and the checksum will not match.
+  - 2-bit error:
+    may go undetected if the two bit flips cancel each other in the 1's complement sum
+    (on increases the sum while the other decreases it)
+    like 
+    #+BEGIN_text sample1
+    01010011
+    11001100
+    00001100
+    #+END_text
+    #+BEGIN_text sample2
+    01010111
+    11001100
+    00001000
+    #+END_text
+    the checksum will be same
+
+* Question 3 (20 points) 
+Complete the following table using Dijkstra’s algorithm.
+Compute the shortest path from node Z to all network nodes shown in Fig. 3.
+Note: Possible ties are broken in favor of the leftmost column.
+[[./graphics/22_23_R/Dijkstra.png][Fig. 3: Dijkstra's Algorithm Graph]]
+
+** Dijkstra Table (fill steps 3..7)
+| Step | N'  | D(T), p(T) | D(Y), p(Y) | D(S), p(S) | D(V), p(V) | D(X), p(X) | D(U), p(U) | D(W), p(W) |
+|------+-----+------------+------------+------------+------------+------------+------------+------------|
+| 0    | Z   | 3, Z       | 10, Z      | ∞          | ∞          | ∞          | ∞          | ∞          |
+| 1    | ZT  | Done       | 8, T       | 5, T       | 10, T      | ∞          | 5, T       | ∞          |
+| 2    | ZTS | Done       | 8, T       | Done       | 10, T      | ∞          | 5, T       | ∞          |
+| 3    |     |            |            |            |            |            |            |            |
+| 4    |     |            |            |            |            |            |            |            |
+| 5    |     |            |            |            |            |            |            |            |
+| 6    |     |            |            |            |            |            |            |            |
+| 7    |     |            |            |            |            |            |            |            |
+
+- Ans: 
+- step1: Z
+  T: 3, Z (selected)
+  Y: 10, T
+
+- step2: ZT
+  T: 3, Z (done)
+  S: 5, T (selected)
+  U: 5, T
+  Y: 8, T
+  V: 10, T
+
+- step3: ZTS
+  T: 3, Z (done)
+  S: 5, T (done)
+  U: 5, T (selected)
+  Y: 8, T
+  V: 10, T
+
+- step4: ZTSU
+  T: 3, Z (done)
+  S: 5, T (done)
+  U: 5, T (done)
+  V: 6, U (selected)
+  W: 8, U
+  Y: 8, T
+
+- step5: ZTSUV
+  T: 3, Z (done)
+  S: 5, T (done)
+  U: 5, T (done)
+  V: 6, U (done)
+  Y: 7, V (selected)
+  W: 8, U 
+
+- step6: ZTSUVY
+  T: 3, Z (done)
+  S: 5, T (done)
+  U: 5, T (done)
+  V: 6, U (done)
+  Y: 7, T (done)
+  W: 8, U (selected)
+  X: 9, W
+
+- step7: ZTSUVYW
+  T: 3, Z (done)
+  S: 5, T (done)
+  U: 5, T (done)
+  V: 6, U (done)
+  Y: 7, T (done)
+  W: 8, U (done)
+  X: 9, W (done)
+
+* Question 4 (20 points) 
+Consider Fig. 4, where several subnets are interconnected by two routers (R1 and R2).
+[[./graphics/22_23_R/SubNets.png][Fig 4: Subnets connected by Routers]]
+
+** Q4.1 (6 points)
+- Description:
+  Describe the difference between router and switch?
+- Ans: 
+
+  router will forward packets between different networks based on IP addresses,
+  router will separate broadcast domains.
+  Layer 3: forwards packets between different IP networks using routing table; separates broadcast domains
+
+  switch will forward frames within the same network based on MAC addresses,
+  switch can integrate multiple devices into the same broadcast domain.
+  Layer 2: forward frames within the same LAN using MAC table; does not route between subnets;
+
+** Q4.2 (6 points)
+- Description:
+  If the interface of R2 in subnet 2 has an IP address 192.168.2.2,
+  assign IP addresses to all the other interfaces in subnet 2,
+  and also show the network mask you used for those IP addresses.
+- Ans: 
+  in the subnet 2, we only have 4 devices:
+  Host C, Host D, R2 interface, R1 interfaces to subnet 2.
+  the main requirement is that they should be in the same subnet.
+  let it be 
+  - Network (Subnet2): 192.168.2.0/24
+  - Mask: 255.255.255.0
+  - HostC: 192.168.2.4
+  - HostD: 192.168.2.1
+  - R1 interface to subnet 2: 192.168.2.3
+  - R2 interface to subnet 2: 192.168.2.2
+
+** Q4.3 (8 points)
+- Description:
+  Assuming:
+  - Interface of A has IP address 192.168.1.2, MAC aa-aa-aa-aa-aa-aa
+  - Interface of R1 in subnet 1 has IP address 192.168.1.1, MAC 11-11-11-11-11-11
+  Now consider sending an IP datagram from Host A to Host C.
+  Suppose A has an empty ARP table, while R1 has the up-to-date ARP table and routing table respectively.
+  Enumerate all the steps for sending the IP datagram.
+- Ans: 
+    A checks destination IP (Host C). Since C is not in Subnet 1, A chooses default gateway R1 (192.168.1.1) as next hop.
+    A broadcasts ARP Request on Subnet 1:
+    Ethernet dst: ff-ff-ff-ff-ff-ff
+    Ethernet src: aa-aa-aa-aa-aa-aa
+    ARP: “Who has 192.168.1.1? Tell 192.168.1.2”
+    R1 replies ARP Reply (unicast):
+    Ethernet dst: aa-aa-aa-aa-aa-aa
+    Ethernet src: 11-11-11-11-11-11
+    ARP: “192.168.1.1 is 11-11-11-11-11-11”
+    A caches the mapping.
+    A sends Ethernet frame to R1 carrying the IP datagram:
+    Frame dst MAC = 11-11-11-11-11-11, src MAC = aa-aa-aa-aa-aa-aa
+    IP src = 192.168.1.2, IP dst = IP(C)
+    R1 decapsulates, decrements TTL, looks up routing table and finds C is on Subnet 2 (directly connected).
+    R1 uses its up-to-date ARP table to get MAC(C), then sends a new frame on Subnet 2:
+    Frame dst MAC = MAC(C), src MAC = MAC(R1-subnet2 interface)
+    Payload: same IP datagram (src/dst IP unchanged)
+    Host C receives, decapsulates, and delivers the datagram up the stack.
+
+* Question 5 (20 points) 
+Alice wants to communicate with Bob using symmetric-key cryptography (e.g., DES) with a session-key KS.
+We learned how public-key cryptography (e.g., RSA) can be used to distribute a session key KS between Alice and Bob.
+Private keys: kA- and kB- ; Public keys: KA+ and KB+.
+Assume Alice and Bob got each other’s public key through a certificate authority (CA).
+
+** Q5.1 (4 points)
+- Description:
+  Describe the main problem for using symmetric-key cryptography.
+- Ans: 
+  - problem1: the symmetric key distribution problem:
+    require a secure way to distribute the symmetric key to both parties
+  - problem2: the key management problem:
+    the key storage become huge as the communication parties increase
+
+** Q5.2 (4 points)
+- Description:
+  Describe the main disadvantage of using public-key cryptography instead of symmetric-key cryptography for the whole communication.
+- Ans: 
+  - cost: encrypt and decrypt using public-key cryptography is much slower than symmetric-key cryptography, and computation cost is higher
+  - suitable for small data size, like handsake, not suitable for large data communication
+
+** Q5.3 (6 points)
+- Description:
+  Draw a diagram to show how Alice would use public-key cryptography to distribute the symmetric session-key KS to Bob.
+- Ans: 
+  Alice generate KS
+  Alice -> Bob: E_KB+(KS)
+  Bob decrypt using KB-: KS = D_KB-(E_KB+(KS))
+  then use symmetric E_KS(M)
+
+  #+BEGIN_text options
+    Alice                                 Bob
+    |--- E_{KB+}(KS) --------------------->|
+    |                                      |  (decrypt with kB- to get KS)
+    |--- E_{KS}(data) -------------------->|
+    |<-- E_{KS}(reply) --------------------|
+  #+END_text
+
+** Q5.4 (6 points)
+- Description:
+  Describe the problem when there is no CA distributing the public keys.
+- Ans: 
+  - man in the middle attack
+    an attacker can pretend to be Bob when communicating with Alice
+    and pretend to be Alice when communicating with Bob
+    using fake public keys to intercept the session key KS
+ - using certification authority (CA) can solve this problem
+    - the CA is a trusted third party
+    - CA will issue digital certificates to bind public keys with user identities
+

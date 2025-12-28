@@ -1,0 +1,204 @@
+#+title: CAN201 2023/24 S1 Resit Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201 - Introduction to Networking
+- Semester: 1st Semester 2023/24 (Resit Examination)
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: closed-book; only English solutions accepted
+
+* Question 1 (20 points)
+** Background ([[./graphics/23_24_R/Fig1.png][Fig1]])
+Assume we know the bottleneck link along the path from the server to the client is the first link with rate Rs bits/sec.
+Suppose we send a pair of packets back-to-back from the server to the client, and there is no other traffic on this path.
+Assume each packet has size L bits, and both links have the same propagation delay d_prop.
+
+** Q1.1 (5 points)
+*** Description
+What is the packet inter-arrival time at the destination?
+That is, how much time elapses from when the last bit of the first packet arrives until the last bit of the second packet arrives?
+*** Ans
+inter-arrival time = L / Rs
+
+** Q1.2 (7 points)
+*** Description
+Now suppose that the second link is the bottleneck link (i.e., Rc < Rs).
+Is it possible that the second packet queues at the input queue of the second link? Explain.
+*** Ans
+yes, possible.
+the speed of first link is Rs
+and the second link link is Rc
+and the time cost on the first link is t1 = L / Rs
+the time cost on the second link is t2 = L / Rc
+since Rs > Rc
+thus t1 < t2
+therefore, when the first packet just finished transmitting on the first link,
+the second link still buzy transsmitting the first packet, causing the packet queue
+
+** Q1.3 (8 points)
+*** Description
+Now suppose that the server sends the second packet T seconds after sending the first packet (Rc < Rs).
+How large must T be to ensure no queuing before the second link? Explain.
+*** Ans
+I don't want to explain, I can only guess taht the time should be second channel swallow the rest of first packet, 
+that is T = L / Rc - L / Rs (min value of T)
+fuck......I don't know how to explain this, but it is correct answer 
+
+alright, explain this...
+define that the first bit of packet 2 arrives from head to tail of link1 is ts = L / Rs 
+define the last bit from (the time of first bit arriives at link2) to the last bit arrive at link2 is tc = L / Rc
+if there exists T that make the first bit of packet 2 arrives at link2 just before the last bit of packet 1 arrive link2
+then T must fullfill that
+ts + T >= tc => T >= tc - ts => T >= L / Rc - L / Rs
+well, L / Rc - L / Rs is the min value of T to ensure no queuing before the second link
+
+* Question 2 (20 points)
+** Q2.1 (10 points)
+*** Description
+Decide whether the following statements related to HTTP are correct (True / False):
+
+a) The server side normally doesn’t maintain the state data. (2 points)
+b) The client side should have Permanent IP address. (2 points)
+c) Two distinct Web pages (for example, https://sat.xjtlu.edu.cn/research.html and https://sat.xjtlu.edu.cn/staff.html) can be sent over the same persistent connection. (2 points)
+d) HTTP 1.1 has “MODIFY” mothed. (2 points)
+e) The port number used by HTTP can only be 80. (2 points )
+*** Ans
+a. True, the server side is stateless on transport layer, (but on application layer, some state like cookie, tokens could be stored in the server side)
+b. False, the client side can use dynamic IP address
+c. True, they are in the same domain, so they can be sent over the same persistent connection
+d. False, the HTTP1
+e. False, HTTP uses 80, 8080, 8008, any port, not *only*, HTTPS uses 443, ssh: 22
+
+
+** Q2.2 (10 points)
+*** Description
+Consider the following string of ASCII characters captured by Wireshark when the browser sent an HTTP GET message.
+The characters <cr><lf> are carriage return and line-feed characters.
+Answer the questions, indicating where in the HTTP GET message below you find the answer.
+
+#+begin_example
+GET /sat/index.html HTTP/1.1<cr><lf>
+Host: sat.xjtlu.edu.cn<cr><lf>
+User-Agent: Mozilla/5.0 (Windows;U; Windows NT 7.1; en-US; rv:1.7.2) Gecko/20040804 Netscape/7.2 (ax) <cr><lf>
+Accept: text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8,image/png,*/*;q=0.5 <cr><lf>
+Accept-Language: en-us,en;q=0.5<cr><lf>
+Accept-Encoding: zip,deflate<cr><lf>
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7<cr><lf>
+Keep-Alive: 300<cr><lf>
+Connection: keep-alive<cr><lf>
+<cr><lf>
+#+end_example
+
+a) What is the URL of the document requested by the browser? (3 points)
+b) What version of HTTP is the browser running? (3 points)
+c) How does the browser get IP address? (4 points)
+*** Ans
+a. http://sat.xjtlu.edu.cn/sat/index.html
+b. HTTP/1.1
+c. the browser use datagram to get IP address;
+   it will find if the dst address has in the cache, if not 
+   it will send UDP DNS query to DNS server recursively or iteratively to get the IP address
+
+* Question 3 (20 points)
+** Q3.1 (20 points)
+*** Description
+Complete the following table using Dijkstra’s algorithm.
+Compute the shortest path from node A to all network nodes shown in Fig. 2.
+Note: Possible ties are broken in favor of the leftmost column.
+[[./graphics/23_24_R/Fig2.png]]
+
+Fig. 2 (undirected weighted edges):
+- A--1--B
+- A--8--D
+- B--3--D
+- D--2--C
+- C--1--H
+- D--5--H
+- B--1--H
+- B--8--F
+- F--1--H
+- F--2--E
+- E--4--G
+- H--3--G
+
+Dijkstra table (fill steps 3..7):
+| Step | N'  | D(B), p(B) | D(C), p(C) | D(D), p(D) | D(E), p(E) | D(F), p(F) | D(G), p(G) | D(H), p(H) |
+|------+-----+------------+------------+------------+------------+------------+------------+------------|
+| 0    | A   | 1, A       | ∞          | 8, A       | ∞          | ∞          | ∞          | ∞          |
+| 1    | AB  | Done       | ∞          | 4, B       | ∞          | 9, B       | ∞          | 2, B       |
+| 2    | ABH | Done       | 3, H       | 4, B       | ∞          | 3, H       | 5, H       | Done       |
+| 3    |     |            |            |            |            |            |            |            |
+| 4    |     |            |            |            |            |            |            |            |
+| 5    |     |            |            |            |            |            |            |            |
+| 6    |     |            |            |            |            |            |            |            |
+| 7    |     |            |            |            |            |            |            |            |
+*** Ans
+
+
+* Question 4 (20 points)
+** Background ([[./graphics/23_24_R/Fig3.png][Fig3]])
+Topology (as shown):
+- Switch 1 connects Host 1 and Host 2, and links to Router 1
+- Host 3 links directly to Router 1
+- Router 1 links to Switch 2
+- Switch 2 connects Host 4 and Host 5
+
+** Q4.1 (8 points)
+*** Description
+How many subnets in this network?
+List them in terms of network interfaces.
+*** Ans
+
+
+** Q4.2 (4 points)
+*** Description
+If the interface of Router 1 linked with Host 3 has an IP address 10.0.2.1/25,
+which would be the largest IP address that can be assigned to the interface of Host 3 and the corresponding network mask?
+*** Ans
+10.0.2.126
+** Q4.3 (8 points)
+*** Description
+Assuming:
+- The interface of Host 1 has an IP address 10.0.1.2, and the adapter for that interface has a MAC address aa-aa-aa-aa-aa-aa
+- The interface of Router 1 lined with Switch 1 has an IP address 10.0.1.1, and the adapter for that interface has a MAC address 11-11-11-11-11-11
+
+Now, consider sending an IP datagram from Host 1 to Host 5.
+Suppose Host 1 has an empty ARP table, while Router 1 has the up-to-date ARP table and routing table respectively.
+Describe all the steps to succeed in sending the IP datagram.
+*** Ans
+
+
+* Question 5 (20 points)
+** Background
+Alice wants to communicate with Bob using symmetric-key cryptography (e.g., DES) with a session-key KS.
+Public-key cryptography (e.g., RSA) can be used to distribute a session key KS between Alice and Bob.
+Private keys of Alice and Bob: kA- and kB-
+Public keys of Alice and Bob: KA+ and KB+
+Assume Alice and Bob have got each other’s public key through a certificate authority (CA).
+
+** Q5.1 (4 points)
+*** Description
+Describe the main problem for using symmetric-key cryptography.
+*** Ans
+
+
+** Q5.2 (4 points)
+*** Description
+Describe the main disadvantage of using public-key cryptography instead of symmetric-key cryptography for the whole communication.
+*** Ans
+
+
+** Q5.3 (6 points)
+*** Description
+Draw a diagram to show how Alice would use the public-key cryptography to distribute the symmetric session-key KS to Bob.
+*** Ans
+
+
+** Q5.4 (6 points)
+*** Description
+Describe the problem when there is no CA distributing the public keys.
+*** Ans
+

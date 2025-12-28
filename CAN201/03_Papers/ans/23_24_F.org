@@ -1,0 +1,321 @@
+#+title: CAN201 2023/24 S1 Final Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201 - Introduction to Networking
+- Semester: 1st Semester 2023/24
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: closed-book; only English solutions accepted
+
+* Question 1 (20 points)
+** Q1.1 (5 points)
+*** Description
+Suppose two hosts, located in Kunming and Shanghai, are separated by 2,000 kilometers, and are connected by a direct link of R = 2 Mbps.
+Suppose the propagation speed over the link is 2.5 * 10^8 meters/sec.
+(In this question, 1Mb = 1,000Kb = 1,000,000b)
+
+Calculate the bandwidth-delay product: R * d_prop.
+[[./graphics/23_24_F/Map.png][Fig.1. Map of China showing Kunming and Shanghai]]
+*** Ans:
+BandWidth-delay product = R * d_prop = 2Mbps * (2*10^6m / 2.5 * 10^8 m/s) = 2KB
+which means at least 2KB data ccan be in the link at any give time
+
+** Q1.2 (5 points)
+*** Description
+Consider sending a file of 100,000 bits from the host in Kunming to the host in Shanghai.
+Suppose the file is sent continuously as one large image.
+What is the maximum number of bits that will be in the link at any given time?
+*** Ans:
+the maximum of bits in the link at any given time is 2KB = 16,000 bits
+assuming the link fully utilized, cause' 100,000 bits > 16000 bits
+so there are maximum 16,000 bits in the link at any given time
+
+** Q1.3 (5 points)
+*** Description
+Provide a definition of the “bandwidth-delay product”.
+*** Ans
+the data amount that can be in the link at any given time, which is equal to the product of the link's bandwidth and the propagation delay
+
+
+** Q1.4 (2 points)
+*** Description
+What is the width (in meters) of a bit in the link?
+*** Ans
+bit width = s / R = 2.5 * 10^8 m/s / 2 * 10^6 bps = 125 meters
+
+** Q1.5 (3 points)
+*** Description
+Derive a general expression for the width of a bit in terms of the propagation speed s,
+the transmission rate R, and the length of the link m.
+*** Ans
+width of a bit = 1 / amount of bits in the link in a meter = m / (R * m / s) = s / R
+
+* Question 2 (20 points)
+** Q2.1 (10 points)
+*** Description
+Decide whether the following statements related to HTTP are correct (True / False):
+
+a) A user requests a Web page that consists of some text and 4 images. For this page, the client will send one request message and receive 5 response messages. (2 points)
+b) Two distinct Web pages (for example, https://www.suda.edu.cn/research.html and https://sat.xjtlu.edu.cn/staff.html) can be sent over the same persistent connection. (2 points)
+c) With non-persistent connections between browser and origin server, it is possible for a single TCP segment to carry two distinct HTTP request messages. (2 points)
+d) HTTP response messages never have an empty message body. (2 points)
+e) The HTTP protocol can only be used for webpages. (2 points)
+*** Ans
+a. False, at least 5 request msg are needed.
+b. False, different web pages may be located on different servers, but in this case, the domain are different, so they are on different servers.
+c. maybe, each TCP segment can carry only one HTTP request msg, but: HTTP is text-based, TCP is byte-stream based, so two HTTP request msg can be sent in a single TCP segment if they are concatenated together.
+d. False, for example, 204 No Content response has no message body.
+e. False, HTTP can be used to transfer other types of resources, such as images, videos, and files.
+
+** Q2.2 (10 points)
+*** Description
+The text below shows the reply sent from the server in response to an HTTP GET message.
+Answer the following questions, indicating where in the message below you find the answer.
+
+#+begin_example
+HTTP/1.1 200 OK<cr><lf>
+Date: Tue, 07 Mar 2023 12:39:45GMT+8<cr><lf>
+Server: Apache/4.0.52<cr><lf>
+Last-Modified: Sat, 10 Dec 2022 18:27:46 GMT+8<cr><lf>
+Accept-Ranges: bytes<cr><lf>
+Content-Length: 3874<cr><lf>
+Keep-Alive: timeout=max=100<cr><lf>
+Connection: Keep-Alive<cr><lf>
+Content-Type: text/html; charset=utf-8<cr><lf>
+<cr><lf>
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en"><lf>
+<html><lf><head><lf>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><lf>
+<meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) Netscape]"><lf>
+<title>Unleash Yourselves and Dare to be Rationally Unconventional</title><lf>
+</head><lf><body><H1>Unleash Yourselves and Dare to be Rationally Unconventional</H1>
+<p>Last Modify Date: 1 Dec 2022</p> ... <much more document text following here (not shown)>
+#+end_example
+
+a) Was the server able to successfully find the document or not? What time was the document reply provided? (2 points)
+b) When was the document last modified? (2 points)
+c) How many bytes are there in the document being returned? (2 points)
+d) What are the first 9 bytes of the document being returned? (2 points)
+e) Did the server agree to a persistent connection? (2 points)
+*** Ans
+a. Yes, the server was able to successfully find the document by received 200 OK. The document reply was provided on Tue, 07 Mar 2023 12:39:45GMT+8.
+b. Sat, 10 Dec 2022 18:27:46 GMT+8, acrroding to the header Last-Modified.
+c. 3874 bytes, according tothe Header Content-Length.
+d. the first 9 bytes are "<!doctype"
+e. Yes, the Connection header indicates that the server agreed to a persistent connection.
+
+
+* Question 3 (20 points)
+** Q3.1 (20 points)
+*** Description
+Complete the following table using Dijkstra’s algorithm.
+Compute the shortest path from node A to all network nodes shown in Fig. 2.
+Note: Possible ties are broken in favor of the leftmost column.
+[[./graphics/23_24_F/Dijkstra.png][Fig.2. Graph for Dijkstra's Algorithm]]
+
+Fig. 2 (edges, undirected):
+- A--8--B
+- A--3--D
+- B--1--F
+- F--2--E
+- E--4--G
+- F--1--H
+- H--3--G
+- D--1--C
+- C--2--H
+- D--2--H
+
+Dijkstra table (fill steps 3..7):
+| Step | N'  | D(B), p(B) | D(C), p(C) | D(D), p(D) | D(E), p(E) | D(F), p(F) | D(G), p(G) | D(H), p(H) |
+|------+-----+------------+------------+------------+------------+------------+------------+------------|
+| 0    | A   | 8, A       | ∞          | 3, A       | ∞          | ∞          | ∞          | ∞          |
+| 1    | AD  | 8, A       | 4, D       | Done       | ∞          | ∞          | ∞          | 5, D       |
+| 2    | ADC | 8, A       | Done       | Done       | ∞          | ∞          | ∞          | 5, D       |
+| 3    |     |            |            |            |            |            |            |            |
+| 4    |     |            |            |            |            |            |            |            |
+| 5    |     |            |            |            |            |            |            |            |
+| 6    |     |            |            |            |            |            |            |            |
+| 7    |     |            |            |            |            |            |            |            |
+*** Ans
+- step 0: A
+D: 3, A (next)
+B: 8, A
+
+- step 1: AD
+D: 3, A (current)
+C: 4, D (next)
+H: 5, D
+B: 8, A
+
+- step 2: ADC
+D: 3, A (done)
+C: 4, D (current)
+H: 5, D (next)
+B: 8, A
+
+- step 3: ADCH
+D: 3, A (done)
+C: 4, D (done)
+H: 5, D (current)
+F: 6, H (next)
+G: 8, H
+B: 8, A
+
+- step 4: ADCHF
+D: 3, A (done)
+C: 4, D (done)
+H: 5, D (done)
+F: 6, H (current)
+B: 7, F (next)
+E: 8, F
+G: 8, H
+
+- step 5: ADCHFB
+D: 3, A (done)
+C: 4, D (done)
+H: 5, D (done)
+F: 6, H (done)
+B: 7, F (current)
+E: 8, F (next)
+G: 8, H
+
+- step 6: ADCHFBE
+D: 3, A (done)
+C: 4, D (done)
+H: 5, D (done)
+F: 6, H (done)
+B: 7, F (done)
+E: 8, F (current)
+G: 8, H
+
+- step 7: ADCHFBEG
+D: 3, A (done)
+C: 4, D (done)
+H: 5, D (done)
+F: 6, H (done)
+B: 7, F (done)
+E: 8, F (done)
+G: 8, H (done)
+
+* Question 4 (20 points)
+** Q4.1 (9 points)
+[[./graphics/23_24_F/Subnets.png][Fig.3. Several interconnected subnets]]
+*** Description
+Consider Fig. 3, where several subnets are interconnected.
+Please list all the subnets in this network.
+Hint: list them in terms of network interfaces.
+*** Ans
+(NIC: network interface card)
+subnet1: {Host1 NIC, Host2 NIC, Router1's interface to Switch1}
+subnet2: {Host3 NIC, Router1's interface to Switch2, Router2's interface to Switch2}
+subnet3: {Host4 NIC, Host5 NIC, Router2's interface to Switch3}
+
+** Q4.2 (5 points)
+*** Description
+If Router 1 is removed, and Switch 1 and Switch 2 are linked directly,
+then there are how many subnets left?
+Explain what they are.
+*** Ans
+2 subnets left:
+- Subnet1: {Host1, Host2, Host3, Router2's interface conecting to Switch2}
+- Subnet2: {Host4, Host5, Router2's interface connecting to Switch3}
+
+** Q4.3 (6 points)
+*** Description
+Assuming:
+- The interface of Host 1 has an IP address 10.0.1.2, and the adapter for that interface has a MAC address aa-aa-aa-aa-aa-aa
+- The interface of Router 1 lined with Switch 1 has an IP address 10.0.1.1, and the adapter for that interface has a MAC address 11-11-11-11-11-11
+
+Now, consider sending an IP datagram from Host 1 to Host 3.
+Suppose Host 1 has an empty ARP table, while Router 1 has the up-to-date ARP table and routing table respectively.
+Describe all the steps to succeed in sending the IP datagram.
+*** Ans
+1. Host1 checks the destination IP address of Host3, find out that it is out of subnet1:
+   it should send datagram to the router,
+   Host1 looks up its ARP table for MAC address of Router1's interface connecting to Switch1
+   Host1 broadcast an ARP request:
+   frame:
+   dst MAC: ff-ff-ff-ff-ff-ff
+   src MAC: aa-aa-aa-aa-aa-aa
+   content: what's the MAC address of IP 10.0.1.1
+2. the Router 1 recv the request and reply (unicast) an ARP reply:
+   dst MAC: aa-aa-aa-aa-aa-aa
+   src MAC: 11-11-11-11-11-11
+   content: the MAC address of IP
+3. Host1 recv the ARP reply, update the ARP table:
+   {10.0.1.1: 11-11-11-11-11-11}
+   and send the IP datagram encapsulated in an Ethernet frame:
+   dst MAC: 11-11-11-11-11-11
+   src MAC: aa-aa-aa-aa-aa-aa
+   dst IP: IP(Host3)
+   src IP: 10.0.1.2
+4. Router1 recv the frame, decapsulate the IP datagram, 
+   decrease TTL by 1
+   look up the routing table for next hop for IP(Host3), 
+   find out it can be send to Host3 directly.
+   then the Router1 looks up its ARP table for MAC address of Host3
+   it encapsulate the IP datagram in an Ethernet frame:
+   dst MAC: MAC(Host3)
+   src MAC: 11-11-11-11-11-11
+   dst IP: IP(Host3)
+   src IP: 10.0.1.2
+5. Host3 recv the frame, decapsulate the IP datagram
+   and deliver it to the upper IP stack layers for futher processing.
+
+* Question 5 (20 points)
+** Q5.1 (6 points)
+*** Description
+Alice wants to communicate with Bob.
+Assume they are using public-key cryptography (e.g., RSA) directly:
+- Alice has public key KA+ and private key kA-
+- Bob has public key KB+ and private key kB-
+Assume Alice and Bob have got each other’s public key through a certificate authority (CA).
+
+If Alice would like to ensure the confidentiality of this message transmission (only Bob can decrypt the cipher-text of M),
+draw a diagram to show how Alice would encrypt the message M.
+*** Ans
+#+BEGIN_text options
+Alice -------------------------------- Bob
+Alice ----------> E_KB+(M) ----------> Bob
+Bob: decrypt with M = D_KB-(E_KB+(M))
+#+END_text
+
+** Q5.2 (6 points)
+*** Description
+If Alice would like to ensure the integrity of this message transmission
+(Bob can verify that M was sent by Alice and M was not altered during transmission),
+draw a diagram to show how Alice would transmit the message M.
+(Hint: you can use H(x) to express the hash function.)
+*** Ans
+Integrity + Authentication: vertify sent by alice & not altered
+#+BEGIN_diagram options
+1. Alice: h = H(M)
+2. sign the digest: s = E_KA-(h)
+3. Alice send the s, M to Bob
+4. Bob: h' = D_KA+(s) 
+   check if h' == H(M)
+if yes:
+M has not been altered, and send by Alice
+#+END_diagram 
+
+** Q5.3 (8 points)
+*** Description
+Now if Alice and Bob want to share a secret key KS and will use the secret key for encrypting the message,
+use a diagram to show how Alice would use the public-key cryptography to transmit KS to Bob
+whereby both confidentiality and integrity should be guaranteed.
+*** Anse:
+#+BEGIN_diagram options
+1. Alice geeerate KS (confidential key)
+2. Alice sign digest: s = E_KA-(H(KS))
+3. Alice use Bob's public key to encrypt KS and s:
+   C = E_KB+(KS, S)
+4. Alice send C
+5. Bob recv C, and use D_KB-(C) to get KS', s'
+get the hash h' = D_KA+(s) 
+if h' == H(KS'):
+   KS is from Alice and not altered
+
+#+END_diagram

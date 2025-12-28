@@ -1,0 +1,220 @@
+#+title: CAN201 2024/25 S1 Resit Exam (Paper B) - Org-mode
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201 - Introduction to Networking
+- Semester: 1st Semester 2024/25 (Resit Examination)
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: closed-book; only English solutions accepted
+
+* Question 1 (20 points)
+** Description
+Suppose your computer is connected to the Internet through a router with Wi-Fi, and you enter:
+https://www.xjtlu.edu.cn/
+in the address bar of your browser to access the homepage of the university, which contains texts, images, and videos.
+
+Please explain the protocols involved at each layer of the Internet Protocol (IP) stack for this webpage access, considering the connection setup and data transfer processes.
+
+** Ans
+- Application Layer: 
+  HTTPS: HTTP using TLS / SSL for secure communication
+  DNS: the brower require to use DNS query to query DNS server to get IP of domain
+- Transport Layer:
+  TCP: HTTPS usually use TCP to transport, the transport objects incluidng the texts, images, videos ... etc
+- Network Layer:
+  IP: responseible for sending the packets to the destination IP address
+- Link Layer:
+  Wi-Fi: the physical and data link layer protocol for wireless connection
+  may use Ethernet if wired connection
+  ARP: map the IP address to MAC address for local network commnucation
+- Physical Layer:
+  figer / wireless signals etc
+
+* Question 2 (20 points)
+** Description
+The transport layer provides two main protocols for data transmission: TCP (Transmission Control Protocol) and UDP (User Datagram Protocol). Both protocols offer different features and are used in distinct scenarios.
+
+** Q2.1 (5 points)
+*** Description
+Checksum plays a critical role in transport layer protocols, whether UDP or TCP.
+What is the role of checksum and how does it work?
+*** Ans
+the checksum is used to detect errors and maybe error correction. for example, CRC (Cyclic Redundancy Check), even, odd parity bit, double checksum etc.
+the checksum is calculated by using formula to sum up the data, and the result is stored in the checksum field of header.
+
+
+** Q2.2 (7 points)
+*** Description
+Calculate the checksum for the following two 16-bit binary numbers:
+- 1010101010101010
+- 1100110011001100
+*** Ans
+#+BEGIN_text options
+ 1010101010101010
+ 1100110011001100
+-----------------
+10111011101110110: sum
+-----------------
+ 0111011101110111: wrap around
+-----------------
+ 1000100010001000: one's complement (checksum)
+#+END_text
+
+** Q2.3 (8 points)
+*** Description
+Bob is developing a peer-to-peer file sharing service for his project. This service will allow users to upload and download large files like videos and documents.
+Which transport-layer protocol, TCP or UDP, should Bob use for his file sharing service?
+Explain and compare the strengths and weaknesses of both protocols for this use case.
+*** Ans
+
+
+* Question 3 (20 points)
+** Description
+Software-Defined Networking (SDN) has emerged as a paradigm that enables the network control to become directly programmable and the underlying infrastructure to be abstracted for applications.
+
+** Q3.1 (4 points)
+*** Description
+In traditional networking, each router is responsible for both routing and forwarding functions.
+However, in an SDN architecture, these functions are separated.
+Specify which device is responsible for the routing function and which for the forwarding function within an SDN framework.
+*** Ans
+SDN controller rsponsible for routing function
+SDN switch responsible for forwarding functoin
+
+
+** Q3.2 (8 points)
+*** Description
+Given that a network utilizing SDN architecture has recently been initialized and the switch is configured with a default flow entry,
+which option below is most likely to represent the default entry?
+Please provide an explanation for your choice.
+
+a) source=1.2.*.*, destination=3.4.*.*, action=forward
+b) source=*.*.*.*, destination=3.4.*.*, action=drop
+c) source=*.*.*.*, destination=*.*.*.*, action=controller
+*** Ans
+c
+the sdn switch has reccently been initialized, thus its flow entry table is empty except the defualt entry, which is all empty while the corresponding action is "controller"
+
+
+
+** Q3.3 (8 points)
+*** Description
+Given a switch with three custom flow entries installed, in addition to the original default flow entry,
+each associated with a priority number (where a higher number signifies greater priority),
+identify which flow entry will match an incoming packet with a source IP of 1.2.1.2 and a destination IP of 3.4.5.6.
+Provide a rationale for your selection.
+
+a) source=1.2.1.2, destination=3.4.5.6, action=modify, priority=3
+b) source=1.2.*.*, destination=3.4.5.6, action=forward, priority=2
+c) source=1.2.*.*, destination=3.4.*.*, action=controller, priority=1
+*** Ans
+a. 
+the flow entry a, b, c all match the incoming packet, but the fiirst entry has highest priority number 3; thus it will be selected to process the incoming packet.
+
+
+* Question 4 (20 points)
+** Description
+Consider ([[./graphics/24-25_R/Subnet.png][Fig.4.1]]), where several subnets are interconnected.
+
+** Q4.1 (9 points)
+*** Description
+Please list all the subnets in this network.
+Hint: list them in terms of network interfaces.
+*** Ans
+subnet1: { Host1 NIC, Host2 NIC, Router1's interface lined with Switch 1 }
+subnet2: { Host3 NIC, Router1's interface lined with Switch 2, Router2's interface lined with Switch2 }
+subnet3: { Host4 MIC, Host5 NIC, Router2's interface lined with Switch 3}
+
+** Q4.2 (5 points)
+*** Description
+If Router 1 is removed, and Switch 1 and Switch 2 are linked directly,
+then there are how many subnets left?
+Explain what they are.
+*** Ans
+there will be 2 subnets
+subnet1: {Host1 NIC, Host2 NIC, Host3 NIC, Router2's interface lined with switcher2}
+subnet2: {Host4 NIC, Host5 NIC, Router2' interface's lined with switch3}
+
+** Q4.3 (6 points)
+*** Description
+Assuming the interface of Host 1 has an IP address 10.0.1.2, and the adapter for that interface has a MAC address aa-aa-aa-aa-aa-aa;
+the interface of Router 1 lined with Switch 1 has an IP address 10.0.1.1, and the adapter for that interface has a MAC address 11-11-11-11-11-11.
+
+Now, consider sending an IP datagram from Host 1 to Host 3.
+Suppose Host 1 has an empty ARP table, while Router 1 has the up-to-date ARP table and routing table respectively.
+Describe all the steps to succeed in sending the IP datagram.
+*** Ans
+I don't want to waste my time on this shit
+
+
+* Question 5 (20 points)
+** Description
+Alice and Bob are interested in secure communication, but they face potential threats from Charlie, who may attempt to compromise their communication.
+
+- Figure 5-1 illustrates Charlie’s capability to listen on Alice and Bob’s communication channel, enabling him to conduct an eavesdropping attack.
+- Figure 5-2 depicts Charlie executing a spoofing attack by impersonating Alice to send a malicious message to Bob.
+
+Regarding the components of the CIA triad (Confidentiality, Integrity, Availability),
+given that Alice and Bob opt for public key encryption to protect their communication,
+and assuming the original message is M (which has a very small size),
+Alice’s public key KA+ and private key kA-,
+while Bob’s public key KB+ and private key kB-,
+please answer the following questions.
+
+** Q5.1 (8 points total)
+*** Description
+By conducting an eavesdropping attack (see [[./graphics/24-25_R/Fig5.png][Fig.5]]), which component of the CIA triad is compromised by Charlie? (2 points)
+
+To protect the communication against eavesdropping, how would Alice and Bob proceed?
+Describe the actions taken by them respectively. (6 points)
+*** Ans
+the communication confidentiality is compromised by Charlie
+to protect th communication against eavesdropping, Alice and Bob can use public key encyption or symmetric key encryption.
+*for symmetric key encryption:*
+1. Alice generate a symmetric key KS, and use Bob's public key KB+ to encypt m = E_KB+(KS), send to Bob
+2. Bob recv the encrypted message m, decrypt it using his private key KB-: KS = D_KB-(E_KB+(KS))
+3. Alice and Bob use symmetric key KS to encrypt and decrypt thier communication msgs
+4. in the process of using symmetric key KS to comm, Bob and Alice can use the smae Key KS to encrypt and descypt the msgs
+
+*for public key encryption*:
+- when Alice want to send msg to Bob, Alice send msg m = E_KB+(M) to Bob
+  and Bob use his private key KB- to decrypt the msg: M = D_KB-(E_KB+(M))
+- when Bob want to send msg to Alice, Bob send msg m = E_KA+(M) to Alice
+  Alice use her private key kA- to decrypt the msg: M = D_KA-(E_KA+(M))
+
+** Q5.2 (8 points total)
+*** Description
+By performing a spoofing attack (see Figure 5-2), which component of the CIA triad is compromised by Charlie? (2 points)
+
+To protect their communication against spoofing, how would Alice and Bob proceed?
+Describe the actions taken by them respectively. (6 points)
+*** Ans
+the Authentication / Integrity is compromised by Charlie
+protect:
+brief: digital sign or Message Authentication Code (MAC)
+- digital sign:
+  Alice want to send msg M to Bob
+  Alice first use hash to generate the digest of M: H(M)
+  then Alice encrypted the digest using her private key KA-: S = E_KA-(H(M)) (this is the digital sign)
+  Alice send E_KS(M || S) to Bob (using symmetric key KS to encrypt the whole msg)
+  Bob recv the encrypted msg, decrypt it using symmetric key KS: M || S = D_KS(E_KS(M || S))
+  then Bob use Alice's public key KA+ to decrypt the digital sign: H(M)' = D_KA+(S)
+  finally, Bob use the same hash function to generate the digest of M: H(M)
+  if H(M)' == H(M), then the msg is from Alice and not been tampered
+
+- Message Authentication Code (MAC):
+  Alice and Bob has the same symmetric key KS 
+  Alice compute the MAC tag: t = HMAC(M, KS) and send E_KS( M || t ) to Bob
+  Bob recv the encrypted msg, decrypt it using symmetric key KS: M || t = D_KS(E_KS(M || t))
+  then Bob compute the MAC tag: t' = HMAC(M, KS)
+  if t' == t, then the msg is from Alice and not been tampered
+
+** Q5.3 (4 points)
+*** Description
+Identify the primary challenge for the use of public key encryption.
+*** Ans
+- the public encryption is computationally intensice and slow. thus it is usually used to transport the session key for symmetric key. the encryption for large data are usually done by symmetric key.
+

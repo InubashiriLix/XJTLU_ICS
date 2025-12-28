@@ -1,0 +1,305 @@
+#+title: CAN201 2024/25 S1 Final Exam (Paper B) - Org-mode
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CAN201 - Introduction to Networking
+- Semester: 1st Semester 2024/25 Final Examination
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Questions: 5 (Answer ALL)
+- Notes: closed-book; write in answer booklet(s); only English solutions accepted; return all materials at end
+
+* Question 1 (20 points)
+** Background
+Alice wants to access a webpage located at:
+http://www.example.com/images.html
+
+The main part of content of the HTML file includes:
+- title: images/Europe/UK/Liverpool
+- one link: /images/Europe/UK (Back)
+- 5 image objects:
+  - /images/Europe/UK/Liverpool/IMGP2582.JPG
+  - /images/Europe/UK/Liverpool/IMGP2638.JPG
+  - /images/Europe/UK/Liverpool/IMGP2641.JPG
+  - /images/Europe/UK/Liverpool/IMGP2567.JPG
+  - /images/Europe/UK/Liverpool/IMGP2599.JPG
+- (a lot of pure text skipped)
+- (no more file link)
+
+Sizes:
+- HTML file total size: 20 KB
+- Each image size: 100 KB
+
+Network conditions:
+- Bandwidth: 10 Mbps
+- RTT: 50 ms
+- No congestion (RTT constant; no blocking)
+- DNS resolution: 2 RTTs
+- TCP setup: 1.5 RTTs (three-way handshake)
+- After TCP established, data transmission can start immediately
+
+Assumptions:
+- Non-persistent HTTP:
+  Each object (HTML + each image) uses a separate TCP connection.
+  Each download: 1.5 RTTs (setup) + 1 RTT (data transmission).
+- Persistent HTTP:
+  One TCP connection for all objects.
+  TCP setup: 1.5 RTTs.
+  HTML transmitted immediately after setup.
+  Each subsequent object requires 1 RTT to download.
+
+** Q1.1 (5 points)
+*** Description
+For Non-persistent HTTP case, calculate how long it takes (in seconds) for Alice to load the entire webpage using non-persistent HTTP.
+*** Ans
+first, Alice's browswer nned to resolve the domain name, thus, it takes 2RTT to perform DNS resolution
+for non persistent HTTP, for each object, it takes 1.5 RTT + 1 RTT = 2.5 RTT to download.
+there are one HTML file and 5 images, total 6 objects.
+RTT_total = 2RTT + 2.5RTT * 6 = 17RTT = 17 * 0.05s = 0.85s
+the transmission timme of HTML file: 20KB / 10Mbps = 0.016s
+the transmission time of images: 100KB / 10MBbs * 5 = 0.4s
+total tiem = RTT_total + transmission time = 0.85s + 0.016s + 0.4s = 1.266s
+
+** Q1.2 (5 points)
+*** Description
+For Persistent HTTP case, calculate how long it takes (in seconds) for Alice to load the entire webpage using non-persistent HTTP.
+*** Ans
+first, Alice's browswer nned to resolve the domain name, thus, it takes 2RTT to perform DNS resolution
+for non persistent HTTP, for object number N, it takes 1.5 RTT + 1 RTT * N RTT to download.
+RTT_total = 2RTT + 1.5RTT + 6 * 1RTT = 9.5 RTT = 9.5 * 0.05s = 0.475s
+total time for trnasmission = 0.416s
+total_time = RTT_total + transmission time = 0.475s + 0.416s = 0.891s
+
+
+** Q1.3 (5 points)
+*** Description
+Explain the role of DNS in Alice’s attempt to access the webpage.
+*** Ans
+DNS resolves www.example.com to the server IP address so that the client can open a TCP 
+connection to that IP (port 80 for HTTP). Without DNS resolution, the browser cannot locate the server
+
+** Q1.4 (5 points)
+*** Description
+Why does DNS use a hierarchical and distributed system?
+*** Ans
+- scalability: (huge number of name)
+- distributed admninistration: different organization manage different zones
+- fault tolerance / no single point of failure
+- perforamce via cacheing and locality (reduce lantency and load)
+
+* Question 2 (20 points)
+** Q2.1 (10 points)
+*** Description
+Please describe the key differences between TCP and UDP regarding the following aspects:
+- Connection establishment
+- Reliability mechanisms
+- Data ordering
+- Congestion control
+- Overhead and efficiency
+*** Ans
+- Connection establishment:
+  TCP: connection is established through a three-way handshake process
+  UDP: connectionless protocol, no connection estalishment erquires
+- Reliability mechanisms
+  the TCP has error detection and retransmission mechanisms to ensure reliable data delivery
+  while UDP does not require such mechanisms, making it less reliable
+- Data ordering:
+  the client and Server of TCP maintain sequence numbers to ensure data is delivered in order
+  if msg is lost, then retransmission is required
+  UDP does not guarantee data ordering, packets may arrive out of order
+- Congestion control:
+  TCP has built-in congestion control mechanisms to adjust the data transmission rate based on network conditions
+  for example, slow start, congestion avoidance, exponential backoff
+  UDP hs no congestion control, it sends data at a constant rate regardless of network congestion
+- Overhead and efficiency:
+  - TCP has higher overhead due to connection management, error checking, and congestion control
+  - UDP has lower overhead, making it more efficient for applications that require fast transmission and can tolerate some data loss
+
+** Q2.2 (10 points)
+*** Description
+Suppose a new streaming video platform is deciding whether to use TCP or UDP for transmitting video data to users.
+Which protocol would you recommend, and why?
+In your answer, consider the trade-offs related to performance, reliability, and user experience.
+Provide a reasoned justification for your choice.
+*** Ans
+select UDP for streaming video platform
+- performance: 
+  UDP has lower latency and overhead, which is critical for real-time video streaming
+  while TCP's retransmission and congestion control may introduce delays and stucks in video streaming
+- reliability:
+  the real-time video streaming does not require 100% reliability
+  it more inteded to provide a smooth viewing experience
+  some loss of pakcets can be accepted and tolerated
+- user experience:
+  in this context, the user care more about the smoothness and timeliness of video playback, instead of perfect data integrity
+  UDP can provide a better user experience by minimizing buffering and delays
+
+* Question 3 (20 points)
+** Q3.1 (4 points)
+*** Description
+In traditional networking, each router is responsible for both routing and forwarding functions.
+However, in an SDN architecture, these functions are separated.
+Specify which device is responsible for the routing function and which for the forwarding function within an SDN framework.
+*** Ans
+devices responsible for routing function: 
+SDN controller 
+devices responsible for forwarding function:
+SDN switch
+
+** Q3.2 (8 points)
+*** Description
+Given that a network utilizing SDN architecture has recently been initialized and the switch is configured with a default flow entry,
+which option below is most likely to represent the default entry?
+Provide an explanation for your choice.
+
+a) source=1.2.*.*, destination=3.4.*.*, action=forward
+b) source=*.*.*.*, destination=3.4.*.*, action=drop
+c) source=*.*.*.*, destination=*.*.*.*, action=controller
+*** Ans
+c: the initialized switch has no flow entries, thus, it should forward all unmatched packets to the controller for further processing and decision making.
+
+** Q3.3 (8 points)
+*** Description
+Given the default flow entry, three custom flow entries are installed, each associated with a priority number
+(higher number = higher priority). Identify which flow entry will match an incoming packet with:
+- source IP: 1.2.1.2
+- destination IP: 3.4.5.6
+Provide a rationale for your selection.
+
+a) source=1.2.*.*, destination=3.4.5.6, action=drop, priority=3
+b) source=1.2.1.2, destination=3.4.5.6, action=controller, priority=2
+c) source=1.2.*.*, destination=3.4.5.6, action=forward, priority=1
+*** Ans
+a. this has the highest priority (3) among the three entries that match the incoming packet's source and destination IP addresses.
+
+
+* Question 4 (20 points)
+** Background ([[./graphics/24-25_F/Fig4.png][Fig.4]])
+Several subnets are interconnected as follows:
+- Host 1 and Host 2 connect to Switch 1
+- Switch 1 connects to Router 1
+- Host 3 connects to Router 1
+- Router 1 connects to Router 2
+- Router 2 connects to Host 4 and Host 5
+
+** Q4.1 (11 points)
+*** Description
+Please list all the subnets in this network.
+Hint: list them in terms of the corresponding host and router’s network interfaces.
+*** Ans
+subnet1: {Host1 NIC, Host2 NIC, Router1's interface linked with Switch1}
+subnet2: {Host3 NIC, Router1's interface linked with Host3}
+subnet3: {Router1's interface linked with Router2, Router2's interface linked with Router1}
+subnet4: {Host4 NIC, Router2's interface linked with Host4}
+subnet5: {Host5 NIC, Router2's interface linked with Host5}
+
+** Q4.2 (5 points)
+*** Description
+If Host 1 and Host 3 are removed, and Router 2 is replaced by a switch (Switch 2),
+making Host 4 and Host 5 directly linked to Switch 2,
+list the new subnets in terms of the corresponding host and router’s network interfaces.
+*** Ans
+subnet1: {Host2 NIC, Router1's interface linked with Switch1}
+subnet2: {Host4 NIC, Host5 NIC, Router1's interface linked with Switch2}
+
+** Q4.3 (4 points)
+*** Description
+According to the original Figure 4-1, assume:
+- Host 1 interface IP address: 10.0.1.5
+- Host 1 interface MAC address: aa-aa-aa-aa-aa-aa-aa
+- Router 1 interface (lined with Switch 1) IP address: 10.0.1.1
+- Router 1 interface MAC address: 11-11-11-11-11-11
+
+Now consider sending an IP datagram from Host 1 to Host 3.
+Suppose Host 1 has an empty ARP table, while Router 1 has an up-to-date ARP table and routing table.
+Describe all the steps to succeed in sending the IP datagram.
+*** Ans
+- step1
+  Host1 check the destination IP, find out it is not in the same subnet;
+  it need to send the datagram to router1
+  however, Host1 has an empty ARP table
+  it need to broadcast an ARP request to get MAC address of Router1's interface linked with Switch 1
+  frame:
+  dst MAC: ff-ff-ff-ff-ff-ff
+  src MAC: aa-aa-aa-aa-aa-aa
+  content: what is the MAC address of IP 10.0.1.1
+
+- step2:
+  router1 recv the ARP request, and reply (unicast) an ARP response to Host1
+  frame:
+  dst MAC: aa-aa-aa-aa-aa-aa
+  src MAC: 11-11-11-11-11-11
+
+- step3:
+  Host1 recv the ARP response, update it to ARP table: {10.0.1.1 -> 11-11-11-11-11-11}
+  then, Host1 can send the IP datagram to Router1
+  frame:
+  dst MAC: 11-11-11-11-11-11
+  src MAC: aa-aa-aa-aa-aa-aa
+  dst IP: IP(Host3)
+  src IP: 10.0.1.5
+
+- step4:
+  Router1 recv the datagram, and decapsulate to get the IP datagram
+  TTL --, and update checksum
+  router1 should forward the IP datagram to dst IP (Host3)
+  router1 looks up routing table to find the next hop: directly IP(Host3)
+  and looks up for Host3's MAC address in ARP table: MAC(Host3)
+  frame:
+  dst MAC: MAC(Host3)
+  src MAC: MAC(Router1's interface linked with Host3)
+  dst IP: IP(Host3)
+  src IP: IP(router1)
+
+- step5:
+  Host3 recv the frame, decapsulate to get the IP datagram and delivery to upper layers
+
+
+* Question 5 (20 points)
+** Background ([[./graphics/24-25_F/Fig5.png][Fig.5]])
+Alice and Bob are interested in secure communication, but face potential threats from Charlie.
+- Figure 5-1: Charlie eavesdrops on Alice-Bob communication channel.
+- Figure 5-2: Charlie performs a spoofing attack by impersonating Alice to send a malicious message to Bob.
+
+Regarding the CIA triad (Confidentiality, Integrity, Availability),
+assume Alice and Bob use symmetric encryption to protect their communication.
+Let the original message be M and the symmetric key be Ks.
+
+** Q5.1 (8 points total)
+*** Description
+By conducting an eavesdropping attack (see Figure 5-1), which component of the CIA triad is compromised?
+
+To protect the communication against eavesdropping, how would Alice and Bob proceed?
+Describe the actions taken by them respectively.
+*** Ans
+the eavesdropping attack compromises the Confidentiality component of the CIA triad.
+action: use public-key cryptography to secure the the symmetric key KS distribution
+
+** Q5.2 (8 points total)
+*** Description
+By performing a spoofing attack (see Figure 5-2), which component of the CIA triad is compromised?
+
+To protect their communication against spoofing, how would Alice and Bob proceed?
+Describe the actions taken by them respectively.
+*** Ans
+- using digital sign
+  Authentication and Integrity are compromised by spoofing attack
+  for Integrity: can use hash function (e.g., SHA-256) to generate message digest, and use digital signature to sign the digest
+  for Authentication: can use sender's private key to encypt the hash value, then the receiver can decrypt it with sender's public key to verify the integrity
+- using Message Authentication Code (MAC)
+  for example (HMAC-SHA256)
+- Alice: compute tag = HMAC(Ks, M) and send (M, tag) (maybe encrypted with Ks) to bob
+- Bob: recompute HMAC (Ks, M) and compare. Only someone knowing Ks can geenrate valid tag
+
+
+** Q5.3 (4 points)
+*** Description
+Identify the primary challenge for the use of symmetric encryption.
+*** Ans
+- distribution of symmetric keys:
+  the symmetirc key neds to be securely distributed to both parties before communication
+  prefer to use public-key cryptography to distribute the symmetric key (like session key)
+- management of symmetric keys:
+  as the number of users increases, the symmetric key should be stored are 
+  (N - 1) * N / 2 keys for N users
