@@ -1,0 +1,360 @@
+#+title: CPT203 (Software Engineering 1) 2024/25 S1 Final Examination (Paper F)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- University: Xi’an Jiaotong-Liverpool University
+- Module Code: CPT203
+- Module Title: Software Engineering 1
+- Exam: Semester 1, 2024/25 Final Examination
+- Level: Undergraduate — Year 3
+- Exam Duration: 2 Hours
+- Total Marks: 100
+
+* Instructions to Candidates
+1. This is a closed-book examination, which is to be written without books or notes.
+2. Total marks available are 100.
+3. Answer all questions.
+4. There is NO penalty for providing a wrong answer.
+5. Students should write the answer on the booklet(s) provided.
+6. Only English solutions are accepted.
+7. All materials must be returned to the invigilator upon completion of the exam. Failure to do so will be deemed as academic misconduct and will be dealt with according to the University’s policy.
+
+* Question A (11 marks)
+** Context
+A university sport center has been running for an online sport booking system for two years.
+Only university students and staff can make sport bookings. Now the sport center is planning
+to add a new function so that the public can also make sport bookings.
+
+** A1 What are the three most used software process models? (3/11)
+*** Description
+(Write the names of three software process models.)
+*** Answer
+1. Waterfall Model
+2. Incremental / iterative Model
+3. Agile Model
+
+** A2 Provide a short explanation to these software process models. (3/11)
+*** Description
+(Give a brief explanation for each model from A1.)
+*** Answer
+1. Waterfall: a linear, phrase-by-phrase (requirements -> design -> implementation -> deployment -> maintenance). 
+   changes are costly, but the process and documentation are clear;
+2. Incremantal / iterative: 
+   Deliver the system in multiple increments. Each iteration adds features and validates them, gradually building the final system;
+3. Agile: Develop in short cycles (sprints) and continously deliver working software, with frequent customer feedbacks and adaptation to change
+
+** A3 Which is your choice of software process model for this problem? (3/11)
+*** Description
+(Choose one model for the sport booking system extension.)
+*** Answer
+I would choosse incremental / iterative model.
+
+** A4 Provide a justification of your choice. (2/11)
+*** Description
+(Justify why your chosen model fits this situation.)
+*** Answer
+This is an extension to a system that has been running for two years (adding public booking);
+An incremental approach allows an MVP to be deliver first, then gradually adds payment, business rules, and secuity controls. 
+This reduces risks and supports continuous feedback;
+
+* Question B (12 marks)
+** Compare agile development and the incremental model in the following three aspects:
+** B1 Compare their differences in iteration (4/12)
+*** Description
+(Compare agile vs incremental model in iteration.)
+*** Answer
+- incremental: interations are often planned as feature implementations; delivery is more plan-driven;
+- agile: iterations are shorter and more frequent (e.g. 1-2 weeks).
+    Each sprint delivers small, demostrable features and the backlog is adjusted based on feedback
+
+** B2 Compare their differences in customer involvement (4/12)
+*** Description
+(Compare agile vs incremental model in customer involvement.)
+*** Answer
+- incremental:
+  customers are mainly involved at each increment delivery / review point
+- Agile: Customers / product owners are continously involved in planning, reviews and feeback.
+  typicallly with higher frequency.
+
+** B3 Compare their differences in documentation and planning (4/12)
+*** Description
+(Compare agile vs incremental model in documentation and planning.)
+*** Answer
+- incremental:
+  Usually has a clearer long-term plan and more completed documentation
+- agile:
+  lighter documentation and rolling-wave planning (details for near-term sprint)
+  emphasizing working software.
+
+* Question C (12 marks)
+** C1 What are functional requirements? (3/12)
+*** Description
+(Define functional requirements.)
+*** Answer
+Functional requirements describe what the system must do: its features and behaviors such as registeration, order and payment.
+
+** C2 What are non-functional requirements? (3/12)
+*** Description
+(Define non-functional requirements.)
+*** Answer
+Non-functional requirements describe quality attributes and constraints - how weel the system works - sucj as performance, security, availability, and compatibility
+
+** C3 Statement: This online shopping site should allow all users to access it, via desktop, mobile devices and tablet. Is it a functional requirement or a non-functional requirement? (3/12)
+*** Description
+Classify the statement as functional vs non-functional, and explain why.
+*** Answer
+it is non-functional: the statement describe the quality attributes: it should be "availability" and does not describe the detailed feature behaviors requests.
+or 
+This is a non-functional requirements becuase it describes compatibility / usability across devices;
+not a specific business function;
+
+** C4 Statement: This online shopping site should allow users to order meals and make payment. Is it a functional requirement or a non-functional requirement? (3/12)
+*** Description
+Classify the statement as functional vs non-functional, and explain why.
+*** Answer
+it is functional. 
+This a functional requirement because it specifies core system functions: placing ordersa nd making payments
+
+* Question D (16 marks)
+** Create a sequence diagram for a document approval system
+The system allows a user to submit a document for approval, which is then reviewed by a manager.
+The sequence diagram should capture the following interactions:
+[[./graphics/24_25_F/D.png]]
+
+** D1 Submit Document (4/16)
+*** Description
+- The User submits a document for approval to the System.
+- The System saves the document and stores it in the Document Database.
+- The Document Database confirms the save operation.
+- The System confirms the submission to the User and notifies the Manager about the new document.
+*** Answer
+1. User -> System: submitDocument(doc)
+2. System -> DocumentDB: save(doc)
+3. DocumentDB -> System: saveConfirmed(docId)
+4. System -> User: submissionConfirmed(docId)
+5. System -> Manager: notifiNewDocument(docId)
+
+** D2 Review Document (4/16)
+*** Description
+- The Manager retrieves the document for review.
+- The System fetches the document from the Document Database.
+- The Document Database returns the document data.
+- The System provides the document data to the Manager.
+*** Answer
+1. Manager -> System: retriveDocument(docId)
+2. System -> DocumentDB: fetchDocuemnt(docId)
+3. DocumentDB -> System: returnDocument(doc)
+4. System -> Manager: provideDocument(doc)
+
+** D3 Decision Making (4/16)
+*** Description
+- If the document is approved:
+  - The System updates the document’s status to "Approved" and notifies the User.
+- If the document is rejected:
+  - The Manager provides feedback on why the document was rejected.
+  - The System updates the document’s status to "Rejected" and notifies the User with the feedback.
+*** Answer
+Manager -> System: approveDocument(true/false, docId)
+true:
+System -> User: notifyApproval(docId)
+false:
+Manager -> System: appendFeedback(feedback)
+System -> User: notifyReject(docId, feedback)
+
+
+** D4 Resubmit Document (if rejected) (4/16)
+*** Description
+- If the document is rejected, the User can make changes based on the feedback and resubmit the document.
+- The System saves the updated document and stores it in the Document Database.
+- The Document Database confirms the save operation.
+- The System confirms the resubmission to the User and notifies the Manager again.
+*** Answer
+User updates the document based on feedback and resubmits → System saves the updated document → System notifies the Manager again.
+
+* Question E (14 marks)
+** Create an activity diagram for an online course enrollment process
+The system allows students to search for courses, enroll in selected courses, and receive confirmation.
+The process should capture the following activities:
+
+** E1 Search for Courses (2/14)
+*** Description
+- The student searches for available courses.
+- The system retrieves and displays a list of courses based on the search criteria.
+*** Answer
+
+
+** E2 Select Course (2/14)
+*** Description
+- The student selects a course from the list.
+- The system displays the course details.
+*** Answer
+
+
+** E3 Check Prerequisites (2/14)
+*** Description
+- The system checks if the student meets the prerequisites for the selected course.
+- If prerequisites are met: The student can proceed to enrollment.
+- If prerequisites are not met: The system notifies the student that they do not meet the prerequisites.
+*** Answer
+
+
+** E4 Enroll in Course (2/14)
+*** Description
+- The student enrolls in the course.
+- The system processes the enrollment.
+*** Answer
+
+
+** E5 Confirm Enrollment (2/14)
+*** Description
+- The system confirms the enrollment and sends a confirmation to the student.
+*** Answer
+
+
+** E6 Handle Payment (2/14)
+*** Description
+- The system checks if the course requires payment.
+- If the course requires payment, the student proceeds to the payment process:
+  - If payment is successful: The system confirms the payment and finalizes the enrollment.
+  - If payment fails: The system notifies the student of the payment failure and allows them to retry.
+*** Answer
+
+
+** E7 Finalize Enrollment (2/14)
+*** Description
+- The system finalizes the enrollment and sends a confirmation to the student.
+*** Answer
+
+
+* Question F (12 marks)
+Suppose you are designing a simple e-commerce website that allows users to browse products, add items to a cart, and make purchases.
+
+** F1 Explain what is modularity and why it is important to use it in designing the website. (6/12)
+*** Description
+(Explain modularity + why it matters for the website design.)
+*** Answer
+Modularity means decomposing a system into well-defined, highly cohesive modules that interact through clear interfaces.
+It improves maintainability, extensibility, parallel development, reusability, testability, and reduces complexity.
+TODO: recite it
+
+** F2 Taking the shopping cart and payment processing modules as the example, explain what is loose coupling and why it is beneficial in a modularized system. (4/12)
+*** Description
+(Use shopping cart + payment modules to explain loose coupling and its benefits.)
+*** Answer
+Loose coupling means modules depend on stable interfaces rather than internal details. The cart pases total amount / order ID to the payment module without knowing its implementtation. 
+Benefits include esaier repalcement, fewer ripple changes, better testability (mocking), and improved security isolated
+
+** F3 Suggest one user interface design principle you would use to make the website easy to use and explain how it would improve the user experience. (2/12)
+*** Description
+(Provide one UI design principle + how it improves UX.)
+*** Answer
+consistency: keep layouts, button styles, and messages consistent to reduce learning effort and user errors
+
+* Question G (11 marks)
+Do JUnit tests for the following program:
+
+#+begin_src java
+public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Cannot divide by zero");
+        }
+        return a / b;
+    }
+
+}
+#+end_src
+
+** G1 Write a test case for adding two negative numbers (3/11)
+*** Description
+(Write a JUnit test that verifies add(a, b) works for two negative integers.)
+*** Answer
+#+BEGIN_src java
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class CalculatorTest {
+    @Test
+    void testAddTwoNegativeNumbers() {
+        Calculator calc = new Calculator();
+        assertEquals(10, calc.add(-7, -3));
+    }
+}
+
+#+END_src
+
+
+** G2 Write a test case for division by zero, with proper exception handling (4/11)
+*** Description
+(Write a JUnit test that verifies divide(a, 0) throws the expected exception.)
+*** Answer
+#+BEGIN_src java
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+class CalculatorTest{
+    @Test
+    void testDivisionByZeroThrowsException() {
+        Calculator calc = new Calculator();
+        ArithmeticException ex = assertThrows(
+            ArithmeticException.class,
+            () -> clac.divide(1, 0)
+        )
+        assertEquals("Cannot divide by zero", ex.getMessage());
+    }
+}
+#+END_BEGIN_src
+
+** G3 Explain the purpose of the @BeforeEach and @AfterEach annotations in JUnit testing (4/11)
+*** Description
+(Explain what these annotations do and why they are used.)
+*** Answer
+- @BeforeEach: 
+  do: the testing method that be called before each test
+  why: before each test, the instance may require some initialization commands or some common prepare step before each step
+  using @BeforeEach, the testing code could be briefer
+- @AfterEach:
+  do: the testing method that be called after each test
+  why: after each test, the instance may require some clean requests commands, using @BeforeEach, the testing ccode could be briefer
+
+* Question H (12 marks)
+You are managing a software development project to deliver a mobile banking application. As part of the project, you need to ensure the project is completed on time, within budget, and meets quality standards.
+
+** H1 Identify and describe two major risks that could affect the success of this project, one from a project risk perspective and one from a product risk perspective. (4/12)
+*** Description
+- One project risk (schedule/budget/resources/etc.)
+- One product risk (quality/security/requirements/etc.)
+Describe each risk.
+
+*** Answer
+- project risks:
+  schedule slippage, underestimation
+- Product risk:
+  security vulnerabilities / data breach
+
+
+
+** H2 For each risk, propose a risk management strategy: one strategy to avoid or mitigate the project risk and one strategy to reduce the impact of the product risk. (4/12)
+*** Description
+Provide:
+- A mitigation/avoidance strategy for the project risk.
+- An impact-reduction strategy for the product risk.
+
+*** Answer
+project risks:
+- incremental delivery + realistic estimation + milestone tracking / buffers
+product risks:
+- security-by-design + threat moduling + secuirty testing (review + pen-test / scans) + encryption and least privilege
+
+** H3 Explain the importance of quality management systems in software engineering. (4/12)
+*** Description
+(Explain why quality management systems matter in software engineering projects.)
+
+*** Answer
+A QMS standardize processes, improveds traceability, reduces defacts and rework, and increases delivery reliabliity and compilance

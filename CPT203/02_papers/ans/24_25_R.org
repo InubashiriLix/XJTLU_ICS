@@ -1,0 +1,262 @@
+#+title: CPT203 2024/25 Resit Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module Code: CPT203
+- Academic Year: 2024/25 (Resit)
+- Level: Undergraduate - Year 3
+- Module: Software Engineering 1
+- Exam Duration: 2 Hours
+
+* Instructions to Candidates
+1. This is a closed-book examination, which is to be written without books or notes.
+2. Total marks available are 100.
+3. Answer all questions.
+4. There is NO penalty for providing a wrong answer.
+5. Students should write the answer on the booklet(s) provided.
+6. Only English solutions are accepted.
+7. All materials must be returned to the invigilator upon completion of the exam.
+
+* Question A (11 marks)
+** Description
+Suggest the most appropriate software process model that could be used as a basis for managing the development of the following system, justify your suggestion:
+
+A company plans to design a completely new driverless car to deliver heavy materials automatically. Its IT team is responsible for reliable software to control the car’s operations, and make sure the safety of any person near the car.
+
+** A1 Choose a software process model which is the best for this situation (3/11)
+*** Ans
+Waterfall model
+
+** A2 Provide the justification of your choice (8/11)
+*** Ans
+Waterfall modle is a linear and phrase-by-phrase model. it has fine documentation after each phrase.
+in this case, the reqruirement is a new automation project with strict security requirement, which menas, the security test, unit test, 
+system test should be performed to validate the software before delivering, which is suitable for waterfall model: well designed phrases, fine documents, and
+before ccurrent phrase is done, next phrase shell not be performed, highly support the security in the deployment and reduce risks.
+
+for the other model (incremental model / agile model), the delivery might be poor for security test, which expose persons under danger situation.
+
+* Question B (12 marks)
+** Description
+Compare agile development and waterfall model in the following three aspects:
+** B1 Compare the differences of them in the scale of the system to be developed (3/12)
+*** Ans
+waterfall model: the scale of system to be developed should be huge, which makes model's well documented feature worth.
+agile model: 
+    - for middle / small project, its more frequently delivery and feedback and change backlog would be costly in large project
+    - for large project, it is nessesary to break down the large project into smaller sub-projects, 
+      and use scrum of scrums or scaling pratices (multiple teams, ccordination overhead) to manage the complexity.
+
+** B2 Compare the differences of them in the detail level of documentation (3/12)
+*** Ans
+- waterfall model: 
+    docuementation is detailed and cohensive, the implementation of software should guide by doc.
+- agile model:
+    documentations is less emphasised, it will usually demostrate the new feature / chages, the agile model emphasis more on working software it deliver.
+    agile keeps documentation lightweight and just-enough, focus more on working software, frequent demos, and user stories /acceptance criteria.
+
+** B3 Compare the differences of them in interaction of the software development team (3/12)
+*** Ans
+- waterfall teams are often organized by phrases (requirement, design, implementation, testing), 
+  with more bandoffs between roles and communication relying heavily on documentation.
+  ssues may be discovered late (often during the test phrase)
+- agile emphasize cross-functional teams, working closxely throughot short iterations,
+  with frequent communication (e.g. daily stand-ups, sprint reviewers).
+
+** B4 Compare the differences of them in customer involvement (3/12)
+*** Ans
+- waterfall:
+  heavily at the beginning (requirements and sign-off)
+  customer usually involved the project at deployment and maintenance stage to give feedback and maintenance requests
+- agile model:
+  customer usually involved the project at each iteration's delivery (1-2 weeks usually),
+  give feedback, pull new request and change the backlog, 
+  also, in the requirements stage, customers is involoved to refine requirements and repoiritorize the backlog.
+
+* Question C (12 marks)
+** Description
+Please compare the system requirements and user requirements, in the following aspects:
+TODO: recite
+
+** C1 Compare their differences in technical specification (3/12)
+*** Ans
+- User requirements: high level and written in non-technical language, focusing on waht users need from the system;
+- System requirements: are deatiled and technical, specifying how the system must behave (interface, constrains, data rules, performaces, etc.)
+
+** C2 Compare their differences in system architecture, design of software to be developed (3/12)
+*** Ans
+- User requirements: raraly describe arthitecture or internal design, they express desired service and outcomes from the system;
+- System requirements: translate those needs into architectural compoennts, modules, database, api, integration, deployment, etc.
+
+** C3 Compare their differences in the needs and perspectives of the end-users (3/12)
+*** Ans
+- User requirements: reflect the end-user perspective: goals, utility and value;
+- System requirements: reflect the technical perspective: precise behavior, performance, constraints, and acceptance criteria needed to implement and verify the system.
+
+** C4 Compare their differences in functional and Non-functional requirements (3/12)
+*** Ans
+User funcational requirements: describe what the system must do: hehavior, feature, tasks etc, usually realted to certain feature or some components.
+User non-functional requirements: describe how the system should perform: usability, reliability, performance, security etc. usually related to overall system quality.
+System functional requirements: technical specification of features, like apim, data processing, etc.
+System non-functional requirements: technical constraints and quality attributes, like response time, throughput, availability.
+
+* Question D (15 marks)
+** Description
+You are tasked with creating a class diagram to model the system requirements for a study management system used by students and instructors.
+The system should manage courses, assignments, grades, and user accounts.
+The class diagram should capture the following requirements:
+
+1) User
+- Represents a system user with attributes such as userID, name, email, and password.
+- There are two types of users: Students and Instructors.
+- Use inheritance to model these different types of users.
+
+2) Course
+- Represents a course with attributes such as courseID, courseName, and description.
+- A course can have multiple students enrolled and one instructor.
+
+3) Assignment
+- Represents an assignment with attributes such as assignmentID, title, description, dueDate, and totalMarks.
+- Each assignment is associated with one course.
+
+4) Grade
+- Represents a grade with attributes such as gradeID, marksObtained, and feedback.
+- A grade is associated with one assignment and one student.
+
+5) Enrollment
+- Represents the enrollment of a student in a course with attributes such as enrollmentID and enrollmentDate.
+- It is associated with one Student and one Course.
+
+Please include the following relationships in your class diagram:
+- A User can be either a Student or an Instructor.
+- An Instructor can teach multiple courses, but each course is taught by one Instructor.
+- A Student can enroll in multiple courses, and each course can have multiple students.
+- A Course can have multiple assignments.
+- An Assignment can have multiple grades, and each grade is associated with one Student and one Assignment.
+
+Ensure that your class diagram includes:
+** D1 Classes with attributes. (5/15)
+** D2 Associations with appropriate multiplicities. (5/15)
+** D3 Generalization or specialization relationships where necessary. (5/15)
+** Ans
+[[./graphics/24_25_R/D.jpg]]
+
+* Question E (15 marks)
+** Description
+Imagine you are a software engineer working on a library management system.
+Your task is to create a state machine diagram to model the behavior of a “Book” within this system.
+The library management system is used by librarians and members to manage book loans, reservations, and returns.
+
+Scenario:
+When a book is first added to the library’s collection, it starts in the “Available” state.
+The book can be checked out by the member, moving to the “Checked Out” state.
+If the book is not returned by the due date, it transitions to the “Overdue” state.
+When a member returns the book, it moves to the “Returned” state.
+If an overdue book is returned, a fee will be charged to the borrower’s account.
+After processing the return, the book goes back to the “Available” state.
+
+Sometimes, books need maintenance or repair.
+A book can transition to the “Maintenance” state from the “Available” state if someone requests a repair action.
+Additionally, if a book is returned in bad condition, it transitions to the “Maintenance” state from the “Returned” state.
+If a book in “Maintenance” state is repaired, it transitions back to its “Available” state.
+Finally, the book may transition from “Maintenance” to “Remove” if it is beyond repair.
+One month after it transited into “Remove”, its record will be permanently deleted from the system.
+
+Your state machine diagram should include:
+** E1 All states mentioned above. (4/15)
+** E2 Transitions between states with appropriate triggers. (4/15)
+** E3 Entry and Exit when it is required. (4/15)
+** E4 An initial state and a final state. (3/15)
+** Ans
+[[./graphics/24_25_R/E.jpg]]
+
+* Question F (12 marks)
+** Description
+Suppose you are designing a simple online learning system that allows users to view courses, submit assignments, and participate in discussions. (12 marks)
+
+** F1 Explain what abstraction is and why it is important to use it in designing the system. (3/12)
+** F2 Using the assignment submission and course grading modules as examples, explain what high cohesion is and why it is beneficial in a modular system. (3/12)
+** F3 Identify two user interface design principles you would use to make the system easy to use.
+For each principle, explain how it would improve the user experience. (6/12)
+** Ans
+
+
+* Question G (11 marks)
+** Description
+You are supposed to do JUnit test for the following program (11 marks):
+
+#+begin_src java
+public class MathUtils {
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public double squareRoot(double a) {
+        if (a < 0) {
+            throw new IllegalArgumentException("Cannot calculate square root of a negative number");
+        }
+        return Math.sqrt(a);
+    }
+}
+#+end_src
+
+** G1 Test case for multiplying two negative numbers and assert the result (3/11)
+*** ans
+#+BEGIN_src java
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+class MathUtilsTest {
+     @Test
+     void testTwoNegativeIntMultiply() {
+         MathUtils mathUtils = new MathUtils();
+         assertEquals(10, mahtUtils.multiply(-2, -5));
+     }
+}
+#+END_java
+** G2 Test case for calculating the square root of a negative number, ensuring the correct exception is thrown (4/11)
+*** ans
+#+BEGIN_src java
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+class MathUtilsTest {
+    @Test
+    void testTwoNegativeIntMultiply() {
+        MathUtils mathUtils = new MathUtils();
+        IllegalArgumentException e = assertThrows(
+            IllegalArgumentException.class, 
+            () -> MathUtils.squareRoot(-4)
+        );
+        assertEquals("Cannot calculate square root of a negative number", e.getMessage());
+    }
+}
+#+END_src
+
+** G3 Explain the purpose of the @BeforeAll and @AfterAll annotations in JUnit testing, and provide an example of how they can be used to manage a shared resource (4/11)
+*** Ans
+@BeforeAll: run once before all tests in a class, use it to set up shared resources.
+@AfterAll: runs once after all tests; uise it to tear down shard resources;
+
+
+* Question H (12 marks)
+** Description
+You are managing a software development project to deliver an e-commerce platform for a retail company.
+The project must be completed within a tight deadline and must ensure a high level of customer satisfaction with the product’s performance and features.
+
+** H1 Identify and describe two major risks that could affect the success of this project,
+one from a project risk perspective and one from a product risk perspective. (4/12)
+*** ans:
+project risks:
+- schedule slippage: delay in project schedule due to unforeseen issues, resource, or technical challenges.
+- quality issues: failure to meet quality standards due to inadequate testing or rushed development.
+
+** H2 For each risk, propose a risk management strategy:
+one strategy to avoid or mitigate the project risk and one strategy to reduce the impact of the product risk. (4/12)
+*** ans:
+
+** H3 Provide the explanation of continuous improvement in software engineering,
+with an example of a technique used in this process. (4/12)
+*** Ans
+
