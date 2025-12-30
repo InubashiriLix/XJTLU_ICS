@@ -1,0 +1,89 @@
+* Software Process
+** Software process & process model
+- *Software Process*
+  real set of activities, motheod, pratices used to develop & maintain software + related artifact
+- *Process Model*:
+  simplified abstraction / framework describing a process a high level
+- No *perfect* process model
+
+** The 4 fundamental process activities (super high frequency)
+1. Specification (Requirements engineering)
+2. Design & Implementation
+3. Validation (V&V / testing)
+4. Evolution (maintanance / change)
+
+** Three key software process models (must be abiue to compare)
+- Waterfull model:
+  pharses in sequences
+- Incremental development
+  innterleave specification + development + validation;
+  deliver versions (increments) of software
+- Reuse-oriented SE:
+  build mainly by integrating reusable components / services / systems
+- can be combined in real projects
+
+** Waterfull model
+*** Pharses (in order)
+1. Requirement analysis & definition
+2. System & software design
+3. Implementation & unit testing
+4. Integration & System testing
+5. Operation & Maintanance
+
+*** Characteristics
+- Linear / Sequential, Heavy documentation, phase deliverables + sign-off
+- Iterations exist but are costly, parts may be frozen early, risking mismatch with user needs
+
+*** Advantages:
+Requirements are well-understood and unlikely to change (often critical / regulated systems)
+
+*** Disadvantages:
+- Inflexible to changes
+- strong documentation / traceability
+- disciplined control
+
+*** Suitable:
+- Requirements are well-understood and unlikely to change (often critical / regulated systems)
+
+
+** Incremental Model
+- Build system as series of version, each adds functionality
+*** Incremental Definition
+- spec/dev/validation are interleaved
+
+*** Key Benefits
+- early delivery of userful functionality
+- cheaper to change while developing
+- continuous user feedback
+- risks discovered earlier
+
+*** Limitations
+- integration / dependency management gets complex
+- risk of scope creep
+- full functionality arrives later
+- management coordination harder
+
+*** Incremental vs Agile (easy to confuse)
+- Incremental = planned increments, mode structured
+- Agile = 
+  - more flexible / time-boxed
+  - stronger customer collaboration + faster adaptation
+
+** Reuse-oriented Software Engineering (Component types tradeoffs)
+*** Reuse-oriented idea
+focus on integrating existing components rather than building from scratch
+*** Types of reusable components
+- web services (remote invocation, standard interfaces)
+- Compoennt packages integrated with frameworks
+- Stand-along systems configured for a particular enviornment
+*** Reuse pros / cons
+- Pros: 
+  - less code to write 
+  - lower cost / risks
+  - faster delivery
+- Cons:
+  - requirements compromises;
+  - less control over evolution
+
+
+

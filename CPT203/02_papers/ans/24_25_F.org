@@ -98,7 +98,7 @@ Functional requirements describe what the system must do: its features and behav
 *** Description
 (Define non-functional requirements.)
 *** Answer
-Non-functional requirements describe quality attributes and constraints - how weel the system works - sucj as performance, security, availability, and compatibility
+Non-functional requirements describe quality attributes and constraints - how well the system works - such as performance, security, availability, and compatibility
 
 ** C3 Statement: This online shopping site should allow all users to access it, via desktop, mobile devices and tablet. Is it a functional requirement or a non-functional requirement? (3/12)
 *** Description
@@ -233,7 +233,7 @@ Suppose you are designing a simple e-commerce website that allows users to brows
 ** F1 Explain what is modularity and why it is important to use it in designing the website. (6/12)
 *** Description
 (Explain modularity + why it matters for the website design.)
-*** Answer
+*   ** Answer
 Modularity means decomposing a system into well-defined, highly cohesive modules that interact through clear interfaces.
 It improves maintainability, extensibility, parallel development, reusability, testability, and reduces complexity.
 TODO: recite it

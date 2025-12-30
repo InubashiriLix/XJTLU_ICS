@@ -23,7 +23,6 @@ CPT205/01Lects/03LectSource/ModelCPP/build
 INT201/3PDFs/1Week/Lecture 1.pdf:Zone.Identifier
 INT201/3PDFs/1Week/Tutorial 1.pdf:Zone.Identifier
 CPT205/01Lects/pdf/CPT205Lecture03_GeometricPrimitives.pdf:Zone.Identifier
-CPT205/02Labs
 CPT205/01Lects/03LectSource/DrawLine/.cache
 CPT205/01Lects/03LectSource/DrawLine/build
 CPT205/Assignment/ASS_COPY/.cache
@@ -41,3 +40,7 @@ CAN201/01Lects/fonts
 CPT205/CW2/br2077_city/.cache
 CPT205/CW2/br/.cache
 CPT205/CW2/br/compile_commands.json
+CPT205/02Labs/05lab/.nvim-tmp
+CPT205/02Labs/05lab/.nvimlog
+CPT205/02Labs/05lab
+CPT205/02Labs/01Week/1pt/.cache/clangd/index/main.cc.CB056F7DFA172AAB.idx

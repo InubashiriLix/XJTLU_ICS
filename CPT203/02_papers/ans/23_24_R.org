@@ -1,0 +1,206 @@
+#+title: CPT203 2023/24 S1 Resit Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module Code: CPT203
+- Academic Year: 2023/24
+- Semester: 1st Semester (Resit Examination)
+- Level: Undergraduate – Year 3
+- Module: Software Engineering 1
+- Exam Duration: 2 Hours
+
+* Instructions to Candidates
+1. This is a closed-book examination, which is to be written without books or notes.
+2. Total marks available are 100.
+3. This exam consists of two sections:
+   - Section A: NINE questions (70 marks)
+   - Section B: TWO systems modelling questions (30 marks)
+   Answer all questions. There is NO penalty for providing a wrong answer.
+4. Onsite candidate should write the answer on the booklet(s) provided.
+5. Only English solutions are accepted.
+6. All materials must be returned to the exam supervisor upon completion of the exam.
+   Failure to do so will be deemed academic misconduct and will be dealt with accordingly.
+
+* Question A (70 marks)
+** A1 (3 marks)
+*** Description
+What are the main software process models?
+*** Ans
+- waterfall model
+- incremental (iterative) model
+- agile model
+
+** A2 (7 marks)
+*** Description
+A team of students wants to develop a mobile app for reminding users about their classes.
+They currently have limited requirements for the system.
+Which software process model is the most suitable for this scenario?
+Please provide THREE justifications for your choice of process model.
+*** Ans
+incremental model:
+- early delivery of a usable core: deliver a minimal feature first (basic class schdule + notifications)
+- requirements can be refined per increment: limited / unclear requirements are clarified after each increment through feedback, reducing rework;
+- Risk reduction + easier plannin for student team: each increment is smaller and eaiser to estimated / test, issues are discovered earlier and changed cost less.
+
+** A3 (4 marks)
+*** Description
+XJTLU's HR system requires IT software engineers to update their human resource system.
+Which software process model would be the most suitable for this scenario, and please provide your justification.
+*** Ans
+agile model:
+- the requirements may change freqently due to changin policies or regulations;
+- agile supports frequent stakeholder feedback and changing requirements;
+- iterative delivery enables incremental integration / testing with existing HR modules, reducing employment risks.
+
+** A4 (9 marks)
+*** Description
+a software engineering team has created a requirement specification for a mobile app that will replace the existing paper-based booking system at a sports center.
+
+which common techniques would you use to check and validate the specification?
+for each technique, briefly explain the tasks involved in ensuring the quality of this product.
+*** Ans
+- Requirement reviews (ambiguity, completeness, consistency, correctness):
+  prepare view checklists: completeness, ambiguity, consistency, correctness;
+  review meeting with analysts / devlopers / tester / stakehoders / domain experts
+  log defects (missing requirements, conflicts, unclear terms)
+  update specification and re-review key fixes;
+- stakholder walkthroughs (user validation):
+  - walk through scenarios / use case step-by-step with sport-center staffs;
+  - confirm real workflows, business rules, exceptions;
+  - resolve misunderstandings and update specification;
+- Prototyping (UI / flow validation):
+  - build low-fidelity prototypes for booking / cancellation / payment (if any);
+  - let users perform typicla taksas, collect feedback on 
+    usability and remove wording ("fast, easy, etc")
+  - refine requirements based on observed issues;
+- Derive test cases / acceptance tests from requiremnts
+  - identify missing constraints (response time, error handling, validating rules)
+  - Create test scenario to check testability and remove vague wording ("fast, easy, etc")
+  - identify missing constraints 
+
+
+** A5 (12 marks)
+*** Description
+A game company intends to develop an innovative game that collects brain signals, analyzes them, and utilizes them to influence certain activities within the game.
+
+5.1 Please outline and explain three types of information that software engineers need to discuss with both the game company and the end users during the process of Requirements Elicitation and Analysis. (6 marks)
+
+5.2 There are two levels of details in requirements. Can you please briefly explain what they are? (6 marks)
+*** Ans
+*5.1*
+1. funcitonal requirments:
+Engineers must clearify the end-to-end functional flw "signal capture -> analysis -> in-game effect":
+    - capture: which device, sampling rate, calibration, handling disconnection;
+    - Analysis: what brain states / commands to detect (e.g. attention, relaxation, blink, motor)
+    - how detected states affect gameplay (skills, speed, difficulty, branching, etc.)
+2. non-functional requirements:
+   - delay
+   - perforamce, calculation accuracy
+   - availablity ,reliability
+   - Usability
+
+3. constraints and privacy / safety / Compliance:
+   - data prolicy: 
+   - Consent and user right
+   - Safety / ethics
+   - Compliance data protection regulartions
+
+*5.2*:
+High-level statements in user-friendly language describing what services the system should provide.
+Example: “Players can use attention level to accelerate the character and see real-time feedback in training mode.”
+Traits: easy to communicate, but may be ambiguous and not directly testable.
+
+Detailed, precise, and verifiable requirements used for design and testing (interfaces, data, performance, exceptions).
+Example: “The system shall sample EEG at ≥250Hz; end-to-end latency ≤100ms; false trigger rate ≤2%.”
+Traits: implementable, testable, and suitable as a basis for verification and acceptance.
+
+** A6 (4 marks)
+*** Description
+Consider the following classes in a bookstore application:
+- Book: Represent a book with details such as title and author.
+- Order: Represent the order with order line items.
+- Review: Represent the book review enter by the customer.
+
+The following are the interaction between the above classes:
+- The Order class retrieves the title of the book from the Book class when generating a receipt.
+- The Review class checks the title of the book from the Book class before posting a review.
+
+Suggest an approach to reduce the coupling in this system.
+*** Ans
+currently, the Review and Order class directly depend on the Book class, which could be risky and hard to maintain if the Book class changes;
+introduce an indirection layer, (interface), which is responsible for retrieving bok information (title, author, etc). The repository / service can internally use databse BookDB as an implementation details.
+Order and Review should store only bookId / ISBN and call getTitle(bookId) (or findById(BookId)) via the repository / service when generating recceipt or validating reviews
+therefore, coupling is reducesd becuase Order / Review depend on stable abstraction rather than Book class directly, making future changes and testing easier.
+
+** A7 (8 marks)
+*** Description
+Apart from coupling, could you please list and explain four design concepts that you have learned in the class?
+*** Ans
+
+
+** A8 (11 marks)
+*** Description
+Below is the code for a simple Calculator class that provides methods to perform basic arithmetic operations.
+
+8.1 Please create JUnit test cases to verify the accuracy of the divide method in the Calculator class.
+Make sure to include a test for the edge case where the denominator is equal to 0. (6 marks)
+
+8.2 What are the lifecycle annotations in JUnit and in what order are they executed? (5 marks)
+*** Ans
+
+
+** A9 (12 marks)
+*** Description
+Can you please define Risk Management and provide explanations along with examples for the three categories of risks?
+*** Ans
+- Project risk:
+  resource not enough, schedule overestimation, key role lost, buget over estimation
+  example: you're in a company where the key developers are leaving, with tight buget and not enough time, fuck.
+- Product risk:
+  quality, usability, realiability, performance
+- Business risk:
+  market, cusotmer, strategy, ROI
+
+
+* Question B (30 marks)
+** B.1 (15 marks)
+*** Description
+An order processing system in a company works as follow:
+
+- Once a new order is received, the clerk initiates the order processing.
+- First, the clerk receives the order and validates it to ensure that all necessary information is present.
+  If any required information is missing, the order will be rejected and the process will terminate immediately.
+- If the order is valid, the clerk will proceed to the second step, which is to register the order.
+- After the order is registered, the subsequent processes will run simultaneously in two different departments.
+
+Logistic department:
+- The logistic department will pack the registered order.
+- If the order has a high priority, it will be delivered using express delivery.
+- Otherwise, it will be delivered using regular delivery.
+
+Finance department:
+- The finance department sends an invoice to the customer according to the registered order.
+- Upon receiving the invoice from the finance department, the customer will make payment to them.
+- Once the finance department receives payment from the customer, they update the payment records accordingly.
+- The finance department will close the order once payment is received and the logistics department has delivered the order.
+- The process terminates after the order is closed.
+
+Draw an Activity Diagram with Swimlanes to model the above process.
+*** Ans
+TODO: do this
+
+
+** B.2 (15 marks)
+*** Description
+Develop a Sequence Diagram to illustrate the interactions involved when a tourist enrolls for a city sightseeing tour.
+
+- The process begins with the tourist accessing a Tour Catalog to explore the available tours.
+- Tours have limited seats.
+- The tourist selects a specific tour from the catalog and proceeds to make an Enrollment, but there is no guarantee of success.
+- The enrollment process should include a check for seat availability, allowing the tourist to enroll only if there are seats available for the chosen tour.
+- The system should provide the enrollment status to keep tourists informed.
+
+*** Ans
+
+TODO: do this

@@ -1,0 +1,122 @@
+* Software process:
+** Four fundamental activities 
+- Specification
+- design & imple
+- Validation
+- Evolution
+
+* Model
+** Model selection:
+- Waterfall: 
+  requirements -> design -> imple -> validation / test -> deployment -> maintenance
+  - no change of requirements, stable
+  - emphasize on documentation
+  - phrase-by-phrase
+  - risks might be ignored until late stage: high cost to fix
+  - often roganized by phrase (requirement, design, implementation, testing), with some handoff and communication heavily depend on document.
+  - customer involved heavily at the requirement specification stage.
+- Agile:
+  - requirements might change frequently
+  - emphasize on working software
+  - short iteration time
+  - continuous feedback from users
+  - customer involvement
+  - scrum of scrums may needed
+  - emphasize cross-function teams, working closely throgh short iterations
+- Incremental:
+  - core first, incremental dev other features
+  - plan based delivery 
+  - customer feedback 
+    with frequent communication (daily stand-up metting, sprint reviewers)
+    
+** reason:
+RFT:
+- R: requiremtn
+- F: Feedback
+- T: test / risks
+
+* Requirements:
+** Two levels of requirements:
+*** User:
+- funnctional and non-functional
+  functional requirement: describe what the system must do: its featurea and behaviors such as registeration, order and payment
+  nonfunctional quality attributes and constrains - how well the system works, such as performance, security, available, compatibility
+*** System:
+- funnctional and non-functional
+- System functional requirements: technical specification of features, like apim, data processing, etc.
+- System non-functional requirements: technical constraints and quality attributes, like response time, throughput, availability.
+
+** Requirements review:
+- review requiremets
+- walkthrough with stakeholders
+- prototyping
+- derive test
+
+** threetypes outline what to consider:
+1. functional requirements:
+2. non-functional requirements:
+3. constrains policy / compilance / safety
+
+** High-level activities in requirement process
+- feasibility study
+- requirement elicitation & analysis
+- requirement specification
+- requirement validation
+
+
+* Modularity:
+** importance:
+means decomposing a system into well-defined, highly cohesive modules that interact through *interfaces*
+improve maintenance, parallel developing, extensibility, reusability, realiability, testability and reduce complexity.
+
+** loose coupling:
+depend on well-defined and stable interfaces rathen than internal deatils.
+easier replacement, fewer ripple changes, better testability, improve security isolated
+
+** How to reduce coupling:
+use interface, abstract class
+
+* Risk Manage:
+** Risk Categories
+- Project risk:
+  schedule, buget, resources
+- Product risk:
+  quality, performance, reliability
+- Business risk:
+  market, cusotmer, strategy, ROI (return on investment)
+** Strategy 
+- Avoidance:
+  eliminate the risk: change the plan to remove the risk source.
+  Example: user a proven database instead of new, untested one.
+- Mitigation / Minimization:
+  reduce likelihood or impact:
+  Take actions to lessen the risk
+  Build a prototype to reduce technical uncertainty, or add extra testing to reduce defect impact
+- Contigency (fallback plan if it occurs): prepare actions to take if the risk happends
+  if a key developer leaves, have a documented handover plan and a backup contractor
+
+** examples:
+the schedule risk could be solved with incremental delivery + realistic estimation + milestond tracking / buffer
+the product risks could be mitigate with 
+recurity-by-design + thread moduling + security testing (review + pen-test + scans) + encryption and least privilege
+
+**  QMS (quality manage system)
+standarize the process, improve traceability, reduce defact and rework, and increase consistency, delivery reliability and compilance
+
+* MVC:
+- M: model: 
+  the components that manage data, logic, and rules of application
+- View: 
+  the components that display data
+- Control:
+  the component that handle user input and interaction, update model and view accordingly
+
+
+* Junit:
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+@BeforeEach
+@AfterEach
+@BeforeAll
+@AfterAll
+@Test

@@ -1,0 +1,258 @@
+#+title: CPT203 2023/24 S1 Final Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module Code: CPT203
+- Academic Year: 2023/24
+- Semester: 1st Semester (Final Examination)
+- Level: Undergraduate – Year 3
+- Module: Software Engineering 1
+- Exam Duration: 2 Hours
+
+* Instructions to Candidates
+1. This is a closed-book examination, which is to be written without books or notes.
+2. Total marks available are 100.
+3. This exam consists of two sections:
+   - Section A: NINE questions (70 marks)
+   - Section B: TWO systems modelling questions (30 marks)
+   Answer all questions. There is NO penalty for providing a wrong answer.
+4. Onsite candidate should write the answer on the booklet(s) provided.
+5. Only English solutions are accepted.
+6. All materials must be returned to the exam supervisor upon completion of the exam.
+   Failure to do so will be deemed academic misconduct and will be dealt with accordingly.
+
+* Question A (70 marks)
+** A.1 (8 marks)
+*** Description
+Please provide a brief explanation of the four fundamental activities involved in software processes?
+*** Ans
+- Specification: define waht the system should do and the constraints it must meet
+- Development: (design & implementation): design the system and build the software
+- Validation: check that the software meets requirements and is fit for use (testing / reivews)
+- Evolution: modify and improve the software over time to fix issues or add features;
+
+** A.2 (8 marks)
+*** Description
+Compare the key differences between plan-driven processes and agile processes.
+*** Ans
+- Plan-driven: 
+  - iteration: iteration follow the plan
+  - delivery: delivery after each phrase end, handoff, and feedback may needed
+  - cooperation: teams are usually splited according to the 
+  - documentation: usually has a clear long-term pan and more completed documentation
+  - customer involvement: customer involoved at requirement specification so that the team can get the software functional and non-functional requirements and make plan to reduce further design issues.
+
+ - agile:
+   - iteration: iteration is more short (1-2 weeks) and flexible.
+   - delivery: delivery is frequent and continuous, usually at the end of each iteration
+   - cooperation: team are usually cross-functional and work closely together
+   - documentation: usually has document that just-enough to support development, the agile emphasizes more on working-software, demos.
+   - customer involvement: customer is involoved throughout the developemtn process:
+     at requirement gathering, developers require cusotmer's specification to reduce re-design cost
+     at delivery: customer can provide feedback and suggestions to improve, modify the backlogs.
+
+
+** A.3 (6 marks)
+*** Description
+Please provide a diagram illustrating the flow of activities in the waterfall software process model.
+*** Ans
+fuckyou
+[[./graphics/23_24_F/waterfall.png]]
+
+
+** A.4 (9 marks)
+*** Description
+A management team is considering to invite an IT company to develop a new software to schedule the passenger lifts in tall buildings.
+It aims to increase the efficiency of operation during the peak time.
+Will you choose the agile method, as the leader of the IT company?
+Please provide three reasons to support your decision.
+*** Ans
+yes
+  - Requirements and peak‑time patterns are likely to evolve; agile
+    handles changing priorities with short iterations.
+  - Early prototypes/simulations let the client see performance gains
+    quickly and refine scheduling rules from real data.
+  - Continuous testing and incremental delivery reduce risk in a complex
+    optimization system while providing measurable improvements each
+    sprint.
+
+** A.5 (4 marks)
+*** Description
+List high-level activities in the requirement engineering process.
+*** Ans
+- feasibility study
+- requirements elicitation & analysis
+- requirements specification
+- requirements validation
+  TODO: recite
+
+** A.6 (6 marks)
+*** Description
+Suppose you are developing a restaurant management system.
+Within this system, there is a class called OrderProcessor as shown in the paper, responsible for handling customer orders.
+It has been identified that the code exhibits low cohesion.
+Your task is to rewrite the code in order to improve cohesion.
+
+#+BEGIN_src java
+public class OrderProcessor {
+    public void takeOrder(Order order) {
+        // logic to take order from customer
+    }
+
+    public void prepareOrder(Order order) {
+        //logic to prepare the order in the kitchen
+    }
+
+    public void serveOrder(Order order) {
+        // logic to serve the order to the customer
+    }
+
+    public void processPayment(Payment payment) {
+        // logic to process payment from customer
+    }
+}
+#+END_src
+*** Ans
+
+#+BEGIN_src java
+public class OrderProcessor {
+    public void takeOrder(Order order) {
+        // logic to take order from customer
+    }
+
+
+    public void serveOrder(Order order) {
+        // logic to serve the order to the customer
+    }
+
+}
+
+public class KitchenService {
+    public void prepareOrder(Order order) {
+        //logic to prepare the order in the kitchen
+    }
+}
+
+public class PaymentService {
+    public void processPayment(Payment payment) {
+        // logic to process payment from customer
+    }
+}
+#+END_BEGIN_src
+
+
+** A.7 (6 marks)
+*** Description
+Many web-based systems utilize MVC as the foundation for interaction management.
+Please provide a list of three components involved in this pattern and explain their respective functionalities.
+*** Ans
+- Model:
+  the components that manage data, logic, and ruels of application
+- View:
+  the compoents that display data
+- Controller:
+  the components that handle user input and interaction, update model and view accordingly
+
+** A.8 (11 marks)
+*** Description
+During the development of a basic user authentication system, you are required to create JUnit test cases to validate the functionality of the UserAuthenticator class.
+This class includes a method named isValidPassword, which verifies if a provided password satisfies specific criteria.
+
+Write a JUnit test case, named testIsValidPassword, to evaluate the isValidPassword method functionality in the UserAuthenticator class.
+Ensure that the test covers both valid and invalid password scenarios.
+
+#+BEGIN_src java
+public class User UserAuthenticator {
+    public boolean isValidPassword(String password) {
+        // logic to check if the password meets certain criteria
+        // for example, it must be at least 8 characters long
+        // and contain at least one uppercase letter
+        return password.length() >= 8 && containsUppwercase(password);
+    }
+
+    public boolean containsUppercase(String password) {
+        for (char c : password.toCharArray()) {
+            return true;
+        }
+        return false;
+    }
+}
+
+#+END_BEGIN_src
+*** Ans
+#+BEGIN_src java
+import static org.junit.jupiter.api.Assertion.*;
+import org.junit.jupiter.api.Test;
+
+public class UserAuthenticatorTest {
+    @Test 
+    void testIsValidPasswordCorrect() {
+        UserAuthenticator ua = new UserAuthenticator();
+        assertEquals(true, ua.isValidPassword("StirbFurMich"));
+    }
+
+    @Test
+    void testIsValidPasswordFailedLenLessThan8() {
+        UserAuthenticator ua = new UserAuthenticator();
+        assertEquals(false, ua.isValidPassword("123456"));
+    }
+
+    @Test
+    void testIsValidPasswordFailedNoUpperCaseChar() {
+        UserAuthenticator ua = new UserAuthenticator();
+        assertEquals(false, ua.isValidPassword("onetwothree"));
+    }
+
+}
+#+END_BEGIN_src
+
+
+** A.9 (12 marks)
+*** Description
+Please list and explain the three categories of strategies involved in the Risk Planning phase, and provide related examples to each of them.
+*** Ans
+  - Avoidance (eliminate the risk): Change the plan to remove the risk source.
+    Example: use a proven database instead of a new, untested one.
+  - Minimization / Mitigation (reduce likelihood or impact): Take actions to
+    lessen the risk.
+    Example: build a prototype to reduce technical uncertainty, or add extra
+    testing to reduce defect impact.
+  - Contingency (fallback plan if it occurs): Prepare actions to take if the
+    risk happens.
+    Example: if a key developer leaves, have a documented handover plan and a
+    backup contractor.
+  TODO: recite
+
+
+* Question B (30 marks)
+** B.1 (15 marks)
+*** Description
+A banking system provides users with several services:
+- To check account balance. User can optionally check recent transactions;
+- To pay bills online;
+- To manage investments. When managing investments, user can buy and sell his investments.
+
+All services require a secure log-in.
+The system must be secured, if the system crashes or the network connection fails during a transaction,
+all the financial data must be left in a consistent state.
+
+Draw a use-case diagrams for the requirements.
+*** Ans
+[[./graphics/23_24_F/use_case.jpg]]
+
+
+** B.2 (15 marks)
+*** Description
+Produce a UML state machine diagram for a toy grabber machine with the following behaviors:
+
+- The initial state of the toy grabber machine is Idle, where it waits for the player to insert coins.
+- When a player is inserting coins, the machine enters the Collecting state. In this state, the machine shows the number of coins collected.
+- In the Collecting state, the player has the option to press the cancel button at any time. If they choose to do so, all the inserted coins will be returned to them and the machine will return to the Idle state.
+- If the player inserted 3 coins, the machine will play a song.
+- After the song finishes, the machine enters the Accept Control state and begins accepting the player's control. Upon entering the Accept Control state, a timer starts counting down for 30 seconds.
+- During the 30-second period in the Accept Control state, the system allows the player to control the machine and attempt to grab as many soft toys as they can.
+- When the 30-second time limit is reached, the game comes to an end and the arm of the machine will reset to its original position.
+- When the game ends, the machine will transition back to the Idle state.
+*** Ans
+[[./graphics/23_24_F/state_machine_diagram.jpg]]

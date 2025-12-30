@@ -1,0 +1,301 @@
+* Software Engineering (Week 1) — Introduction
+  ** Learning objectives
+
+- Understand what software engineering is and why it is important. 
+- Understand different types of software systems and why they need different engineering techniques. 
+- Understand key ethical and professional issues for software engineers. 
+
+** Why software engineering is important
+
+* We can’t run the modern world without software:
+
+  * National infrastructures and utilities are controlled by computer-based systems.
+  * Most electrical products include a computer and controlling software.
+  * Manufacturing, distribution, and financial systems are highly computerized.
+  * Entertainment (music, games, film/TV) is software intensive. 
+* Society relies on advanced software systems, so we must build systems that are:
+
+  * reliable / trustworthy
+  * economical and quick to produce 
+* Long-run cost argument:
+
+  * Using SE methods is usually cheaper than “just coding”.
+  * For most systems, the majority of cost is changing software after it goes into use (maintenance/evolution dominates). 
+
+** Software system vs computer software
+*** Software systems (nature + implications)
+
+* Abstract and intangible (no physical shape).
+* Not constrained by physical laws/material properties/manufacturing limits.
+
+  * Benefit: fewer “natural limits” on what we can build.
+  * Drawback: systems can become extremely complex, hard to understand, and expensive to change. 
+
+*** Computer software (definition)
+
+* A collection of instructions, data, or computer programs used to run machines and carry out particular activities.
+* Can be developed for a particular customer OR for a general market. 
+
+*** Software system (definition, broader than “a program”)
+
+* A software system consists of:
+
+  * multiple pieces of software + configuration files
+  * system documentation + user documentation
+* “Computer software” usually means a set of instructions to do a specific task.
+* “Software system” is more encompassing (many components). 
+
+** Software engineering (SE)
+*** Definition
+
+* Software engineering is an engineering discipline concerned with *all aspects* of software production. 
+* Engineers:
+
+  * apply theories/methods/tools where appropriate (selectively)
+  * still try to solve problems even when no perfect theory exists
+  * work within organizational + financial constraints (cost/schedule/dependability trade-offs). 
+* “All aspects” includes not only coding but also:
+
+  * project management
+  * developing tools/methods/theories to support production 
+
+*** Software failure & success (why people complain)
+
+* SE is often criticized as inadequate for modern development.
+* Failures often come from:
+
+  * increasing demands
+  * low expectations (software grows into a “giant beast” over time). 
+
+** Professional software development vs amateur development
+*** Amateur software
+
+* People in business write spreadsheets to simplify jobs.
+* Scientists/engineers write programs to process experimental data.
+* Hobbyists write programs for interest/enjoyment. 
+
+*** Professional software
+
+* Built for use by someone other than its developer.
+* Usually built by teams, not individuals.
+* Maintained and changed throughout its life. 
+* SE mainly supports *professional* software development:
+
+  * specification, design, validation, evolution techniques. 
+* Typical properties of professional software:
+
+  * strict user requirements
+  * required accuracy and data integrity
+  * higher security standards
+  * stable performance under heavy load
+  * required technical support 
+
+** Product characteristics (quality attributes)
+
+* Maintainability:
+
+  * Software should be written so it can evolve to meet changing customer needs.
+  * Change is inevitable in a changing business environment. 
+* Dependability and security:
+
+  * Dependability includes reliability, safety, and security.
+  * System failure should not cause physical/economic damage.
+  * Malicious users should not be able to access or damage the system. 
+* Efficiency:
+
+  * Avoid wasteful use of system resources (CPU cycles, memory, etc.).
+  * Includes responsiveness, processing time, memory utilization. 
+* Acceptability:
+
+  * Must be acceptable to intended users:
+
+    * understandable
+    * usable
+    * compatible with other systems they use 
+
+** Product types
+
+* Generic software products:
+
+  * produced by a development organization
+  * sold on the open market to any customer who can buy them
+  * e.g., office suites, photo editors, common mobile apps
+* Customized (bespoke) software products:
+
+  * commissioned by a particular customer
+  * contractor develops specifically for that customer
+  * e.g., a bank’s internal risk system, a university’s custom admin platform
+* The boundary is becoming blurred (generic systems often customized via plugins/config; bespoke may reuse generic components). 
+
+** Software development challenges (why it’s hard)
+
+* Why does it take so long to finish software?
+* Why are development costs so high?
+* Why can’t we find all errors before delivery?
+* Why do we spend so much effort maintaining existing programs?
+* Why is it hard to measure progress during development/maintenance? 
+
+** Software deterioration (software doesn’t wear out, but…)
+
+* Software is a logical (not physical) system element:
+
+  * it does not “wear out” like hardware. 
+* But software *deteriorates* due to change:
+
+  * changes introduce new errors
+  * failure rate spikes after each change
+  * before it returns to steady state, another change is requested → spike again 
+* Goal of SE methods:
+
+  * reduce magnitude of spikes
+  * reduce slope of the “actual curve” (less error introduced per change). 
+
+*** Solutions to deterioration
+
+* Reduce number of changes:
+
+  * work closely with stakeholders to define requirements correctly
+  * improve requirements study approach to get better requirements 
+* Reduce side effects of changes:
+
+  * modular design (localize impact)
+  * maintainability-focused design
+  * comprehensive testing to reduce errors 
+
+** Different systems need different engineering approaches
+*** Key idea
+
+* SE is a systematic approach that considers cost, schedule, dependability, and needs of customers/producers. 
+* Implementation varies depending on:
+
+  * organization
+  * type of software (often the most important factor)
+  * people involved 
+
+*** Types of application (examples)
+
+* Stand-alone applications
+* Interactive transaction-based applications
+* Embedded control systems
+* Batch processing systems
+* Entertainment systems
+* Modeling and simulation systems
+* Data collection systems 
+
+** Software process
+
+* The systematic approach used in SE is often called a *software process*.
+* A software process = a sequence of activities leading to a software product. 
+
+*** Four fundamental activities (common to all processes)
+
+1. Software specification (requirements: what the system should do)
+2. Software development (design + implementation)
+3. Software validation (verification/testing: does it meet requirements?)
+4. Software evolution (change after deployment) 
+
+*** “Different systems need different processes”
+
+* Example:
+
+  * embedded aircraft control system: must be completely specified before development begins
+  * e-commerce: specification and program are often developed together (co-evolve) 
+
+** Software engineering fundamentals (principles)
+
+* Use a managed and understood development process.
+* Dependability and performance matter for all systems.
+* Managing specification/requirements is crucial.
+* Reuse existing software when appropriate rather than writing everything from scratch. 
+
+** General issues that affect most software
+
+* Heterogeneity:
+
+  * systems often run distributed across networks with different computers/mobile devices. 
+* Business and social change:
+
+  * environment changes quickly → software must be changeable; need rapid development of new software. 
+* Security and trust:
+
+  * software is intertwined with life → must be trustworthy. 
+
+** Software engineering and the Web
+
+* The Web is now a platform for running applications.
+* Organizations increasingly develop web-based systems rather than local systems.
+* Web services provide functionality over the web.
+* Cloud computing: applications run remotely “in the cloud”.
+* Users often pay according to use instead of buying software once. 
+
+*** Web-based software engineering (notes)
+
+* Reuse is dominant (assemble from existing components/systems).
+* Develop and deliver incrementally.
+* Impractical to specify all requirements in advance.
+* UI is constrained by web browsers.
+* Rich UI technologies (e.g., AJAX) exist but can still be hard; web forms + scripting are common. 
+
+** Ethical and professional issues in software engineering
+*** What “ethics” means here (fix your last line)
+
+* Ethics addresses *intentional actions* that impact (positively or negatively) the lives/values of others. 
+* Ethical thinking in technical decisions should be based on understanding the impact of those decisions. 
+* Software engineers have obligations to users of their products:
+
+  * not only the implemented system
+  * but also requirements, plans, specs, designs, documentation, tests, manuals, training materials, etc. 
+* Professional expectation:
+
+  * behave ethically and morally responsibly to be respected
+  * do not use skills dishonestly or bring disrepute to the profession 
+
+*** Areas of professional responsibility (common exam list)
+
+1. Confidentiality
+
+   * keep employer/client information private unless authorized or legally required
+2. Competence
+
+   * only undertake work you are competent to do; be honest about limitations
+3. Intellectual property rights
+
+   * respect copyrights, patents, licenses; do not steal code/assets
+4. Computer misuse
+
+   * do not use skills for hacking, malware, unauthorized access, fraud, etc. 
+
+** Software development risk (why projects fail)
+
+* Many projects run into trouble:
+
+  * does not work as expected
+  * over budget
+  * late delivery
+  * many functions wasted/unneeded
+  * wrong requirements
+  * users dislike it / no customers 
+* Major reason: developers build the wrong software.
+* Team must:
+
+  * fully understand requirements
+  * validate requirements
+  * developers can add technical insights, but client satisfaction is the primary success measure 
+* Project failure can bankrupt companies; consequences of software being late/over budget/buggy can be severe. 
+
+** Software engineering vs computer science
+
+* Software Engineering:
+
+  * concerned with practicalities of developing and delivering professional software systems
+* Computer Science:
+
+  * focuses on theory and fundamentals 
+
+** Quick “possible exam answers” (one-liners)
+
+* SE definition: engineering discipline covering all aspects of software production (not only coding). 
+* Why SE matters: modern society depends on software; need reliable systems; maintenance dominates long-term cost. 
+* 4 process activities: specification, development, validation, evolution. 
+* Deterioration: software doesn’t wear out but changes introduce errors → failure rate spikes. 
+
