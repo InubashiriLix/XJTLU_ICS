@@ -31,7 +31,7 @@
     
 ** reason:
 RFT:
-- R: requiremtn
+- R: requirements
 - F: Feedback
 - T: test / risks
 
@@ -120,3 +120,12 @@ import org.junit.jupiter.api.Test;
 @BeforeAll
 @AfterAll
 @Test
+@Disabled
+@DiaplayName("...")
+
+assertEquals(excepted, actual);
+assertSame(excepted, actual);
+assertTrue(condition);
+assertFalse(condition);
+assertThrows(Exception.class, () -> { code block });
+
