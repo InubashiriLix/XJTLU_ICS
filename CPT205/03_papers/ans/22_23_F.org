@@ -1,0 +1,238 @@
+#+title: CPT205 - 2022/23 Semester 1 - Final Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CPT205 - Computer Graphics
+- Exam: 1st Semester 2022/23 Final Examination
+- Level: Undergraduate - Year 3
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Instructions:
+  1) Closed-book (no books/notes).
+  2) Total marks: 100.
+  3) Answer ALL questions; no need to copy questions into the answer booklet.
+  4) Write answers in the answer booklet(s) provided.
+  5) English answers only.
+  6) Return all materials; otherwise academic misconduct.
+
+* Question 1. Fundamentals (Total 20 marks)
+** Q1.1 Give a brief definition of computer graphics. (2 marks)
+*** Answer
+computer graphics is a field of computer science that focus on generating, calcuating, rendering and manipulating graphic images and virtual scenes using computers.
+
+** Q1.2 List at least 4 main topics of computer graphics. (2 marks)
+*** Answer
+modelling
+transformation and viewing
+rendering / lighting
+texture / sampling / animation / visualization
+
+** Q1.3 What is a framebuffer used for computer graphics? (2 marks)
+*** Answer
+the framebuffer is a portion of memory that stores the pixel data for an image to be displayed on the screen (color buffer + optional depth / model). it holds the color values and other information for each pixel, allowing the graphics system to render images efficiently.
+
+** Q1.4 Graphics packages use a fourth “colour co-ordinate”, A or alpha (in addition to Red, Green and Blue). What does it do? (2 marks)
+*** Answer
+it determines what the rasteraized pixel's degree of transparency is, it allow the color can be blended with the background color based on the alpha value.
+
+** Q1.5 Given two vectors, V1 = 3i – 2j and V2 = 6i + 5j, work out their dot product. (2 marks)
+*** Answer
+process not explain here.
+result: 8
+
+** Q1.6 For two matrices, A = [4 5 6] and B = [1; 2; 3], work out AB. (2 marks)
+*** Answer
+1 x 1 matrix: [32]
+
+** Q1.7 Decide which of the following statements about polygons is false; write down your answer in the answer book provided. (2 marks)
+*** Statements
+- (a) A polygon can have two faces;
+- (b) A polygon can be filled;
+- (c) A polygon must be convex;
+- (d) A polygon must have at least 3 vertices.
+*** Answer
+a: true
+b: true
+c: false
+d: true
+
+** Q1.8 Use an example to explain a parametric representation of a curve. (2 marks)
+*** Answer
+in the 2d plane, given a curve defined by the parametric equations:
+A, B, C, D
+the curve can be represented by t as:
+X = X(t) = P0 + t(P1 - P0)
+Y = Y(t)
+
+** Q1.9 Are there any restrictions to the placement of the viewing plane in graphic systems and why? (2 marks)
+*** Answer
+viewing plane (near plane / projection plane) should not ecceed the view point (eye / camera), and near disatance must > 0, or the projection will inverse / divide by zero error.
+
+** Q1.10 What would the following fragment of code do? (2 marks)
+*** Code
+#+begin_src c
+int x = x0, y = y0;
+while (y <= y1)
+do {
+    DrawPoint(x,y);
+    y = y + 1;
+}
+#+end_src
+*** Answer
+draw a vertival line from (x0, y0) to (x0, y1), or a point as y1 = y0
+
+* Question 2. Transformation and viewing (Total 20 marks)
+** Q2.1 Briefly explain the transformation pipeline including each of the stages. Diagrams can be used in your answer. (5 marks)
+*** Answer
+1. in the model stage to world stage
+    1. translate: usually translate the objecct to the origin, or move the optionally scaled or optionally rotated object to the desired position;
+    2. rotate: rotate the object to the desired orientation;
+    3. scale: scale the object to the desired size;
+2. world stage to veiw stage 
+3. view stage to NDC (projection + Normalization)
+4. clipping 
+5. viewport mapping 
+6. mention rasterization
+
+
+
+** Q2.2 The 2D object in Figure (a) is to be transformed to the position shown in Figure (b).
+Describe the steps needed and show the transformation matrices for each step; work out the combined homogeneous transformation matrix. Diagrams can be used in your answer. (8 marks)
+*** Answer
+first, move the point (2, 3) to the origin
+[1, 0, -2; 0, 1, -3, 0, 0, 1] x [2; 3; 1] => [0; 0; 1]
+then apply rotate 180 matrix
+[cos(180) - sin(180), sin(180) + cos(180), 0;sin(180) + cos(180), cos(180) + sin(180), 0;0, 0, 1] x [0; 0; 1] => [0; 0; 1]
+fially, move to 10, -3
+[1, 0, 10; 0, 1, -3, 0, 0, 1]x [0; 0; 1] => [10; -3; 1]
+apply these to all the vectices in the triangle
+
+** Q2.3 Briefly explain line by line what the following fragment of code would do. (7 marks)
+*** Code
+#+begin_src c
+void init(void) {
+    // clear and set green and solid background
+    glClearColor(0.0, 1.0, 0.0, 1.0);
+    // chenage to modelview matrix mode
+    glMatrixMode(GL_MODELVIEW);
+    // load identity matrix
+    glLoadIdentity();
+    // the camera is located at (100, 50, 50), facing (50, 50, 0), with (0, 1, 0) as the up direction
+    gluLookAt(100, 50, 50, 50, 50, 0, 0, 1, 0);
+    // change to projection matrix mode
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    // set the viewing volume:
+    // left bottom: (-40, -60)
+    // right top: (40, 60)
+    glFrustum(-40, 40, -60, 60, -40, 60);
+}
+#+end_src
+*** Answer
+
+
+* Question 3. Creation and representation of geometry (Total 20 marks)
+** Q3.1 Discuss how symmetry of a circle can be used to reduce the amount of computation for generating the full circle, using diagrams where necessary. (8 marks)
+*** Answer
+we can use 8-way symmetry to reduce the computation needed to draw a full circle. by calculating the points in one octant of the circle, we can mirror those points across the other seven octants to complete the circle. this is because a circle is symmetric about both its x-axis and y-axis, as well as the lines y=x and y=-x.
+(x, y) -> (+-x, +y), (+x, -y), (-x, -y), (-x, +y), (y, x), (-y, x), (y, -x), (-y, -x)
+
+** Q3.2 For parametric curves, explain what interpolation and design curves are and how their local controls work. Diagrams can be used in your answer. (8 marks)
+*** Answer
+we usually clipping the curves into small segments, and usually will use the endpoints + 2 sample point to represent a small segment of the curve. this is because if we use to many sample points to fit the curve, the high order polynomial will cause oscillation problem, and if we use too few sample points, the curve will not be smooth enough.
+
+** Q3.3 Briefly describe the two types of B-Rep model and how the validation can be done. Diagrams can be used in your answer. (4 marks)
+*** Answer
+two types:
+Faceted (polygonal) B-Rep
+Parametric / analytic B-Rep (NURBS)
+validdation:
+Euler-Poincare forumula: V - E + F - 2 = 0 or V - E + F - H + 2R - 2S = 0
+
+* Question 4. Lighting and texture mapping (Total 20 marks)
+** Q4.1 Attenuation of light received due to the distance from the light source can be applied. (6 marks)
+*** Q4.1(a) Briefly explain the attenuation model implemented in graphics systems such as OpenGL.
+**** Answer
+1 / (kc + kl*d + kq*d^2)
+d is the distance, kx is the constant, linear or quadratic attenuation factor.
+the attenuation model is usually based on the inverse square law, which states that the intensity of light decreases proportionally to the square of the distance from the light source. in graphics systems like OpenGL, this is often implemented using an attenuation factor that modifies the light intensity based on the distance between the light source and the surface being illuminated. the formula typically used is: gpt help me!!!!
+
+*** Q4.1(b) Name a type of light source to which distance attenuation can be applied and explain why.
+**** Answer
+for example: point light source; the points light source emits light uniformly in all directions from single point in space, as distance increases, the light intensity decreases following the inverse square law, making distance attenuation relevant and necessary for realistic rendering.
+
+** Q4.2 Given two light sources (0.8, 0.6, 0.4) and (0.3, 0.3, 0.3), work out the combined lighting effect. (2 marks)
+*** Answer
+add two and clamp to 1.0
+
+** Q4.3 A photograph of 1600*1200 pixels is to be mapped onto a display screen of 800*600. (6 marks)
+*** Q4.3(a) How the mapping could be implemented?
+**** Answer
+magnification mapping: linear or nearest-neighbor filtering can be used to reduce the image size while maintaining visual quality. mipmapping can also be employed to create multiple levels of detail for the texture, allowing the graphics system to select the appropriate level based on the distance from the viewer.
+
+*** Q4.3(b) What term of texture mapping would this case be called?
+**** Answer
+magnification mapping: linear filter / nearest-neghbor filter
+
+*** Q4.3(c) How the colour of each pixel in the display can be decided?
+**** Answer
+linear fileter: average the colors of the four nearest texels to determine the color of each pixel on the display screen. this method provides smoother transitions and reduces aliasing artifacts compared to nearest-neighbor filtering, which simply selects the color of the closest texel.
+nearest-neighbor filter: select the color of the texel that is closest to the pixel's corresponding texture coordinate. this method is faster but can result in a blocky appearance, especially when the texture is significantly downscaled.
+
+** Q4.4 Briefly describe the co-ordinate systems used for texture mapping. Diagrams can be used in your answer. (6 marks)
+*** Answer
+to figure out hte point on the 3D object to the 2D texture image, we usually use UV coordinate system;
+where is the point on hte object surface, and where is the corresponding point on the texture image.
+then use the Model -> World -> View -> Clipping -> NDC (Projection) -> Viewport Mapping to findout where is each vertics on the screen.
+rasteration: for each screen pixel, its color is detetmined by the texture color at the corresponding UV coordinate on the texture image.
+-> perspective correct interpolation
+sampling: use interpolation method result to get the texture pic color at corresponding point;
+-> magnification / minification
+-> blending with material + lighting result
+
+exceptions:
+wraping: 
+repeat: repeat (1.2 -> 0.2)
+MIRROR_REPEAT: (1.2 -> 0.8)
+CLAMP_TO_EDGE: (1.2 -> 1.0)
+
+*true answer*
+- Object/Model coords: vertices of the geometry are defined in object space.
+- World/View/Projection/Viewport: geometry is transformed to screen/window coordinates to determine pixel positions.
+- Texture coords (s,t): each vertex has associated texture coordinates (usually in [0,1]).
+- During rasterisation, (s,t) are interpolated (perspective-correct) across the polygon to get per-fragment texture coordinates.
+- The interpolated (s,t) are used to sample texels in the texture image (texel space), with wrapping and filtering (nearest/bilinear/mipmapping).
+- The sampled colour is used as the fragment colour (or combined with lighting).
+
+* Question 5. Clipping and hidden surface removal (Total 20 marks)
+** Q5.1 Briefly explain the clipping window, viewport and display window relating to OpenGL where appropriate. Diagrams can be used in your answer. (6 marks)
+*** Answer
+first the cliiping windows describe in which area the objects are visible. 
+viewport is the area by configuartion where hte projecction of objects in the clipping window will be mapped to.
+the display window is the physical area on the screen where the final image is rendered and displayed to the user. it is defined by the resolution and dimensions of the output device, such as a monitor or projector.
+
+** Q5.2 The figure shows four lines and a rectangular clipping window.
+Describe the sequence of clips that the Cohen-Sutherland clipping algorithm would perform for each of these lines. (8 marks)
+*** Answer
+for AB, trivally accept
+for CD, by intersecct with right border, we can find the interserctin and C are trival accept
+for EF, E's code: 0110, F: 0010, E & F is not 0000, trival reject
+for GH, G: 0001, H: 1000, G & H is 0000, we can find intersect, find out that all the intersect points are out of windows, trival reject
+
+** Q5.3 Briefly describe the need, process and limitations of back-face culling for hidden-surface removal. Diagrams can be used in your answer. (6 marks)
+*** Answer
+need: reduce the polygons need to be rendered but not visible to the viewer. improve performance, reduce computatoinal load.
+process:
+- space: use BSP tree to partition the space, and determine which polygons are in front of others from the viewer's perspective.
+- projection: use the viewer facing direction and the polygon face's normal vector to determine if the face is visible
+                or use CCW vertex order to determine if a face is visible.
+                Z-buffer: add extra parameter: depth value for each pixel, and compare the depth value of each pixel when rendering to determine visibility.
+limitations:
+- projections:
+  - normal dot multiple viewing direction >= 0: not suitable for transparent objects or double side objects like paper, leaves;
+  - CCW vertex order: not suitable for non-planar polygons and the sitation when the vertex sequence is not consistent;
+  - Z-buffer: extra memory needed for depth values, and may have precision issues for very close surfaces.
+- BSP: IDK
+  
+

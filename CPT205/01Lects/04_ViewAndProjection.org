@@ -1,0 +1,204 @@
+* Class Viewing
+** Viewing requires three basic elements
+- One or more objects
+- A viewer with a projection surface
+- Projectors that go from the objects on the projection surface
+
+** Classical views are based on the relationship among these element 
+- the viewers picks up the object and orients the object in a way that it is to be seen
+
+** Each object is constructed from flat princepal faces 
+- Buildings, polyhedra, manufactured objects, etc
+
+** Standard projections project onto a plan
+- projectors are lines that either converge at a center of projection are parallel.
+- such projections preserve lins but not necessarily angles;
+- Non-plannar projections are needed for application such as map constructor
+
+** Taxonomy of planner geometric projections
+planar geometric projections
+[[./graphics/04Lect/Classes.png]]
+
+* Perspective
+[[./graphics/04Lect/PerspectiveProjection.png][example]]
+- perspective projection generates a view of 3-dimensional scene 
+by projecting points to the view plane along convering paths.
+- object appear larger when newr and smaller when far
+- more realistic view
+
+** Projectors converge at centre of projection (CoP)
+[[./graphics/04Lect/Cop.png][Example of Converge of Projection (CoP)]] 
+
+** Vanishing Points (VP)
+- parallel lines (not those parallel to the projection plane) 
+  on the object converge at a single point in the projection (the vanishing point)
+
+* Parallel
+- this method projects points on the object surface along parallel lines
+- usually used in engineering and architecture drawing to represent the object with a set of views showing accurate dimensions
+
+** Features
+- the projection plane is parallel to the principal face
+- Usually from front, top and side views;
+- In CAD and architecture, often dispaly three multiveiew plus isometric
+[[./graphics/04Lect/ParallelProjectionExample.png][Example]]
+[[./graphics/04Lect/ParallelProjectionExample2.png][Shit Example 2]]
+
+** Pros:
+Preserves both distances and angles
+- Shape preserve
+- Can be used for measurements
+  - building plans
+  - Manuals
+
+** Cons:
+Connot see what object really looks like becuase many surfaces are hidden from the view
+
+* Axonometric Projections
+- Allow projection plane to move relative to the object
+** Isometric View
+[[./graphics/04Lect/IsometricViewExample.png][Isometric View Example]]
+- if the projection plane is placed symmetrically with respect to the three principal facces that meet at a corner of out rectangualar object
+  then we have an *isometric* view 
+** Dimetric & Trimetric View
+if the projection plane is placed symmetrically with respect to two the princile faces, then the view is *dimetric*
+[[./graphics/04Lect/Dimetric&TrimetricViewExample.png][Dimetric View Example]]
+
+** Features:
+  - lines are scaled (foreshortened) but can find scaling factors
+  - lines preserved but angles are not
+  - projection of a circle in a plane not parralel to the projection plane is an ellipse
+  - can see three princile faces of a box-like object
+  - some optical illusions possible
+  - Does not look real beacause far object are scaled the smae near object
+  - used in CAD application
+* Oblique Projection:
+Arbitrary relationship between projectors and projection plane
+[[./graphics/04Lect/ObliqueProjection.png]]
+** Pros and Cons:
+- Can pick the angels to emphasise a particular face.
+  Architecture: plane oblique, elevation oblique
+- Angles in faces parallel to the projection plane are preserved while we can still see "around" side
+- In the physical world, 
+  we cannot create oblique projection with a simple camera; possible with special optical systems
+
+* 3D Viewing Co-ordinate Parameters
+** Elements
+- Viewing original (viewing point, viewing pos, eye pos, camera position): 
+  P0(x0, y0, z0)
+  An point of the camera
+- Reference Point:
+  P(x_ref, y_ref, z_ref)
+  another point in the world that the camera is looking at
+- Viewing Direction Vector:
+  z_view = P_ref - P0
+- Viewing Plane
+  viewing plane can be defined with a normal vector N, which is the viewing direction, usually the negative z_view axis
+  - the camera looking at the negative z_view axis 
+  - to be simple, the plane is your display screen, and N is always facing to you (N = - z_view)
+- View Up Vector:
+  (NOTED: N should be a unit vector in this case)
+  (also noted: in the ppt, teacher use x_view to replace y_view, but in most of the books, y_view is used to represent the "up" direction on the plane)
+  since we get the plane using N, what we still need to known is where is "up" direction on the plane, or the plane can rotate freely around N
+  using View up Vector V we can get y_view axis
+  the V is a vector
+  y_view = normal( V - ( V dotx N)N )
+  to be simple
+  V = V_orthogonal_to_N + V_parallel_to_N 
+  => V_orthogonal_to_N = V - V_parallel_to_N
+  since V_parallel_to_N = (V dotx N) * N
+  => V_orthogonal_to_N = V - (V dotx N)N
+  => y_view = V - (V dotx N)N
+- y_view / x_view axis:
+  (also noted: in the ppt, teacher use x_view to replace y_view, but in most of the books, y_view is used to represent the "up" direction on the plane)
+  y_view = V - (V dotx N)N
+  or 
+  x_view = V - (V dotx N)N
+** Special case:
+V and N are parallel: this is what we need to avoid
+** apis:
+#+BEGIN_src cpp
+using GLdouble = double;
+GLAPI void GLAPIENTRY gluLookAt (GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ, // p
+                                 GLdouble centerX, GLdouble centerY, GLdouble centerZ, // p_ref
+                                 GLdouble upX, GLdouble upY, GLdouble upZ // V_up
+                                 );
+#+END_src
+
+** Orthogonal projection
+[[./graphics/04Lect/OrthogonalProjection.png]]
+orthogoanl-projection is not prespective projection, its volumn is just a rectangular box
+- View Volumn:
+  x_view: right, left
+  y_view: top, bottom
+  z_view: near, far
+  any point in this vol are visible in theory.
+- Clipping Window:
+  the points / objections out of the window are not displayed
+- Near Plane / Far Plane:
+  - Near Plane: the plane that is closest to the viewer
+  - Far Plane: the plane that is farthest to the viewer
+- Normalized View Volume:
+  the render pipeline desire all the projections are in the normalized format
+  => normalized all the thing (including view volume and all the objects in the original view volume)
+  into a cube with range [-1, 1] in all the three axis
+- Noramlized formula:
+  (no inference, think it youself);
+  for a point P(px, py, pz) in the oringinal view volume P with border
+  xmin, xmax
+  ymin, ymax
+  zmin, zmax
+  we got:
+  P_n = (
+  px_n = 2px - (xmax + xmin) / (xmax - xmin),
+  py_n = 2py - (ymax + ymin) / (ymax - ymin),
+  pz_n = 2pz - (zmax + zmin) / (zmax - zmin)
+  )
+
+** apis
+#+BEGIN_src cpp
+GLAPI void GLAPIENTRY glOrtho( GLdouble left, GLdouble right, // x_min, x_max
+                                 GLdouble bottom, GLdouble top, // y_mim, y_max
+                                 GLdouble near_val, GLdouble far_val ); // z_min, z_max
+#+END_BEGIN_src
+
+* Frustum Prospective Projection
+[[./graphics/04Lect/FrustrumPerspectiveProjection.png]]
+- viewing point: 
+  camera position
+- Clipping Window:
+  the window on the near plane (your screen)
+- NearClipping Plane / Far Clipping Plane:
+  - Near Clipping Plane: the plane that is closest to the viewer
+  - Far Clipping Plane: the plane that is farthest to the viewer
+** chopped off:
+- we do not care about the objects that are too near or too far away
+- near plane
+  when the near plane is too close to the viewer, some objects are disordered larger than others that are nearer, so we need to chop it off
+- far plane
+  when the objects are too faraway, they are too small to be seen, so we chop it off
+** viewing plane issues:
+- view plane cannot on the eye position:
+  zero division issue
+- view plane cannot be behind the eye position:
+  the objects will be inverted
+- view plane behind the objects (volume):
+  the objects will be enlarge in the view
+- eye point is too far with the near plane:
+  it is similar to orthogonal projection
+** apis
+#+BEGIN_src cpp
+GLAPI void GLAPIENTRY glFrustum( GLdouble left, GLdouble right,
+                                   GLdouble bottom, GLdouble top,
+                                   GLdouble near_val, GLdouble far_val );
+#+END_BEGIN_src
+left - bottom: the near plane window left bottom border position
+right - top: the near plane window right top border position
+near_val: the distance from the eye point to the near plane
+far_val: the distance from the eye point to the far plane
+
+** Perspective Projection:
+[[./graphics/04Lect/PerspectiveProjectionApi.png]]
+#+BEGIN_src cpp
+GLAPI void GLAPIENTRY gluPerspective (GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
+#+END_BEGIN_src

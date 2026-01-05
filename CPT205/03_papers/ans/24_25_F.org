@@ -1,0 +1,505 @@
+#+title: CPT205 Computer Graphics - 2024/25 S1 Final Examination (OCR)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Question 1: Fundamentals (Total 20 marks)
+** 1.1 List four application areas of computer graphics. (2 marks)
+*** Answer
+- CAD / CAM: constuct, design;
+- Game and Movie industry: animation, special effects;
+- Scientific visualization: medical imaging;
+- Virtual reality: simulation, training;
+
+** 1.2 Give two factors that affect image quality in computer graphics. (2 marks)
+*** Answer
+- Screen resolution: more pixels per inch, means better quality;
+- Samping & Anti-aliasing: MSAA / SSAA can reduce the edge jaggedness and blinking
+- Texture quality & filtering: if the texture is low resolution, the image quality will be poor; and mipmap and anisotropy;
+- Color depth: 8-bit / 10-bit / 12-bit color depth;
+- shade / lighting model: flat / gouraud / phong shading;
+
+
+** 1.3 Briefly explain the concept of texel in computer graphics. (2 marks)
+*** Answer
+- pixel: a discrete element representing a single point in a digital image or display corresponding to the smallest addressable unit on the screen;
+- texel: a texture element, representing the smallest unit of a texture map used in computer graphics, typically mapped onto surface during rendering;
+
+** 1.4 How is screen resolution defined in computer graphics? (2 marks)
+*** Answer
+displayer's pixel number on vertical and horizontal direction;
+
+** 1.5 Is there any restriction to the value assigned to the homogeneous parameter used in homogeneous co-ordinates? (2 marks)
+*** Answer
+(X, Y) = (x / w, y / w) 
+the w should not be zero; w = 0 usually represent a point at infinity;
+w is not necessarily 1, 
+
+** 1.6 What is the inverse of a matrix? (2 marks)
+*** Answe
+there exists a matrix A^-1 such that A * A^-1 = I, where I is the identity matrix;
+and det(A) != 0;
+
+** 1.7 Given two lines AB specified by A(6,1) and B(8,4), and CD specified by C(3,5) and D(6,3), work out the angle between them. (2 marks)
+*** Answer
+AB = (2, 3); CD = (3, -2)
+cos(theta) = (AB * CD) / |AB| * |CD| = 0
+
+** 1.8 Use an example to explain a parametric representation of a curve. (2 marks)
+*** Answer
+use a parameter t to represent the curve 
+x = x(t)
+y = y(t)
+( z = z(t) )
+
+*example 1*:
+a line from A(X_A, Y_A) to B(X_B, Y_B)
+
+** 1.9 An object in a 2D space is transformed by a translation followed by a rotation. Will the result be the same if the order of the two transformations is swapped? (2 marks)
+*** Answer
+no, the multiplicatoin of transformation matrics does not commute;
+like
+- if move first then rotate, the object will rotate around the original origin point;
+- if rotate fist then move, the object will rotate around its own center point;
+
+** 1.10 What will the function glColor3f(0.0, 0.0, 1.0) in OpenGL do? (2 marks)
+*** Answer
+this will set the curret drawing color to blue; cause' R: 0, G: 0, B: 1.0
+
+* Question 2: Transformations and viewing (Total 20 marks)
+** 2.1 Briefly answer the following questions about transformations. (6 marks)
+*** 2.1(1) What are the roles of Modelling Transformation, Viewing Transformation, and Projection Transformation?
+**** Answer
+- modelling transformation:
+  transform thet object from local coordinate to world coordinate to complete these modelling task like scaling, rotation, translation;
+  to determine how the object be placed
+- viewing Transformation:
+  convert the object in the world coordinate to the eye / camera corrdinate;
+- Proection Transformation:
+  project the camera coordinate space to the 2d screen space;
+
+*** 2.1(2) What does the OpenGL funtion glMatrixMode() do?
+**** Answer
+- GL_MODELVIEW: model + view transformation (usually set Model and View matrix together)
+- GL_PROJECTION: projection transformation
+- GL_TEXTURE: texture transformation
+we use glMatrixMode(GL_PROJECTION); glLoadIdentity(), glPerspective(...); to set the proejction matrix
+we use glMatrixMode(GL_MODELVIEW); glLOadIdentity(); glTranslatef(...); glRotatef(...); to set the modelview matrix
+
+** 2.2 Briefly answer the following questions about homogeneous co-ordinates. (4 marks)
+*** 2.2(1) What are homogeneous co-ordinates?
+**** Answer
+homogeneous coordinate is convert the point (X Y Z) to (X, Y, Z, W) in 3d space;
+cuase the 3x3 linear transformation matrix can not express translation operation, so we use 4x4 matrix to express all the transformation including translation;
+
+*** 2.2(2) What are the Cartesian co-ordinates corresponding to the homogeneous space point P(x, y, z, w)?
+**** Answer
+if w != 0, then (X, Y, Z) = (x / w, y / w, z / w);
+if w = 1, then (X, Y, Z) = (X, Y, Z, W)
+w = 0 usually represent a point at infinity distance;
+
+** 2.3 Given a triangle A(-50, 50, 0), B(-50, 0, 0), C(0, 0, 0), rotate it by 90 degrees anticlockwise about an axis (0, 0, 1) at point B as a fixed point. (10 marks)
+*** 2.3(1) Write out the transformation process using homogeneous coordinate matrices, without calculating the final result (i.e., as a product of several simpler matrices).
+**** Answer
+the standard process is:
+1. translate B to origin
+2. raotate 90 degree anticlockwise about z axis
+3. translate back B to its original position
+#+BEGIN_src text
+M = T(B) Rz(90) T(-B) (write as this, calculate from right to left)
+
+1. T(-B):
+{ 
+1, 0, 0, 50
+0, 1, 0, 0
+0, 0, 1, 0
+0, 0, 0, 1
+}
+x
+(X, Y, Z, 1)^T
+=> (X + 50, Y, Z, 1)^T
+2. Rz(90)
+{
+cos90, -sin90, 0, 0
+sin90, cos90, 0, 0
+0, 0, 1, 0
+0, 0, 0, 1
+}
+x 
+(X + 50, Y, Z, 1)^T
+=>
+((X+50)*cos90-Y*sin90, (X+50)*sin90+Y*cos90, Z, 1)^T
+3. R(B)
+{ 
+1, 0, 0, -50
+0, 1, 0, 0
+0, 0, 1, 0
+0, 0, 0, 1
+}
+x
+((X+50)*cos90-Y*sin90, (X+50)*sin90+Y*cos90, Z, 1)^T
+=>
+((X+50)*cos90-Y*sin90 - 50, (X+50)*sin90+Y*cos90, Z, 1)^T
+#+END_src
+
+code
+#+BEGIN_src cpp
+glMatrixMode(Gl_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(-50.0f, 0.0f, 0.0f);
+glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+glTranslatef(50.0f, 0.0f, 0.0f);
+
+glBegin(GL_TRIANGLES);
+   glVertex3f(-50.0f, 50.0f, 0.0f); // A
+   glVertex3f(-50.0f, 0.0f, 0.0f);  // B
+   glVertex3f(0.0f, 0.0f, 0.0f);   // C
+glEnd();
+
+glPopMatrix();
+#+END_BEGIN_src
+
+*** 2.3(2) Provide the OpenGL code snippet for the implementation.
+**** Answer
+#+BEGIN_src cpp
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(-50.0f, 0.0f, 0.0f);
+glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+glTranslatef(50.0f, 0.0f, 0.0f);
+
+glBegin(GL_TRIANGLES);
+   glVertex3f(-50.0f, 50.0f, 0.0f); // A
+   glVertex3f(-50.0f, 0.0f, 0.0f);  // B
+   glVertex3f(0.0f, 0.0f, 0.0f);   // C
+glEnd();
+
+glPopMatrix();
+#+END_BEGIN_src
+
+* Question 3: Geometric creation and modelling (Total 20 marks)
+** 3.1 Give at least four requirements for generating an ideal discrete straight line. (4 marks)
+*** Answer
+- straightness: the selected pixels should close to the line as much as possible;
+- Continuity: the pixels should be connected without gaps; (we can use 4-connected or 8-connected)
+- Uniformity: the pixels should be distributed evenly along the line;
+- symmetry: the line should be the same with from A to B and from B to A;
+- EndPoint correctness: the line should pass (include the two endpoints)
+- Efficiency: the algorithm should be efficient enough to run in real=time;
+
+** 3.2 Explain why fitting a single polynomial through a set of interpolation points is unlikely to produce a satisfactory result for computer graphics. (4 marks)
+*** Answer
+1. when the sample point are large, the high-order polynomial will oscillate greatly.
+2. lack of local control:
+   changing one point will affect the whole curve;
+3. Numerical Instability:
+4. not suuitable for modelling complex:
+   the graphics desire local controlable, smooth, and stable, usually, use piecewise polynomials like Bezier, B-spline, NURBS;
+
+** 3.3 Explain boundary representation (B-Rep), including its main advantages. A diagram can be used to aid your answer. (6 marks)
+*** Answer
+B-Rep (Boundary Representation) is a method for prepresenting 3D shape using 
+Vertex, Edge, Face, Ring, Hole, Shell
+to identify the topology and geometry of the object;
+
+for example: a cube:
+V = 8, E = 12, F = 6, R = 0, H = 0, S = 1 =>
+V - E + F - R + 2H - 2S = 8 - 12 + 6 - 2 = 0
+
+final 0, indicate a valid solid;
+
+- main advantages:
+  expression power: can express complex shapes;
+- easy to render:
+  the image piieline is eventually triangle / polygon; B-rep can provide the polygonal mesh directly;
+- supporting presice geometry calculation: (CAD / CAM)
+  face / edge / vertex can describe the geometry precisely;
+- topology information:
+  存邻接关系：哪个面挨着哪个面、哪条边属于哪些面→对碰撞检测、网格处理、模型编辑很重要
+
+ 
+** 3.4 Briefly explain line by line what the following fragment of code does. (6 marks)
+*** Code fragment
+#+begin_src c
+void figure() {
+    glPushMatrix();
+    torso();
+    glTranslatef();
+    glRotate3();
+    head();
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef();
+    glRotate3();
+    left_upper_leg();
+    glTranslatef();
+    glRotate3();
+    left_lower_leg();
+    glPopMatrix();
+    ...;
+}
+#+end_src
+
+*** Answer
+
+#+begin_src cpp
+void figure() {
+    // save the current matrix state
+    glPushMatrix();
+    // render the torso part of the figure in the current matrix state
+    torso();
+    // move the coordinate system to the position of the head and torso connection point
+    glTranslatef();
+    // rotate the coordinate system for head orientation
+    glRotate3();
+    // render the head part of the figure, 因为当前矩阵已经做了“从躯干到头”的平移和旋转，所以头会正确挂在躯干上。
+    head();
+    // push back to the previous matrix state before head transformations
+    // that is, the coordinate system before drawing the head, avoiding the transformations affecting subsequent parts
+    glPopMatrix();
+
+    // save the current matrix state again for drawing the left leg
+    glPushMatrix();
+    // translate to the left upper leg position related to the torso,
+    glTranslatef();
+    // rotate for left upper leg orientation
+    glRotate3();
+    // draw the left upper leg part
+    left_upper_leg();
+    // translate to the left lower leg position related to the upper leg
+    glTranslatef();
+    // rotate for left lower leg orientation
+    glRotate3();
+    // draw the left lower leg part
+    left_lower_leg();
+    // restore the matrix 
+    glPopMatrix();
+    ...;
+}
+#+end_src
+
+* Question 4: Lighting, materials and texture mapping (Total 20 marks)
+** 4.1 Answer the following questions about lighting and materials. (8 marks)
+*** 4.1(1) Briefly describe what a lighting model and materials are.
+**** Answer
+- lighting model:
+  use the arthemetic calculation to simulate how light interacts with object's surfaces, and how to generate the final color and strength of light in the viewer's eye;
+- Materials:
+  the material is the property of object's surface that defines how it should interact with light.
+  that is, in the same lighting condition, different material will reflect and absorb light differently, resulting in different appearances;
+to summize: the lighting model define how the light should be calculated, and the material define how the object should response to the light;
+
+*** 4.1(2) List and briefly explain 3 common types of light sources.
+**** Answer
+- directional light:
+  the light rays are parallel, fixed, simulating a distant light source like the sun;
+- point light;
+  the light radiates in all directions from a single point in space, simulating a localised light source like a light bulb;
+- spotlight;
+  light shoot from a point, but only within a specific cone angle, with direction, cutoff, and spot exponent, for example: a flashlight;
+
+*** 4.1(3) List and briefly explain 3 common material properties.
+**** Answer
+- Ambient reflectance:
+  describe the ambient light: even there is no light, the whole env won't be dark
+- Diffuse reflection:
+  describe the matte surface reflection, related to the angle between light direction and surface normal
+- Specular reflection + shininess:
+  the specular hightlight, mirror-like reflection determines the light's color and strength
+  shininess determine the light's size and sharpness;
+  shininess low -> sharp and small highlight, smooth;
+
+** 4.2 Briefly explain the steps for texture mapping in OpenGL. (6 marks)
+*** Answer
+1. prepare the texture image data:
+   picture file, RGBA / RGB, width, height, byte data array;
+2. generate and bind texture object:
+   glGenTextures(...) to generate texture ID
+   glBindTexture(GL_TEXTURE_2D, texID) to Bind the 2D texture target
+3. upload the texture to GPU:
+   glTexImage2D(...) to specifythe data, width, height, format
+4. set the texture parameters:
+   GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER: filter for minification and magnification
+   GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T: 
+5. enable the Texture and texture enviorment / hybrid mode:
+   glEnable(GL_TEXTURE_2D);
+   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE/ GL_REPLACE / GL_REPLACE ...)
+6. provide texture coordinate for each vertex:
+   glTexCoord2f(u, v);
+   OpenGl will map the texture to the primitive according to the texture coordinates provided;
+
+
+** 4.3 Answer the following questions about texture mapping. (6 marks)
+*** 4.3(1) In the magnification and minification processes, what operation is used to map texels to pixels?
+**** Answer
+*Masgnification*: a texture over multiple pixels
+- nearest-neighbor operation:
+  select the nearest texal to the pixel
+- linear / bilinear: apply interpolation among the nearby texels to get a smooth result
+*Minification*: multiple texels map to a single pixel
+- nearest-neightbor operation:
+- mipmapping:
+  select the appropriate mipmap level acoording to the distance, then apply nearest / linear 
+*summary*: use filter (nearest / linear / mipmap) to map texels to pixels
+
+
+*** 4.3(2) How can you set texture parameters in OpenGL to map a 2D texture using magnification with the nearest-neighbor operation?
+**** Answer
+glBindTexture(GL_TEXTURE_2D, texID);
+// manification:
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+// minification:
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+
+* Question 5: Clipping and hidden surface removal (Total 20 marks)
+** 5.1 Given the clipping window defined by the four boundaries and line AB defined with A(xa, ya) and B(xb, yb) shown in the figure below, apply the Cohen-Sutherland line clipping algorithm to clip the line segment. Explain the minimum and maximum numbers of clips needed by carefully showing each clip. Diagrams can be used to aid your answer. (10 marks)
+*** Notes (figure labels)
+- Window boundaries: xmin, xmax, ymin, ymax
+- Line segment endpoints: A(xa, ya), B(xb, yb)
+
+*** Answer
+due to the lack of image (我故意的)，I'will describe the process in the clipping
+1001 1000 1010
+0001 0000 0010
+0101 0100 0110
+
+up: 1000
+down: 0100
+right: 0010
+left: 0001
+the other 4 blocks: use union operation
+noted that 0000 includes the points on the border
+but the floating point calculation may cause the point to be slightly outside the border, so we usually treat the points on the border as inside using "clamp" or eplison check;
+
+*trival accept*:
+both endpoint1 and endpoint2 == 0000, then accept directly;
+cliping time: 0 (minimal)
+*non-trival reject*:
+(endpoint1 & endpoint2) != 0000, then reject directly;
+
+*clipping iterations*:
+if either endpoint is outside (not 0000), then clip it against one of the boundary that it is outside of;
+- each time, select a endpoint, clip it against one boundary:
+  x(t) = xa + t(xb - xa)
+  y(t) = ya + t(yb - ya)
+
+  btw, the intersection formula:
+  - upper boundary:
+  x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1) (y = ymax)
+  - lower boundary:
+  x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1) (y = ymin)
+  - right boundary:
+  y = y1 + (y2 - y1) * (x_max - x1) / (x2 - x1) (x = xmax)
+  - left boundary:
+  y = y1 + (y2 - y1) * (x_min - x1) / (x2 - x1) (x = xmin)
+
+  using these forumla to claculate the intersection point with the boundary
+  then clacualte the outcode again, until reject or accept;
+
+  for the picture in this question:
+  point A(xa, xb): left under: 1010
+  point B(xb, yb): right upper: 0110
+  1010 & 1010 = 0000 => require clipping
+
+*4 times iterations* (maximal, you can choose the most appearing boundary first to reduce the iterations)
+- down boundary: y = y_min
+  x_d = xa + (xb - xa) * (y_min - ya)/(yb - ya)
+  the intersection point is on the left middle of the window, code (0001)
+  update the endpoint A to (x_d, y_min)
+  0001 & 1010 = 0000 => require clipping
+- left boundary: x = x_min
+  y_l = ya + (yb - ya) * (x_min - xa) / (xb - xa)
+  the point is on the bourder of left bottom, code (0000)
+  update point 0001 -> 0000
+  0000 & 0010 = 0000 => require clipping
+- right boundar: x = x_max
+  y_r = ya + (yb - ya) * (x_max - xa) / (xb - xa)
+  the point is on the mid top border, code 1000
+  update point B
+  1010 -> 1000
+  0000 & 1000 => 0000 => require clipping
+- upper boundary: y = y_max
+  x_u = xa + (xb - xa) * (ymax - ya) / (yb - ya)
+  update 1000 -> 0000
+  both endpoint are 0000 => accept
+
+*2 times iterations*
+- left boudnary: x = x_min
+  y_l = ya + (yb - ya) * (x_min - xa) / (xb - xa)
+  update: 0101 -> 0000
+- upboundary: y = y_max
+  x_u = xa + (xb - xa) * (y_max - ya) / (yb - ya)
+  update 1010 -> 0000
+both 0000, accept
+
+
+** 5.2 Answer the following questions about back-face culling for hidden-surface removal. Diagrams can be used to aid your answer. (10 marks)
+*** 5.2(1) Describe how it works.
+**** Answer
+face culling is a technique to remove the faces of a 3D object that are not visible to the camera, thus reducing the number of polygons that need to be rendered;
+- method A: normal vector + camera facing vector
+assumeing that camera is facing at vector v direction, and the face's normal is vector N
+then if v * N >= 0 => backface => do not render this shit
+- method B: winding (opengl default)
+  project the triangle to the screen:
+  if the vertical are CCW (Counter Clock Wise): front face
+  only cull the back faces, can not handle the case when front face is occluded by other front faces;
+
+*** 5.2(2) Explain why it is implemented.
+**** Answer
+- it works by determining the orientation of each polygon relative to the viewer's perspective.
+summary: reduce cost, improve performance
+- reduce Rasterization, Coloring cost: reduce the triangle number 
+- reduce overdraw: drop the unnecessary faces
+
+*** 5.2(3) Explain the limitations of back-face culling.
+**** Answer
+limitataion & shits
+*limitation*:
+- works efficiently for closed manifold:
+  for the entity like paper, leaves, cloth, the backface may also been seen, if remove, then it may disappear
+- onlyrequireing the winding sequence:
+  if sequence is not CCW or be messed, then the face may be removed
+- not avaliable for entity like transparent / double-side materials
+  for the transparent entity, the backface should also be rendered
+- not available for the entity overlayed by other:
+  depend on Z-buffer to deal with the faces overlay by other
+
+  Z-buffer:
+  used for hidden face removal:
+  fast understand: each pixel has a data to store how far from the screen (camera)
+  colorBuffer[x, y]: final color
+  depthBuffer[x, y]: the closest distance
+  - flow:
+    1. at the begining of rendering: set all teh depthBuffer as infinity (1.0f)
+    2. render each fragment, calculate its depth
+    3. depth test:
+       if z is nearer, update the color and depth
+       further -> drop directly.
+  - code
+    #+BEGIN_src cpp
+    glEnable(GL_DEPTH_TEST); // enable it
+    glDepthFunc(GL_LESS); // default: less z win
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the color and depth each frame
+
+    // when creating windows:
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    #+END_BEGIN_src
+
+*** 5.2(4) Explain what will happen if glEnable(GL_CULL_FACE) is called to enable face culling without explicitly calling glCullFace() in OpenGL.
+**** Answer
+if 
+#+BEGIN_src cpp
+glEnable(GL_CULL_FACE);
+// glCullFace()
+#+END_BEGIN_src
+
+then the opengl will use default config:
+glCullFace's default: GL_BACK: remove backface
+glFrontFace's default: GL_CCW: CCW is front face
+
+result:
+if you use CW as front-face, then the entity is empty
+

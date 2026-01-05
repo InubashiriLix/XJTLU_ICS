@@ -1,0 +1,313 @@
+#+title: CPT205 - 2023/24 Semester 1 - Final Exam (Org-mode)
+#+options: toc:nil num:nil
+#+startup: showall
+
+* Paper Info
+- Module: CPT205 - Computer Graphics
+- Exam: 1st Semester 2023/24 Final Examination
+- Level: Undergraduate - Year 3
+- Time Allowed: 2 Hours
+- Total Marks: 100
+- Instructions:
+  1) Closed-book (no books/notes).
+  2) Answer ALL questions.
+  3) No need to copy questions into answer booklet.
+  4) No penalty for wrong answers.
+  5) English answers only.
+  6) Return all materials; otherwise academic misconduct.
+
+* Question 1. Fundamentals (Total 20 marks)
+** Q1.1 Briefly describe OpenGL. (2 marks)
+*** Answer
+opengl is a cross-platform graphics API/specification that providing a set of functions to render 2D/3D graphics through pipeline (transforamtion, lighting, rasterization, shading, etc), widely used in CAD, Gaming, and visualization applications;
+
+** Q1.2 List 4 items of hardware included in a typical graphics system. (2 marks)
+*** Answer
+CPU (host processor)
+GPU: graphics processor
+Frame Buffer / Video Memory: (VRAM)
+Display Divice: monitor
+input device: mouse, keyboard, etc
+
+** Q1.3 For a screen with a resolution of 1920*1080 pixels what size of a framebuffer is needed for storing 8-bit RGBA colours? (2 marks)
+*** Answer
+noted that RGBA means Red, Green, Blue, Alpha channel, and each channel is 8 bit -> 1 byte
+1920 * 1080 * 4 bytes = 8294400 bytes = 8.29 MB
+
+** Q1.4 Work out the angle between the two vectors, V1 = 3i – 2j and V2 = 2i + 3j. (2 marks)
+*** Answer
+cos(shit) = V1 * V2 / |V1| * |V2| = 0
+shit = 90 degree
+
+** Q1.5 Calculate the unit vector of V = 3i + 6j -2k. (2 marks)
+*** Answer
+unit_vector = V / |V| = (3i + 6j - 2k) / 7
+
+** Q1.6 What is an identity matrix and what is it used for in computer graphics? (2 marks)
+*** Answer
+identity matrix is a square matrix with all 1 on its left up to right down diagonal with all 0 on the other elements
+in computer graphics it represents a "do nothing" transformation, multiple by it leaves points /vectors unchanged and it is used to initialise / reset transformation matrics
+
+** Q1.7 Given two lines AB specified by A(-6,10) and B(12,6), and CD specified by C(6,8) and D(42,0), determine if they are parallel to each other. (2 marks)
+*** Answer
+we can get this matrix:
+v-AB = (18, -4) v-CD(36, -8)
+while 2*v-AB = v-CD, then parallel (or we can use cos or point multiplication to vertify)
+
+** Q1.8 Given a point in a 3D space represented in the homogeneous co-ordinates P(8, 6, 4, 2), what is the normal y co-ordinate value? (2 marks)
+*** Answer
+3? 6 / 2 = 3 as w = 1
+Cartesian coordinate: are (8 / 2, ...), so y = 3
+
+** Q1.9 How could a 2D rectangle be scaled by a factor of 5 while its centre remains unchanged? (2 marks)
+*** Answer
+let the rectangle center be (cx, cy). Apply: M = T(cx, cy)*S(5, 5)*T(-cx, -cy)
+
+** Q1.10 There are different matrix modes in OpenGL. Which one of GL_MODELVIEW and GL_PROJECTION should be used in conjunction with a glRotate () function call and why? (2 marks)
+*** Answer
+GL_MODELVIEW: glRotate is a modelling/viewing transform; 
+GL_PROJECTION should be used to set the projection (perspective / orthographics). Rotating the projection matrix would rotate the viewing frustum and produce an unintended camera / projection effect.
+should use GL_MODELVIEW
+
+
+* Question 2. Transformations and viewing (Total 20 marks)
+** Q2.1 For the 2D object shown in the figures below, work out the 2D homogeneous transformation matrix M which transforms the 2D object in the left into the 2D object in the right (where α = 45°).
+- You can write the transformation matrix as a product of several simpler matrices (i.e., you do not have to multiply the matrices).
+- A diagram can be used to aid your answer.
+(8 marks)
+*** Answer
+first, move the coordinate system:
+T(-1):
+1, 0, 0, -1
+0, 1, 0, 0
+0, 0, 1, 0
+0, 0, 0, 1
+x
+Model
+S(2)
+second, enlarge y by scale2:
+1, 0, 0, 0
+0, 2, 0, 0
+0, 0, 1, 0
+0, 0, 0, 1
+third, rotate by 45 degeree in CCW direction:
+R(-45 degree):
+cos(45), -sin(45), 0, 0
+sin(45), cos(45), 0, 0
+0, 0, 1, 0
+0, 0, 0, 1
+
+
+** Q2.2 Given the following fragment of code in OpenGL: (8 marks)
+*** Code
+#+begin_src c
+void myDisply(void) {
+    // setup the viewport: from left bottom (0,0) to right top (300,200)
+    glViewport(0,0,300,200);
+    glMatrixMode(GL_PROJECTION);
+    // set the projection matrix to identity
+    glLoadIndentity();
+    // set up the projection range from -1 to +1 in both x and y directions
+    gluOrtho2D(-1,1,-1,1);
+    glBegin(GL_QUADS);
+        // color yellow: R: 1, G: 1
+        glColor3f(1,1,0);
+        glVertex2f(-0.5,-0.5);
+        glVertex2f(+0.5,-0.5);
+        glVertex2f(+0.5,+0.5);
+        glVertex2f(-0.5,+0.5);
+    glEnd();
+}
+#+end_src
+
+*** Q2.2(a) Draw a diagram to illustrate the content generated on the screen.
+**** Answer
+quad, height = 1 unit, width = 1 unit, height and width align with y and x axis respectively, in the centre of the screen
+150 x 100
+
+*** Q2.2(b) Calculate the area of the displayed quad in pixels.
+**** Answer
+the world coodinate x range -1 -> 1 => 2 units for 300 px
+y range -1 -> 1 => 2 units for 200 px
+quad area: 150px x 100px = 15000 px^2
+
+** Q2.3 Explain the frustum volume and its implementation with OpenGL glFrustum(). A diagram can be used to aid your answer. (4 marks)
+*** Answer
+frustum is a truncateed pyramid shape that represents the visible volume in perspective projection. 
+boundary by the near plane and far plane.
+In OpenGL, glFrustun(left, right, bottom, top, near, far) defines the coordinates of the near clipping plane rectangle (left, rithg, bottom, top, near, far) defines of the near clipping plane rectangle z-distance from the viewer to the near and far clipping planes.
+
+* Question 3. Geometric creation and modelling (Total 20 marks)
+** Q3.1 A straight line is defined by P1(3,12) and P2(7,2). Determine the pixel positions with the DDA (Digital Differential Analyser) algorithm.
+- A diagram can be plotted to demonstrate the result.
+(8 marks)
+*** Answer
+calculation steps:
+delta_x = 7 - 3 = 4
+delta_y = 2 - 12 = -10
+total steps: n_steps max(||delta_x||, ||delta_y||) = 10
+increment of each step:
+delta_x / n_steps = 4 / 10 = 0.4
+delta_y / n_steps = -10 / 10 = -1
+from the start point(3, 12), add the increment for each step, and use round to get the approximated pixel position:
+step1: (3, 12) (start)
+step2: (3.4, 11) -> (3, 11)
+step3: (3.8, 10) -> (4, 10)
+step4: (4.2, 9) -> (4, 9)
+step5: (4.6, 8) -> (5, 8)
+step6: (5.0, 7) -> (5, 7)
+step7: (5.4, 6) -> (5, 6)
+step8: (5.8, 5) -> (6, 5)
+step9: (6.2, 4) -> (6, 4)
+step10: (6.6, 3) -> (7, 3)
+step11: (7.0, 2) -> (7, 2) (end)
+
+btw, four principle:
+symmetric
+all the points pass and endpoints shoud be in the pixel, the pixels should be connected (8-connected or 4-connected)
+the pixels should be placed evenly along the line
+high calcualtion efiiciency is required
+
+
+** Q3.2 Identify if the following object is a manifold object using Eula’s law.
+- You can interpret the object by decomposing it into smaller units, based on which calculations are made.
+(8 marks)
+*** Answer
+Eual's Law:
+V - E + F - 2R + 2H - 2S 
+basic: 
+8   12  6             1
+round protrusion:
+8   11  4 
+round hole:
+4   6   2    2    1
+sharp hole
+8   12  4    2    1
+
+28  41  16   4    2   1
+28 -41 +16  -8   +4  -2 = 48-51 = -3
+wtf?
+
+** Q3.3 Briefly discuss the concept of hierarchical modelling with an example. A diagram can be used to aid your answer. (4 marks)
+*** Answer
+hierarchical modelling represents a complex object as a tree of parts (e.g. torso-arm-forearm-hand). Each child part is defined in the local coordinate system of its parent, so transformations are applied cumulatively along the hierarchy (e.g. moving the torso moves the whole body); rotating the upper arm also moves the forearm and hand
+
+* Question 4. Lighting, materials and texture mapping (Total 20 marks)
+** Q4.1 The Phong lighting model can be written (without the distance terms) as:
+I = kd Id (l·n) + ks Is (v·r)^α + ka Ia
+Explain, with a diagram where necessary, each term of the model. (8 marks)
+*** Answer
+- diffuse reflection: the orignal color of an object: kd * Id * (l*n)
+  n: noraml vector
+  l: light input vector
+  l*n = cos(theta): the angle between the light and normal
+  kd: the diffuse reflection coefficient of surface
+  Id: the light source's diffuse intensity / color
+  kd * Id * (l*n)
+  when the light is perpendicular to the surface (l*n = 1), the surface receive the most light, when the light is parallel to the surface (l*n = 0), the surface receive no light
+- specular reflection: the shiny highlight on the surface: ks * Is * (v*r)^a
+  v: view vector
+  r: reflection direction
+  v * r: the angle between the view and reflection direction
+  as you eye faceing the refection direction, the highlight is the strongest
+  a: shininess coefficient: 
+  a big: the highlight is small and sharp (smooth)
+  a small: the highlight is big and dull (rough)
+  ks: the material's specular reflection coefficient
+  Is: the light source's specular intensity / color
+
+- ambient reflection: the backgrund light;
+  ka: the material's ambient reflection coefficient
+  Ia: the ambient light intensity / color
+
+
+** Q4.2 The following OpenGL code defines a light source: (4 marks)
+*** Code
+#+begin_src c
+GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};
+glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+#+end_src
+
+if the w = 1: the point light, the position is (1, 1, 1)
+the point light has distance attenuation (decay)
+w = 0: the dierctional light, the direction is (1, 1, 1)
+for the spot light, it also has distance attenuation, and the direction is specified separately.
+#+begin_src cpp
+GLfloat pos[] = {0, 0, 0, 1};        // 灯在原点
+GLfloat dir[] = {0, 0, -1};          // 朝 -Z 照
+glLightfv(GL_LIGHT0, GL_POSITION, pos);
+glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f);  // 30度锥体
+glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
+#+END_begin_src
+
+for the ambient light:
+#+begin_src cpp
+GLfloat globalAmbient[] = {0.2f, 0.2f, 0.2f, 1.0f};
+glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+#+END_begin_src
+
+*** Q4.2(a) What type of light source is specified?
+**** Answer
+
+*** Q4.2(b) Should distance attenuation be applied to this light and why?
+**** Answer
+
+** Q4.3 Mipmapping can be applied in texture mapping and it is implemented in graphic systems such as OpenGL. (8 marks)
+*** Q4.3(a) Briefly explain the need and concept for mipmapping.
+**** Answer
+mipmapping is used for texture mapping. it generate the different resolution texture from the texture original texture image (usually each layer is the half resolution of the previous layer), and select appropriate layer based on the distance between the texture mapped object and the viewer.
+decrease the far distance texture aliasing and improve rendering efficiency.
+
+*** Q4.3(b) Given a texture map of 32*64 pixels at the highest level, work out the total number of levels for the maps and the size of each map.
+**** Answer
+polling untell one side reach 1 pixel:
+layer 0(original): 32, 64
+layer 1: 16, 32
+layer 2: 8, 16
+layer 3: 4, 8
+layer 4: 2, 4
+layer 5: 1, 2
+layer 6: 1, 1
+
+* Question 5. Clipping and hidden surface removal (Total 20 marks)
+** Q5.1 Briefly discuss object space and image space algorithms for hidden surface removal. (6 marks)
+*** Answer
+*space algorithms*
+these algorithms are used to deteermine which surfaces are visible in a 3d scene by commparing geometric objects directly to determine which surface are visible.
+e.g. Back-face clipping, BSP tree, Painter's algorithm etc.
+*image algorithms*
+these algorithms work on the final rendered image to determine which surfaces are visible by analysing the pixel data. e.g. Z-buffering.
+
+** Q5.2 Describe Brute force clipping of 2D lines (similar triangles) and its computational efficiency. A diagram can be used to aid your answer. (6 marks)
+brute force: clipping test the line segment agains the four window boundaries (x=xmin, x=xmax, y=ymin, y=ymax) one by one.
+the boundary formula of segment A B
+up: y = ymax, x?
+x = xa + (xb - xa) * (y_max - ya) / (yb - ya)
+down: y = y_min, x?
+x = xa + (xb - xa) * (y_min - ya) / (yb - ya)
+left: x = x_min, y?
+y = ya + (yb - ya) * (x_min - xa) / (xb - xa)
+right: x = x_max, y?
+y = ya + (yb - ya) * (x_max - xa) / (xb - xa)
+if an endpoint lies outsied a boundary, compute the intersection with that boundary using similar triangles, and replace the original endpoint with the intersection point.
+may require multiple times repeating, until two endpoints are both inside the window or find out the segment is totally outside the window.
+O(1) for single line (fixed 4 number of boudnary test)
+slaower thean Suterland, becuase it will do division and floatpoint multiplication even for the line that is totally inside the window.
+
+** Q5.3 In the 2D figure below, each edge is a planar face in the triangle with its outward normal shown.
+- You can assume that, if extended, no edge intersects another triangle.
+(8 marks)
+btw, BSP (Binary Space Partitioning tree) is a data structure used to separate a space into convex sub space. BSP will binary divide the space using plane or lines, so the objects in the scene can be rendered in correct order from any viewpoint.
+*** Q5.3(a) Build a BSP (Binary Spatial Partition) tree which uses the lines containing the edges to partition the 2-D space, and insert the edges into the tree.
+**** Answer
+
+*** Q5.3(b) Which edge would be drawn first if the viewer is at the location marked V?
+**** Answer
+
+*** Q5.3(c) Which edge would be drawn last if the viewer is at the location marked V?
+**** Answer
+
+*** Q5.3(d) Which edge(s) would be removed with backface culling?
+**** Answer
+
