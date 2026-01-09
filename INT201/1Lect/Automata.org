@@ -1,0 +1,7 @@
+* Automata
+** DFA (deterministic finite automata)
+DFA has exactly one transition leaving each state for each symbol.
+[[./DFA.org]]
+** NFA (nondeterministic finite automata)
+
+[[./NFA.org]]

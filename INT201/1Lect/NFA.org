@@ -1,0 +1,142 @@
+* Nondeterministic Finite Automata (NFA)
+** Intro:
+- if the automata machine allows for serveral or no choices to exist for next state on a given input symbol
+  then it is called a *nondeterministic* finite automata (NFA).
+  [[./statics/graphics/DFA/TransitionGraphExample.png]]
+- if the automata machine have exactly one choice to leave current state on a given input symbol,
+  then it is called a *deterministic* finite automata (DFA).
+  [[./statics/graphics/NFA/NFAIntroExample.png]]
+- for state q and symbol s ∈ Σ, NFA can hae:
+  - multiple edges leaving q labelled with same symbol s;
+  - no edge laving q labelled with symbol s.
+  - Edge leaving q labelled with ϵ (without reading any symbol).
+- the NFA may in a state with multiple ways to proceed, 
+  [[./statics/graphics/NFA/NFAIntroExample.png]]
+  like state q1 has two transition path with input symbol 1
+  the machine splits into multiple copies of itself (thread);
+  - each copy proceeds with computation independently of others.
+  - NFA may be in a set of states, instead of a single state.
+  - NFA follows all possible computation paths in parrallel.
+  - if a copy is in a state and next input symbol doesn't appear on any outgoing edge from the state,
+    then the copy dies or crashes.
+- the NFA accepts the input string if any copy ends in an accept state after reading the entire string
+- the NNFA rejects the input string, if no copy ends in an accept state after reading the entire string.
+
+** Formal Definition of NFA
+For any alphabet Σ, we define Σ_ϵ to be the set 
+Σ_ϵ = Σ U {ϵ}
+Recall the notion of a power set: for any set Q, the power set of Q, denoted P(Q), is the set of all suibsets of Q
+P(Q) = {R: R ⊆ Q}
+
+A nondeterministic finite automaton (NFA) is a 5-tuple M = (Q, Σ, δ, q, F),
+where 
+1. Q is a finite *set of states*
+2. Σ is a finite set of symbols, called the alphabet of the automation.
+3. δ : Q x Σ_ϵ → P(Q) is a function, called the transition function, 
+   in this case, cause' teh NFA may have serveral possible next states from a given state on a given input symbol,
+   so the transition function δ must return a set of states (a subset of Q),
+4. q ∈ Q is called the initial/start state, 
+5. F ⊆ Q is a set of accepting/terminal states
+*** Example of NFA's formal definition
+[[./statics/graphics/NFA/NFAIntroExample.png]]
+1. Q = {q1, q2, q3, q4}
+2. Σ = {0, 1}
+3. δ : Q × Σϵ →P(Q)
+4. q1 is the start state
+5. F = {q4}  is a set of accepting states
+
+*Extension of NFA*
+Q x Σ* -> P(Q) 
+δ(q, ϵ) = {q}   for all q ∈ Q
+δ(q, wa) = ∪p∈δ(q, w) δ(p, a)   for all  q ∈ Q; w ∈ Σ*; a ∈ Σ
+
+** Acceptance of NFA
+Let M = (Q, Σ, δ, q, F) be an NFA, 
+if string w can be written as w = y1y2y3...yn (yi ∈ Σ)
+and there exists a sequence of states r1, r2, r3, ..., rn+1 in Q such that
+- r0 = q
+- rᵢ₊₁ ∈ δ(rᵢ, yᵢ₊₁) for i = 0, 1, ..., n-1
+- rₙ ∈ F
+then, we say that M *accepts* the string w.
+Otherwise, we say that M *rejects* the string w.
+
+** How to Express
+in DFA, we can get from state p to state 1 via transition labelled by a word w. then we say that the state p andd q aare connected by a path
+with label w
+if w = abc, and 2 intermediate states are r1 and r2, we coud write this as
+p --a--> r1 --b--> r2 --c--> q
+
+in a NFA, if δ(p, a) = {q, r}, we can write
+{q} --a--> {q, r}
+
+** Language defined by NFA
+Let M = (Q, Σ, δ, q, F) be an NFA, The language L(M) accepted by M is defined as L(M) = {w ∈ Σ* | M accepts w}
+
+** Equivalence of NFA and DFA
+two machines (of any type) are equivalent if they reccognize the same language
+DFA is a restricted from of NFA
+- Every NFA has an equivalent DFA
+- We can convert any arbitrary NFA to a DFA that accepts the same language
+- DFA has the same power as NFA
+
+** DFA to NFA
+we can use this formula to convert:
+δ'(r, a) = {
+    {δ(r, a) if a != epsilon},
+    empty if a == epsilon
+}
+
+** NFA -> DFA: epsilon-closure (E-closure)
+*** Definition
+The epsilon-closure of a set of states R ⊆ Q is:
+E(R) = { q | q can be reached from some state in R by taking zero or more ε-transitions }.
+
+- "zero ε-transitions" means the state itself is always included.
+- Only ε-edges are allowed when computing E(R). Edges labeled with symbols (e.g., a, 0, 1) are NOT used.
+  
+*** Example (from the diagram)
+- ε-edges:
+  q1 --ε--> q2
+  q1 --ε--> q3
+  q2 --ε--> q4
+  
+So:
+- E(q1) = { q1, q2, q3, q4 }
+- E(q2) = { q2, q4 }
+  
+** Example: Convert to DFA
+*** 1: Let A be the language A= {w ∈ {0, 1}* : w has a 1 in the third position from the right} ,
+design M : L(M)
+sol:
+#+BEGIN_src text
+           ┌────────────────┐
+           │                ▼
+       (start) →  s  ──1──→ i ──0,1──→ j ──0,1──→ k*
+                  ▲
+                  └──0,1──(self-loop)
+#+END_src
+*** 2: convert
+[[./statics/graphics/NFA/ConvNFA2DFA2.png]]
+sol:
+[[./statics/graphics/NFA/ConvNFA2DFA2Ans.png]]
+
+** Example: Convert NFA to DFA
+(start) q1 --1--> q2 --0,epsilon--> q3 --1--> q4(Final)
+         ▲                                     ▲
+         |                                     |
+    self-lopp on 0, 1                     self-loop 0, 1
+
+sol
+[[./statics/graphics/NFA/ConvNFA2DFA.png]]
+
+
+** Example: the edge closure
+- ε-edges:
+  q1 --ε--> q2
+  q1 --ε--> q3
+  q2 --ε--> q4
+  
+So:
+- E(q1) = { q1, q2, q3, q4 }
+- E(q2) = { q2, q4 }
+  

@@ -1,0 +1,14 @@
+* Regular Language
+** def
+A language is regular if it is recognized by some DFA
+A language is regular if and only if some NFA recognize it;
+regular language are indeed closed under the regular operations (union, concatenation, star)
+
+** Closed under opertaions
+A collection S of object is closed under operations f if applying f to members of S 
+always returns an object still in S
+operations including:
+- Union
+- Concatenation
+- Kleene star
+

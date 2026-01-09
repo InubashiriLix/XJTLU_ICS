@@ -1,0 +1,6 @@
+* Difference between DFA and NFA
+• DFAhastransition function δ : Q × Σ → Q
+• NFAhastransition function δ : Q × Σϵ →P(Q)
+- NFA Returns a set of states rather than a single state.
+- NFA Allows for ϵ-transition because Σϵ = Σ ∪ {ϵ}.
+- Note that every DFA is also an NFA

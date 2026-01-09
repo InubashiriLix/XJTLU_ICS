@@ -1,0 +1,185 @@
+* Deteerministic Finite Automata (DFA)
+** definition
+DFA is defined as a 5-tuple:
+M = (Q, Σ, δ, q, F)
+- Q is a finite set of states.
+  states of a machines tells you somthing about hte prefix that has been read so far, 
+  if hte string is a member of language of interset, 
+  the state reached whem the whole string has been scanned will be an accepting state.
+- Σ is a finite set of symbols, called the alphabet of automata.
+- δ: Q x Σ -> Q is a function, called the transition function.
+  transition function δ tell you how state should change when an additional letter is read by DFA.
+- q ∈ Q is called the initial state.
+- F ⊆ Q is a set of accepting/terminal states.
+- the DFA is *deterministic* because for each state and input symbol, because
+  the next state the machine goes to on any givene symbol is uniquely determined.
+- that is, DFA has exactly one transition leaving each state for each symbol.
+** transition function
+sence the example below, 
+we can extend the definition of the transition function 𝛿
+so that is tells us which state we reach after a word (not just a single letter has been scanned):
+extend the map 
+𝛿: Q x Σ -> Q  =>  𝛿*: Q x Σ* -> Q
+by defining: 
+- 𝛿*(q,ϵ) = q               for all q ∈ Q
+- 𝛿*(q,wa) = δ(δ*(q,w),𝑎)   for all q ∈ Q; w ∈ Σ*; a ∈ Σ;
+explanation:
+- 𝛿*(q,ϵ) = q:
+  if input is empty, then the state will not change;
+- 𝛿*(q,wa) = δ(δ*(q,w),𝑎): 
+  wa: w is the prefix of wa, a is the postfix of wa, 
+  if you concat the w and a together as the input,
+  the DFA will read w first, update the state, then read the 'a' and update the state
+
+*** Example of transition function
+initiallly the state is i and if the input word is w = a1, a2, a3, ..., an then
+as each letter is read, the state changes and we get q1 q2 qn defined by
+- q1 = 𝛿(i, a1)
+- q2 = 𝛿(q1, a2)
+- q3 = 𝛿(q2, a3)
+- q4 = 𝛿(q3, a4)
+- ...
+- qn = 𝛿(q.n-1, an)
+noted that the initial state i: i ∈ Q
+after each word input, the changed is based on last state of DFA
+
+*** Example of 𝛿*(q,wa) = δ(δ*(q,w),𝑎):
+**** Given 'a' and 'b' in the sigma Σ
+- q1 = 𝛿(q0, a)
+- q2 = 𝛿(q1, b)
+then: 
+𝛿*(q0, ab) = q2
+**** Proof steps:
+formula:
+- 𝛿*(q0, ab) = 𝛿(𝛿*(q0, a), b)
+- 𝛿*(q0, a) = 𝛿(q0, a) = q1
+=> δ* (q0, 𝑎b) =δ(q1, b) = q2
+** Transition Graph
+A DFA M = (Q, Σ, δ, q, F) is often depicted as a directed graph Gᴹ, called (*transition graph*)
+Gᴹ has exactly |Q| vertices, each one labelled with a different qᵢ∈ Q
+for each transition function δ(qᵢ,a) = qⱼ, the graph has edges (qᵢ, qⱼ) labelled with (a), (b), and (a, b).
+The vertex associated with q₁ is aclled the *initial vertex*, while those labeled with qᶠ are the *final vertices*
+be brief:
+- Gm: Transition Graph of DFA M
+- Gm has |Q| vertices
+- each vertex is labelled with different state qᵢ ∈ Q
+- each vertex has edges based on transition function δ(qᵢ,Sigma element) = qⱼ
+- has final states qᶠ as final vertices
+[[file:./statics/graphics/DFA/TransitionGraphExample.png]]
+** Acceptance of strings in DFA
+Let M =(Q, Σ, δ, q, F) be a finite automaton and let w = w0 w1 . . . wn be a string over
+Define the sequence q0, q1, ... qn of states, in the following way:
+- q0 = q,
+- qᵢ₊₁ = δ(qᵢ, wᵢ₊₁) for i = 0, 1, ..., n-1
+1. if qn ∈ F, then we say that M *accepts* the string w
+2. if qn ∉ F, then we say that M *rejects* the string w
+
+** Symbolic description of exmaple DFA
+*** no partial transition function
+[[file:./statics/graphics/DFA/SymbolicDescriptionDFA.png]]
+set of state Q {i, t, r}, Σ = {0, 1}, F = {t} and the transition function δ is given
+- δ(i, 0) = r, δ(i, 1) = t
+- δ(t, 0) = t, δ(t, 1) = t
+- δ(r, 0) = r, δ(r, 1) = r 
+  we can describe it by table
+  |   | 0 | 1 |
+  |---+---+---|
+  | i | r | t |
+  | t | t | t |
+  | r | r | r |
+*** partial transition fucntion
+if delta δ is a partial function (not defined for some state/letter pairs),
+then the DFA rejects an input if it ever encounter such a pair
+be like
+|   | 0 | 1 |
+|---+---+---|
+| i |   | t |
+| t | t | t |
+** Language defined by DFA
+the set of al words accepted by DFA M is called the language accepted by M
+and will be denoted by L(M). Thus
+L(M) = {w ∈ Σ*: δ*(q0, w) ∈ F}
+
+and some additional notes:
+- Any finite language is acceepted by some DFA
+  that is, if a language is finite, then there must be a DFA that accepts it
+- A language is called regular, 
+  if there exists a finite automaton M such that A = L(M)
+  that is, if a language (string set) can be accpted by a DFA, then it is a regular language
+
+*** Example:
+A = {w: w is a bindary string containing an odd number of 1s}
+-----
+the DFA can be defined as:
+Q = {qo, qe}, F = {qo}, q = qe, Σ = {0, 1}
+δ's symbolic description is:
+|    | 0  | 1  |
+| -- | -- | -- |
+| qo | qo | qe |
+| qe | qe | qo |
+** Regular operations on languages
+let A and B be two languages over the same alphabet.
+- the union of A and B is defined as:
+  A ∪ B = {w: w ∈ A or w ∈ B}
+- the concatenation of A and B is defined as:
+  AB = {ww': w ∈ A and w' ∈ B}
+- the star of A is defined as:
+  A* =  {u₁u₂...uₖ : k ≥ 0 and uᵢ∈ A for all i = 1, 2, ..., k}
+- noted that you can consider the language as the set of strings
+*** Example:
+A = {0, 01}
+B = {1, 10}
+A ∪ B = {0, 01, 1, 10}
+AB = {01, 010, 011, 0110}
+A* = {ϵ, 0, 01, 00, 001, 010, 0101, ...}
+** Theorem: Closure of Regular Languages under Union
+The set of regular languages is closed under the union operation.
+i.e. if A and B are regular languages over the same alphabet Σ, 
+then A ∪ B is also a *regular language* over Σ.
+
+** Exercise
+*** exe1
+how about the fllowing infinite language, Can you give a DFA that accepts the words:
+bad, baad, baaad, baaaad, ...?
+**** sol
+ez.
+Q = {q0, q1, q2}, F = {q2}, q = q0, Σ = {a, b}
+|    | a  | b  |
+|----+----+----|
+| q0 |    | q1 |
+| q1 | q1 | q2 |
+*** exe2
+Given the symbolic desxccription of a DFA, can you draw its corresponding diagram?
+| δ | a  | b  | c  |
+| -- | -- | -- | -- |
+| Q1 | Q2 | Q1 | Q3 |
+| Q2 | Q4 | Q1 | Q2 |
+| Q3 | Q2 | Q3 | Q1 |
+| Q4 | Q4 | Q2 | Q3 |
+**** sol
+[[file:./statics/graphics/DFA/Exe2Diagram.png]]
+*** Exe3
+Show that the language L is regular:
+L = {awa: w ∈ {a, b}*}
+can you design a DFA that accepts L?
+**** note:
+how to understand this lang?
+- the first and last letter must be 'a'
+- the w can be a, b, or empty
+- at least two chars
+- for example: aa, aba, abba, ababa, abbbbaa ...
+  and string like a, abb, ab, should be rejected
+**** sol
+hard =(
+Q = {p0, p1, pA, pB, pd}
+F = {pA}
+q = p0
+Σ = {a, b}
+|    | a  | b  |
+| -- | -- | -- |
+| p0 | p1 | pd |
+| p1 | pA | pB |
+| pA | pA | pB |
+| pB | pA | pB |
+| pd | pd | pd |
+M = (Q, Σ, δ, q, F)

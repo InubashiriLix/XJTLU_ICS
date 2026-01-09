@@ -1,0 +1,9 @@
+* Question 1
+** a:
+False
+the regular language can be infinite
+** b:
+the language that only can be accepted by some NFA is the regular language
+** c:
+False
+the transition function of DFA is δ: Q x Σ -> Q
