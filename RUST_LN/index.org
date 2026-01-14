@@ -1,12 +1,25 @@
 * This is a simple Rust Fast Learning 
 ** Lesson 1: simple value and simple loop
+第 1 课：能跑起来 + 基本语法
 [[./loopTrain/][loop simple practice code]]
 
 ** Lesson 2: Owner ship
+第 2 课：所有权 / 借用（Rust 唯一真 Boss）
 [[./OwnershipAndRef/][Owner ship simple practice code]]
 
 ** Lesson 3: Simple Structure and Enum and Match
+第 3 课：struct / enum / match（Rust 精华）
 [[./StructEnumMatch/][Structure and Enum simple practice code]]
 
 ** Lesson 4: Simple Structure and Enum and Match
+第 4 课：泛型 + trait（“这语言开始像样了”）
 [[./GeneralTraitOptionResult/][General Trait Option Result simple practice code]]
+
+** Lesson 5: Error Handling (Result / Option)
+第 5 课：错误处理（Result / Option）
+[[./Result/][Result simple practice code]]
+(WIP: 2026, 1, 15)
+
+** Lesson 6: mini project (CLI / small tools)
+第 6 课：实战 mini project（CLI / 小工具）
+(TODO)
