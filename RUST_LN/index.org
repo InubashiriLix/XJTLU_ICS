@@ -1,0 +1,12 @@
+* This is a simple Rust Fast Learning 
+** Lesson 1: simple value and simple loop
+[[./loopTrain/][loop simple practice code]]
+
+** Lesson 2: Owner ship
+[[./OwnershipAndRef/][Owner ship simple practice code]]
+
+** Lesson 3: Simple Structure and Enum and Match
+[[./StructEnumMatch/][Structure and Enum simple practice code]]
+
+** Lesson 4: Simple Structure and Enum and Match
+[[./GeneralTraitOptionResult/][General Trait Option Result simple practice code]]
