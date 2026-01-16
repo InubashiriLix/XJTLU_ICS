@@ -30,7 +30,7 @@
 > 这个仓库是我的 **个人知识库**：  
 >
 > - **Notes**：整理各科目的低质量笔记（CS, ML，DataStructure, Java Intro ... ）
-> - Time: 更新了许多XJTLU ICS Y2 的科目（没有EAP，EAP去死）
+> - Courses：更新了许多 XJTLU ICS 课程（CPT101/102/103/104/203/205, INT102/104/201, CAN201）
 > - **Code**：示例脚本、实验 project、工具函数等
 > - **Cheat-Sheets**：neorg 笔记，markdown笔记， 以及各种试卷neorg笔记与答案
 
@@ -72,38 +72,235 @@ cd your-repo
 
 ## 🗂️ 仓库结构
 ``` bash
-├── CPT101
-│   ├── note
-│   └── papers
-├── CPT102
-│   ├── 1week - 8 week
-│   ├── lect
-│   ├── papers
-│   ├── revisionQA
-│   └── selfstudy
-├── CPT103
-│   ├── notes
-│   ├── papers
-│   └── sql_grammar
-├── CPT104
-│   └── papers
-├── INT102
-│   ├── 00_intro
-│   ├── 1week - 12week
-│   ├── EX
-│   ├── analysis
-│   ├── ass1
-│   ├── papers
-│   ├── prototypes
-│   ├── torture2
-│   └── tutorial
-└── INT104
-    ├── CW1
-    ├── CW3
-    ├── LectCodes
-    ├── datasets
-    ├── lects
-    └── papers
+├── BASH_LN                                # bash 学习脚本与日志
+│   ├── 01.sh
+│   ├── 02.sh
+│   ├── 03.sh
+│   ├── array.sh
+│   ├── cal.sh
+│   ├── echo.sh
+│   ├── flowControl.sh
+│   ├── function.sh
+│   ├── redirect.sh
+│   ├── re.sh
+│   ├── test.sh
+│   ├── all.log
+│   ├── all2.log
+│   ├── failed.py
+│   ├── failed2.py
+│   ├── failed.log
+│   └── shit.log
+├── CAN201                                # 计算机网络
+│   ├── 01Lects                           # 讲义
+│   │   ├── ControlPlane
+│   │   ├── LinkLayer
+│   │   ├── NetworkLayer
+│   │   ├── NetworkSecurity
+│   │   └── fonts
+│   ├── 02Labs                            # 实验
+│   ├── 03_Papers                         # 试卷
+│   │   ├── original
+│   │   └── ans
+│   ├── ASS1                              # 作业
+│   │   ├── data
+│   │   ├── file
+│   │   ├── log
+│   │   └── tmp
+│   ├── CW1                               # Coursework 1
+│   │   ├── data
+│   │   ├── file
+│   │   ├── log
+│   │   └── tmp
+│   ├── CW2                               # Coursework 2
+│   └── SOCKET                            # socket 编程练习
+│       ├── TcpClient
+│       └── TcpServer
+├── CPT101                                # Introduction to Programming
+│   ├── note
+│   └── papers
+├── CPT102                                # Data Structures
+│   ├── 1week
+│   │   └── ArrayListInterface
+│   ├── 2week
+│   │   ├── abstract
+│   │   └── MoreCollections
+│   ├── 3week
+│   │   ├── exerise_sum_up
+│   │   ├── factorial
+│   │   ├── fibonacci
+│   │   └── MoreCollections
+│   ├── 5week
+│   │   └── MoreCollections
+│   ├── 6week
+│   │   ├── 8Lect
+│   │   └── BinaryTree
+│   ├── 8week
+│   │   ├── linkedListApp
+│   │   ├── linkedListCpp
+│   │   └── LinkedListCS
+│   ├── lect
+│   ├── papers
+│   ├── revisionQA
+│   └── selfstudy
+│       ├── AVL
+│       ├── bag
+│       ├── BST
+│       ├── hash
+│       └── MoreCollections
+├── CPT103                                # Database
+│   ├── notes
+│   │   ├── week9
+│   │   └── week10
+│   ├── papers
+│   └── sql_grammar
+├── CPT104                                # Software Engineering
+│   └── papers
+├── CPT203                                # 数字逻辑 / 相关课程资料
+│   ├── 01lects
+│   │   └── Modling
+│   └── 02_papers
+│       ├── pdfs
+│       └── ans
+├── CPT205                                # C/C++ 数值计算与建模
+│   ├── 01Lects
+│   │   ├── 03LectSource
+│   │   ├── graphics
+│   │   └── pdf
+│   ├── 02Labs
+│   │   ├── 01Week
+│   │   └── 05lab
+│   ├── 03_papers
+│   │   ├── orginal
+│   │   └── ans
+│   ├── 04_Math_Impl
+│   │   └── Utils
+│   ├── Assignment
+│   │   ├── ASS1
+│   │   └── ASS_COPY
+│   ├── CW2
+│   │   ├── br
+│   │   ├── ref
+│   │   └── repo
+│   ├── ModelCPP
+│   │   ├── include
+│   │   ├── src
+│   │   └── build
+│   └── ModelHandBook.md
+├── INT102                                # Algorithms
+│   ├── 00_intro
+│   ├── 1week
+│   │   └── farmerCabageWolf
+│   ├── 2week
+│   ├── 3week
+│   │   ├── BinarySearch
+│   │   ├── DivideAndConquer
+│   │   ├── MergeSort
+│   │   └── Recursion
+│   ├── 4week
+│   │   └── Graph
+│   ├── 5week
+│   │   ├── Dijkstra
+│   │   ├── Kruska
+│   │   └── MST
+│   ├── 6week
+│   │   ├── 1Ques
+│   │   ├── dynamic
+│   │   ├── ques2
+│   │   └── ques3
+│   ├── 7week
+│   │   ├── cpp
+│   │   ├── cppRecursive
+│   │   ├── HorspoolCPP
+│   │   ├── sortingshit
+│   │   └── TradeOff
+│   ├── 8week
+│   │   ├── BellmanFor
+│   │   ├── BellmanFordCPP
+│   │   ├── Floyd
+│   │   ├── WarshellCPP
+│   │   └── temp
+│   ├── 9week
+│   │   ├── LCS
+│   │   ├── NeedlemanWunsch
+│   │   └── PSA
+│   ├── 10week
+│   │   └── NPproblems
+│   ├── 11week
+│   │   ├── algo
+│   │   └── bruteforce
+│   ├── 12_week
+│   │   └── BagQues
+│   ├── analysis
+│   ├── ass1
+│   │   └── ass1
+│   ├── EX
+│   │   ├── CF20C
+│   │   ├── ChainForwardStars
+│   │   ├── DFS
+│   │   ├── GFS
+│   │   ├── IntervalSum
+│   │   └── UnionFindSet
+│   ├── papers
+│   ├── prototypes
+│   ├── torture2
+│   │   ├── ques1
+│   │   ├── Ques1
+│   │   ├── ques2
+│   │   ├── ques3
+│   │   ├── ques4
+│   │   └── ques5
+│   └── tutorial
+│       ├── week2
+│       ├── week4
+│       ├── week6
+│       ├── week9
+│       ├── week11
+│       └── week13
+├── INT104                                # Data Science / ML
+│   ├── CW1
+│   │   └── final1
+│   ├── CW3
+│   │   ├── figures
+│   │   └── results
+│   ├── datasets
+│   ├── LectCodes
+│   ├── lects
+│   │   └── lectcodes
+│   └── papers
+│       ├── 22F
+│       ├── 22R
+│       ├── 23F
+│       └── 23R
+├── INT201                                # 信息系统 / 相关课程
+│   ├── 1Lect
+│   │   └── statics
+│   ├── 2Tutorial
+│   ├── 3PDFs
+│   │   └── 1Week
+│   ├── ASS1
+│   ├── ASS2
+│   └── papers
+├── RUST_LN                               # Rust 学习记录
+│   ├── index.org
+│   ├── Readme.md
+│   ├── GeneralTraitOptionResult
+│   │   ├── src
+│   │   └── target
+│   ├── loopTrain
+│   │   ├── src
+│   │   └── target
+│   ├── OwnershipAndRef
+│   │   ├── src
+│   │   └── target
+│   ├── Result
+│   │   ├── src
+│   │   └── target
+│   └── StructEnumMatch
+│       ├── src
+│       └── target
+└── TS_LN                                 # TypeScript 学习记录
+    ├── 01_features.ts
+    └── 01_features.js
 ```
 
 ## 🤝 贡献指南
@@ -124,4 +321,3 @@ cd your-repo
 从社区中来，回馈社区。Happy hacking! 🛠️
 
 <p align="center"><sub>© 2025 Li Xinrong — Built with caffeine &amp; curiosity.</sub></p>
-
