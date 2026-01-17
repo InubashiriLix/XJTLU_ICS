@@ -19,18 +19,34 @@
 [[./StructEnumMatch/Readme.md][tutorial link]]
 [[./StructEnumMatch/][Structure and Enum simple practice code]]
 
+** Lesson 3.5: Lifetime
+第 3.5 课：生命周期（Life Time）
+[[./LifeTime/Readme.md][tutorial link]]
+[[./LifeTime/][Lifetime simple practice code]]
+
 ** Lesson 4: Generic + Trait + Option + Vec 
 第 4 课：泛型 + trait（“这语言开始像样了”）
 [[./GeneralTraitOptionResult/Readme.md][tutorial link]]
 [[./GeneralTraitOptionResult/][General Trait Option Result simple practice code]]
+WIP
+
+** Lesson 4.5: Closures
+闭包
+[[./closure/Readme.md][tutorial link]]
+[[./closure/][Closures simple practice code]]
 
 ** Lesson 5: Error Handling (Result / Option)
 第 5 课：错误处理（Result / Option）
 [[./Result/Readme.md][tutorial link]]
 [[./Result/][Result simple practice code]]
-(WIP: 2026, 1, 15)
 
-** Lesson 6: mini project (CLI / small tools)
-第 6 课：实战 mini project（CLI / 小工具）
+** Lesson 6: Organize Code (mod / crate / package)
+第 6 课：代码组织（mod / crate / package）
+[[./Org/Readme.md][tutorial link]]
+[[./Org/][Mod Crate Package simple practice code]]
+WIP
+
+** Lesson final: mini project (CLI / small tools)
+第final课：实战 mini project（CLI / 小工具）
 (TODO)
 
