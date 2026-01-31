@@ -15,10 +15,15 @@
 | 1 | Simple value and simple loop | 第 1 课：能跑起来 + 基本语法 | [Readme](./loopTrain/Readme.md) | [Code](./loopTrain/) | Ready |
 | 2 | Ownership | 第 2 课：所有权 / 借用（Rust 唯一真 Boss） | [Readme](./OwnershipAndRef/Readme.md) | [Code](./OwnershipAndRef/) | Ready |
 | 3 | Struct / Enum / Match | 第 3 课：struct / enum / match（Rust 精华） | [Readme](./StructEnumMatch/Readme.md) | [Code](./StructEnumMatch/) | Ready |
-| 4 | Generic + Trait + Option + Vec | 第 4 课：泛型 + trait（“这语言开始像样了”） | [Readme](./GeneralTraitOptionResult/Readme.md) | [Code](./GeneralTraitOptionResult/) | Ready |
-| 5 | Error Handling (Result / Option) | 第 5 课：错误处理（Result / Option） | [Readme](./Result/Readme.md) | [Code](./Result/) | WIP (2026-01-15) |
-| 6 | Mini project (CLI / small tools) | 第 6 课：实战 mini project（CLI / 小工具） | - | - | TODO |
+| 3.5 | Lifetime | 第 3.5 课：生命周期（Life Time） | [Readme](./LifeTime/Readme.md) | [Code](./LifeTime/) | Ready |
+| 4 | Generic + Trait + Option + Vec | 第 4 课：泛型 + trait（“这语言开始像样了”） | [Readme](./GeneralTraitOptionResult/Readme.md) | [Code](./GeneralTraitOptionResult/) | WIP |
+| 4.5 | Closures | 闭包 | [Readme](./closure/Readme.md) | [Code](./closure/) | Ready |
+| 5 | Error Handling (Result / Option) | 第 5 课：错误处理（Result / Option） | [Readme](./Result/Readme.md) | [Code](./Result/) | Ready |
+| 6 | Organize Code (mod / crate / package) | 第 6 课：代码组织（mod / crate / package） | [Readme](./Org/Readme.md) | [Code](./Org/) | Ready |
+| 7 | Smart Pointer + Rc + RefCell | 第 7 课：智能指针 + Rc + RefCell | [Readme](./SmartPointers/Readme.md) | [Code](./SmartPointers/) | Ready |
+| Final | Mini project (CLI / small tools) | last：实战 mini project（CLI / 小工具） | - | - | WIP |
 
 ## Notes
 - This is a quick-start course; deeper details are intentionally skipped.
 - If you want a fuller path, consider adding more exercises or a capstone project.
+- Final mini project is planned as a terminal ranger-like file manager.

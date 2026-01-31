@@ -44,9 +44,13 @@ WIP
 第 6 课：代码组织（mod / crate / package）
 [[./Org/Readme.md][tutorial link]]
 [[./Org/][Mod Crate Package simple practice code]]
-WIP
+
+** Lesson 7: Smart Pointer + Rc + RefCell
+第 7 课：智能指针 + Rc + RefCell
+[[./SmartPointers/Readme.md][tutorial link]]
+[[./SmartPointers/][Smart Pointer simple practice code]]
 
 ** Lesson final: mini project (CLI / small tools)
-第final课：实战 mini project（CLI / 小工具）
-(TODO)
-
+last：实战 mini project（CLI / 小工具）
+WIP, currently no content,
+plan to make a terminal ranger file manager
