@@ -4,7 +4,7 @@ use std::io::prelude::*;
 #[derive(Debug)]
 enum Node {
     MovePtr(i32),
-    ModValue(i32),
+    AddValue(i32),
     Input,
     Output,
     Loop(Vec<Node>),
@@ -29,7 +29,7 @@ fn flush(state: &mut State, temp_ops_count: &mut i32, cur_vec: &mut Vec<Node>) {
     match state {
         State::AccumeValue => {
             if *temp_ops_count != 0 {
-                cur_vec.push(Node::ModValue(*temp_ops_count));
+                cur_vec.push(Node::AddValue(*temp_ops_count));
             }
         }
         State::AccumePtr => {
@@ -143,7 +143,7 @@ impl Executor {
     fn execute(&mut self, nodes: &Vec<Node>) {
         for node in nodes {
             match node {
-                Node::ModValue(val) => {
+                Node::AddValue(val) => {
                     let cell = &mut self.memory[self.ptr];
                     *cell = cell.wrapping_add(*val as u8);
                 }
