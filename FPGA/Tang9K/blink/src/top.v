@@ -4,14 +4,14 @@ module top (
 );
 
     // Tangnano 9k has 6 LEDS with clock freq 26MHz, and we want to blnmk the LED
-    // at 5Hz, so we nened to count 26M/5 = 5.2M clock cycles to toggle the LED, 
+    // at 5Hz, so we nened to count 26M/5 = 5.2M clock cycles to toggle the LED,
     localparam CLK_HZ = 27_000_000;
     localparam BLINK_FREQ = 5;  // 5 toogle per second
     localparam WAIT_TICKS = CLK_HZ / BLINK_FREQ;  // 5.4M
-    // 27M / 5 = 5.4M, 2*23 = 8388608 < 5.4M < 2*24 = 16777216, so we need 24 bits to count to 5.4M 
+    // 27M / 5 = 5.4M, 2*23 = 8388608 < 5.4M < 2*24 = 16777216, so we need 24 bits to count to 5.4M
     localparam [23:0] WAIT_MAX = WAIT_TICKS - 1;
 
-    // the wait counter 
+    // the wait counter
     reg [23:0] wait_cnt = 24'd0;
     // led state
     reg [ 2:0] led_state = 3'b000;
