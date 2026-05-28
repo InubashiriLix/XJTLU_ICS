@@ -1,0 +1,3 @@
+-module-filename
+-no-tabs
++posix-eof

@@ -1,0 +1,4 @@
+* NP Completeness
+** Basic Definitions
+- P problems: decision problems that can be solved in polynominal time (O(n^k)) for some constant k;
+- NP problems: decision problems where a proposed solution can be verifyied in polynominal time;

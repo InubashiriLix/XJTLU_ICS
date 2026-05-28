@@ -1,0 +1,26 @@
+* Bipartite Matching
+A graph G = (V, E) is called bipartite if and only if 
+- The set V can be partitioned into two subsets X, and Y
+- Every edges of G has en endpoint in X and the other endpoint in Y
+** NOTE:
+- A matching M included in E is a set of edges that have no endpoints in common.
+  Each vertex from one set has at most one "partner" in the other set.
+- If a vertex v has no edge of M incident to it then v is said to be exposed (or unmatched)
+- A matching is perfect if no vertex is exposed, that is, if every vertex is matched.
+** Maximum Bipartite Matching:
+Given a bipartite graph G = (A union B, E), find an S subset of A x B that is a matching and is as large as possible
+S is a perfect matching if every vertex is matched
+*** Solve the maximum bipartite Matching by Network Flow approach
+- ensure that all edges from U to V are directed
+- intro single source node that has outgoing edges to each node in U
+- add sink node that has incoming edges from each node in V
+The problem now becomes finding hte maxumal flow in the graph
+donote the source as X and sink as Y
+**** steps
+1. Construct hte directed garph with a source and sink node
+2. Using a search method to find a path from the source to the sink
+3. Once a path is found, reverse each edge on this path.
+4. Repeat step 2 and 3 until no more paths from the sink to source exist.
+5. The final matching solution is then the set of edges between U and V that are reversed 
+   like original run from U to V, after reverse, it will run from V to U.
+

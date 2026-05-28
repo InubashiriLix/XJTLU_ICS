@@ -1,0 +1,59 @@
+* MST ALGORITHMS
+** PRIM ALGORITHM
+greddy algorithm that grows the tree one vertex at a time, from an arbitrary starting vertex, at each step adding the least expensive edge from the tree to another vertex
+*** STEPS
+- Start with an arbitrary vertex and grow
+- select the edge with the smallest weight that connects a vertex *in the tree* to a vertex *outside the tree*
+  - for example, given a connected graph with vertices A, B, C, D, we start from A, if edge (A, B) 8, (A, C) 7, exitsts, we choose (A, C) because it has smalleset weight, 
+    then if we have edge (C, D) 6, (B, D) 5, (B, C) 7  we choose (B, C) because it has smallest weight among *(C, D), (B, C)* 
+    in the next step, we have availble edges (B, D) 5, (C, D) 6 we choose (B, D) 5 because it has smallest weight among *(B, D), (C, D)*
+- once all the available (the avaiable edges means the edges connected to the one node inside and one node outside) edges are selected, we stop. 
+*** NOTE
+- we do not choose the edge that connects two vertices in the tree because it will create a cycle
+- because the stop condition, for a graph with isolated vertices, we will not be able to include those vertices in the tree.
+*** EXRESSION ON PPT (PESUDO CODE)
+we create two sets: U contains the list of vertices that have been visited and V-U the list of vertices that have not been visited
+One by one, we move vertices from set V-U to set U by connecting the least weight edge
+T = empty set
+U = {1}
+while U != V:
+1. let (u, v) be the lowest cost edge such taht u in U and v in V-U
+2. T = T union {(u, v)}
+3. U = U union {v}
+*** COMPLEXITY
+TODO verify the time and space complexity
+- time complexity: O(E log V) 
+- space complexity: O
+
+** KRUSKAL ALGORITHM
+
+*** STEPS
+given an connected graph, we sort the edges in increasing order of their weights, and we add edges one by one to the tree, as long as they do not create a cycle
+for example: give we have edges (D, H) 1, (D, B) 2, (H, F) 3, (B, F) 4, (D, C) 5, (B, C) 7
+we select (D, H) 1, because it has smallest weight, currently vertices in tree: (D, H) then we select (D, B) 2, currently vertices in tree: (D, H, B), 
+then we select (H, F) 3, vertics in the tree (D, H, B, F), 
+when we goonna choose (B, F) 4, we will notice that both B, F are already in the tree, if we add (B, F) 4, it will create a cycle, so we skip (B, F) 4, then we select (D, C) 5, vertices in the tree (D, H, B, F, C), 
+when we goonna select (B, C) 7, we will notice that both B and C are already in the tree, if we add (B, C) 7 it will create a cycle, so we skip (B, C) 7
+done, all the vertices are in the tree, we stop and result is an MST
+*** NOTE
+we do not choose the edge that connected to two vertices in the tree because it will create a cycle
+*** COMPLEXITY
+
+** Borůvka's ALGORITHM
+*** STEPS:
+given a connected graph, for each vertex, we select the edge with the smallest weight that is incident to that vertex, and we add those edges to the tree, as long as they do not create a cycle.
+each vertex select an most costless weight outgoing edge
+for the edges that has been selected by two vertices at the same time, we only recognize two edges as one edges. like (A, B) 1, (B, A) 1, we only recognize one edge (A, B) 1
+after the first step, we will have a forest or an tree.
+for the forest: we select the tree A to B's smallest weight outgoing edge, so that the tree A and B will be connected.
+*** PESUDO CODE:
+while (number of connected block > 1): # in the first step, we recognize each vertex as a block
+1. for each block C:
+   find the samllest weight edge e (u, v) such that u in C and v not in C
+2. for each found edge e:
+   if e conneted to the different block:
+   joint MST
+   construct a new block by jointing two blocks connected by e
+*** NOTE:
+the core data structure use in boruvka's algorithm is DSU: Union-Find set.
+

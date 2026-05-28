@@ -1,0 +1,50 @@
+* Show that 3-SAT belongs to the class NP;
+   - intro:
+     a bool formula like (x1 v not x2 v x3) ^ (not x1 v x4)
+     - literal: the variable or its negation, for example: x1, not x2, x3, not x1, x4
+     - clause: a disjunction of literals, for example: (x1 v not x2 v x3) and (not x1 v x4)
+     - CNF: a bunch of clauses connected by conjunction, for example: (x1 v not x2 v x3) ^ (not x1 v x4)
+     - 3-SAT: each clause has 3 literal SAT question
+- solution:
+  1. prove 3-SAT is in NP
+     we can verify a proposed solution (certificate) in polynomial time, that is, we can check if the proposed solution satisfies the formula in polynomial time, because we only need to check each clause once, and each clause has at most 3 literals, so the time complexity is O(n), where n is the number of clauses.
+     for example x1 = T, x2 = F, x3 =T
+     then (x1 v not x2 v x3) = T
+
+     we can write this: 
+     Given a truth assignment as a certificate, we can verify whether each clause contains at least one true literal. Since there are polynomially many clauses and each clause has exactly three literals, the verification can be done in polynomial time. Therefore, 3-SAT belongs to NP.
+* Reduce the CNF-SAT problem to 3-SAT
+   to prove CNF-SAT <p 3-SAT: for each CNF-SAT, we can construct a 3-SAT formula in polynominal time such that the CNF-SAT formula is satisfiable if and only if the 3-SAT formula is satisfiable.
+1. case1: the original clause has 3 literals: we do not need to do anything.
+2. case2: the original clause has 2 literals: we can add new variable y and replace the clause (x1 v x2) with (x1 v x2 v y) ^ (x1 v x2 v not y)
+3. case3: the original clause has 1 literal: we can add new variables y and z, and replace the clause (x1) with (x1 v y v z) ^ (x1 v y v not z) ^ (x1 v not y v z) ^ (x1 v not y v not z)
+4. case4: the original clause has more than 3 literals: 
+   like (a v b v c v d), we can add new variables y1, y2
+   into (a v b v y1) ^ (not y1 v c v y2) ^ (not y2 v d v y3) 
+- if original clause can not be satisfied, then the new caluse can not be satisfied
+5. normal formula: 
+   if a clause is (l1 v l2 v l3 v l4 ... lk)
+   then we should add variables y1, y2, ... y(k-3)
+   (l1∨l2∨y1)∧(¬y1∨l3∨y2)∧(¬y2∨l4∨y3)∧⋯∧(¬yk−3∨lk−1∨lk)
+
+* Deduce that 3-SAT is NP-Complete
+To prove one problem is NP-Complete, we need to show that 
+NP-Complete = NP + NP-Hard
+that is: 
+1. this problem is in NP
+2. all the NP problems can be reduced to this problem in polynomial time.
+- proof:
+  we has prove that 3-SAT in NP, and also,
+  we have prove CNF-SAT is NP-Complete, and CNF-SAT can be resuced to 3-SAT (3-SAT <p CNF-SAT)
+  therefore, 3-SAT is as least as hard as CNF-SAT;
+- we can write this:
+  To show that 3-SAT is in NP, we use a trust assignment as certificate, given such an assignment, we can check every clause and verify that at least on lieteral in each clause is ture. Since each clause contains exactly three literals and the number of clauses is polynomial in the input isze, this verification takes polynomial time, Hence, 3-SAT belongs to NP
+  - reduction:To reduce CNF-SAT to 3-SAT, consider each clause independently.
+If a clause has exactly three literals, keep it unchanged.
+If it has one literal (l), replace it by
+
+(l∨y∨z)∧(l∨y∨¬z)∧(l∨¬y∨z)∧(l∨¬y∨¬z).
+
+If it has two kliterals (l 1 ∨l 2), replace it by (l 1  ∨l 2  ∨y)∧(l 1  ∨l 2  ∨¬y). 
+If it has k>3 literals (l 1  ∨l 2  ∨⋯∨l k ), replace it by (l 1  ∨l 2  ∨y 1 )∧(¬y 1  ∨l 3  ∨y 2 )∧⋯∧(¬y k−3  ∨l k−1  ∨l k ).
+The new formula is satisfiable iff the original formula is satisfiable, and the construction increases the size only polynomially. Therefore, CNF-SAT reduces to 3-SAT in polynomial time.

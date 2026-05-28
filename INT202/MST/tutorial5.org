@@ -1,0 +1,93 @@
+* 1. Prim and Kruskal Executions
+** 1)
+Execute Prim’s algorithm on the following graph starting at vertex A. If there are any ties,
+the vertex with the lower letter comes first. List the edges in the order in which they are
+added to the tree.
+garph: AB 4, AD 2, BC 2, BE 2, CF 1, CE 1, DE 5, DG 1, EF 1, EG 3, FG 3
+*** Solution:
+AD: 2, {A, D}
+AD: 2, DG: 1 {A, D, G}
+AD: 2, DG: 1, GE: 3 {A, D, E, G}
+AD: 2, DG: 1, GE: 3, EC: 1 {A, C, D, E, G}
+AD: 2, DG: 1, GE: 3, EC: 1, CF: 1 {A, C, D, E, F, G}
+AD: 2, DG: 1, GE: 3, EC: 1, CF: 1, BC: 2 {A, B, C, D, E, F, G}
+
+** 2)
+Execute Kruskal’s algorithm on the following graph starting at vertex A. Assume that equal
+weight edges are ordered lexicographically by the labels of their vertices assuming that the
+lower labeled vertex always comes first when specifying an edge, e.g. (C, E) is before (C, F)
+which in turn is before (D, G). List the edges in the order in which they are added to the
+developing forest.
+garph: AB 4, AD 2, BC 2, BE 2, CF 1, CE 1, DE 5, DG 1, EF 1, EG 3, FG 3
+*** Solution
+sort the edge first, 
+CF: 1, CE: 1, DG: 1, EF: 1, AD: 2, BC: 2, BE: 2, EG: 3, FG: 3, AB: 4, DE: 5
+select the edge with the smallest weight, if there is a tie, select the edge with the lowest letter first
+CF: 1 {C, F}
+CF: 1, CE: 1 {C, E, F}
+CF: 1, CE: 1, DG: 1 {C, D, E, F}
+CF: 1, CE: 1, DG: 1, AD: 2 {A, C, D, E, F}
+CF: 1, CE: 1, DG: 1, AD: 2, BC: 2 {A, B, C, D, E, F}
+
+* 2. Execute the Ford-Fulkerson maximum flow algorithm on the following network:
+Ford-Fulkerson Algorithm
+1. start with 0 flow
+2. for each augmenting path п, add Δf(п) to the flow f 
+   (can increase undirected path from s to t such that 
+   can increase flow on forward edges
+   can decrease flow on backward edges)
+** (1)
+For each step of the algorithm, write in a table the augmenting path by listing its vertices,
+its residual capacity, and the resulting flow on the network.
+*** Solution:
+#+BEGIN_src text
+| Step | Augmenting path | Residual capacity | Resulting non-zero flow |
+|------+-----------------+-------------------+--------------------------|
+| 1 | s -> A -> B -> t   | min(7, 3, 6) = 3 | f(s,A)=3, f(A,B)=3, f(B,t)=3 |
+| 2 | s -> C -> D -> t   | min(3, 5, 4) = 3 | f(s,A)=3, f(A,B)=3, f(B,t)=3, f(s,C)=3, f(C,D)=3, f(D,t)=3 |
+| 3 | s -> A -> C -> D -> t | min(4, 4, 2, 1) = 1 | f(s,A)=4, f(A,B)=3, f(A,C)=1, f(s,C)=3, f(C,D)=4, f(B,t)=3, f(D,t)=4 |
+| 4 | s -> A -> C -> B -> t | min(3, 3, 2, 3) = 2 | f(s,A)=6, f(A,B)=3, f(A,C)=3, f(s,C)=3, f(C,B)=2, f(C,D)=4, f(B,t)=5, f(D,t)=4 |
+
+After step 4, there is no more augmenting path from s to t in the residual graph.
+The final flow is:
+| Edge | Flow / Capacity |
+|------+-----------------|
+| s -> A | 6 / 7 |
+| s -> C | 3 / 3 |
+| A -> B | 3 / 3 |
+| A -> C | 3 / 4 |
+| C -> B | 2 / 2 |
+| C -> D | 4 / 5 |
+| B -> t | 5 / 6 |
+| D -> t | 4 / 4 |
+#+END_src
+
+** (2)
+What is the value of the maximum flow?
+*** Solution:
+The value of the maximum flow is the total flow leaving the source s:
+f(s,A) + f(s,C) = 6 + 3 = 9
+Therefore:
+Maximum flow = 9
+** (3)
+In the final residual graph, the vertices reachable from s are:
+S = {s, A, C, D}
+Therefore, the vertices on the s side of the minimum cut are:
+{s, A, C, D}
+If the question does not require including s itself, then write:
+{A, C, D}
+List the vertices on the s side of the minimum cut.
+** (4)
+What is the capacity of the minimum cut?
+The other side of the cut is:
+T = {B, t}
+The forward edges from S to T are:
+| Edge | Capacity |
+|------+----------|
+| A -> B | 3 |
+| C -> B | 2 |
+| D -> t | 4 |
+So the capacity of the cut is:
+3 + 2 + 4 = 9
+Therefore:
+Minimum cut capacity = 9
