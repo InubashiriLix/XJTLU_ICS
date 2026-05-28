@@ -1,0 +1,100 @@
+* Binary Operations
+** Three Operations We care for Cryptography
+the set of integers donated by Z, inthe cryptography, we're interested in *three* binary operations: addition, substraction, multiplication
+any of two number in Z can be added, subtracted, or multiplied together to produce another number in Z
+
+because each input can be either positive or negative we can have four cases for each operations
+Add: 5 + 9 = 14, (-5) + 9 = 4, (-5) + (-9) = -14, 5 + (-9) = -4
+Sub: 5 - 9 = -4, (-5) - 9 = -14, (-5) - (-9) = 4, 5 - (-9) = 14
+Multiply: 5 * 9 = 45, (-5) * 9 = -45, (-5) * (-9) = 45, 5 * (-9) = -45
+
+but for the inverse operations, for example: the inverse of multiplication is division, 
+two of integer for division are fraction / integer / Nan
+
+** Integer Division
+in integer arithmetic, the division of two integers divisio's result is an integer and possible an remainder, or *ERROR* if the divisor is zero
+for example: 5 / 2 = 2 ... 1, we called the 2 as quotient (商)(*q*), 5 as dividend (被除数)(*a*), 2 as divisor(除数)(*n*), and 1 as remainder (余数)(*r*)
+
+then we get *a = q * n + r* (where 0 <= r < |n|)
+to make r non-negative, we can have this: q - 1 <-> r + n
+-255 = (-23 x 11) + (-2) <=> -255 = (-24 x 11) + 9
+
+** Divisibility:
+if a is not zero and we let r =  in the division relation, we got 
+a = q * n
+if remainder is zero, n|a
+if remainder is not zero n∤a
+for example: The integer 4 divide s the integeer 32 because 32 = 8 x 4 
+we show this as 4|32
+
+*** Properties:
+1. if a | 1 then a = ±1
+2. if b | a and a | b then a = ±b
+3. if b | a and c | b then c | a
+4. if a | b and a | c then a | (m * b + n * c) where m and n are arbitary integers
+*** Common Divisor of two integers:
+let A be the divisor of 140, and B are the divisior of 12
+the Intersection of A and B is the common divisor of 140 and 12, which are 1, 2, 4
+
+** Greatest Common Divisor (GCD)
+the greatest common divisor of two integers a and b is the largest positive integer that divides both integers
+** Euclidean Algorithm:
+fact: gcd(a, 0) = a
+lemma: let a, b, q and r be integer such that a = bq + r and b != 0, Then gcd(a, b) = gcd(b, r)
+*** Proof: 
+let d = gcd(a, b) and e = gcd(b, r)
+- step1: prove d <= e
+  becase d = gcd(a, b) therefore, d|a, d|b
+  therefore d|bq because bq is just b multiply by an integer q
+  now: a = bq + r => r = a - bq
+  sinse d|a and d|bq, therefore d|(a - bq) => d|r
+  now : d|b d|r
+  since e = gcd(b, r) and e is the largest divisor of b and r
+  therefore d <= e
+- step2: prove e <= d:
+  since e = gcd(b, r). there fore e|b, e|r
+  since e|b, therefore e|bq
+  since e|r, therefore e|(bq+r) => e|a
+- now we got e|a and e|b, which menas e is a common divisor of a and b
+- but d = gcd(a, b) is the greatest common divisor of a and b, therefore e <= d
+- final: we have prove d <= e and e <= d, therefore d = e
+
+*** Example:
+- find the gcd(26, 6) and gcd(6, 2)
+  gcd(26, 6) = gcd(6, 2) = 2
+  gcd(6, 2) = 2
+
+- given 60 = 24 x 2 + 12 Find gcd(60, 24) and gcd(24,12)
+  a = 60, b = 24, q = 2, r = 12
+  gcd(60, 24) = gcd(24, 12) = 12
+
+*** Pesudo Code:
+#+BEGIN_src python
+def gcd(a, b):
+    assert a >= b and b >= 0 and a + b > 0
+    return gcd(b, a % b) if b > 0 else a
+#+END_src
+
+*** Extended Euclidean Algorithm:
+given two integers a and b, we often need to find other two integers, s and t, such that 
+s * a + t * b = gcd(a, b)
+the extended euclidean algo can calculate the gcd(a, b) and the same time calculate the value of s and t
+**** Pesudo Code:
+#+BEGIN_src python
+r1 = a; r2 = b;
+s1 = 1; s2 = 0;
+t1 = 0; t2 = 1;
+while r2 > 0:
+    q = r1 // r2
+    # updateing r's
+    r = r1 - q * r2
+    r1 = r2; r2 = r
+    # updating s's
+    s = s1 - q * s2
+    s1 = s2; s2 = s
+    # updating t's
+    t = t1 - q * t2
+    t1 = t2; t2 = t;
+gcd(a, b) = r1; s = s1; t = t1
+#+END_BEGIN_src
+

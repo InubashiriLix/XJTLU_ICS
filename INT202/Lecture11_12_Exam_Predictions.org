@@ -1,0 +1,708 @@
+#+TITLE: INT202 Lecture 11-12 Exam Prediction Questions
+#+AUTHOR: Generated from Lecture 11 and Lecture 12
+#+OPTIONS: toc:2 num:nil
+
+* 使用说明
+
+这个文件只根据 =Lecture 11.pdf= 和 =Lecture 12.pdf= 的内容预测高概率考题。
+
+每道题包含：
+- *题目描述*：考试可能怎么铺垫。
+- *问题*：真正要你回答的东西。
+- *解析*：中文解释，假设你几乎没看过 PPT。
+- *正式解答（English）*：可以直接抄到卷子上的英文答案。
+
+优先级建议：
+1. 先背第 1, 4, 6, 7, 8, 10, 11, 12 题。
+2. 再看第 2, 3, 5, 9, 13 题。
+3. 最后用第 14 题做短答题补充。
+
+* Q1. Define P, NP, NP-hard, and NP-complete
+
+** 预测概率
+极高。Lecture 11 和 Lecture 12 都反复出现，是最基础概念题。
+
+** 题目描述
+In computational complexity, we classify decision problems into classes such as P and NP. Some problems are called NP-hard or NP-complete.
+
+** 问题
+Define P, NP, NP-hard, and NP-complete. Explain the relationship between them.
+
+** 解析
+这题就是定义题。
+
+- =P=：能在多项式时间内直接解出来的问题。
+- =NP=：不一定知道怎么快速解，但如果别人给你一个答案，你能在多项式时间内检查答案对不对。
+- =NP-hard=：至少和所有 NP 问题一样难。所有 NP 问题都能在多项式时间内规约到它。
+- =NP-complete=：既是 NP-hard，又属于 NP。也就是 NP 里面最难的一批问题。
+
+重点关系：
+- =P ⊆ NP=，因为如果一个问题能快速解，那当然也能快速验证。
+- 现在不知道 =P = NP= 还是 =P ≠ NP=。
+- 如果任何一个 NP-complete 问题有多项式时间算法，则所有 NP 问题都有多项式时间算法，因此 =P = NP=。
+
+** 正式解答（English）
+
+P is the class of decision problems that can be solved by a deterministic algorithm in polynomial time.
+
+NP is the class of decision problems for which a proposed certificate or solution can be verified in polynomial time. Equivalently, NP is the class of problems that can be accepted by a nondeterministic polynomial-time algorithm.
+
+A problem is NP-hard if every problem in NP can be reduced to it in polynomial time. It does not necessarily have to be in NP.
+
+A problem is NP-complete if it is both in NP and NP-hard. Therefore, NP-complete problems are the hardest problems inside NP.
+
+We know that \(P \subseteq NP\), because if a problem can be solved in polynomial time, then its answer can also be verified in polynomial time. However, it is still unknown whether \(P = NP\). If any NP-complete problem can be solved in polynomial time, then every problem in NP can be solved in polynomial time, so \(P = NP\).
+
+* Q2. Decision problem vs optimization problem
+
+** 预测概率
+高。Lecture 11 专门讲了 optimization 和 decision 的转换。
+
+** 题目描述
+Many algorithmic problems are optimization problems, but NP-completeness is usually defined for decision problems.
+
+** 问题
+Explain the difference between a decision problem and an optimization problem. Convert an optimization problem into a decision problem using an example.
+
+** 解析
+考试喜欢问：“为什么 NP-complete 讲的是 yes/no 问题？”
+
+优化问题是找最优值，比如最小生成树最小权重是多少。
+判定问题只回答 yes/no，比如有没有一个权重不超过 \(k\) 的生成树。
+
+加一个参数 \(k\)，很多优化问题就能变成判定问题。
+
+重要句子：
+如果判定版本都很难，那么优化版本也不会简单。因为如果你能快速求最优解，那当然能快速回答“有没有达到 \(k\)”。
+
+** 正式解答（English）
+
+A decision problem is a computational problem whose output is either yes or no. An optimization problem asks for a solution that minimizes or maximizes some objective value.
+
+An optimization problem can often be converted into a decision problem by adding a parameter \(k\). For example, the optimization version of the minimum spanning tree problem asks for a spanning tree of minimum total weight. The decision version is: given a connected weighted graph \(G\) and an integer \(k\), does \(G\) contain a spanning tree of total weight at most \(k\)?
+
+If the decision version of a problem is hard, then the corresponding optimization version is also hard, because an algorithm for the optimization version could be used to answer the decision version.
+
+* Q3. Why 0/1 Knapsack dynamic programming is pseudo-polynomial
+
+** 预测概率
+高。Lecture 11 花了好几页解释 \(O(nW)\) 为什么不是 polynomial。
+
+** 题目描述
+The 0/1 Knapsack problem has a dynamic programming algorithm running in \(\Theta(nW)\).
+
+** 问题
+Explain why this running time is pseudo-polynomial rather than polynomial in the input size.
+
+** 解析
+这题的坑是：\(O(nW)\) 看起来像 polynomial，但复杂度要按“输入长度”算，不是按数值大小算。
+
+如果 \(W\) 用二进制表示，输入长度大约是 \(\log W\)，不是 \(W\)。
+
+设 \(j = \log W\)，那么 \(W = 2^j\)。所以 \(O(nW) = O(n2^j)\)，对输入长度 \(j\) 来说是指数级。
+
+所以它叫 pseudo-polynomial。
+
+** 正式解答（English）
+
+The dynamic programming algorithm for 0/1 Knapsack runs in \(\Theta(nW)\), where \(W\) is the numerical value of the capacity. However, time complexity is measured as a function of the length of the input in bits.
+
+If \(W\) is represented in binary, then the number of bits needed to represent \(W\) is \(j = \log W\). Hence \(W = 2^j\), and the running time \(O(nW)\) can be written as \(O(n2^j)\). This is exponential in the input length \(j\).
+
+Therefore, the dynamic programming algorithm is pseudo-polynomial, not polynomial in the true input size.
+
+* Q4. Prove that 0/1 Knapsack is in NP
+
+** 预测概率
+极高。Lecture 11 明确讲了 certificate。
+
+** 题目描述
+Consider the decision version of 0/1 Knapsack.
+
+Input: items with weights \(w_i > 0\) and benefits \(b_i > 0\), a maximum weight \(W\), and an integer \(k\).
+
+Question: Is there a subset of items whose total weight is at most \(W\) and whose total benefit is at least \(k\)?
+
+** 问题
+Prove that 0/1 Knapsack is in NP.
+
+** 解析
+证明一个问题在 NP，套路永远是：
+
+1. 假设别人给你一个 certificate。
+2. 说明这个 certificate 是什么。
+3. 说明怎么在多项式时间检查它。
+
+这里 certificate 就是“选了哪些物品”的集合。
+
+检查：
+- 把选中物品的重量加起来，看是否 \(\le W\)。
+- 把选中物品的 benefit 加起来，看是否 \(\ge k\)。
+- 加法遍历所有物品一次，所以是 \(O(n)\)，多项式时间。
+
+** 正式解答（English）
+
+To prove that 0/1 Knapsack is in NP, we give a polynomial-time verifier.
+
+For a given instance, a certificate is a subset of items claimed to be the chosen knapsack items. The verifier computes the total weight and total benefit of this subset. It then checks whether the total weight is at most \(W\) and whether the total benefit is at least \(k\).
+
+This verification requires scanning the items and adding their weights and benefits, which takes polynomial time in the number of items. Therefore, a proposed solution can be verified in polynomial time, so the decision version of 0/1 Knapsack is in NP.
+
+* Q5. Efficient certifier and certificate
+
+** 预测概率
+中高。可能作为短答题出现。
+
+** 题目描述
+In NP, we often talk about certificates and efficient certifiers.
+
+** 问题
+What is a certificate? What is an efficient certifier? Give one example.
+
+** 解析
+certificate 就是“证明 yes 的证据”。
+
+例如：
+- COMPOSITE 问题：问整数 \(s\) 是否是合数。
+- certificate 可以是一个因子 \(t\)，满足 \(1 < t < s\) 且 \(t\) divides \(s\)。
+- 检查除法很快，所以这是 efficient certifier。
+
+注意：certificate 只需要证明 yes-instance。对于 no-instance，不一定有 certificate。
+
+** 正式解答（English）
+
+A certificate is additional information that proves that the answer to a decision problem instance is yes. An efficient certifier is a polynomial-time algorithm that takes the original input and the certificate, and checks whether the certificate proves a yes-instance.
+
+For example, in the COMPOSITE problem, the input is an integer \(s\), and the question is whether \(s\) is composite. A certificate can be an integer \(t\) such that \(1 < t < s\) and \(t\) divides \(s\). The verifier checks that \(t\) is a nontrivial factor of \(s\), which can be done in polynomial time. Hence COMPOSITE has an efficient certifier.
+
+* Q6. Polynomial-time reduction and how to prove NP-completeness
+
+** 预测概率
+极高。Lecture 11 和 Lecture 12 都强调了这个证明模板。
+
+** 题目描述
+Suppose we have a new decision problem \(X\), and we want to prove that \(X\) is NP-complete.
+
+** 问题
+Explain what a polynomial-time reduction is. Then describe the standard method for proving that a problem \(X\) is NP-complete.
+
+** 解析
+规约是 NP-complete 的核心。
+
+\(Y \le_p X\) 的意思是：
+我们能在多项式时间内把 \(Y\) 的输入变成 \(X\) 的输入，并且答案保持一致：
+
+\[
+s \in Y \iff f(s) \in X
+\]
+
+证明 \(X\) 是 NP-complete 的模板：
+
+1. 证明 \(X \in NP\)。
+2. 选一个已知 NP-complete 的问题 \(Y\)。
+3. 证明 \(Y \le_p X\)。
+
+为什么不是 \(X \le_p Y\)？
+因为你要证明 \(X\) 难，所以要把已知难题 \(Y\) 变成 \(X\)。意思是：“如果我能解 \(X\)，我就能解 \(Y\)，所以 \(X\) 至少和 \(Y\) 一样难。”
+
+** 正式解答（English）
+
+A language \(L\) is polynomial-time reducible to a language \(M\), written \(L \le_p M\), if there exists a polynomial-time computable function \(f\) such that for every input string \(s\),
+\[
+s \in L \iff f(s) \in M.
+\]
+This means that an instance of problem \(L\) can be transformed into an instance of problem \(M\) in polynomial time, while preserving the yes/no answer.
+
+To prove that a new problem \(X\) is NP-complete, we use two steps. First, prove that \(X \in NP\), usually by giving a polynomial-time verifier. Second, choose a known NP-complete problem \(Y\), and prove \(Y \le_p X\). This shows that \(X\) is NP-hard. Since \(X\) is both in NP and NP-hard, \(X\) is NP-complete.
+
+* Q7. Prove that Vertex Cover is in NP
+
+** 预测概率
+极高。Lecture 11 和 12 都讲了。
+
+** 题目描述
+Vertex Cover:
+
+Input: an undirected graph \(G=(V,E)\) and an integer \(k\).
+
+Question: Does \(G\) contain a vertex cover \(C\) of size at most \(k\)?
+
+** 问题
+Prove that Vertex Cover is in NP.
+
+** 解析
+Vertex Cover 是点覆盖：
+选一些点，使得每条边至少有一个端点被选中。
+
+证明在 NP：
+- certificate 是一个点集合 \(C\)。
+- 检查 \(|C| \le k\)。
+- 对每条边 \((u,v)\)，检查 \(u \in C\) 或 \(v \in C\)。
+- 遍历所有边，时间 \(O(|V|+|E|)\)，多项式。
+
+** 正式解答（English）
+
+Vertex Cover is in NP because a proposed vertex cover can be verified in polynomial time.
+
+Given a certificate \(C \subseteq V\), the verifier first checks whether \(|C| \le k\). Then, for every edge \((u,v) \in E\), it checks whether \(u \in C\) or \(v \in C\). If every edge has at least one endpoint in \(C\), then \(C\) is a valid vertex cover.
+
+This verification takes \(O(|V|+|E|)\) time, which is polynomial in the size of the graph. Therefore, Vertex Cover is in NP.
+
+* Q8. Prove Vertex Cover is NP-complete using reduction from 3-SAT
+
+** 预测概率
+最高。Lecture 12 的核心大题就是这个。
+
+** 题目描述
+Given a 3-SAT formula \(\phi\) with \(n\) variables and \(m\) clauses, reduce it to an instance of Vertex Cover.
+
+** 问题
+Show that Vertex Cover is NP-complete by reducing 3-SAT to Vertex Cover.
+
+** 解析
+这是最像考试大题的内容。你要背结构。
+
+证明分两部分：
+
+1. VC 在 NP：用 Q7 的答案。
+2. 证明 VC 是 NP-hard：从 3-SAT 规约到 VC。
+
+构造图：
+
+变量 gadget：
+- 对每个变量 \(x_i\)，建两个点：\(x_i\) 和 \(\bar{x_i}\)。
+- 连一条边 \((x_i, \bar{x_i})\)。
+- 点覆盖必须至少选其中一个。
+
+子句 gadget：
+- 对每个 clause \(C_j = (l_{j1} \vee l_{j2} \vee l_{j3})\)，建一个三角形，三个点分别代表三个 literal。
+- 三角形的最小 vertex cover 大小是 2。
+- 每个 clause 点连接到对应的 literal 变量点。
+
+设置：
+\[
+k = n + 2m
+\]
+
+直觉：
+- 每个变量边至少要选 1 个点，所以一共至少 \(n\) 个。
+- 每个 clause 三角形至少要选 2 个点，所以一共至少 \(2m\) 个。
+- 所以刚好 \(n+2m\) 的 cover 必须是每个变量选一个、每个 clause 选两个。
+
+如果 3-SAT 可满足：
+- 对每个变量，根据 truth assignment 选变量 gadget 里的一个点。
+- 对每个 clause，因为至少一个 literal 为 true，所以 clause 三角形里留下那个 true literal 对应的点不选，选另外两个点。
+- 所有边都被覆盖，总大小 \(n+2m\)。
+
+如果 VC 有大小 \(n+2m\)：
+- 每个变量 gadget 必须刚好选一个点。
+- 每个 clause 三角形必须刚好选两个点，所以每个 clause 有一个没选的点。
+- 这个没选的 clause 点连出去的那条边必须由变量点覆盖，因此对应 literal 为 true。
+- 所以每个 clause 至少一个 true literal，公式满足。
+
+还要说构造是多项式：
+- 点数 \(2n+3m\)。
+- 边数 \(n+6m\)。
+- 线性规模，所以 polynomial。
+
+** 正式解答（English）
+
+First, Vertex Cover is in NP, because given a set \(C\) of vertices, we can check in polynomial time whether \(|C| \le k\) and whether every edge has at least one endpoint in \(C\).
+
+To prove NP-hardness, we reduce 3-SAT to Vertex Cover. Let \(\phi\) be a 3-SAT formula with \(n\) variables and \(m\) clauses.
+
+For each variable \(x_i\), create two vertices \(x_i\) and \(\bar{x_i}\), and add an edge between them. This is the variable gadget. Any vertex cover must choose at least one of these two vertices.
+
+For each clause \(C_j=(l_{j1}\vee l_{j2}\vee l_{j3})\), create three vertices corresponding to its three literals and connect them as a triangle. This is the clause gadget. A triangle requires at least two vertices to cover all its internal edges. Also connect each clause vertex to the corresponding literal vertex in the variable gadget.
+
+Set
+\[
+k = n + 2m.
+\]
+
+If \(\phi\) is satisfiable, choose one vertex from each variable gadget according to a satisfying assignment. For each clause, at least one literal is true, so leave the corresponding clause vertex unchosen and choose the other two vertices in the triangle. This covers all variable edges, all triangle edges, and all literal-clause edges. The total number of selected vertices is \(n+2m\), so the graph has a vertex cover of size at most \(k\).
+
+Conversely, suppose the constructed graph has a vertex cover of size \(k=n+2m\). Each variable gadget needs at least one selected vertex, and each clause triangle needs at least two selected vertices. Therefore, the cover must choose exactly one vertex from each variable gadget and exactly two vertices from each clause triangle. In every clause triangle, one vertex is not selected. The edge from this unselected clause vertex to its corresponding literal vertex must be covered by the variable vertex, so the corresponding literal is true. Hence every clause has at least one true literal, and \(\phi\) is satisfiable.
+
+The construction has \(2n+3m\) vertices and \(n+6m\) edges, so it is computable in polynomial time. Since 3-SAT is NP-complete and \(3\text{-SAT} \le_p VC\), Vertex Cover is NP-hard. Together with \(VC \in NP\), Vertex Cover is NP-complete.
+
+* Q9. CNF-SAT and 3-SAT definitions
+
+** 预测概率
+中高。可能作为 VC 证明前的小问。
+
+** 题目描述
+Boolean satisfiability problems are central examples of NP-complete problems.
+
+** 问题
+Define CNF-SAT and 3-SAT. What does it mean for a formula to be satisfiable?
+
+** 解析
+CNF 是“and of clauses”。
+
+每个 clause 是一堆 literal 的 OR。
+
+3-SAT 是特殊 CNF：每个 clause 正好 3 个 literal。
+
+literal 是变量或变量的否定，比如 \(x_1\) 或 \(\neg x_1\)。
+
+satisfiable 意思是：存在一组 true/false 赋值，让整个公式为 true。
+
+** 正式解答（English）
+
+CNF-SAT is the problem of deciding whether a Boolean formula in conjunctive normal form is satisfiable. A CNF formula is an AND of clauses, where each clause is an OR of literals. A literal is either a variable or the negation of a variable.
+
+3-SAT is the special case of CNF-SAT in which each clause contains exactly three literals.
+
+A formula is satisfiable if there exists a truth assignment to its variables such that the whole formula evaluates to true.
+
+* Q10. Approximation ratio, PTAS, and FPTAS
+
+** 预测概率
+高。Lecture 12 后半部分重要基础定义。
+
+** 题目描述
+For NP-hard optimization problems, we often use approximation algorithms.
+
+** 问题
+Define approximation ratio. Also define PTAS and FPTAS.
+
+** 解析
+NP-hard 优化问题通常找不到快速最优解，所以退一步找近似解。
+
+minimization 问题：
+\[
+\frac{c(T)}{c(OPT)} \le k
+\]
+
+maximization 问题：
+\[
+\frac{c(OPT)}{c(T)} \le k
+\]
+
+这里 \(k \ge 1\)。越接近 1 越好。1-approximation 就是最优解。
+
+PTAS：
+- 输入 \(\epsilon > 0\)。
+- 对任意固定 \(\epsilon\)，给出 \((1+\epsilon)\)-approximation。
+- 运行时间对 \(n\) 是 polynomial，但可以很依赖 \(\epsilon\)。
+
+FPTAS：
+- 不仅对 \(n\) polynomial，对 \(1/\epsilon\) 也 polynomial。
+
+** 正式解答（English）
+
+For a minimization problem, an algorithm has approximation ratio \(k\) if for every input instance,
+\[
+\frac{c(T)}{c(OPT)} \le k,
+\]
+where \(T\) is the solution produced by the algorithm and \(OPT\) is an optimal solution.
+
+For a maximization problem, the ratio is usually written as
+\[
+\frac{c(OPT)}{c(T)} \le k.
+\]
+The value of \(k\) is at least 1, and a 1-approximation algorithm always returns an optimal solution.
+
+A PTAS is a polynomial-time approximation scheme. It is an algorithm that takes \(\epsilon > 0\) as input and, for any fixed \(\epsilon\), produces a \((1+\epsilon)\)-approximation in polynomial time.
+
+An FPTAS is a fully polynomial-time approximation scheme. Its running time is polynomial both in the input size \(n\) and in \(1/\epsilon\).
+
+* Q11. Approx-Vertex-Cover algorithm and 2-approximation proof
+
+** 预测概率
+极高。Lecture 12 中间的核心算法证明。
+
+** 题目描述
+Consider the following approximation algorithm for Vertex Cover:
+
+Repeatedly choose an uncovered edge \((u,v)\), add both \(u\) and \(v\) to the cover, and remove all edges incident to \(u\) or \(v\).
+
+** 问题
+Prove that this algorithm is a 2-approximation algorithm for Vertex Cover.
+
+** 解析
+这题一定要会。证明的核心是“被选中的边互不共享端点”。
+
+算法每次选一条还没覆盖的边，然后把两个端点都加入 \(C\)。
+
+设 \(A\) 是算法选过的边的集合。
+
+关键：
+- \(A\) 里面的边互不相交，因为一条边被选中后，所有和它共享端点的边都被删除了。
+- 任何 vertex cover 都必须覆盖 \(A\) 里的每条边。
+- 因为 \(A\) 的边互不共享端点，所以最优解至少要为每条边选一个点：
+\[
+|A| \le |C^*|
+\]
+- 算法每条边选两个端点，所以：
+\[
+|C| = 2|A|
+\]
+- 因此：
+\[
+|C| = 2|A| \le 2|C^*|
+\]
+
+所以是 2-approximation。
+
+** 正式解答（English）
+
+Let \(C\) be the vertex cover returned by the algorithm, and let \(C^*\) be an optimal vertex cover. Let \(A\) be the set of edges chosen by the algorithm.
+
+No two edges in \(A\) share an endpoint. This is because whenever the algorithm chooses an edge \((u,v)\), it adds both endpoints to \(C\) and removes all edges incident to \(u\) or \(v\). Therefore, no later chosen edge can share an endpoint with \((u,v)\).
+
+Any vertex cover must cover every edge in \(A\). Since the edges in \(A\) are pairwise disjoint, covering them requires at least one distinct vertex for each edge. Hence
+\[
+|A| \le |C^*|.
+\]
+
+The algorithm adds exactly two vertices for each edge in \(A\), so
+\[
+|C| = 2|A|.
+\]
+Combining the inequalities gives
+\[
+|C| = 2|A| \le 2|C^*|.
+\]
+
+Therefore, the algorithm returns a vertex cover whose size is at most twice the optimal size. Hence it is a 2-approximation algorithm for Vertex Cover.
+
+* Q12. Triangle inequality TSP 2-approximation
+
+** 预测概率
+极高。Lecture 12 末尾大块内容。
+
+** 题目描述
+In the Traveling Salesperson Problem with triangle inequality, the cost function satisfies
+\[
+c(u,v) \le c(u,w) + c(w,v)
+\]
+for all vertices \(u,v,w\).
+
+** 问题
+Describe the approximation algorithm for triangle inequality TSP and prove that it is a 2-approximation.
+
+** 解析
+算法：
+1. 找 MST。
+2. 从某个根开始 preorder traversal。
+3. 按第一次访问顶点的顺序形成 Hamiltonian cycle。
+
+证明：
+
+设：
+- \(T\)：MST。
+- \(H\)：算法得到的 tour。
+- \(H^*\)：最优 TSP tour。
+- \(W\)：沿 MST 每条边走两遍得到的 walk。
+
+第一步：
+最优 tour \(H^*\) 删掉任意一条边，会变成一棵 spanning tree。
+MST 是最便宜的 spanning tree，所以：
+\[
+c(T) \le c(H^*)
+\]
+
+第二步：
+walk \(W\) 每条 MST 边走两次：
+\[
+c(W)=2c(T)
+\]
+
+第三步：
+preorder tour \(H\) 是从 \(W\) 跳过重复顶点得到的。因为 triangle inequality，直接跳过去不会更贵：
+\[
+c(H) \le c(W)
+\]
+
+合起来：
+\[
+c(H) \le c(W)=2c(T) \le 2c(H^*)
+\]
+
+所以是 2-approximation。
+
+** 正式解答（English）
+
+The approximation algorithm for TSP with triangle inequality is:
+
+1. Compute a minimum spanning tree \(T\) of the complete weighted graph.
+2. Perform a preorder traversal of \(T\), starting from any root.
+3. Visit the vertices in the order of their first appearance in the preorder traversal, and return to the start to form a Hamiltonian cycle \(H\).
+
+Let \(H^*\) be an optimal TSP tour. If we remove any edge from \(H^*\), we obtain a spanning tree. Since \(T\) is a minimum spanning tree,
+\[
+c(T) \le c(H^*).
+\]
+
+Now consider the walk \(W\) that traverses every edge of \(T\) exactly twice. Its cost is
+\[
+c(W)=2c(T).
+\]
+
+The tour \(H\) is obtained from \(W\) by skipping repeated vertices. By the triangle inequality, going directly between two unvisited vertices cannot cost more than going through the skipped vertices. Therefore,
+\[
+c(H) \le c(W).
+\]
+
+Combining these inequalities,
+\[
+c(H) \le c(W)=2c(T) \le 2c(H^*).
+\]
+
+Thus the algorithm produces a tour whose cost is at most twice the optimal cost, so it is a polynomial-time 2-approximation algorithm for TSP with triangle inequality.
+
+* Q13. General TSP has no constant-factor approximation if P != NP
+
+** 预测概率
+中高。Lecture 12 explicitly states this theorem.
+
+** 题目描述
+The triangle inequality TSP has a 2-approximation algorithm. However, the unrestricted general TSP is harder.
+
+** 问题
+State the approximation hardness result for the general TSP.
+
+** 解析
+有 triangle inequality 的 TSP 可以 2-approx。
+
+但是一般 TSP 没有这种保证。课件里的结论是：
+
+如果 \(P \ne NP\)，那么对于任意常数 \(k \ge 1\)，general TSP 都不存在 polynomial-time \(k\)-approximation algorithm。
+
+换句话说：general TSP 连固定倍数近似都做不到，除非 P=NP。
+
+** 正式解答（English）
+
+For the general unrestricted Traveling Salesperson Problem, if \(P \ne NP\), then for any constant \(k \ge 1\), there is no polynomial-time approximation algorithm with approximation ratio \(k\).
+
+This contrasts with the triangle inequality TSP, which admits a polynomial-time 2-approximation algorithm. The triangle inequality is essential for the shortcutting argument used in the approximation proof.
+
+* Q14. What to do when a problem is NP-hard?
+
+** 预测概率
+中。适合短答题或结尾问。
+
+** 题目描述
+Many practical optimization problems are NP-hard.
+
+** 问题
+If your problem is NP-hard, what strategies can you use?
+
+** 解析
+课件最后总结了三种思路：
+
+1. 用指数时间算法，但只处理小规模输入。
+2. 限制问题到特殊情况，比如 DAG 上的问题可能更简单。
+3. 放弃最优性，使用 approximation algorithm 或 heuristic。
+
+这题不需要复杂证明，写清楚即可。
+
+** 正式解答（English）
+
+If a problem is NP-hard, common strategies include the following.
+
+First, we may use an exponential-time exact algorithm and restrict ourselves to small input instances. Second, we may look for special cases of the problem that can be solved in polynomial time, such as restricting a graph problem to DAGs. Third, we may give up optimality and design approximation algorithms or heuristics that produce good enough solutions in polynomial time.
+
+* Q15. Cook-Levin theorem and Circuit-SAT
+
+** 预测概率
+中高。Lecture 11 末尾讲了 Cook-Levin，可能考短答。
+
+** 题目描述
+Circuit-SAT asks whether a Boolean circuit has an input assignment that makes the output equal to 1.
+
+** 问题
+State the Cook-Levin theorem. Explain why Circuit-SAT is in NP.
+
+** 解析
+Cook-Levin theorem：
+Circuit-SAT 是 NP-complete。
+
+证明 Circuit-SAT 在 NP：
+- certificate 是所有输入变量的赋值。
+- 也可以包含每个 gate 的输出值。
+- verifier 检查每个 gate 的输出是否符合 AND/OR/NOT。
+- 最后检查整个 circuit output 是否为 1。
+- gate 数量有限，逐个检查是 polynomial time。
+
+NP-hard 部分课件说证明复杂，只需要知道“任何 NP 问题都能被 polynomial-size Boolean circuit 模拟”。
+
+** 正式解答（English）
+
+The Cook-Levin theorem states that Circuit-SAT is NP-complete.
+
+Circuit-SAT is in NP because a certificate can be an assignment of truth values to the input variables, together with the values of the gates. A polynomial-time verifier checks whether each gate output is consistent with its Boolean function, such as AND, OR, or NOT, and then checks whether the final output of the circuit is 1.
+
+The number of gates is the size of the circuit, so checking all gates takes polynomial time. Therefore, Circuit-SAT is in NP.
+
+The NP-hardness part of the Cook-Levin theorem states that every problem in NP can be reduced to Circuit-SAT in polynomial time.
+
+* Q16. Transitivity of polynomial-time reductions
+
+** 预测概率
+中。Lecture 11 includes the lemma.
+
+** 题目描述
+Polynomial-time reductions are used to transfer hardness from one problem to another.
+
+** 问题
+Suppose \(L_1 \le_p L_2\) and \(L_2 \le_p L_3\). What can we conclude? Why?
+
+** 解析
+结论：
+\[
+L_1 \le_p L_3
+\]
+
+原因：
+如果 \(L_1\) 能多项式时间变成 \(L_2\)，而 \(L_2\) 能多项式时间变成 \(L_3\)，那把两个转换接起来就是 \(L_1\) 到 \(L_3\) 的转换。
+
+两个 polynomial-time function 的组合还是 polynomial-time。
+
+** 正式解答（English）
+
+If \(L_1 \le_p L_2\) and \(L_2 \le_p L_3\), then \(L_1 \le_p L_3\).
+
+This is because there is a polynomial-time computable function transforming instances of \(L_1\) into instances of \(L_2\), and another polynomial-time computable function transforming instances of \(L_2\) into instances of \(L_3\). Composing these two functions gives a polynomial-time transformation from \(L_1\) to \(L_3\). Therefore, polynomial-time reducibility is transitive.
+
+* 最后一页速记
+
+** NP-complete 证明模板
+
+Formal answer skeleton:
+
+#+begin_quote
+To prove that \(X\) is NP-complete, we first show that \(X \in NP\) by giving a polynomial-time verifier. Then we choose a known NP-complete problem \(Y\) and construct a polynomial-time reduction \(Y \le_p X\). Therefore \(X\) is NP-hard. Since \(X\) is both in NP and NP-hard, \(X\) is NP-complete.
+#+end_quote
+
+** VC 证明数字
+
+- 3-SAT variables: \(n\)
+- 3-SAT clauses: \(m\)
+- VC target size: \(k=n+2m\)
+- vertices: \(2n+3m\)
+- edges: \(n+6m\)
+
+** Approx-VC 证明数字
+
+- \(A\): selected edges
+- \(C\): algorithm cover
+- \(C^*\): optimal cover
+- \(|A| \le |C^*|\)
+- \(|C| = 2|A|\)
+- \(|C| \le 2|C^*|\)
+
+** Metric TSP 证明链
+
+\[
+c(T) \le c(H^*), \quad c(W)=2c(T), \quad c(H)\le c(W)
+\]
+
+Therefore:
+
+\[
+c(H) \le c(W)=2c(T)\le 2c(H^*)
+\]
+

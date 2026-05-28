@@ -1,0 +1,60 @@
+* Linear Congruence
+Equations of the form *ax === b (mod n)* might have not solution or a limited number of solutions.
+** NOTE:
+Assume that the gcd(a, n) = d
+- if d-|b, there is no solution.
+- if d|b, there are d solutions.
+*** Example:
+- solve the equation: 10x === 3 (mod 15)
+  a = 10, b = 3, n = 15
+  d = gdc(10 ,15) = 5
+  cause d = 5, b = 3, 5 does not divide 3, therefore 
+  there is no solution for the equation: 10x === 3 (mod 15)
+- solvae the equation: 14x === 12 (mod 18)
+  a = 14, b = 12, n = 18
+  d = gcd(14, 18) = 2
+  cuase' d=2, b = 12, 2 divieds 12, there fore there are 2 solutions for the equation: 14x === 12 (mod 18)
+  or 
+  14x === 12 (mod 18) => 7x === 6 (mod 9) => x === 6 *7^(-1) (mod 9)
+  to find the 7^(-1) (mod 9), we can use the extended Euclidean algorithm, we have:
+#+BEGIN_src python
+r1, r2 = n, b;
+t1, t2 = 0, 1;
+while r2 > 0:
+    q = r1 // r2
+
+    # updating r1 r2
+    r = r1 - q * r2; 
+    r1 = r2; r2 = r;
+    # updating t1, t2
+    t = t1 - q * t2;
+    t1 = t2; t2 = t;
+if (r1 = 1): 
+    return t1 mod n
+else:
+    return "b does not have multiplicative inverse in Zn"
+#+END_src
+we have r1 = 9, r2 = 7, t1 = 0, t2 = 1
+1. step 1: r2 > 1
+   q = r1 // r2 = 9 // 7 = 1
+   r1 = r2 = 7, r2 = r1 - q * r2 = 9 - 1 * 7 = 2
+   t = t1 - q * t2 = 0 - 1 * 1 = -1
+   t1 = t2 = 1, t2 = t = -1
+2. step 2: r2 = 2 > 0
+   q = r1 // r2 = 7 // 2 = 3
+   r1 = r2 = 2, r2 = 1
+   t = t1 - q * t2 = 1 - 3 * (-1) = 4
+   t1 = t2 = -1, t2 = t = 4
+3. step 3: r2 = 1 > 0
+   q = r1 // r2 = 2 // 1 = 2
+   r1 = r2 = 1, r2 = 0
+   t = t1 - q * t2 = -1 - 2 * 4 = -9
+   t1 = t2 = 4, t2 = t = -9
+cause' r2 = 0, we stop, r1 = 1
+return t1 mod n = 4 mod 9 = 4
+7^(-1) (mod 9) = 4
+therfore, x0 = (6 * 4) mod 9 = 6
+x1 = x0 + 1 * (18 / 2) = 15
+
+
+

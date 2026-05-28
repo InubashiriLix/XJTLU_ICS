@@ -1,0 +1,212 @@
+* Cryptography
+** Basic Definitions / Denotions
+Plaintext (M): the original msg 
+Ciphertext (C): the encrypted msg
+Encryption: Locking hte msg (plaintext -> ciphertext)
+Decryption: Unlocking the msg (ciphertext -> plaintext)
+
+** Subtitution Cipher
+the secret key is a permutation π of the characters of the alphabet. (For example, each A gets replaced by the letter D, each B gets replaced by the letter H, etc.)
+encryption of the plain text M is accomplished by mapping each characters x with its corresponding character y = π(x)
+Decrypting the cipher text C is easily accomlished with knowledge of the permutation π, by mapping each character y in C with its corresponding character x = π^-1(y)
+
+** Caesar Cipher
+Shift letters by a secret number (Key K): Each letter inthe msg is replace d by another letter k position down the alphabet.
+y = (x + k) mod n
+- x = Original letter
+- k = Secret key (number of positions to shift)
+- mod 26 = Wraps around after Z (e.g, Z + 3 -> C)
+  example, K = 3, plaintext: HELLO => KHOOR
+*** Statistical Attact
+based on the stattistical knowledge about the plain text language, such as
+- frequency of letters
+- diagrams: th, in, er, re, an
+- trigrams: the, and, ing, her, are, ion
+  
+** XOR ⊕
+异或, a binary operation that takes two bits and returns 1 if they are different, and 0 if they are the same.
+note: 0 ⊕ 0 = 1 ⊕ 1 = 0 and 0 ⊕ 1 = 1 ⊕ 0 = 1
+
+** One-time Pad
+let plain-text M, ciphertext C, and key K be the string of bits (0s and 1s) of the same length with plain-text M
+- encryption: C = M XOR K 
+- decryption: M = C XOR K
+for example: M = 101100, K = 011010
+C = M XOR K = 110110
+M = C XOR K = 101100
+
+*** Another expreesion
+msg m is plaintext 
+common secret-key k
+m = m1m2m3m4m5...mn
+k = k1k2k3k4k5...kn
+- encryption:
+  c = m⊕k = (m1⊕k1)(m2⊕k2)(m3⊕k3)(m4⊕k4)(m5⊕k5)...(mn⊕kn)
+  that is, c = (mi + mk) mod 2
+- decryption:
+  m = c⊕k = (c1⊕k1)(c2⊕k2)(c3⊕k3)(c4⊕k4)(c5⊕k5)...(cn⊕kn)
+  or C ⊕ K = (M ⊕ K)
+*** NOTE:
+the secret pad is generated randomly, and is as long as the message.
+and secret will not be used again
+**** Advantages:
+Computataionally efficient since the bitwise exculsive-or is easy to compute
+very secure
+**** Disadvantages:
+- Alice and Bob must share a very long key K.
+- Security depends on the fact that the kye is used only once
+
+** Public-key Cryptography
+the symmetric encryption schemes is key distribution -> how to securely distribute the secret keys.
+
+the public-key cryptosystem consists of 
+- an encryption function E 
+- a decryption fucntion D
+For any message M, the following properties must hold:
+- D(E(M)) = M
+- Both E and D are easy to compute
+- It is computationally infeasible to derive D from E
+- E(D(M)) = M
+- knowledge of encryption method gives no information about the decryption scheme
+  any body can send a private message to the holder of the function D, but only that person knows how to decrypt it.
+  for this reason E is referred to as a one-way function.
+  in this kind of encrytpion method E is made public and D is kept private.
+  #+BEGIN_src text
+            public key E            private key D
+                 |                         |
+                 v                         v
+  plaintext -> encrypt -> ciphertext -> decrypt -> plaintext
+  #+END_src
+- one possible approch:
+  - C = M x e mod n
+  - M = C x d mod n
+  if d === e^-1 mod n, the encryption and decryption functions are inverses of each other, and the system works.
+  however, computing modular multiplicative inverse is easy, so this code is not secure and it was never used.
+- another possible approach: 
+  C = M^e mod n
+  M = C^d mod n
+  can we choose e, n and d, such that for every integer 0 <= x < n
+  we have x^ed === x (mod n)
+  It should be computationally infeasible to derive d from e and n
+
+*** for example, 
+n = 33, e = 3, d = 7, M = 4
+public key: (e, n) = (3, 33)
+private key: (d, n) = (7, 33)
+- encryption:
+  C = M^e mod n = 4^3 mod 33 = 64 mod 33 = 31
+- decryption: 
+  M = C^d mod n = 31^7 mod 33
+  because 31^7 === -2^7 mod 33 [1]
+  M = -128 mod 33 = 4
+
+  [1] proof:
+  31^7 mod 33 = (31 mod 33)^7 mod 33 
+  while -2 mod 33 === 31 mod 33
+  so 31^7 mod 33 = (-2)^7 mod 33
+  
+** RSA Encryption Scheme
+the method is tied to hte difficulty of factoring large numbers. The first step is to select two large prime numbers p and q. 
+let n = p*q and define φ(n) = (p - 1)(q - 1)
+we then choose two numbers e and d such that 
+1. e and φ(n) are relatively prime, i.e. gcd(e, φ(n)) = 1
+2. ed === 1 (mod φ(n)) (by extended Euclidena algorithm) -> e is the multiplicative inverse of d mod φ(n).
+the pair of values e and n form public key and d is the private key.
+about the ed === 1 (mod φ(n)) condition, we can prove it by Fermat's little theorem:
+
+** Fermat's little Theorem:
+let p be prime, and let x be an integer such that x mod p != 0, then x^(p-1) === 1 (mod p)
+that is, if p is prime and x is not divisible by p, then x^(p-1) mod p = 1
+x^(5-1) = x^4 mod 5 = 1
+
+*** example: 2^103 mod 5' value: 
+because 2^103 = 2^(4*25 + 3) = ( (2^4)^25 * 2^3 ) mod 5 = [(2^4 mod 5)^25 mod 5  * 2^3 mod 5] mod 5 [1]
+since 2^4 mod 5 = 1
+[1] = (1^25 mod 5 * 2^3 mod 5) mod 5 = (1 * 8) mod 5 = 3
+or expanding computing: [1] = ( 1 * 8 mod 5 ) mod 5 = 3 mod 5 = 3 ????
+*** Proof:
+let p be a prime, for each nonzero residue x of Zp', the multiplicative inverse of x is x^p-2 mod p
+proof: 
+so we should prove this expression: x * x^p-2 === 1 (mod p) or x * x^p-2 mod p = 1
+x * x^p-2 mod p = x^p-1 mod p and x is not divisible by p, so x^p-1 mod p = 1 (by Fermat's little theorem)
+
+** Euler function:
+*x^φ(n) === 1 mod n*
+The multiplicative group for Zn' denoted by Zn*, is the sub set of elements of Zn relatively prime with n
+the totient function of n, denoted by φ(n), is the size of Zn*
+waht is relative prime: gcd(a, n) = 1, which means there is only 1 as the common factor between a and n
+if we have Z10, then Z10* = {1, 3, 7, 9}
+φ(n) is how many elements in Zn that are relatively prime with n, that is, the size of Zn*
+for example, φ(10) = 4, because there are 4 element s in Z10* = {1, 3, 7, 9}
+- noted that, multiplicative group Zn* means that the elements in Zn* can find another element in the Zn* / it self is the a * b mod n = 1
+- if p is prime, we have Zp*  = { 1, 2. ..., p - 1} and p(p) = p - 1
+*** The general formula to compute φ(n):
+if n = p1^e1 * ... pn^en (where p1, ..., pn are distinct prime factors of n),
+then φ(n) = n * (1 - 1/p1) * (1 - 1/p2) * ... * (1 - 1/pn)
+*** Example:
+15 = 3 x 5 
+then φ(15) = 15 * (1 - 1/3) * (1 - 1/5) = 15 * (2/3) * (4/5) = 8
+Z4* = {1. 2. 3}
+
+** 妈的好难先到这吧我先小苹果了, 下面就是RSA算法的速通了
+- fermat's little theorem: if p is prime and x is not divisible by p, then x^(p-1) mod p = 1
+- euler's function: φ(n) = size of Zn* = how many elements in Zn that are relatively prime with n
+  if n = p1^e1 * ... pn^en (where p1, ..., pn are distinct prime factors of n),
+  then φ(n) = n * (1 - 1/p1) * (1 - 1/p2) * ... * (1 - 1/pn)-1
+- in RSA: n = pq, so φ(n) = n * (1 - 1/p) * (1 - 1/q) = pq * (p-1)/p * (q-1)/q = (p-1)(q-1)
+- RSA's setup: 
+  given two large prime number p and q, compute n = pq and φ(n) = (p-1)(q-1)
+- RSA's keys:
+  ed === 1 (mod φ(n)) 
+- public key: (e, n)
+- private key: (d, n)
+- encryption: C = M^e mod n
+- decryption: M = C^d mod n
+
+
+** Modular Exxponentiation (模指数运算):
+无敌了这么方便的思路放在ppt快结束的地方说
+how to computing the expression like x^k mod n?
+- naive approach: accumulate the result by multiplying x by itself k times, and take the mod n at each step
+  time complexity: O(k)
+- more efficient approach:
+  x^ 2 = x * x
+  x^4 = (x^2)^2
+  x^8 = (x^4)^2
+  x^16 = (x^8)^2
+  then the complexity from O(k) to O(log k) 
+
+  94 = 0b1011110 (binary representation of 94)
+  that is 94 = 2^6 + 2^4 + 2^3 + 2^2 + 2^1 
+- example: 3^94 mod 17
+  we could transform into
+  3^94 mod 17 = 3^(2^6 + 2^4 + 2^3 + 2^2 + 2^1) mod 17
+  = (3^(2^6) * 3^(2^4) * 3^(2^3) * 3^(2^2) * 3^(2^1)) mod 17
+  = [(3^(2^6)) mod 17 * (3^(2^4)) mod 17 * (3^(2^3)) mod 17 * (3^(2^2)) mod 17 * (3^(2^1)) mod 17] mod 17
+  //#[derive(mod 170)]
+  1. 3^2 === 9
+  2. 3^4 === 9^2 === 81 === 13 === -4
+  3. since 3^4 === -4, therfore 3^8 === (-4)^2 === 16 === -1
+  4. since 3^8 === -1, therefore 3^16 === (-1) ^ 2 === 1
+  5. since 3^16 === 1, therefore 3^32 === 1^2 === 1
+  6. since 3^32 === 1, therefore 3^64 === 1^2 === 1
+  then we have 
+  3^2 === 9, 3^4 === -4, 3^8 === -1, 3^16 === 1, 3^32 === 1, 3^64 === 1
+  therefore, 3^94 === 9 * (-4) * (-1) * 1 * 1 === 36 === 2
+  thereforem 3^94 mod 17 = 2 mod 17 = 2
+
+** Digital Signatures
+RSA cryptosystem supports digital signatures. Suppose that
+Bob sends a message M to Alice and that Alice wants toverify
+that it was Bob who sent it. Bob can create a signature using
+the decryption function applied to M:
+S ← Md mod n.
+Alice verifies the digital signature using the encryption function,
+that is by checking that
+M ≡ S^e (mod n).
+Since only Bob knows the decryption function, this will verify
+that it was indeed Bob who sent the message. (Of course, any
+person can use the encryption function as well to reconstruct
+the message M, so this is not a method to secretly pass
+information from Bob to Alice.)
+

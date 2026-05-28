@@ -1,0 +1,126 @@
+* Modular Arithmetic
+The division relationship (a = q * n + r) discussed in the previous section has two inputs (a and n) and two outpus (q and r). In modular arithmetic, we are interested in only one of the outputs, the remaineder r;
+like a mod n = r (r is non-negative)
+** Set of Residues
+The modulo operation creates a set, which in modular arithmetic is referred to as the set of least residues modulo n or Zn
+Zn = {0, 1, 2, 3, ... , n - 1}
+for example Z5 = {0, 1, 2, 3, 4}
+** Congruence
+To show that two integers are congruent, we use the congruence operator (===): a===b(mod m) 
+a is congruent to b modulo m 
+for example: 17 === 5 (mod 12), 13 === 1 (mod 12)
+-8 === 2 === 12 === 22 (mod 10)
+
+a residue class [a] or [a]n is the set of integers congruent modulo n:
+[a] = {..., a - 3n, a - 2n, a - n, a, a + n, a + 2n, ...}
+for example:
+[0] = {..., -15, -10, 5, 0, 5, 10, 15, ...}
+[1] = {..., -14, -9, -4, 1, 6, 11, 16, ...}
+
+** Operations in Zn
+The three binary operations that we disccuessed for the set Z can also be defined for the set Zn, The result may need to be mapped to Zn using the mod operator
+select a, b in Zn or Z, 
+then * a operator b* mod n is sitll in Zn
+
+*** Properties:
+**** First Property:
+(a + b) mod n = [(a mod n) + (b mod n)] mod n
+**** Second Property:
+(a - b) mod n = [(a mod n) - (b mod n)] mod n
+**** Third Property:
+(a * b) mod n = [(a mod n) * (b mod n)] mod n
+
+10^n mod x = *(10 mod x)^n mod x*  
+10 mod 3 = 1 -> 10^n mod 3 = (10 mod 3)^n mod 3 = 1^n mod 3 = 1
+10 mod 9 = 1 -> 10^n mod 9 = (10 mod 9)^n mod 9 = 1^n mod 9 = 1
+
+We have been told in arithmetic that the remainder of an integer
+divided by 3 is the same as the remainder of the sum of its
+decimal digits. We write an integer as the sum of its digits
+multiplied by the powers of 10.
+
+a = an * 10^n + a(n-1) * 10^(n-1) + ... + a1 * 10^1 + a0 * 10^0
+a mod 3 = [(an * 10^n) + (a(n-1) * 10^(n-1)) + ... + (a1 * 10^1) + (a0 * 10^0)] mod 3
+= [(an * 10^n) mod 3 + (a(n-1) * 10^(n-1)) mod 3 + ... + (a1 * 10^1) mod 3 + (a0 * 10^0) mod 3]
+since 10^n mod 3 = 1, therefore
+= [(an * 1) mod 3 + (a(n-1) * 1) mod 3 + ... + (a1 * 1) mod 3 + (a0 * 1) mod 3] 
+= [an mod 3 + a(n-1) mod 3 + ... + a1 mod 3 + a0 mod 3]]
+= (an + a(n-1) + ... + a1 + a0) mod 3
+fuck
+
+
+** Inverse
+*** Additive Inverse:
+in Zn, two nuimbner are the additive inverse of each other if thier sum is congruent to 0 modulo n, which means
+a + b === 0 (mod n)
+- cuase 0 mod n = 0, there fore a + b mod n =0, which means
+  that is a + b can be mod by n
+- for example: in Z5 = {0, 1, 2, 3, 4}, we find the inverse of 2, which is 3, because 2 + 3 = 5, and 5 === 0 mod (5)
+*** Multiplicative Inverse:
+in Zn, two numbers are multiplicative inverse of each other if their product is congruent to 1 modulo n,
+a * b === 1 (mod n)
+- demote the multiplicative inverse of an element b by b^-1 (mod n)
+- cuase 1 mod n = 1, there fore a * b mod n = 1, which means
+  a * b can is larger than n by 1
+- the extended euclidena algorithm find the multiplicative inversers of b in Zn when n and b are given and gcd(n, b) = 1
+- noted that in modular arithemtic, an integer may or may not have a multiplicative inverse, when it does, the product of the integer and its multiplicative inverse is congruent to 1 modulo n
+for example, in Z5 = { 0, 1, 2, 3, 4}, we find the multiplicative inverse of 2, which is 3, cause' 2 * 3 = 6 and 6 === 1 (mod 5)
+
+**** Persudo code of finding multiplicative inverse of b in Zn:
+
+#+BEGIN_src python
+r1, r2 = n, b;
+t1, t2 = 0, 1;
+while r2 > 0:
+    q = r1 // r2
+
+    # updating r1 r2
+    r = r1 - q * r2; 
+    r1 = r2; r2 = r;
+    # updating t1, t2
+    t = t1 - q * t2;
+    t1 = t2; t2 = t;
+if (r1 = 1): 
+    return t1 mod n
+else:
+    return "b does not have multiplicative inverse in Zn"
+#+END_src
+example:
+finding multiplicative inverse of 11 in Z26:
+r1 = n = 26, r2 = b = 11
+t1 = 0, t2 = 1
+
+1. q = r1 // r2 = 26 // 11 = 2
+   r = r1 - q * r2 = 26 - 2 * 11 = 4
+   r1 = r2 = 11, r2 = r = 4
+   t = t1 - 1 * t2 = 0 - 2 * 1 = -2
+   t1 = t2 = 1, t2 = t = -2
+2. cuase' r2 = 4 > 0, we continue
+   q = r1 // r2 = 11 / 4 = 2
+   r = r1 - q * r2 = 11 - 2 * 4 = 3
+   r1 = r2 = 4, r2 = r = 3
+   t = t1 - q * t2 = 1 - 2 * (-2) = 5
+   t1 = t2 = -2, t2 = 5 = 5
+3. cause' r2 = 3 > 0, we continue
+   q = r1 // r2 = 4 // 3 = 1
+   r = r1 - q * r2 = 4 - 1 * 3 = 1
+   r1 = r2 = 3, r2 = r = 1
+   t = t1 - q * t2 = -2 - 1 * 5 = -7
+   t1 = t2 = 5, t2 = t = -7
+4. cause' r2 = 1 > 0, continue
+   q = r1 // r2 = 3 // 1 = 3
+   r = r1 - q * r2 = 3 - 3 * 1 = 0
+   r1 = r2 = 1, r2 = r = 0
+   t = t1 - q * t2 = 5 - 3 * (-7) = 26
+   t1 = t2 = -7, t2 = t = 26
+cause' r2 = 0, we stop,
+r1 = 1, t1 = -7
+-7 mod 26 = 19, therefore the multiplicative inverse of 11 in Z26 is 19, because 11 * 19 = 209 and 209 === 1 (mod 26)  
+
+
+** Different Sets
+- Zn* is the set of all integers in Zn that fullfill that gcd(a, n) = 1
+  Zn* = {[a]n ∈ Zn | gcd(a, n) = 1}
+  for example: Z6 = {0, 1, 2, 3, 4, 5}, Z6* = {1, 5}
+  when the modulus n is a prime number, then Zn* = Zn - {0}
+

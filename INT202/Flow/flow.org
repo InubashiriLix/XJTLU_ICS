@@ -1,0 +1,38 @@
+* Flow Network
+a flow network (or just network) N consisits of
+- A weighted digraph G with nonnegative integer ege weights, where the weight of an edge e is called the *capacity c(e) of e*
+- Two distinguished vertices, s and t of G, called the *source* and *sink*, respectively, such that s has no incoming edges and t has no outgoing edges
+** Flow
+- Capapcity Rule: for each edge e, 0 <= f(e) <= c(e)
+- Conservation Rule: for each vertex v other than s and t, 
+  sum of f(e) for all incoming edges = sum of f(e) for all outgoing edges
+* Maximum Flow Problem
+a flow for a network N is said to be maximum if its value is the largest of all flowss for N
+- Lemma 1: Let n be a flow network, and let f be a flow for N, For any cut X of N, the value of fis equal to the flow accross cut X, that is value(f) = |f|
+- Lemma 2: Let N be a flow network, and let X be a cut of N, given any flow across cut does not exceed the capacity of X, the is f(X) <= C(X)
+- Theorem 1: The value of any flow is less than or equal to the capacity of any cut, i.e. for any flow f and any cut X, we have |f| <= C(X)
+=> The vlaue of maxium flow is no more than the capacity of a minimum cut
+let e be an edge from u to v
+- Residual capacity of e from u to v: Δf(u, v) = c(e) - f(e)
+- Residual capacity of e from v to u: Δf(v, u) = f(e)
+let п be the path from s to t, the residual capcity of path Δf(п) of п is the samleest of the residual capcities of the edges of п in the direction from s to t
+A path п from s to t is an augmenting path if Δf(п) > 0
+we cna always add the residual capacity of an augmenting path to an existing flow and get another valid flow.
+- Lemma 3: let V be an augmenting path for flow f in network , there exists a flow f' for N of value |f'| = |f| + Δf(n)
+- Lemma 4: if a network N does not have an augmneting path with respect to a flow f, then f is a maxi,um flow, also, there is a cut X of N such that |f| = C(X)
+- Theorem 2: the vlaue of a maximmum flow is equal to the capcacity of a minimum cut.
+** Max-flow and Min-cut
+- define 
+  Vs set of vertices reachable from s in residual graph Gf
+  Vt set of remaining vertices
+- Cut X = (Vx, Vt) has capcity c(X) = |f|
+  forward edge: f(e) = c(e)
+  backward edge: f(e) = 0;
+- Thus, flow f has maximum vlaue and cust X has maximum capacity, Below we have c(X) = |f|
+** Ford-Fulkerson Algorithm
+1. start with 0 flow
+2. for each augmenting path п, add Δf(п) to the flow f 
+   (can increase undirected path from s to t such that 
+   can increase flow on forward edges
+   can decrease flow on backward edges)
+

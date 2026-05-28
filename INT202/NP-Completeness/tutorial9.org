@@ -1,0 +1,77 @@
+* Q1: Consider the following graph G=(V,E):
+V = {a, b, c, d, e, f}
+E = {(a,b), (b,c), (c,d), (d,e), (e,f), (f,a), (a,c), (b,e)}
+** 1) Run the APPROX-VERTEX-COVER algorithm (iteratively pick an uncovered edge and add both endpoints to the cover). Assuming edges are chosen in the order shown in E, write down the resulting vertex cover C and its size.
+*** step1
+select the first edge (a, b) and joint both endpoints C = {a, b}
+all the edges endpoints with a or b are covered: (a,b), (b,c), (f,a), (a,c), (b,e)
+with left edges: (c, d), (d,e), (e,f)
+*** step2:
+select the second edge (c, d) and joint both endpoints C = {a, b, c, d}
+covered edges: (c,d),(d,e)
+edges left: (e, f)
+*** step 3:
+select (e, f)
+all the edges are covered,
+size of C = 6
+** 2) Find a minimum vertex cover of this graph (by reasoning or trial), and give its size OPT.
+注意，approx 算法给出的结果不一定最优。它刚才给了所有 6 个点，但明显可能太多。
+我们试一下：
+C∗={a,c,e}
+check all the edges:
+(a,b) covered by a
+(b,c) covered by c
+(c,d) covered by c
+(d,e) covered by e
+(e,f) covered by e
+(f,a) covered by a
+(a,c) covered by a or c
+(b,e) covered by e
+therefore Considering C∗={a,c,e} is a vertex cover of G, and its size OPT = 3
+为什么不可能小于 3？
+看这三条互不相交的边：
+(a,b), (c,d), (e,f)
+they do not have a common endpoint, therefore we need at least 3 vertices to cover these 3 edges
+therefore OPT = 3
+** 3) Compute the approximation ratio of this execution, and state whether it exceeds 2.
+aproximation ratio = algorithm output size / optimal solution size = 6 / 3 = 2
+therefore, the approximation ratio is 2, and it does not exceed 2.
+
+* Q2: In a complete graph G (a type of undirected graph in which every pair of
+distinct vertices is connected by a unique edge) satisfying the triangle inequality,
+vertices are A, B, C, D with the following edge weights:
+AB = 1, AC = 4, AD = 3, BC = 2, BD = 5, CD = 1
+
+** 1) Run Prim's algorithm starting from A to find a minimum spanning tree T.
+List the edges in T and its total weight.
+- start from A, we have edge AB = 1, AC = 4, AD = 3, we select AB = 1, because it has the smallest weight
+  T = {AB} V = {A, B}
+- link to the outside vertices C, D
+  avaible edges: AC = 4, AD = 3, BC = 2, BD = 5
+  select BC = 2
+  T = {AB, BC} V = {A, B. C}
+- need to link to D
+  available edges: AD = 3, BD = 5, CD = 1
+  select the smallest one CD = 1
+  T = {AB, BC, CD} V = {A, B, C, D}
+- the MST is {AB, BC, CD} and the total weight is 1 + 2 + 1 = 4
+** 2) Perform a preorder traversal on T starting from A. Write down the order
+in which vertices are visited, and construct a Hamiltonian cycle H from
+that order.
+- preorder traversal: A -> B -> C -> D
+  the visited order is A, B, C, D
+- construct a hamiltonian cycle H from the visited order:
+  H = (A, B, C, D, A)
+
+** 3) Compute the total weight of H and compare it with the optimal TSP tour.
+- the Hamiltonian cycle A -> B -> C -> D -> A has total weight = 7
+- find the optimal TSP Tour: 
+  because we only has 4 vertivces, we can try all the possible tour:
+  Tour1: A, B, C, D, A = 7
+  Tour2: A, B, D, C, A = 11
+  Tour3: A, C, B, D, A = 14
+  optimal TSP tour weight : OPT(TSP)=  7
+  H is optimal in this case
+
+
+

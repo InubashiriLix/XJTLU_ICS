@@ -1,0 +1,94 @@
+* In the RSA method, suppose that p = 5, q = 17, and e = 13. First find the private key d
+corresponding to these parameters. Then decrypt the ciphertext messages, C, below to
+find the original (plaintext) messages.
+** a) C = 2
+** b) C = 3
+** Solutions
+n =  p * q = 5 * 17 = 85
+phi(n) = (p - 1)(q - 1) = 4 * 16 = 64
+ed === 1 (mod phi(n)), with e = 13, we have 13d === 1 (mod 64)
+using extended Euclidean algorithm:
+13d === 1 mod 64 => 13d - 64k = 1 => 13d + 64(t) = 1 where t = -k
+where a = 13, b = 64
+1. r1 = 13, r2 = 64, s1 = 1, s2 = 0; t1 = 0, t2 = 1
+    becuase r2 > 0, we continue
+    q = r1 // r2 = 13 // 64 = 0
+    r = r1 - q * r2  = 13 - 0 = 13
+    r1 = r2 = 64, r2 = r = 13
+    s = s1 - q * s2 = 1 - 0 *0 = 1
+    s1 = s2 = 0, s2 = s = 1
+    t = t1 - q * t2 = t1 = 0
+    t1 = t2 = 1, t2 = t = 0
+2. because r2 = 13 > 0
+   q = r1 // r2 = 64 // 13 = 4
+   r = r1 - q * r2 = 64 - 4 * 13 = 12
+   r1 = r2 = 13, r2 = r = 12
+   s = s1 - q * s2 = 0 - 4 * 1 = -4
+   s1 = s2 = 1, s2 = s = -4
+   t = t1 - q * t2 = 1 - 4 * 0 = 1
+   t1 = t2 = 0, t2 = t = 1
+3. because r2 = 12 > 0
+   q = r1 // r2 = 13 // 12 = 1
+   r = r1 - q * r2 = 13 - 1 * 12 = 1
+   r1 = r2 = 12, r2 = r = 1
+   s = s1 - q * s2 = 1 - 1 * (-4) = 5
+   s1 = s2 = -4, s2 = s = 5
+   t = t1 - q * t2 = 0 - 1 * 1 = -1
+   t1 = t2 = 1, t2 = t = -1
+4. becase r2 = 1 > 0, we continue
+   q = r1 // r2 = 12 // 1 = 12
+   r = r1 - q * r2 = 12 - 12 * 1 = 0
+   r1 = r2 = 1, r2 = r= 0
+   s = s1 - q * s2 = -4 - 12 * 5 = -64
+   s1 = s2 = 5, s2 = s = -64
+   t = t1 - q * t2 = 1 - 12 * (-1) = 13
+   t1 = t2 = -1, t2 = t = 13
+gcd(13, 64) = 1; s = s1 = 5, t = t1 = -1;
+therefore, d = 5
+13 * 5 === 1 (mod 64)
+d = 5!!!!
+M = C^d mod n = C^5 mod 85
+*** when C = 2
+2^5 mod 85 = 32
+*** When C = 3
+3^5 mod 85 = 243 mod 85 = 73
+if we want to use fast modular exponentiation: 
+5 = 0b101
+3^5 mod 85 = 3^(4 + 1) mod 85 = (3^4 * 3^1) mod 85 
+3^4 === (3^2)^2 mod 85
+since 3^2 mod 85 = 9
+3^4 === 81 === -4 mod 85
+3^1 === 3 mod 85
+therefore, 3^5 mod 85 = (-4) * 3 mod 85 = -12 mod 85 = 73
+
+* 2. Alice and Bob are using the RSA algorithm to communicate. Bob’s public key is e = 3
+and n = 187.
+** a. What is Bob’s secret key?
+because n = 187, we can factor it into p and q prime factors, we can guess that p = 11 and q = 17
+then phi(n) = (p - 1)(q - 1) = 160
+because ed === 1 (mod 160)
+we can form this equation 3d - 160k = 1 => 3d + 160t = 1 where t = -k
+using the extended euclidean algorithm the process is too long, 
+we just guess that d = 107, 
+so bobs secret key is (d, n) = (107, 187)
+
+** b. Alice wants to send the message M to Bob. Bob receives 10. What was the message M sent by Alice?
+M = C^d mod n = 10^107 mod 187
+we use fast modular exponentiation to calcualte 10^107 mod 187
+0. 107 = 0b1101011
+1. 10^107 mod 187 = (10^2^6 * 10^2^5 * 10^2^3 * 10^2 * 10^1) mod 187
+10^1 ≡ 10 mod 187
+10^2 ≡ 100 mod 187
+10^4 ≡ 89 mod 187
+10^8 ≡ 67 mod 187
+10^16 ≡ 1 mod 187
+10^32 ≡ 1 mod 187
+10^64 ≡ 1 mod 187
+
+So:
+10^107 ≡ 10^64 × 10^32 × 10^8 × 10^2 × 10
+       ≡ 1 × 1 × 67 × 100 × 10
+       ≡ 54 mod 187.
+
+Therefore the original message is M = 54.
+
