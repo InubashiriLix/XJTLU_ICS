@@ -1,0 +1,144 @@
+* Prototyping
+** Definition
+- A Prototype is an early model or representation of a product ddesigned to test an idea or function before commiting to full production. It transforms abstract concepts into tangible experience that can be *evaluated*, *tested*, and *refined*
+- in design thinking, prototyping is the bridge between *ideation* and *testing*, where imagination meets execution.
+- "_A first, typical or preliminary model_ of something, especially a machine, from which other forms are developed or copied"
+** What is this shit?
+- thinking and learning, *not* just a stepping stone to the final product
+- actively bridge between *abstract requirements* and *tangible testable experience*
+- *reduces ambiguity* for both designers and stakeholders early in the process
+** Why?
+- Evaluation and feedback are central to interaction design
+- Stakeholders can see, hold, interacct with a prototype more easily than a document or drawing
+- Team members can communicate effectively
+- test out ideas
+- encourages reflection
+- Prototypes answer questions, and support designers in choosing between alternatives
+*** Switch Mindset
+mistakes developing is expensive
+prototyping switch our mind from "I know that works" to Let's test what will works"
+- failing fast and cheaply
+- lowering the stakes
+- Spearating ego from design
+
+** Characteristics of Prototyping
+1. Goal-Oriented:
+   A good prototyp is built to answer a specific question
+2. Disposable & Flexible:
+   The true value lies in the knowledge gained, not the artifact itself
+   Team must be willing to throw a prototype away if it does'nt server the user's ultimate needs
+3. Iterative:
+   It is not a one-end-done process. Prototypes evlove continuously through cyclical phases of creation, user testing, 
+   and refinement based on directed feedback
+
+
+** Tools
+We often don't know what we want until we see exactly what we don't want
+- Eliciting actionable feedback
+- Revealing hidden requirements
+- Bypassing imagination
+
+** How
+*** Understanding and Ideation
+to consider:
+- Embrace Ambiguity: Use early prototypes to ask questions
+- Keep Flexible: Do not focus on details too early.
+- Generate Variants: Build differnet feature versions to explore solution space
+Strategy: what are pros and cons: inteangible -> tangible
+User centered Process:
+User-centered design: no flase assumptions, build empathy between designeers and users with concrete ideas
+- Empathy map; user journey map
+
+*** Communication
+to consider:
+- Toilor to the Audience:
+  Executives may need a high-level interactive flow, whiile developers need functional logic and edge cases
+- Focues on Narratives
+  Use the prototype to tell  stroy about hte user journey, rather than just clicking through isolated screen;
+- Direct the feedback:
+  Explicitly tell stakeholders what you are testing
+
+2. Consensus
+   prototype help a team _form consensus_ and reduces misunderstanding
+
+3. Stakeholders
+   different stakeholders _care about different aspect of the design_, you should show different features to different fucking shit assholes.
+
+4. Focus
+   prototype making discussion _having a fucking focus_
+   _limits reflection range_
+
+5. Test & Reflection
+   - Define clear metrics:
+     clear and quantilized metrics for testing
+   - Observe Behavior:
+     user are fucking stupid pigs, and you should not care about their words to get the fucking feedback,
+     also you should observe their fucking behavior, like how they are disected in their fucking house.
+     *_fucking shit CPT208!!!!_ FUCKYOU!!!!*
+
+   - For other comments source like your fucking team:
+     prototype is also a fucking tool to discuss with your fucking teammates and fucking stupid SHIT fucking CPT208 死妈 Teacher
+     和他们谈一谈你的死妈作业和死妈设计然后看着臭傻逼PPT发愁, 妈的写的什么狗屎玩意和他妈的墓碑一样草泥马的一点逻辑和重点都没有,
+     你这么喜欢你那个死妈产品设计怎么还来当讲师??? 找个厂当产品经理得了; 哎呀该不会是卷不过别人只能找教职了吧死妈废物玩意???
+   6. _Achieve Prototyping Goals_
+      1. Align purpose and Project Stage
+         your asshole product should align with the stage you developing
+      2. Avoid the polish Trap
+         do not polish your fucking prototype too much
+      3. Foster a Learning Culture
+         even though your prototype is A PIECE OF SHIT, you was still learning some shit from your prototype
+
+*  Fidelity Of Prototype
+** What is Fidelity :
+*A Measurement System*, Not a classification 
+- refers to how it conveys the look-and-feel of the final product
+- low fidelity may be useless, higher fidellity may be time-and-money-consuming
+- 0% Abstract Idea / Whiteboard Scribble
+- 30% Paper wireframes / Basic Layouts
+- 70% clickable digital screens / Fake data
+- 99% Coded frontend / Live API data
+
+** Emerge
+- The cost Tension:
+  makeing changes at 100 finished is costy
+- The needs for a vocabulary:
+  team needs a way to negotiate with stakeholders, they needed a shared language to say.
+- Validating Assumptions:
+  The system emerged to break the massive risk of software development into smaller, measureable, and testable milestones
+
+** Strategic Value
+1. Resource Allocation
+   prevents over-engineering.
+2. Directing feedback
+   - lower fidely forces stakeholders to focuks on structure and flow.
+3. Multi-Dimensional Testing
+   fidelity is not visual, you can have a poor prototype but funcionally rich.
+
+** Quick Start: Quick and Dirty Arsenal
+1. Sticky Notes
+   brainstorming affinity mapping group ideas map initial user flows cluster insights
+2. Paper & Pen:
+   zero-barrier fast cheap easy to change not distracted by colours/pixels focus on layout and core functionality
+3. Index Card:
+   Each card represents one screen.
+   Often used in website, application, MiniProgram development.
+4. Storyboards: no Perfection
+   Visual narrative of user interaction with the product.
+5. Sketching:
+   low-fidelity prototyping
+   don't be inhibited about drawing ability
+   practice simple symbols
+6. Wizard-of-Oz
+   The user thinks they are interacting with a computer 
+   but a developer is responding rather than the system.
+
+** Tradeoff of Prototyping
+prototype 永远是妥协，不可能又快、又便宜、又高保真、又功能完整。
+
+** Different audience need different fidelity
+for your fucking boss, you should make the prototyp butiful
+for end-user, just give they low fidelity to guide the feedback to the structure and flow, not the fucking color and font
+
+** _How to Navigate Compromises_
+- Define the core hypothesis: find the most important thing to learn or verify right now.
+- Embrace Disposable Artifacts: be willing to throw away prototypes

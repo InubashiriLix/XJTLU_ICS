@@ -1,0 +1,94 @@
+* Interaction Design
+** Definition
+- key: communication, interaction
+- _interactive product_ to support the way people *_communicate_* and *_interact_* in their *_everyday_* and *_working_* lives 
+- The design spaces for humna _communication_ and _interaction_
+
+*** Interaction Design
+umbrella term covering all of 
+- Fundamental to all _desciplines_, _fields_, and _approches_ concerned with researching and designing computer-based system for people
+- for example, UI, software design, user-centered design, product design, web design, user-experience design
+
+** Waht is invlolve?
+- User
+- Goals
+
+** Core Charactertistics
+1. _User should be involoved_ through the development of the project
+2. Specific _usability and user expereience goals_ need to be identified, clearly documented and agreed to at the begining of project
+3. _Iteration_ is needed through the ccore activities
+*** Importance of involoving users
+1. Understanding user's goal
+2. Expectataion management
+   - Realistic expectations
+   - No surprises, no disappointment
+   - Timely training
+   - Communication but no hype
+3. Ownership
+   - users active stakeholders
+   - More likely to forgive or accept problems
+   - Can make a big difference in a acceptance of a product
+*** Degrees of user involvement
+1. member of the _design team_:
+   - full time: loss interaction with users
+   - part time: may stressful 
+   - participatory design: involve all stakeholders in the early design stage
+2. *_Face-to-Face_* group or individual activities
+3. Online Contribution from users
+   - Online feedback system
+   - Crowding design ideas
+   - Citizen science
+4. User involvement after prodict release:
+   Customer review analysis
+
+*** Interaction Design
+- User should in involved _throughout_ the dev of product _Specific Usability and user exp goals_ should be identified, clearly documented and agreed to the beginning of the project
+- Iteraction is needed through the core activities
+
+** Usability and user experience
+- no clear cut between these two concepts
+*** Diff
+- Usuability: objective: how useful
+- User Exp: subject: how user feels about the interactive product
+*** Tradeoff
+tradeoff of between usability and user experience
+*** Historical 
+Historical HCI was concerned primarily with usability. 
+but now more concerned with understanding, deisgn for, and evaluation a wider ragne or _user exp_ aspects
+
+
+** The Process of Interaction Design
+*** Basic activities of Interaction Design
+1. _Discovering requirements_;
+2. _Designing alternatives_ that meeets the same requirements;
+3. _Prototyping_ the alternatives desing so taht they can be communicated and assessed
+4. _Evaluating_ the product hte user exp it offers throughout the process
+*** interaction design lifecycle model
+#+CAPTION: Ineraction design lifecycle model.
+#+NAME: fig:lifecycle
+[[file:./assets/lifecycle.png]]
+*** Double Diamond of Design
+#+CAPTION: Double Diamond of Design.
+#+NAME: fig:doubleDiamonds
+[[file:./assets/doubleDiamonds.png]]
+*** Understanding hte problem space:
+1. Explore
+   - current user exp
+   - reason for changes
+   - what will change improves
+2. Articulating the problem space 
+   - Team effort
+   - Explore different perspectives
+   - Avoid incorrect assumptions and unsuported claims
+*** Others 
+**** Google design sprints
+iteration like
+unpack -> sketch -> decide -> prototype -> test
+**** Research in the wild
+#+CAPTION: Research in the wild.
+#+NAME: fig:researchInWild
+[[file:./assets/ResearchInWild.png]]
+
+** Practical Issue with Interaction design
+
+

@@ -1,0 +1,14 @@
+* Discovering Requirements
+** Description requirements
+*** Atomic Requirements
+*** User stories
+** Requirements gathering techniques
+*** Interviews, observations, questionairs
+*** Studying documentation
+*** Researching similar products
+** Bringing requirements to life
+*** Persona
+*** Scenario
+** Capturing interactions
+*** use cases
+
