@@ -1,0 +1,153 @@
+* Heuristic Evaluation（启发式评估）
+** Heuristic 和 Heuristic Evaluation 有什么不同？
+之前 L4 讲过很多 *heuristics / design principles*，这些是 *设计原则 / 检查规则*, 比如： 
+- Visibility（可见性） Feedback（反馈） Consistency（一致性） Constraints（限制） Affordance（可供性） Mapping（映射） Shneiderman's Eight Golden Rules（施耐德曼八条黄金规则）
+而 *Heuristic Evaluation* 是一个 *评估方法*, 专家拿这些原则去检查一个界面哪里不好用
+** Definition
+*** 英文考试答案
+Heuristic evaluation is an expert inspection method in which usability experts evaluate an interface against a set of established heuristics, such as Nielsen's usability heuristics, to identify usability problems.
+
+*** 中文解释
+*Heuristic Evaluation（启发式评估）* 是一种专家检查方法。
+做法是：
+找几个 usability experts（可用性专家） → 让他们按照一套 heuristics（启发式原则） → 检查界面违反了哪些规则 → 找出 usability problems（可用性问题）
+它不是让真实用户测试，而是让专家检查。
+
+** Nielsen's 10 Usability Heuristics（尼尔森十大可用性启发式原则）
+这十条是 Heuristic Evaluation 最常用的 checklist。
+1. Visibility of system status
+   The system should keep users informed about what is going on through appropriate feedback within a reasonable time.
+   系统要告诉用户现在发生了什么。
+   e.g. 上传文件时显示 progress bar（进度条） 点击按钮后显示 loading（加载中） 支付成功后显示 success message（成功提示） 下载时显示 remaining time（剩余时间） 2. Match between system and the real world
+2. Match between system and the real world
+   The system should use concepts, words, and conventions familiar to users rather than system-oriented language.
+   系统应该使用用户熟悉的语言和现实世界习惯，而不是内部技术语言。
+   坏例子： Error code: 0x00004A Entity conflict exception
+   好例子： This username is already taken. Please choose another one.
+3. User control and freedom
+   Users should be able to undo or exit unwanted actions easily, so they feel in control of the system.
+   用户应该能轻松撤销不想要的操作，从而感觉自己在控制系统。
+   e.g. 删除邮件后出现 Undo。 填写表单时可以返回上一步修改。 上传文件时可以 Cancel。
+4. Consistency and standards
+   Users should not have to wonder whether different words, actions, or icons mean the same thing. Interfaces should follow internal consistency and external standards.
+   用户不应该猜“这个词、这个图标、这个操作是不是和刚才那个意思一样”。界面要保持内部一致，也要符合外部标准。
+   e.g. 垃圾桶图标=删除 放大镜图标=搜索 齿轮图标=设置 红色=危险/错误 绿色=成功
+5. Error prevention
+   Good design prevents problems from occurring by eliminating error-prone conditions or asking for confirmation before dangerous actions.
+   好的设计应该通过消除容易出错的条件，或者在危险操作前进行确认，来防止错误发生。
+   e.g. 必填项没填时 Submit 按钮置灰。 删除前弹出确认框。 结束日期不能早于开始日期。 库存为 0 时 Buy 按钮不可点击。
+6. Recognition rather than recall
+   界面应该让选项、操作和信息尽量可见，从而减少用户记忆负担。
+   The interface should minimize users' memory load by making options, actions, and information visible.
+   Recognition（识别）: 用户看到菜单选项后选一个。
+   Recall（回忆）: 用户必须记住命令名再输入。
+   - e.g.
+     Good: 搜索框显示 recent searches（历史搜索）。
+     Bad: 用户必须自己记住之前搜索过什么。
+     Good: 表格滚动时 header 保持可见。
+     Bad: 用户滚到下面后必须记住每一列是什么意思。
+7. Flexibility and efficiency of use
+   The system should support both inexperienced and experienced users, for example by providing shortcuts, customization, or automation for frequent actions.
+   系统要同时支持新手和熟练用户。新手需要清楚引导，熟练用户需要快捷方式和自定义能力。
+   - e.g.
+     新手：菜单栏 File → Save。使用默认界面布局。
+     熟练用户：Ctrl+S 保存。 自定义 workspace。
+8. Aesthetic and minimalist design
+   Interfaces should not contain irrelevant or rarely needed information because unnecessary information competes with relevant information and increases cognitive load.
+   界面不应该包含无关或很少需要的信息，因为无关信息会和重要信息竞争注意力，增加 cognitive load（认知负担）。
+   - e.g.
+   Bad: 提交页面上有广告、无关图片、太多说明文字。
+   Good: 提交页面只保留上传文件、确认信息和 Submit 按钮。
+9. Help users recognize, diagnose, and recover from errors
+   Error messages should be expressed in plain language, clearly indicate the problem, and suggest a constructive solution.
+   错误信息应该使用普通语言，清楚指出问题，并给出解决方法。
+   Bad: Error 403.
+   Good: You do not have permission to access this page. Please log in with a teacher account.
+10. Help and documentation
+    虽然最好的系统是不需要额外文档也能使用，但当用户需要支持时，系统应该提供帮助和文档。
+    Although it is best if the system can be used without documentation, help and documentation should be provided when users need support to complete their tasks.
+    e.g. FAQ Help center Searchable documentation Step-by-step guide Tooltips
+
+** Heuristic Evaluation 的流程
+A heuristic evaluation usually begins with defining the evaluation objective and understanding the users, goals, and context. Then 3–5 evaluators are selected and 5–10 heuristics are defined. Evaluators are briefed and then inspect the system independently. They usually conduct a first walkthrough to get a general feel for the product and a second walkthrough to inspect specific interface elements against the heuristics. Finally, evaluators meet in a debriefing session to combine findings, assign severity ratings, prioritize problems, and suggest fixes.
+启发式评估一般先确定评估目标和用户背景，再选 3–5 个评估者，确定 5–10 条启发式原则。评估者先单独检查系统，第一轮自由探索，第二轮按原则细查。最后一起汇总问题，评严重程度，排优先级，提出修改建议。
+*** 简化流程
+1. Briefing session（简报）
+   1. 要评估什么
+   2. 系统背景是什么
+   3. 用户是谁
+   4. 任务是什么
+   5. 使用哪些 heuristics
+   6. severity codes（严重程度评分）怎么用
+2. Evaluation period（评估）
+   每个 expert（专家）最好单独评估，避免互相影响。
+   - 通常有两轮 walkthrough（走查）：
+     1. First walkthrough: 自由探索系统，获得整体感觉。
+     2. Second walkthrough: 按 heuristics 逐项检查具体界面元素。
+3. Debriefing session（总结讨论）
+专家一起汇总结果：
+- 合并重复问题 分配 severity rating（严重程度） 排优先级 提出修复建议
+
+*** 更完整的 8-step procedure
+考试如果需要写详细流程，可以写：
+#+begin_example
+1. Define what to test and the objective.
+2. Understand users, goals, and context.
+3. Select 3–5 evaluators.
+4. Define 5–10 heuristics.
+5. Brief evaluators and define severity codes.
+6. First walkthrough: free exploration.
+7. Second walkthrough: inspect interface elements using heuristics.
+8. Debrief, collate results, prioritize problems, and suggest fixes.
+#+end_example
+*** brief
+#+begin_quote
+#+end_quote
+
+** Severity Rating（严重程度评分）
+Heuristic Evaluation 不是只列问题，还要判断哪个问题最严重。
+严重程度可以考虑：
+- Frequency（出现频率）
+- Impact（影响程度）
+- Persistence（是否持续影响用户）
+- Recoverability（是否容易恢复）
+- Safety / risk（是否有风险）
+*** 问题记录模板
+#+begin_example
+- Problem: 问题：
+  Users may not notice the submit button. 用户可能注意不到提交按钮。
+- Violated heuristic:
+  Visibility of system status / Recognition rather than recall
+- Evidence: 证据：
+  The button is placed below the fold and has the same color as secondary actions.
+- Severity: 严重程度：
+  Major
+- Suggested fix: 修改建议：
+  Move the submit button above the fold and use a clear primary button style.
+#+end_example
+
+** Heuristic Evaluation vs User Testing
+Heuristic Evaluation 是专家检查，快、便宜、适合早期找明显问题；User Testing 是让真实用户做任务，能看到真实行为，但更耗时间和资源。
+Heuristic evaluation is an expert inspection method, while user testing involves real users performing tasks. Heuristic evaluation is faster and cheaper for finding obvious usability problems, but it depends on evaluators' expertise and may miss problems that only appear in real user behavior. User testing provides stronger evidence of real user behaviour, but it is more time-consuming and resource-intensive.
+
+| 项目 | Heuristic Evaluation | User Testing |
+|------+----------------------+--------------|
+| 参与者 | experts（专家） | real users（真实用户） |
+| 方法 | 按 heuristics 检查界面 | 让用户执行任务 |
+| 数据来源 | 专家判断 | 真实用户行为 |
+| 优点 | 快、便宜、早期可用 | 能看到真实行为 |
+| 缺点 | 依赖专家经验，可能漏掉真实用户问题 | 更耗时、更贵，需要招募用户 |
+| 适合阶段 | 早期检查明显问题 | 验证真实 usability |
+
+
+** Heuristic Evaluation 考场万能答案
+*** Question: What is heuristic evaluation and how is it conducted?
+**** English Answer
+#+begin_quote
+启发式评估是一种专家检查方法，用来发现界面中的可用性问题。专家根据一套已有的启发式原则，例如 Nielsen 十大可用性原则，对系统进行检查。
+Heuristic evaluation is an expert inspection method used to identify usability problems in an interface. Usability experts evaluate the system against a set of established heuristics, such as Nielsen's 10 usability heuristics.
+流程包括：确定测试目标、理解用户和使用场景、选择 3–5 个评估者、确定 5–10 条启发式原则、对评估者进行说明、让评估者独立检查系统。评估者通常先自由走查系统获得整体感觉，再按原则检查具体界面元素。最后所有评估者一起汇总发现、评估严重程度、排优先级并提出修改建议。
+A typical procedure includes defining what to test and the evaluation objective, understanding users and their context, selecting 3–5 evaluators, defining 5–10 heuristics, briefing evaluators, and asking each evaluator to inspect the product independently. Evaluators usually conduct a first walkthrough to get a general feel for the product and a second walkthrough to examine specific interface elements against the heuristics. Finally, evaluators meet in a debriefing session to combine findings, assign severity ratings, prioritize problems, and suggest fixes.
+它比用户测试更快更便宜，但依赖专家判断，不能完全替代真实用户测试。
+Heuristic evaluation is faster and cheaper than user testing, but it depends on expert judgement and cannot fully replace testing with real users.
+#+end_quote

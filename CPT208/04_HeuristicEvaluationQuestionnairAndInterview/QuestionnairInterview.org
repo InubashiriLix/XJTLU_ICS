@@ -1,0 +1,258 @@
+* Questionnair 
+** What is Qeustionnair?
+features: 
+1. could contains:
+   1. closed-ended questions, which is easiler to analyze, and easier to be anaylzed by computer and also easier to be distributed
+     close-ended questions like "Have you fuck Cpt208? [] yes [] no", "what score will you give to cpt208? [<enter a integer>](only 0 available cause' this course's ppt sucks)"
+   2. open-ended questions:
+      user's answer: "What do you gonna do with cpt208? - ans: Bomb this fucking course and then commit a suicide"
+      but hard to analyze and sorting the ans is slow, the quality of ans is not stable.
+      "Closed-ended questions provide predefined response options and are easier to analyze, especially for large populations. Open-ended questions allow participants to express their opinions in their own words, producing richer but harder-to-analyze qualitative data."
+2. suitable for large population
+3. could be distributed through paper / mail / email / web
+** the questionnair can colletct:
+1. Quantitative Data: 
+   mean / SD / rating
+   Mean -> average of the rating, low mean means the overall rating is low.
+   SD = standard deviation -> how much the rating is spread out from the mean, high SD means the rating is more spread out, the pespective of the user is more different.
+2. Qualitative Data
+   Text data like comments / suggestions/ qoutes, these tell you the reason behind the rating
+   e.g. comment like "Too much content", "Disordered / unclear material", "More instrucutions", "Not enough time"
+"Questionnaires can collect both quantitative and qualitative data. Rating-scale questions provide quantitative results such as mean and standard deviation, while open-ended comments provide qualitative insights into participants' reasons, experiences, and suggestions."
+
+** How to design a good questionnair
+1. Question Order
+   Question order matters because earlier questions may influence how participants interpret and answer later questions.
+   the correct sequence is to ask the basic background first, then general experience, and then specific feedback, then open questions;
+2. different versions for different populations, 
+   Different versions of a questionnaire may be needed for different populations because different user groups have different roles, tasks, and experiences.
+3. Provide clear instrcutions,
+   Different versions of a questionnaire may be needed for different populations because different user groups have different roles, tasks, and experiences.
+4. avoid long questions/questionnair,
+   Very long questions and questionnaires should be avoided because they increase participant fatigue and may reduce response quality.
+5. positive/negative/mixed wording, 
+   Researchers should decide whether questionnaire items will be all positive, all negative, or mixed, because wording direction can affect how participants respond.
+   for the all positive or all negative questionnairs, the user may have a bias to answer all the question in the same way
+   but for mixed questionnairs, the user may choose the answer more carefully , but sometimes the user may be confused by the different wording and then give a wrong answer.
+6. white space vs compactness
+   Questionnaire layout should balance white space and compactness so that it is readable without becoming unnecessarily long.
+** Question and Response Format
+Common questionnaire response formats include yes/no questions, multiple-choice checkboxes, rating scales such as Likert scales and semantic scales, and open-ended responses.
+the questionnair's questions is usaully these form of:
+1. Yes / No: 
+   suitable for simple questions. like "Have you used this app before?"
+2. Checkboxes:
+   suitblae for multiple choice questions. like "which features do you used? [] feature A, [] feature B, [] feature C"
+   but notification like Select all that apply should be added to avoid confusion.
+3. Rating Scale
+   suitbale for measuring attitudes or opionons.
+   like "1. Strongly disagree, 2. Disagree, 3. Neutral, 4. Agree, 5. Strongly agree"
+4. Semantic Scales
+   suitable for measuring attitudes or opinions on a bipolar scale.
+   #+BEGIN_src text
+   Confusing  1 2 3 4 5  Clear
+   Slow       1 2 3 4 5  Fast
+   Ugly       1 2 3 4 5  Attractive
+   #+END_src
+
+*** Bad Question Examples: 
+1. Double-Barrelled Questions
+   e.g. Is the app useful and enjoyable?
+   analysis: the question is double-barrelled becuase it asks about two different aspects (usefulness and enjoyability)
+   we should split it into two separate questions: "Is the app useful?" and "Is the app enjoyable?"
+   "This is a double-barrelled question because it asks about two different aspects at the same time. It should be split into two separate questions."
+2. Leading questions
+   e.g. How helpful was this excellent feature?
+   analysis: the question is leading because it uses the word "excellent" which may bias the respondent's answer.
+   we should change it into rating question like "How would you rate this feature"
+   "This is a leading question because it suggests a preferred answer. It should be rewritten in a neutral way."
+3. Jargon:
+   e.g. "How do you evaluate the information *architecture* of the app?"
+   some user do not know waht is the "information architecture".
+   we should change it into "Was it easy to find the information you needed?"
+   "The qeustion uses jargon that participants may not understand. It should use simple langualge ralated to participates' actual experience."
+4. Options not mutuallly exclusive:
+   e.g. "How long didi you use the app? [] 0-1 hours [] 1-2 hours [] 2-3 hours"
+   then what should I choose if I use the app for 1 hour?
+   change it into 
+   #+BEGIN_src text
+   [ ] Less than 1 hour
+   [ ] 1–2 hours
+   [ ] 3–4 hours
+   [ ] 5 hours or more
+   #+END_BEGIN_src
+
+*** how to deal with bad questionnair analysis problem in the paper:
+analysis from these aspects:
+1. Is the question too long?
+2. Is it double-barrelled?
+3. Does it use jargon?
+4. Is it leading?
+5. Are the options mutually exclusive?
+6. Are the options exhaustive?
+7. Is the scale clearly labelled?
+8. Are instructions clear?
+
+*** how to distribute the questionnair and how to raise the response quality?
+**** what is Pilot Study?
+Before deploying an online questionnaire, researchers should design it offline, implement it in the survey tool, test whether it behaves as expected, conduct a pilot study with people outside the target sample, and then recruit participants.
+**** to raise response rate:
+- 说明研究目的
+- 承诺匿名
+- 问卷短一点
+- 说明大概需要多久
+- 问题设计清楚
+- 适当 follow-up reminder
+- 必要时提供 incentive
+**** Deploy online questionnair flow: 
+1. Plan the timeline
+2. Design the questionnaire offline
+3. Put it into online survey tool
+4. Test whether it behaves correctly
+5. Pilot with people outside the real sample
+6. Recruit participants
+** Pros
+- cheap
+- quick
+- can reach many participants
+- easy to analyze closed questions
+- suitable for large populations
+- non-intrusive
+** Cons
+- data can be shallow
+- hard to ask follow-up questions
+- response rate may be low
+- participants may misunderstand questions
+- recall bias
+- response bias
+- open comments are hard to analyze
+
+* Interview
+** Types of Interview
+Unstructured interviews are flexible and can produce rich data, but they are difficult to replicate and compare across participants.
+1. Unstructured Interview:
+   no fixed questionns, just like chatting.
+   - pros:
+     very rich, flexible, can explore unexpected topics
+   - cons: hard to
+     replicate, compare, analyze
+     depends heavily on interviewer's skills
+2. Structured
+   Structured interviews use a fixed set of questions in a fixed order. They are more replicable and easier to compare, but less flexible and less rich.
+   - pros: easy
+     compare, replicable, analyze
+   - cons: less
+     flexible, rich, hard to explore unexpected topics
+3. Semi-structured
+   "most common interview type"
+   Semi-structured interviews use a prepared set of questions but allow the interviewer to ask follow-up questions. They balance comparability with flexibility and are useful for exploring participants' experiences in depth.
+   pros: balance structurea and death into interview, allow to explore unexpected topics, easier to compare than unstructured, more flexible than structured
+4. Focus group
+   A focus group is a group interview where participants discuss a topic together. It can reveal shared opinions and disagreements, but dominant participants and social pressure may influence the data.
+   - cons:
+     participants can respond to each other's ideas
+     can reveal group opinions
+     efficient for collecting multiple views
+   - pros:
+     dominant participants may control discussion
+     some people may stay silent
+     social pressure may affect answers
+     less suitable for sensitive topics
+** Interview Questions:
+two types: *CLOSED* and *OPEN* questions
+- e.g. good questions: 
+  Can you describe what happened when you tried to use this feature?
+  What did you expect to happen?
+  Why did you choose that option?
+  What problems did you encounter?
+- e.g. Bad Questions:
+  - long questions: user are easy to forgot the detail of question if too long. sol. split it into multiple short questions
+  - compound questions: like "Was the app useful and easy to learn?" sol. split it into two separate questions
+  - jargon: make it hard for user to understand. sol. use simple language related to user's experience
+  - leading questions: like "How helpful was this excellent feature?" sol. rewrite in a neutral way like "How would you rate this feature?"
+  - unconscious bias:
+    Do not ask questions that reflect the interviewer's asumptions or stereotypes. 
+    like "Do older users find this interview difficult?" -> "What difficulties, if any, did you experience when using this interface?"
+Good interview questions should be clear, neutral, and easy to understand. Researchers should avoid long questions, compound questions, jargon, leading questions, and unconscious bias.
+
+** use prototype and scenario to help interview
+The interview process can be enriched by using prompts such as prototypes, scenarios, or example tasks. These help participants discuss concrete experiences and provide more specific feedback.
+
+** Runing the Interview:
+A typical interview includes introduction, warm-up, main body, cool-off period, and closure. The interviewer should explain the purpose and ethical issues, build rapport, ask questions in a logical order, reduce tension at the end, and thank the participant.
+1. Introduction: intro myself. intro the propose of the interview, claim the ethical issues, ask for permission to record; show the informed consent form;
+2. Warm-up: chill the interviewee, establish rapport.
+3. Main body: ask the question in logical order, from normal to specific,  make a detailed inquiry if needed;
+4. Cool-off period: reduce the stress of the interviewee through asking some simple questions.
+5. Closure: Appriciate the interviewee, claim that the interview is over (like turn off the recording)
+
+** Pros 
+can go deep, flexible, allows flollow-up questions, useful for exploratory research, can reaveal reasons hehind behaviors
+** Cons:
+time-consuming, requires interviewer skill, small sample size, harder to analyze, may have recall problems, participants may say what they think you want to hear, 
+
+* How to choose / combine method
+** Factors to consider:
+When choosing data gathering techniques, researchers should consider the focus of the study, participants involved, the nature of the techniques, available resources, and available time. Techniques can be combined to obtain more complete data.
+1. Focus of the study
+2. Participants involved
+3. Nature of the technique
+4. Resources available
+5. Time available
+** Examples:
+- 想知道 200 个学生整体满意度：
+  Questionnaire
+- 想知道为什么学生不满意：
+  Interview
+- 想知道用户真实怎么操作：
+  Observation / usability test
+- 想又有数字又有原因：
+  Questionnaire + Interview
+
+** Five key issues:
+1. Setting goals
+   Researchers should set clear goals by deciding what information they need and how the data will be analyzed.
+   Find out whether students can understand the project application workflow and identify where they get confused.
+2. Identifying participants
+   Researchers should identify appropriate participants, including who should be involved and how many participants are needed.
+3. Relationship with participants
+   Researchers should manage the relationship with participants ethically and professionally, including informed consent and clear communication.
+   *Including*: inform study purpose, cliam anonymity, declare what the data will be used for, declare how to quit, get inform consent
+4. Triangulation:
+   用多种方法/数据源互相验证
+   Triangulation means using multiple data sources, methods, or perspectives to cross-check findings and improve the credibility of the results.
+   examples:
+   #+BEGIN_src text
+   Questionnaire:
+   很多学生说申请流程不清楚。
+   Interview:
+   学生解释说他们不知道 pending / accepted / rejected 的区别。
+   Observation:
+   实际测试中学生确实卡在 application status page。
+   #+END_BEGIN_src
+5. Pilot studies
+   A pilot study is a small trial run conducted before the main study. It helps researchers identify problems with questions, procedures, timing, or tools before collecting real data.
+
+* Ethic 
+研究目的是什么
+他们要做什么
+需要多久
+数据怎么保存
+是否匿名
+他们可以退出
+谁负责研究
+
+- Informed consent form
+  参与者签字/确认：
+  我知道这个研究是什么
+  我同意参与
+  我知道可以退出
+  我同意/不同意录音
+- Survey tool / interview scripts
+  When research involves human participants, survey respondents, or personal data, researchers should provide a participant information sheet, obtain informed consent, and prepare the survey tools such as questionnaires or interview scripts.
+
+* Questionnair vs Interview
+  Questionnaires are suitable for collecting data from a large number of participants at relatively low cost. They are good for quantitative data and closed-ended questions, but they often provide shallow data and offer limited opportunities for follow-up.
+Interviews are suitable for collecting deeper qualitative data. They allow researchers to ask follow-up questions and explore participants' experiences, motivations, and reasons. However, they are more time-consuming, require interviewer skill, and usually involve fewer participants.
+
+
