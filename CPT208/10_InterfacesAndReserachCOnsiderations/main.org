@@ -1,0 +1,1091 @@
+* 10 Interfaces and Research Considerations（界面与研究考虑）
+
+** Lecture Overview
+这章主要讲三块：
+- Interface metaphors（界面隐喻）
+- Interaction types（交互类型）
+- Interface types（界面类型）及其 research and design considerations（研究与设计考虑）
+本章核心：
+- Interface metaphor 用用户熟悉的知识帮助理解陌生系统。
+- Interaction type 描述用户和系统交互时在做什么。
+- Interface type 描述系统用什么界面形式支持交互。
+- 选择界面时要考虑 task（任务）、users（用户）、context（情境）、cost（成本）、robustness（稳健性）等因素。
+
+** Interface Metaphors（界面隐喻）
+*** Definition
+Interface metaphor refers to an interface designed to be similar to a physical entity but also having its own properties.
+Interface metaphor（界面隐喻）是指把界面设计得类似某个现实世界中的实体，但它也有自己的数字属性。
+它可以基于：
+- activity（活动）
+- object（物体）
+- a combination of both（活动和物体的结合）
+Interface metaphors exploit users' familiar knowledge to help them understand unfamiliar systems.
+界面隐喻利用用户已有的熟悉知识，帮助他们理解不熟悉的系统。
+例子：
+- desktop metaphor（桌面隐喻）
+- web portal（门户隐喻）
+- shopping cart icon（购物车图标）
+- card metaphor（卡片隐喻）
+*** Examples of Interface Metaphors
+Interface metaphors can be used for：
+- Conceptualizing what users are doing
+  - 例如 surfing the Web（网上冲浪）
+- A conceptual model instantiated at the interface
+  - 例如 desktop metaphor（桌面隐喻）和 card metaphor（卡片隐喻）
+- Visualizing an operation
+  - 例如 shopping cart icon 表示用户把商品放入购物车
+考试句：
+Interface metaphors help users understand unfamiliar digital systems by relating them to familiar physical objects, activities, or concepts. Examples include the desktop metaphor, card metaphor, and shopping cart icon.
+界面隐喻通过把陌生的数字系统和熟悉的现实物体、活动或概念联系起来，帮助用户理解系统。例如桌面隐喻、卡片隐喻和购物车图标。
+*** Card Metaphor（卡片隐喻）
+Card metaphor 是很常见的 UI 形式。
+它流行的原因：
+- familiar form factor（形式熟悉）
+- can be flicked through, sorted, and themed（可以翻动、排序、分类）
+- structures content into meaningful chunks（把内容组织成有意义的信息块）
+- looks like paper surface（具有类似纸张表面的外观）
+例子：
+- Google Now card
+- restaurant recommendation card
+- mobile app information cards
+考试句：
+The card metaphor is popular because it has a familiar form factor, supports sorting and browsing, and structures content into meaningful chunks.
+卡片隐喻流行是因为它形式熟悉，支持浏览和排序，并能把内容组织成有意义的信息块。
+*** Benefits of Interface Metaphors
+界面隐喻的优点：
+- makes learning new systems easier（让新系统更容易学习）
+- helps users understand the underlying conceptual model（帮助用户理解底层概念模型）
+- can make computer applications more accessible to diverse users（让更多不同用户更容易使用计算机系统）
+- can support innovation（可以支持创新）
+考试句：
+Interface metaphors make new systems easier to learn by using users' familiar knowledge. They help users understand the underlying conceptual model and can make computer applications more accessible to diverse users.
+界面隐喻利用用户熟悉的知识让新系统更容易学习，帮助用户理解底层概念模型，也能让更多不同用户更容易使用系统。
+*** Problems with Interface Metaphors
+界面隐喻的问题：
+- may break conventional or cultural rules（可能违反传统或文化规则）
+- may constrain designers' conceptualization of the problem space（可能限制设计者理解问题空间）
+- may conflict with design principles（可能和设计原则冲突）
+- may force users to understand the system only through the metaphor（可能迫使用户只通过隐喻理解系统）
+- may transfer bad parts from existing designs（可能把旧设计的坏部分也搬过来）
+- may limit designers' imagination（可能限制设计者想象力）
+例子：
+- recycle bin placed on desktop（把回收站放在桌面上）在现实逻辑上不一定合理。
+考试句：
+Interface metaphors can make systems easier to learn, but they may also constrain designers, conflict with design principles, transfer bad aspects of existing designs, and limit new conceptual models.
+界面隐喻能降低学习难度，但也可能限制设计者、违反设计原则、继承旧设计缺点，并限制新的概念模型。
+
+** Interaction Types（交互类型）
+*** Overview
+Interaction type describes what the user is doing when interacting with a system.
+Interaction type（交互类型）描述用户与系统交互时正在做什么。
+五种主要 interaction types：
+1. Instructing
+2. Conversing
+3. Manipulating
+4. Exploring
+5. Responding
+还可以有更具体的 context-specific activities：
+- learning（学习）
+- working（工作）
+- socializing（社交）
+- playing（游戏）
+- browsing（浏览）
+- writing（写作）
+- problem-solving（解决问题）
+- decision-making（决策）
+- searching（搜索）
+- driving（驾驶）
+- navigating（导航）
+*** 1. Instructing（指令式交互）
+Instructing means users tell the system what to do.
+Instructing（指令式交互）是用户向系统发出指令，告诉系统要做什么。
+例子：
+- tell the time（告诉时间）
+- print a file（打印文件）
+- save a file（保存文件）
+- word processor commands（文字处理器命令）
+- vending machine selection（自动售货机选择）
+主要优点：
+- quick and efficient interaction（快速高效）
+- good for repetitive actions（适合重复性操作）
+- good for actions performed on multiple objects（适合对多个对象执行相同操作）
+考试句：
+Instructing is an interaction type where users tell the system what to do. It supports quick and efficient interaction and is especially useful for repetitive actions performed on multiple objects.
+Instructing 是用户告诉系统做什么的交互类型。它支持快速高效的交互，尤其适合重复性任务和批量操作。
+*** 2. Conversing（对话式交互）
+Conversing is based on the model of having a conversation with another human.
+Conversing（对话式交互）基于人与人对话的模型。
+范围：
+- simple voice recognition menu-driven systems（简单语音识别菜单系统）
+- natural language dialogs（自然语言对话）
+- virtual agents（虚拟代理）
+- chatbots（聊天机器人）
+- pet robots（宠物机器人）
+- LLM-based conversation systems（基于大语言模型的对话系统）
+例子：
+- Siri
+- Alexa
+- search engine dialogs
+- help systems
+- advice-giving systems
+- timetable query systems
+优点：
+- familiar to users（用户熟悉）
+- good for novices（适合新手）
+- can make users feel comfortable and less scared（让用户更放松）
+缺点：
+- misunderstandings can occur（可能产生误解）
+- system may not parse user input correctly（系统可能无法正确理解用户输入）
+- voice assistants may misunderstand children（语音助手可能误解儿童表达）
+考试句：
+Conversing allows users to interact with a system through speech or natural language, making interaction familiar and comfortable, especially for novices. However, misunderstandings can occur when the system cannot correctly parse what the user says.
+Conversing 让用户通过语音或自然语言与系统交互，对新手更熟悉、更舒适。但如果系统无法正确解析用户表达，就会产生误解。
+*** 3. Manipulating（操控式交互）
+Manipulating exploits users' knowledge of how they move and manipulate objects in the physical world.
+Manipulating（操控式交互）利用用户在现实世界中移动和操控物体的经验。
+常见动作：
+- dragging（拖拽）
+- selecting（选择）
+- opening（打开）
+- closing（关闭）
+- zooming（缩放）
+- using physical controllers（使用物理控制器）
+- air gestures（空中手势）
+例子：
+- drag and drop files（拖拽文件）
+- Nintendo Switch controller
+- Microsoft Kinect gestures
+- tagged physical objects triggering digital events
+*** Direct Manipulation / DM（直接操控）
+Direct Manipulation 是 Ben Shneiderman 在 1983 年提出的概念。
+三个核心属性：
+- continuous representation of objects and actions of interest
+  - 持续显示用户关心的对象和动作
+- rapid reversible actions with immediate feedback
+  - 快速、可逆操作，并有即时反馈
+- physical actions and button pressing instead of complex command syntax
+  - 使用物理动作和按钮，而不是复杂命令语法
+例子：
+- drag and drop to move files（拖拽移动文件）
+考试句：
+Direct manipulation involves continuous representation of objects, rapid reversible actions with immediate feedback, and physical actions instead of complex command syntax.
+直接操控包括持续显示对象、快速可逆操作和即时反馈，并用物理动作替代复杂命令语法。
+*** Benefits of Direct Manipulation
+直接操控的优点：
+- novices can learn basic functionality quickly（新手能快速学习基本功能）
+- experienced users can work rapidly（熟练用户能高效工作）
+- intermittent users can retain operational concepts（偶尔使用的用户也能长期记住操作概念）
+- error messages are rarely needed（较少需要错误信息）
+- users can immediately see whether actions support their goals（用户能立刻看到操作是否有帮助）
+- users experience less anxiety（用户焦虑更少）
+- users feel in control（用户更有控制感）
+考试句：
+Direct manipulation helps novices learn quickly, supports rapid work by experienced users, provides immediate feedback, reduces anxiety, and gives users a strong sense of control.
+直接操控帮助新手快速学习，让熟练用户高效操作，提供即时反馈，减少焦虑，并增强用户控制感。
+*** Disadvantages of Direct Manipulation
+直接操控的缺点：
+- users may take the metaphor too literally（用户可能过度字面化理解隐喻）
+- moving a cursor can be slower than pressing function keys（鼠标移动可能比快捷键慢）
+- repetitive tasks are not well supported（不适合重复任务）
+- some gestures are more error-prone than typing（某些手势比输入更容易出错）
+例子：
+- find and replace 用快捷键/命令比手动鼠标更快。
+- 精确设置图片宽度为 2.00 cm 时，拖拽可能比输入数字更容易出错。
+*** 4. Exploring（探索式交互）
+Exploring involves moving through virtual or physical environments.
+Exploring（探索式交互）是用户在虚拟或物理环境中移动和探索。
+例子：
+- virtual 3D environment（虚拟 3D 环境）
+- virtual museum（虚拟博物馆）
+- city / park / building / room simulation（城市、公园、建筑或房间模拟）
+- datasets visualization（数据集可视化）
+- sensor-embedded physical environment（嵌入传感器的物理环境）
+特点：
+- users can fly over an environment（用户可以飞越环境）
+- users can zoom in and out（用户可以缩放查看）
+- sensors can trigger digital or physical events（传感器可触发数字或物理事件）
+考试句：
+Exploring involves moving through virtual or physical environments. It is useful for systems such as virtual museums, 3D environments, maps, and sensor-embedded spaces where users navigate, zoom, and inspect different parts.
+Exploring 是用户在虚拟或物理环境中移动和探索，适合虚拟博物馆、3D 环境、地图和传感器空间等系统。
+*** 5. Responding（响应式交互）
+Responding means the system takes the initiative to alert the user to something it thinks is relevant.
+Responding（响应式交互）是系统主动提醒用户它认为相关的事情。
+系统可能基于：
+- user's location（用户位置）
+- user's presence（用户在附近）
+- repeated behaviors（重复行为）
+- learned preferences（学习到的偏好）
+例子：
+- fitness tracker notifies milestone reached（健身追踪器提醒达成里程碑）
+- phone alerts nearby coffee bar where friends are meeting（手机提醒附近朋友聚会咖啡店）
+- smartwatch detects workout and asks whether to start tracking（手表检测到运动并提醒）
+特点：
+- automatic system response without user request（系统无需用户请求就自动响应）
+考试句：
+Responding is an interaction type where the system takes the initiative and alerts users based on context, location, presence, or learned behavior, without an explicit user request.
+Responding 是系统基于情境、位置、存在状态或学习到的行为主动提醒用户的交互类型，不需要用户明确请求。
+*** Choosing an Interaction Type（选择交互类型）
+不同任务适合不同 interaction type。
+- Direct manipulation is good for doing tasks.
+  - 适合 designing、drawing、flying、driving、sizing windows。
+- Instructing is good for repetitive tasks.
+  - 适合 spell-checking、file management。
+- Conversing is good for certain services.
+  - 适合 finding information、requesting music。
+- Hybrid conceptual models support multiple ways of doing the same action.
+  - 混合概念模型适合支持多种完成同一动作的方法。
+考试句：
+The choice of interaction type depends on the task. Direct manipulation is suitable for doing tasks, instructing is suitable for repetitive tasks, conversing is suitable for certain services, and hybrid conceptual models can support multiple ways of carrying out the same action.
+交互类型的选择取决于任务。直接操控适合执行类任务，指令式交互适合重复任务，对话式交互适合某些服务，混合概念模型可以支持多种完成同一动作的方式。
+*** Interaction and Interface（交互与界面）
+Interaction:
+- describes what the user is doing when interacting with a system
+- examples: instructing, talking, browsing, responding
+Interface:
+- the kind of interface used to support the interaction
+- examples: command, menu-based, gesture, voice
+考试句：
+Interaction describes what the user is doing when interacting with a system, while interface describes the kind of interface used to support that interaction.
+Interaction 描述用户在与系统交互时做什么，而 Interface 描述用什么界面形式来支持这种交互。
+
+** Interfaces（界面类型）
+*** 20 Interface Types Covered
+本章列出 20 种 interface types：
+1. Command
+2. Graphical
+3. Multimedia
+4. Virtual reality
+5. Web
+6. Mobile
+7. Appliance
+8. Voice
+9. Pen
+10. Touch
+11. Gesture
+12. Haptic
+13. Multimodal
+14. Shareable
+15. Tangible
+16. Augmented reality
+17. Wearables
+18. Robots and drones
+19. Brain-computer interaction
+20. Smart
+*** 1. Command Line Interfaces（命令行界面）
+**** Definition
+Command line interfaces use typed commands at a prompt, and the system responds.
+Command line interface（命令行界面）让用户在 prompt（提示符）中输入命令，系统根据命令响应。
+例子：
+- ls lists current files
+- command shortcuts
+- assigned keyboard commands
+- web scripting commands
+优点：
+- efficient（高效）
+- precise（精确）
+- fast（快速）
+缺点：
+- large overhead to learning commands（学习命令成本高）
+考试句：
+Command line interfaces allow users to type commands at a prompt. They are efficient, precise, and fast, but they have a high learning cost because users need to remember command names and syntax.
+命令行界面让用户在提示符中输入命令。它高效、精确、快速，但学习成本高，因为用户需要记住命令名和语法。
+**** Research and Design Considerations
+研究与设计考虑：
+- form, name types and structure are key questions（命令形式、命名类型和结构是关键问题）
+- consistency is the most important design principle（一致性最重要）
+- always use first letter of command when possible（例如尽量用命令首字母）
+- command interfaces are popular for web scripting（命令界面常用于网页脚本）
+考试句：
+For command line interfaces, consistency is a key design principle. Designers should carefully consider command form, naming, and structure to reduce learning burden.
+对于命令行界面，一致性是关键设计原则。设计者应仔细考虑命令形式、命名和结构，以减少学习负担。
+*** 2. Graphical User Interfaces / GUIs（图形用户界面）
+**** Definition
+GUIs are based on WIMP: Windows, Icons, Menus, and Pointing device.
+GUI（图形用户界面）基于 WIMP：Windows（窗口）、Icons（图标）、Menus（菜单）、Pointing device（指针设备）。
+WIMP components:
+- Windows: screen sections that can be scrolled, stretched, overlapped, opened, closed, and moved.
+- Icons: pictograms representing applications, objects, commands, and tools.
+- Menus: lists of options that can be selected.
+- Pointing device: a mouse or cursor used to access windows, menus, and icons.
+考试句：
+Graphical user interfaces are based on WIMP: windows, icons, menus, and pointing devices. They allow users to interact with visual objects rather than memorizing command syntax.
+GUI 基于窗口、图标、菜单和指针设备，让用户通过视觉对象交互，而不是记忆命令语法。
+**** Window Design（窗口设计）
+窗口的作用：
+- overcome physical constraints of computer display（克服显示器空间限制）
+- enable more information to be viewed（显示更多信息）
+- support multiple tasks（支持多任务）
+- scroll bars allow more information to be viewed（滚动条显示更多内容）
+问题：
+- multiple windows can make it hard to find the desired one（多窗口会让目标窗口难找）
+解决方法：
+- listing（列表）
+- tabbing（标签页）
+- thumbnails（缩略图）
+**** Menu Styles（菜单样式）
+常见菜单样式：
+- Flat list: good for showing many options on small displays
+- Drop down: shows more options on the same screen
+- Pop-up: shows relevant options when activated
+- Contextual: provides commands associated with a particular item
+- Collapsible: expands or contracts contents using plus/minus headers
+- Mega: shows all options using a 2D drop-down layout
+考试句：
+Menu styles include flat lists, drop-down menus, pop-up menus, contextual menus, collapsible menus, and mega menus. Different menu styles support different display sizes, option quantities, and task contexts.
+菜单样式包括平面列表、下拉菜单、弹出菜单、上下文菜单、折叠菜单和 mega menu。不同菜单适合不同屏幕大小、选项数量和任务情境。
+**** GUI Research and Design Considerations
+研究与设计考虑：
+- window management should help users move fluidly between windows and monitors
+- users should switch attention without being distracted
+- spacing, grouping, and simplicity should be used
+- menu terminology should be clear
+- mega menus are easier to navigate than drop-down menus
+考试句：
+GUI design should support effective window management, clear menu terminology, and smooth attention switching. Designers should use spacing, grouping, and simplicity to reduce confusion.
+GUI 设计应支持有效窗口管理、清楚菜单术语和流畅注意力切换。设计者应使用间距、分组和简洁性减少混乱。
+*** Icon Design（图标设计）
+**** Definition
+Icons are pictorial representations used to represent applications, objects, commands, and tools.
+Icons（图标）是用图像表示应用、对象、命令和工具。
+图标的特点：
+- easier to learn and remember than commands（比命令更容易学习和记忆）
+- compact（紧凑）
+- can be positioned flexibly（可以灵活放置）
+- pervasive in modern interfaces（现代界面中非常普遍）
+**** Icon Forms（图标形式）
+图标和对象之间的 mapping 可以是：
+- Similar
+  - 图标和对象相似，例如 file icon 表示 file。
+- Analogical
+  - 图标通过类比表示动作，例如 scissors 表示 cut。
+- Arbitrary
+  - 图标和含义是任意约定，例如 X 表示 delete。
+The most effective icons are similar ones.
+最有效的图标通常是 similar icons（相似图标）。
+很多操作是 actions（动作），不容易表示，所以需要结合 object and symbol（对象和符号）捕捉动作的显著部分。
+**** Icon Styles（图标风格）
+两类 icon styles：
+- User icons
+- Utility icons
+设计考虑：
+- use guidelines, style guides, icon builders, libraries, and tutorials
+- text labels can help identify small icon sets
+- large icon sets can use hover function for explanation
+考试句：
+Icons can be similar, analogical, or arbitrary. Similar icons are usually the most effective because their representation is close to the object they refer to. Text labels and hover functions can help users identify icons.
+图标可以是相似型、类比型或任意型。相似型通常最有效，因为图像和对象接近。文字标签和悬停提示可以帮助用户识别图标。
+*** 3. Multimedia Interfaces（多媒体界面）
+**** Definition
+Multimedia combines different media within a single interface with various forms of interactivity.
+Multimedia（多媒体界面）把多种媒体和交互形式结合在一个界面中。
+媒体形式：
+- graphics（图形）
+- text（文字）
+- video（视频）
+- sound（声音）
+- animation（动画）
+用户可以：
+- click links in image or text（点击图像或文本中的链接）
+- play animation or video clips（播放动画或视频）
+- return to previous location（回到之前位置）
+- move to another place（移动到其他位置）
+**** Pros and Cons
+优点：
+- rapid access to multiple representations（快速访问多种信息表示）
+- better information presentation than single media（比单一媒体更好呈现信息）
+- supports easier learning and understanding（支持更容易学习和理解）
+- increases engagement and pleasure（提升参与感和愉悦感）
+- encourages exploration in games or stories（鼓励探索游戏或故事）
+缺点：
+- users may skim text while focusing on videos or animations（用户可能边看视频边略读文本）
+- multiple media can split attention（多媒体可能分散注意力）
+**** Research and Design Considerations
+研究与设计考虑：
+- help users explore, keep track of, and integrate multiple representations
+- provide hands-on interactivities and simulations
+- provide quizzes, electronic notebooks, and games
+- multimedia supports browsing well
+- multimedia is less optimal for long reading
+考试句：
+Multimedia interfaces combine text, graphics, video, sound, and animation. They can support richer learning and engagement, but designers must help users integrate multiple representations and avoid split attention.
+多媒体界面结合文字、图形、视频、声音和动画。它能支持更丰富的学习和参与，但设计者需要帮助用户整合多种表示，并避免注意力分散。
+*** 4. Virtual Reality / VR（虚拟现实）
+**** Definition
+Virtual reality provides computer-generated graphical simulations that give users the illusion of participation in a synthetic environment.
+Virtual reality（虚拟现实）通过计算机生成的图形模拟，让用户产生参与合成环境的感觉。
+特点：
+- users interact with objects in 3D space
+- users navigate through synthetic environments
+- creates highly engaging user experiences
+- can induce presence（临场感）
+Presence:
+- psychological sense of being in the virtual environment
+- 用户感觉自己真的在虚拟环境中
+**** Pros and Cons
+优点：
+- higher fidelity than multimedia（比多媒体有更高保真度）
+- induces sense of presence（产生临场感）
+- provides first-person and third-person viewpoints（提供第一人称和第三人称视角）
+- highly engaging（参与感强）
+缺点：
+- early head-mounted displays were uncomfortable（早期头戴设备不舒服）
+- may cause motion sickness（可能导致晕动症）
+- may cause disorientation（可能导致方向迷失）
+**** Application Areas
+应用领域：
+- video games（电子游戏）
+- arcade games for social groups（社交街机游戏）
+- therapy for fears（恐惧治疗）
+- empathy and compassion experience（共情体验）
+- travel planning（旅游规划）
+- architecture（建筑）
+- design（设计）
+- education（教育）
+- cultural heritage（文化遗产）
+**** Research and Design Considerations
+研究与设计考虑：
+- design safe and realistic VR for training
+- use VR for flight simulators
+- help people overcome phobias
+- reduce motion sickness and disorientation
+- choose suitable fidelity level
+- design for presence without harming comfort
+考试句：
+Virtual reality provides simulated 3D environments that create a sense of presence and allow users to interact with virtual objects. It is useful for games, training, therapy, education, architecture, and cultural heritage, but designers must consider comfort, motion sickness, and disorientation.
+虚拟现实提供模拟 3D 环境，创造临场感，并允许用户与虚拟对象交互。它适合游戏、训练、治疗、教育、建筑和文化遗产，但设计时必须考虑舒适性、晕动症和方向迷失。
+*** 5. Website Design（网站设计）
+**** Definition
+Early websites were largely text-based and provided hyperlinks.
+早期网站主要基于文本，并通过 hyperlinks（超链接）连接信息。
+核心关注：
+- how to structure information（如何组织信息）
+- how users navigate quickly（用户如何快速导航）
+- how users access information easily（用户如何轻松访问信息）
+**** Usability versus Aesthetics
+网站设计需要平衡：
+- ease of finding information（容易找到信息）
+- aesthetic experience（审美体验）
+- enjoyable experience（愉悦体验）
+问题：
+- vanilla design may be usable but boring（朴素设计可能可用但无聊）
+- multi-flavor design may be attractive but harder to use（丰富设计可能吸引人但难用）
+**** Breadcrumbs（面包屑导航）
+Breadcrumbs are category labels that show where users are.
+Breadcrumbs（面包屑）是显示用户位置的类别标签。
+作用：
+- enable users to browse other pages without losing track（用户浏览其他页面时不迷路）
+- help users understand where they came from（帮助用户理解来源）
+- very usable（可用性高）
+**** Web Ads（网页广告）
+Web advertising can be intrusive and pervasive.
+网页广告可能具有侵入性和普遍性。
+问题：
+- flashing（闪烁）
+- aggressive（攻击性强）
+- persistent（持续出现）
+- annoying（烦人）
+- often requires action to close（经常需要用户操作关闭）
+**** Research and Design Considerations
+Veen's three core questions for website design：
+- Where am I?
+- Where can I go?
+- What is here?
+网站设计考虑：
+- clear navigation（清楚导航）
+- good information structure（良好信息结构）
+- balance usability and aesthetics（平衡可用性和美观）
+- avoid intrusive ads（避免侵入式广告）
+- use breadcrumbs when navigation depth is high（深层导航时使用面包屑）
+考试句：
+Website design should help users understand where they are, where they can go, and what information is available. Designers need to balance usability and aesthetics, structure information clearly, and avoid intrusive advertisements.
+网站设计应帮助用户理解自己在哪里、能去哪里、当前有什么信息。设计者需要平衡可用性和美观，清楚组织信息，并避免侵入式广告。
+*** 6. Mobile Interfaces（移动界面）
+**** Definition
+Mobile interfaces are designed for handheld devices used while users are on the move.
+Mobile interfaces（移动界面）用于用户移动中使用的手持设备。
+特点：
+- pervasive in everyday life（在日常生活中普遍存在）
+- used in work and personal contexts（用于工作和个人场景）
+- small screen（屏幕小）
+- touch-based interaction（基于触摸）
+- often used with limited attention（常在注意力有限时使用）
+**** Research and Design Considerations
+移动界面的问题：
+- cumbersome for users with poor manual dexterity（对手部灵活性差的用户困难）
+- fat fingers problem（粗手指问题）
+- small hit areas cause errors（触控区域太小会导致误触）
+Hit area:
+- area on screen touched to make something happen
+- includes keys, icons, buttons, apps
+设计要求：
+- touch targets must be big enough for all fingers
+- if too small, users may press wrong target
+- Fitts' law can help design spacing
+- minimum tappable areas should be 44 points × 44 points for controls
+考试句：
+Mobile interface design must consider small screens, limited attention, and touch accuracy. Hit areas should be large enough to avoid accidental touches, and Fitts' law can help determine suitable spacing. A common recommendation is that tappable controls should be at least 44 by 44 points.
+移动界面设计必须考虑小屏幕、注意力有限和触控准确性。触控区域应足够大以避免误触，Fitts' law 可帮助设计间距。常见建议是可点击控件至少为 44 × 44 points。
+*** 7. Appliance Interfaces（家电界面）
+**** Definition
+Appliance interfaces are interfaces on everyday devices in homes, public places, or cars.
+Appliance interfaces（家电/设备界面）是家庭、公共场所或汽车中日常设备上的界面。
+例子：
+- washing machines（洗衣机）
+- remote controls（遥控器）
+- toasters（烤面包机）
+- printers（打印机）
+- navigation systems（导航系统）
+**** Research and Design Considerations
+研究与设计考虑：
+- design as transient interfaces（作为短暂交互界面设计）
+- interactions should be short（交互应短）
+- simple interfaces are needed（界面要简单）
+- consider trade-off between soft and hard controls（考虑软控件和硬控件取舍）
+- physical buttons may be faster and more reliable（物理按钮可能更快更可靠）
+- screen controls may be flexible but harder to discover（屏幕控件更灵活但可能更难发现）
+考试句：
+Appliance interfaces should support short and simple interactions. Designers need to consider the trade-off between soft controls and hard controls, because appliances are often used quickly and in everyday contexts.
+设备界面应支持短而简单的交互。设计者需要考虑软控件和硬控件之间的取舍，因为这类设备通常在日常场景中被快速使用。
+*** 8. Voice User Interfaces / VUI（语音用户界面）
+**** Definition
+Voice user interfaces allow users to talk with spoken language applications.
+Voice user interface（语音用户界面）让用户通过语音与系统交互。
+适合任务：
+- timetable inquiry（查询时刻表）
+- travel planning（旅行规划）
+- phone services（电话服务）
+- flight time inquiry（航班时间查询）
+- ticket purchase（买票）
+**** Human Conversation and Barge-in
+People often interrupt each other in conversation.
+人类对话中经常互相打断。
+Speech technology has barge-in:
+- user can interrupt system prompt
+- system should respond without forcing user to wait
+- improves efficiency
+**** Dialog Structure
+Directed dialogs:
+- system controls the conversation
+- system asks specific questions
+- user gives specific responses
+Flexible dialogs:
+- user takes initiative
+- user gives varied input
+- system must understand more possibilities
+**** Voice Assistants
+例子：
+- Alexa
+- Siri
+- smart speakers
+用途：
+- games（游戏）
+- interactive storytelling（互动讲故事）
+- jokes（笑话）
+- family activities（家庭活动）
+**** Research and Design Considerations
+语音界面设计考虑：
+- keep conversation on track（保持对话不跑偏）
+- help users navigate menu systems efficiently（帮助用户高效通过菜单）
+- support recovery from errors（支持错误恢复）
+- guide users on what can be said（提示用户能说什么）
+- avoid misunderstanding（减少误解）
+- design for noisy environments（考虑噪声环境）
+考试句：
+Voice user interfaces allow users to interact with systems through spoken language. They are useful for information inquiry and transactions, but designers must support clear dialog structure, error recovery, barge-in, and guidance about what users can say.
+语音用户界面让用户通过口语与系统交互，适合信息查询和交易任务。但设计者必须支持清楚的对话结构、错误恢复、打断输入，以及对可说内容的提示。
+*** 9. Pen-based Interfaces（笔式界面）
+**** Definition
+Pen-based interfaces enable users to write, draw, select, and move objects using light pens or styluses.
+Pen-based interfaces（笔式界面）让用户用光笔或 stylus（触控笔）书写、绘图、选择和移动对象。
+优势来源：
+- users already have drawing and writing skills from childhood（用户从小就有写画技能）
+例子：
+- Anoto pen
+- stylus-based tablets
+- digital annotation tools
+**** Advantages
+优点：
+- annotate documents quickly and easily（快速注释文档）
+- fill in paper-based forms and convert them into digital records（填写纸质表单并转为数字记录）
+- support handwriting and drawing（支持手写和绘图）
+- natural for creative work（适合创作任务）
+考试句：
+Pen-based interfaces use styluses or light pens to support writing, drawing, selecting, and moving objects. They are useful because they build on users' existing handwriting and drawing skills.
+笔式界面使用触控笔支持书写、绘图、选择和移动对象。它有用是因为它利用了用户已有的书写和绘画技能。
+*** 10. Touchscreens（触摸屏界面）
+**** Definition
+Touchscreens detect the presence and location of a user's touch on the display.
+Touchscreens（触摸屏）检测用户在显示屏上的触摸位置。
+类型：
+- single touchscreens（单点触摸屏）
+- multi-touch surfaces（多点触摸表面）
+常见场景：
+- ticket machines（售票机）
+- ATMs（自动取款机）
+- phones（手机）
+- tablets（平板）
+- interactive surfaces（互动桌面）
+Multi-touch actions:
+- swiping（滑动）
+- flicking（轻扫）
+- pinching（捏合缩放）
+- pushing（推动）
+- tapping（点击）
+**** Research and Design Considerations
+研究与设计考虑：
+- supports fluid and direct interaction（支持流畅直接交互）
+- display size affects collaboration（显示尺寸影响协作）
+- orientation affects collaboration（方向影响协作）
+- shape affects collaboration（形状影响协作）
+- different tasks need different touch gestures（不同任务需要不同手势）
+考试句：
+Touchscreen interfaces support direct and fluid interaction through tapping, swiping, pinching, and other gestures. Designers should consider touch accuracy, display size, orientation, shape, and how these factors affect individual and collaborative use.
+触摸屏界面通过点击、滑动、捏合等手势支持直接流畅交互。设计者应考虑触摸准确性、屏幕大小、方向、形状，以及这些因素如何影响个人和协作使用。
+*** 11. Gesture-based Systems（手势系统）
+**** Definition
+Gesture-based systems use camera recognition, sensors, and computer vision to recognize arm and hand movements.
+Gesture-based systems（手势系统）使用摄像头、传感器和计算机视觉识别手臂和手部动作。
+例子：
+- Microsoft Kinect
+- operating theater gesture control
+- MRI / CT image manipulation by gestures
+**** Research and Design Considerations
+研究与设计考虑：
+- how to recognize and delineate gestures（如何识别并界定手势）
+- start and end points of gestures（手势起点和终点）
+- difference between deictic gestures and movement（区分指示性手势和普通动作）
+- gesture fatigue（手势疲劳）
+- gesture recognition accuracy（手势识别准确率）
+- social acceptability（社会可接受性）
+考试句：
+Gesture-based systems recognize users' arm and hand movements through sensors, cameras, and computer vision. Designers must consider gesture boundaries, recognition accuracy, fatigue, and whether gestures are socially acceptable in the context of use.
+手势系统通过传感器、摄像头和计算机视觉识别用户手臂和手部动作。设计者必须考虑手势边界、识别准确性、疲劳，以及手势在使用情境中的社会可接受性。
+*** 12. Haptic Interfaces（触觉界面）
+**** Definition
+Haptic interfaces provide tactile feedback by applying vibration or force to the body.
+Haptic interfaces（触觉界面）通过振动或力反馈向身体提供触觉反馈。
+实现方式：
+- actuators embedded in clothing（衣服中的执行器）
+- smartphone vibration（手机振动）
+- wearable vibration devices（可穿戴振动设备）
+例子：
+- violin training system gives vibrotactile feedback when arm movement is wrong
+- smartphone vibration alerts
+- wearable guidance systems
+**** Research and Design Considerations
+研究与设计考虑：
+- where to place actuators on the body（执行器放身体哪里）
+- whether to use single touch or sequence of touches（使用单次触觉还是触觉序列）
+- when to buzz（什么时候振动）
+- how intense the buzz should be（振动强度）
+- whether feedback is informative or annoying（反馈是有用还是烦人）
+考试句：
+Haptic interfaces provide tactile feedback through vibration or force. Designers need to decide where to place actuators, when to provide feedback, how intense it should be, and whether to use single or sequential tactile cues.
+触觉界面通过振动或力提供触觉反馈。设计者需要决定执行器位置、反馈时机、强度，以及使用单次还是连续触觉提示。
+*** 13. Multimodal Interfaces（多模态界面）
+**** Definition
+Multimodal interfaces provide enriched user experiences by using multiple modalities.
+Multimodal interfaces（多模态界面）通过多个 modality（模态）提供更丰富的用户体验。
+常见 modalities：
+- touch（触觉）
+- sight（视觉）
+- sound（声音）
+- speech（语音）
+- gesture（手势）
+- handwriting（手写）
+- eye gaze（眼动）
+优点：
+- more flexible interaction（更灵活）
+- more efficient interaction（更高效）
+- more expressive interaction（表达能力更强）
+例子：
+- Kinect tracks movement, face, gesture, depth, and voice
+- systems combining speech and gesture
+- handwriting plus touch interfaces
+**** Research and Design Considerations
+研究与设计考虑：
+- recognize and analyze speech, gesture, handwriting, or eye gaze
+- calibration is harder than single-modality systems
+- synchronization between modalities is needed
+- must handle ambiguity and errors across modalities
+- system should know which modality has priority
+考试句：
+Multimodal interfaces combine multiple input and output modalities, such as speech, gesture, touch, vision, and handwriting. They can make interaction more flexible and expressive, but they are harder to calibrate and require accurate recognition and integration of different modalities.
+多模态界面结合语音、手势、触摸、视觉和手写等多种输入输出模态。它能让交互更灵活、更有表达力，但校准更难，也需要准确识别和整合不同模态。
+*** 14. Shareable Interfaces（共享界面）
+**** Definition
+Shareable interfaces are designed for more than one person to use.
+Shareable interfaces（共享界面）是为多人共同使用设计的界面。
+特点：
+- support multiple inputs（支持多个输入）
+- may allow simultaneous input（允许同时输入）
+- support co-located collaboration（支持共处一地协作）
+例子：
+- smartboard（智能白板）
+- interactive tabletop（互动桌面）
+- large wall displays（大型墙面显示）
+- shared tabletop systems（共享桌面系统）
+**** Benefits
+优点：
+- provide large interactional space（提供大交互空间）
+- support flexible group working（支持灵活小组工作）
+- allow multiple users to point and touch information（允许多人指向和触摸信息）
+- support collaborative problem solving（支持协作解决问题）
+**** Research and Design Considerations
+研究与设计考虑：
+- display size affects collaboration（显示尺寸影响协作）
+- orientation affects collaboration（方向影响协作）
+- shape affects collaboration（形状影响协作）
+- horizontal surfaces support turn-taking and collaboration（水平表面更支持轮流和协作）
+- vertical surfaces support presentation and shared viewing（垂直表面适合展示和共同观看）
+考试句：
+Shareable interfaces are designed for multiple users and support collaboration through large displays, tabletops, or shared surfaces. Designers should consider display size, orientation, shape, and whether horizontal or vertical surfaces better support the collaborative task.
+共享界面为多人使用而设计，通过大型显示器、桌面或共享表面支持协作。设计者应考虑显示尺寸、方向、形状，以及水平或垂直表面哪个更适合协作任务。
+*** 15. Tangible Interfaces（有形界面）
+**** Definition
+Tangible interfaces couple physical objects with digital representations.
+Tangible interfaces（有形界面）把物理对象和数字表示连接起来。
+特点：
+- physical objects are manipulated by users（用户操控物理对象）
+- manipulation causes digital effects（物理操作触发数字效果）
+- physical and digital worlds are coupled（物理世界和数字世界耦合）
+例子：
+- Urp: physical building models on tabletop
+- bricks and cubes controlling digital outputs
+- cardboard tokens on interactive surfaces
+**** Benefits
+优点：
+- physical objects can be held and manipulated（物理对象可握持和操作）
+- support multi-user exploration（支持多人共同探索）
+- useful for learning and collaboration（适合学习和协作）
+- can make abstract ideas concrete（把抽象内容具体化）
+**** Research and Design Considerations
+研究与设计考虑：
+- what conceptual framework to use（使用什么概念框架）
+- what coupling between physical action and digital effect（物理动作和数字效果如何耦合）
+- explicit mapping is critical for learning（学习场景需要显式映射）
+- implicit and unexpected mapping may work for entertainment（娱乐场景可用隐式和意外映射）
+- what physical artifact to use（使用什么物理物件）
+- what digital outputs to combine（结合什么数字输出）
+考试句：
+Tangible interfaces link physical objects with digital representations. They support hands-on manipulation and collaboration, but designers must carefully define the mapping between physical actions and digital effects.
+有形界面把物理对象和数字表示连接起来，支持动手操作和协作。但设计者必须仔细定义物理动作和数字效果之间的映射关系。
+*** 16. Augmented Reality / AR（增强现实）
+**** Definition
+Augmented reality superimposes virtual representations on physical devices and objects.
+Augmented Reality（增强现实）把虚拟表示叠加到物理设备和真实物体上。
+例子：
+- Pokémon Go
+- medicine AR overlays
+- navigation overlays
+- air traffic control
+- AR games
+- AR windshield display
+- Snapchat filters
+- virtual try-ons in retail stores
+**** Features
+AR 可以：
+- overlay virtual objects on real environment（把虚拟对象叠加到现实环境）
+- use smartphone camera and GPS（使用手机摄像头和 GPS）
+- support comparison and exploration（支持比较和探索）
+- create engaging interaction（创造有吸引力的交互）
+**** Research and Design Considerations
+研究与设计考虑：
+- what kind of digital augmentation to use（使用什么数字增强内容）
+- when and where augmentation appears（何时何地出现）
+- augmentation should stand out but not distract（增强内容要突出但不能分散注意）
+- use relevant information（使用相关信息）
+- avoid blocking real-world tasks（避免遮挡现实任务）
+- ensure safe use in physical environments（确保物理环境中安全使用）
+考试句：
+Augmented reality overlays virtual representations onto physical environments. It can support medicine, navigation, games, retail try-ons, and everyday exploration, but designers must ensure that digital augmentations are visible, relevant, and not distracting from the real-world task.
+增强现实把虚拟表示叠加到物理环境中，可用于医疗、导航、游戏、零售试戴和日常探索。但设计者必须确保数字增强内容可见、相关，并且不干扰现实任务。
+*** 17. Wearables（可穿戴设备）
+**** Definition
+Wearables are digital devices worn on the body, such as cameras, smart glasses, smart fabrics, jewelry, shoes, jackets, and watches.
+Wearables（可穿戴设备）是穿戴在身体上的数字设备。
+例子：
+- Google Glass
+- smartwatch
+- smart fabrics
+- smart shoes
+- smart jackets
+- wearable cameras
+**** Research and Design Considerations
+研究与设计考虑：
+- comfort（舒适性）
+- light and small（轻、小）
+- should not get in the way（不能妨碍行动）
+- fashionable（时尚）
+- preferably hidden in clothing（最好隐藏在衣物中）
+- hygiene（卫生）
+- privacy concerns（隐私问题）
+- social acceptability（社会可接受性）
+Google Glass concern:
+- people worried about being filmed without knowing
+- wearable cameras raise privacy and social concerns
+考试句：
+Wearable interfaces are worn on the body and can provide continuous access to digital information. Designers must consider comfort, size, fashion, hygiene, privacy, and social acceptability.
+可穿戴界面穿戴在身体上，可以持续提供数字信息。设计者必须考虑舒适性、大小、时尚性、卫生、隐私和社会可接受性。
+*** 18. Robots and Drones（机器人与无人机）
+**** Robots（机器人）
+Robots can be remote, domestic, social, or service-oriented.
+机器人可以是远程机器人、家庭机器人、社交机器人或服务机器人。
+例子：
+- remote robots in hazardous settings（危险环境中的远程机器人）
+- robots investigating bombs（排爆机器人）
+- domestic robots（家用机器人）
+- social robots like Paro（社交机器人）
+用途：
+- dangerous material investigation（危险材料检查）
+- helping around the house（家务帮助）
+- elderly care（老人照护）
+- emotional companionship（情感陪伴）
+- social interaction（社会互动）
+**** Drones（无人机）
+Drones are unmanned aircraft controlled remotely.
+Drones（无人机）是远程控制的无人飞行器。
+应用：
+- entertainment（娱乐）
+- carrying drinks and food at events（活动中送饮料食物）
+- field surveying（农田测绘）
+- vineyard survey（葡萄园状态检查）
+- aerial images and videos（航拍图像和视频）
+**** Research and Design Considerations
+研究与设计考虑：
+- how humans react to physical robots versus virtual robots
+- should robots be human-like or robot-like
+- should interaction be human-human-like or human-computer-like
+- whether users should press buttons or talk naturally
+- whether drones can take images of private property without permission
+- privacy and safety are important
+考试句：
+Robots and drones raise design questions about appearance, behavior, interaction style, safety, and privacy. Designers must decide whether robots should be human-like or clearly machine-like, and whether drones can collect images or videos without users' awareness or permission.
+机器人和无人机带来关于外观、行为、交互方式、安全和隐私的设计问题。设计者必须决定机器人应像人还是像机器，以及无人机是否可以在用户不知情或未许可时收集图像和视频。
+*** 19. Brain-Computer Interfaces / BCI（脑机接口）
+**** Definition
+Brain-computer interfaces provide a communication pathway between brain waves and an external device.
+Brain-computer interface（脑机接口）在人的脑电信号和外部设备之间提供通信路径。
+例子：
+- brain waves controlling a cursor
+- paralyzed user selecting letters on a screen
+- assistive communication systems
+特点：
+- users may need training to control brain signals
+- concentration is required
+- useful for users with severe physical disabilities
+考试句：
+Brain-computer interfaces provide a communication pathway between a user's brain waves and an external device, such as a cursor on a screen. They can support users with severe physical disabilities but often require training and concentration.
+脑机接口在用户脑电信号和外部设备之间建立通信路径，例如控制屏幕上的光标。它可以帮助严重身体障碍用户，但通常需要训练和集中注意力。
+*** 20. Smart Interfaces（智能界面）
+**** Definition
+Smart interfaces are interfaces in devices or environments that have some intelligence and are connected to the internet and other devices.
+Smart interfaces（智能界面）存在于具有一定智能并连接互联网和其他设备的设备或环境中。
+例子：
+- smart phones（智能手机）
+- smart speakers（智能音箱）
+- smart watches（智能手表）
+- smart cars（智能汽车）
+- smart buildings（智能建筑）
+- smart cities（智慧城市）
+特点：
+- context-aware（情境感知）
+- connected（联网）
+- data-driven（数据驱动）
+- adaptive（自适应）
+- may act proactively（可能主动行动）
+考试句：
+Smart interfaces have some intelligence, are connected to the internet and other devices, and can be context-aware. They can adapt to users and environments, but designers must consider privacy, control, and reliability.
+智能界面具有一定智能，连接互联网和其他设备，并能进行情境感知。它们可以适应用户和环境，但设计者必须考虑隐私、控制感和可靠性。
+
+** Choosing an Interface（选择界面）
+*** Key Factors
+Which interface to use depends on：
+- task（任务）
+- users（用户）
+- context（情境）
+- cost（成本）
+- robustness（稳健性）
+- safety（安全性）
+- privacy（隐私）
+- physical environment（物理环境）
+- social acceptability（社会可接受性）
+例子问题：
+- Is multimedia better than tangible interfaces for learning?
+- Is speech as effective as command-based interface?
+- Can a wearable be socially acceptable?
+- Should a robot look human-like?
+- Is AR distracting in a safety-critical environment?
+考试句：
+The choice of interface depends on task, users, context, cost, robustness, safety, privacy, and social acceptability. No interface type is universally best; designers must choose based on the activity and situation.
+界面选择取决于任务、用户、情境、成本、稳健性、安全、隐私和社会可接受性。没有一种界面永远最好，设计者必须根据活动和场景选择。
+
+** Summary（总结）
+*** Main Points
+本章总结：
+- Interface metaphors help users understand unfamiliar systems using familiar knowledge.
+- Interaction types describe what users are doing with a system.
+- Interface types describe the interface form that supports interaction.
+- Many innovative interfaces have emerged in the last 30 years.
+- Examples include speech, mobile, wearable, brain-computer, tangible, AR, and smart interfaces.
+- Each interface type raises different research and design questions.
+- Designers must choose interfaces based on task, users, context, cost, robustness, privacy, and safety.
+考试句：
+Many innovative interfaces have emerged in recent decades, including speech, mobile, wearable, brain-computer, tangible, augmented reality, and smart interfaces. Each interface type provides different opportunities and raises different research and design questions. Designers should select an interface based on the task, users, context, cost, robustness, safety, and social acceptability.
+近几十年出现了许多创新界面，包括语音、移动、可穿戴、脑机、有形、增强现实和智能界面。每种界面都有不同机会，也带来不同研究与设计问题。设计者应根据任务、用户、情境、成本、稳健性、安全和社会可接受性选择界面。
+
+** Exam Answer Templates（考试答案模板）
+*** 1. Explain interface metaphors.
+Interface metaphors are interfaces designed to be similar to familiar physical objects, activities, or concepts while also having their own digital properties. They exploit users' familiar knowledge to help users understand unfamiliar systems. Examples include the desktop metaphor, card metaphor, and shopping cart icon. Interface metaphors make systems easier to learn and help users understand the underlying conceptual model, but they may also constrain designers, conflict with design principles, and transfer bad aspects of existing designs.
+Interface metaphor 是把界面设计得类似用户熟悉的物体、活动或概念，同时保留数字系统自身属性。它利用用户已有知识帮助理解陌生系统。例如桌面隐喻、卡片隐喻和购物车图标。界面隐喻能降低学习难度并帮助理解概念模型，但也可能限制设计者、违反设计原则，并继承旧设计缺点。
+*** 2. Compare instructing, conversing, manipulating, exploring, and responding.
+Instructing means users tell the system what to do and is suitable for quick and repetitive tasks. Conversing allows users to interact through speech or natural language and is suitable for information services, but misunderstandings can occur. Manipulating uses users' physical-world knowledge to interact with virtual objects and supports direct manipulation. Exploring involves moving through virtual or physical environments, such as 3D worlds or virtual museums. Responding means the system takes initiative and alerts users based on context, location, or learned behavior.
+Instructing 是用户告诉系统做什么，适合快速和重复任务。Conversing 是通过语音或自然语言交互，适合信息服务，但可能产生误解。Manipulating 利用用户现实世界操控物体的经验与虚拟对象交互，支持直接操控。Exploring 是在虚拟或物理环境中移动探索，例如 3D 世界或虚拟博物馆。Responding 是系统基于情境、位置或学习到的行为主动提醒用户。
+*** 3. Explain direct manipulation.
+Direct manipulation involves continuous representation of objects, rapid reversible actions with immediate feedback, and physical actions instead of complex command syntax. It helps novices learn quickly, enables experienced users to work rapidly, reduces anxiety, and gives users a strong sense of control. However, it may not support repetitive tasks well, and some gestures can be slower or more error-prone than command input.
+Direct manipulation 包括持续显示对象、快速可逆操作和即时反馈，并用物理动作替代复杂命令语法。它帮助新手快速学习，让熟练用户高效操作，减少焦虑，并增强控制感。但它不一定适合重复任务，而且某些手势可能比命令输入更慢、更容易出错。
+*** 4. Explain how to choose an interaction type.
+The choice of interaction type depends on the task. Direct manipulation is suitable for doing tasks such as drawing, designing, driving, and resizing windows. Instructing is suitable for repetitive tasks such as spell-checking and file management. Conversing is suitable for services such as finding information or requesting music. Hybrid conceptual models are useful when designers want to support multiple ways of performing the same action.
+交互类型的选择取决于任务。直接操控适合绘图、设计、驾驶和调整窗口大小等执行类任务。指令式交互适合拼写检查和文件管理等重复任务。对话式交互适合信息查询或请求音乐等服务。混合概念模型适合支持多种完成同一动作的方式。
+*** 5. Compare command line interfaces and GUIs.
+Command line interfaces are efficient, precise, and fast, but they require users to remember commands and syntax, creating a high learning cost. Graphical user interfaces use windows, icons, menus, and pointing devices, allowing users to interact with visual objects instead of typed commands. GUIs are generally easier for novices, but they may be less efficient than commands for expert users and repetitive tasks.
+命令行界面高效、精确、快速，但用户需要记忆命令和语法，学习成本高。GUI 使用窗口、图标、菜单和指针设备，让用户通过视觉对象交互，而不是输入命令。GUI 通常对新手更友好，但对熟练用户和重复任务可能不如命令高效。
+*** 6. Explain research and design considerations for mobile interfaces.
+Mobile interface design must consider small screens, limited attention, and touch accuracy. A key issue is hit area, which is the area users touch to activate a control. Hit areas must be large enough for different finger sizes to avoid accidental touches. Fitts' law can help determine suitable spacing, and a common guideline is that tappable controls should be at least 44 by 44 points.
+移动界面设计必须考虑小屏幕、注意力有限和触控准确性。关键问题是 hit area，即用户触发控件的触摸区域。触控区域必须足够大，以适应不同手指尺寸并避免误触。Fitts' law 可以帮助确定合适间距，常见建议是可点击控件至少为 44 × 44 points。
+*** 7. Explain research and design considerations for AR.
+Augmented reality overlays virtual information onto the physical environment. Designers must decide what digital augmentation to use, when and where it should appear, and how to make it visible without distracting from the real-world task. AR content should be relevant, well-aligned with the physical environment, and safe to use in context.
+增强现实把虚拟信息叠加到物理环境中。设计者必须决定使用什么数字增强内容、何时何地出现，以及如何让内容可见但不干扰现实任务。AR 内容应相关、与物理环境对齐，并在使用情境中安全。
+*** 8. Explain how interface choice depends on context.
+No interface type is universally best. The choice depends on task, users, context, cost, robustness, safety, privacy, and social acceptability. For example, direct manipulation may be good for drawing, voice interfaces may be good for information inquiry, tangible interfaces may support learning and collaboration, and wearables may be useful for continuous access to information but raise privacy and comfort concerns.
+没有一种界面类型永远最好。界面选择取决于任务、用户、情境、成本、稳健性、安全、隐私和社会可接受性。例如，直接操控适合绘图，语音界面适合信息查询，有形界面适合学习和协作，可穿戴设备适合持续访问信息但会带来隐私和舒适性问题。
+
+** One-page Memory Version（一页速记版）
+*** Interface Metaphors
+Interface metaphor:
+- use familiar physical objects / activities / concepts
+- help users understand unfamiliar systems
+- examples: desktop, card, shopping cart
+Benefits:
+- easier learning
+- helps conceptual model
+- more accessible
+Problems:
+- may break cultural rules
+- may constrain designers
+- may conflict with design principles
+- may transfer bad design
+- may limit imagination
+*** Interaction Types
+Five types:
+1. Instructing
+2. Conversing
+3. Manipulating
+4. Exploring
+5. Responding
+Instructing:
+- user tells system what to do
+- good for repetitive tasks
+Conversing:
+- speech / natural language
+- good for novices and services
+- risk of misunderstanding
+Manipulating:
+- dragging / selecting / opening / zooming
+- uses physical-world knowledge
+Direct Manipulation:
+- continuous representation
+- reversible actions
+- immediate feedback
+- physical actions instead of complex syntax
+Exploring:
+- moving through virtual or physical environments
+- maps, VR, virtual museums
+Responding:
+- system takes initiative
+- alerts based on context, location, or learned behavior
+*** Interaction vs Interface
+Interaction:
+- what user is doing
+Interface:
+- what interface supports the interaction
+*** Interface Types
+Command:
+- fast, precise, efficient
+- high learning cost
+GUI:
+- WIMP: windows, icons, menus, pointing device
+- easier visual interaction
+Multimedia:
+- text, graphics, sound, video, animation
+- good for browsing and learning
+- can split attention
+VR:
+- 3D simulated environment
+- presence
+- risk of motion sickness
+Website:
+- structure information
+- navigation
+- breadcrumbs
+- avoid intrusive ads
+Mobile:
+- small screen
+- hit area
+- Fitts' law
+- 44 × 44 points
+Appliance:
+- short interactions
+- simple interface
+- hard vs soft controls
+Voice:
+- spoken interaction
+- directed vs flexible dialogs
+- error recovery needed
+Pen:
+- writing, drawing, selecting
+- uses handwriting skills
+Touch:
+- tapping, swiping, pinching
+- direct and fluid
+Gesture:
+- camera / sensor / computer vision
+- recognition accuracy and fatigue
+Haptic:
+- tactile feedback
+- vibration / force
+- actuator placement and intensity
+Multimodal:
+- speech, gesture, touch, gaze, handwriting
+- flexible but hard to calibrate
+Shareable:
+- multiple users
+- collaboration
+- tabletop / smartboard
+Tangible:
+- physical object + digital effect
+- explicit mapping for learning
+AR:
+- virtual objects over physical environment
+- visible but not distracting
+Wearables:
+- worn on body
+- comfort, hygiene, privacy
+Robots and drones:
+- physical or remote agents
+- safety, privacy, human-like design
+BCI:
+- brain waves to external device
+- useful for disability support
+Smart:
+- intelligent, connected, context-aware
+*** Choosing Interface
+Depends on:
+- task
+- users
+- context
+- cost
+- robustness
+- safety
+- privacy
+- social acceptability
