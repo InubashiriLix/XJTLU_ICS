@@ -1,0 +1,105 @@
+#+title: 2022-2023F
+#+source_pdf: [[file:pdf/2022-2023F.pdf][pdf/2022-2023F.pdf]]
+#+startup: overview
+
+* Page 1
+Paper Code         Examiner         Department         Email of Examiner           Ext
+
+    CPT208             Yue Li          Computing           yue.li@xjtlu.edu.cn       3223
+
+                          Semester 2, 2022/23 Final Exam
+                          Undergraduate - Year 3Human-
+                                  Centric Computing
+                                Exam Duration: 2 Hours
+                          Crash Time Allowed: 15 Minutes
+
+  Instructions to Candidates
+
+  1. This is an open-book examination with invigilation. You are allowed to take one-page
+     notes with you. Please complete the assessment independently and honestly.
+
+  2. Total marks available are 100 marks. This exam consists of three questions in
+     total. The mark allocated for each question is indicated at the end of the question.
+
+  3. Answer ALL questions. There is NO penalty for providing a wrong answer.
+
+  4. Write down your solutions on the answer booklet. Clearly indicate the question
+     numbers before your solutions. Submit your notes together with your answer booklet.
+
+  5. Only English solutions are accepted. Make sure your writings are clear to read.
+
+  6. All materials must       returned to the exam supervisor upon completion of the exam.
+     Failure to do so will be deemed academic misconduct and will be dealt with accordingly.
+
+  7. The duration is 2 hours.
+
+Paper Code: CPT208/22/23/S2/Final
+
+* Page 2
+Human-Centric Computing
+
+** Question 1   Design    (40 marks)
+
+*** (a) Draw the interaction design life-cycle model. How does it dif er from the double   [10]
+       diamond of design? Give two specif c examples to show how you have followed
+       them in your group project.
+
+*** (b) Is the CPT208 learning mall page a good design or a bad design? Please justify       [9]
+       your answer using at least two design principles. How do design principles inform
+       the interaction design?
+
+*** (c) What are the three principles of a user-centred approach? How did you follow the     [9]
+       principles in your group project?
+
+*** (d) What are the dif erences between usability and user experience? Please give two     [12]
+       specif c examples for each and explain how you addressed usability and user expe-
+       rience goals in your own project.
+
+CPT208/22/23/S2/Final                                                        Page 2 of 4
+
+* Page 3
+Human-Centric Computing
+
+** Question 2   Prototype     (30 marks)
+
+*** (a) What are the three main characteristics and three main functionalities of proto-        [10]
+       typing? Please give an example of how you used prototype in your group project.
+
+*** (b) Please describe the breadth and depth dimension in a prototype. Why is it im-           [10]
+       portant to balance these two dimensions? What is the name of the strategy that
+       focuses on the breadth dimension of the prototype? Please give an brief introduc-
+       tion of this strategy and describe how it could be used in the development of a hotel
+       booking system.
+
+*** (c) What is the best choice of prototyping method if a designer would like to show a       [10]
+       series of scenarios related to design tasks? Please give a short description of this
+       prototyping method. Use this mexTod to provide a prototype for a hotel booking
+       system, describing at least four key scenarios.
+
+CPT208/22/23/S2/Final                                                           Page 3 of 4
+
+* Page 4
+Human-Centric Computing
+
+** Question 3   Evaluation    (30 marks)
+
+*** (a) What are the three types of evaluation methods? What are their dif erences and     [10]
+       similarities? Discuss one of the types in detail and explain how you have imple-
+       mented it in your group project.
+
+*** (b) You are asked to conduct an experimental design to evaluate the usability of two    [10]
+       online quiz systems. What are the steps you need to follow to prepare and conduct
+       the experiment? Specify the alternative hypothesis, your proposed study design,
+       the independent and dependent variables, and give as many details as you can.
+
+*** (c) As a student in XJTLU, you have used many XJTLU systems, such as learning          [10]
+       mall, eBridge, XJTLU oﬀicial website, the sports centre mini-program, and the
+       library book-borrowing system, etcD Choose one that you are familiar with, and
+       discuss what, where, when and how can you evaluate the design. Please provide as
+       many details and examples as you can. Make it clear if you are making assumptions
+       and claims.
+
+                           ——— End of Questions ———
+
+CPT208/22/23/S2/Final                                                        Page 4 of 4
+

@@ -1,0 +1,277 @@
+#+title: 2024-2025F
+#+source_pdf: [[file:pdf/2024-2025F.pdf][pdf/2024-2025F.pdf]]
+#+startup: overview
+
+* Page 1
+#+BEGIN_ocr text
+CPT28 | | Computing [ |
+Xi’an Jiaotong-Liverpool University
+b 3K 14958 % 4
+2" Semester, 2024/25 Final Examination
+Human-Centric Computing
+Time Allowed: 2 Hours \4%
+Instructions to Candidates 0
+1. This is an open-book examination with invi ion. You are allowed to take one-page
+notes with you. Please complete the independently and honestly.
+2. Total marks available are 100. s
+3. This exam consists of three \ions. The mark allocated for each question is
+indicated at the end of the u$.
+4. Answer ALL questions. Qs NO penalty for providing a wrong answer.
+5. Only English soluti accepted. Answer should be written in the answer booklet
+provided. Clearl &cate the question numbers before your solutions. Submit your
+notes toget&?your answer booklet. Make sure your writings are clear to read.
+6. All materials t be returned to the exam supervisor upon completion of the exam.
+Failure to do so will be deemed academic misconduct and will be dealt with accordingly.
+CPT208 - 2024/25 - 2" Semester - Final Examination
+#+END_ocr
+
+* Page 2
+Human-Centric Computing
+** Question 1 Discovering Requirements and Design (40 marks)
+Imagine that you are tasked with designing a university digital services application that
+enables students to manage their academic activities, including course registration,
+accessing learning resources, and scheduling appointments with faculty. You must adopt
+a user-centered design approach. Based on the given context, answer the questions
+below. Note that your answers should be closely related to the given context.
+*** (a) 
+As two main types of goal in user-centered design, what is the difference between [10]
+usability and user experience? Then, please list three design goals for both usability
+and user experience in this application, respectively.
+
+**** Sol:
+*Difference*
+Usability asks whether the system works well. It is more objective and focuses on whether students can complete academic tasks effectively, efficiently, safely, and with few errors. For example, can a student register for a course or find a faculty appointment slot quickly?
+
+User experience asks how users feel when using the product. It is more subjective and focuses on feelings such as satisfaction, confidence, enjoyment, trust, and frustration. For example, does the app make students feel supported and in control, or confused and anxious during course registration?
+
+*Usability goals for this application*
+1. Effectiveness: students should be able to complete key tasks, such as course registration, accessing learning resources, and booking faculty appointments.
+2. Efficiency: common tasks should take few steps, for example checking the timetable or downloading lecture materials quickly.
+3. Safety: the app should prevent serious mistakes, such as accidentally dropping a course, by using confirmation, undo, and clear error messages.
+
+*User experience goals for this application*
+1. Satisfying: students should feel that academic services are organized and reliable.
+2. Helpful and supportive: the app should reduce anxiety by giving clear status information, reminders, and guidance.
+3. Engaging or motivating: students should feel encouraged to manage their study plan, attend appointments, and keep up with learning resources.
+
+Related material:
+- [[file:../01_DiscoveringRequirements/main.org::*Usability and User Experience][Usability and User Experience]]
+- [[file:../01_DiscoveringRequirements/main.org::*Difference Between Usability and User Experience][Difference Between Usability and User Experience]]
+
+*** (b) 
+Besides the usability and user experience, please outline the four other common 
+types of requirements in human-centered design. Then, please choose one of them
+as an example to explain why it is important and how it will affect the design of
+this application. 
+**** Sol
+Besides usability goals and user experience goals, the four other common types of requirements are:
+
+1. Functional requirements: what the system should do. For example, the app shall allow students to register for courses, search learning resources, view timetables, and book faculty appointments.
+2. Data requirements: what data needs to be stored and managed. For example, the app needs student profiles, course records, timetable data, resource metadata, appointment slots, and booking history.
+3. Environment requirements: the physical, social, organizational, and technical context of use. For example, students may use the app on mobile phones on campus, in dormitories, in classrooms, or with unstable network connections.
+4. User characteristics: the properties of target users. For example, students may be first-year or senior students, domestic or international students, novice or experienced users, and may have different language backgrounds or accessibility needs.
+
+Example: data requirements are important because the application handles academic activities that depend on accurate and timely information. If course capacity, prerequisites, timetable clashes, and appointment availability are not stored and updated correctly, students may register for the wrong course or book an unavailable appointment. This affects the design because the app should show real-time course availability, prevent timetable conflicts, protect personal academic data, and clearly display booking status such as pending, confirmed, or cancelled.
+
+Related material:
+- [[file:../01_DiscoveringRequirements/main.org::*Six Most Common Types of Requirements][Six Most Common Types of Requirements]]
+- [[file:../01_DiscoveringRequirements/main.org::*Functional Requirements][Functional Requirements]]
+- [[file:../01_DiscoveringRequirements/main.org::*Data Requirements][Data Requirements]]
+- [[file:../01_DiscoveringRequirements/main.org::*Environment Requirements][Environment Requirements]]
+- [[file:../01_DiscoveringRequirements/main.org::*User Characteristics][User Characteristics]]
+
+*** (c)
+If designers decide to keep the same order of item in the application 's menu, which (10]
+of Shneiderman’s Eight Golden Rules does this decision reflect? Next, please iden-
+tify the design principle this rule belongs nd provide its definition, then give
+another example of how this principle could applied in the design of this appli-
+cation.
+**** Sol.
+The rule is Shneiderman's rule "Strive for consistency".
+
+The design principle is consistency. Consistency means similar operations, elements, sequences, visual styles, and terminology should be used for similar tasks. It reduces users' learning burden and makes the interface easier to learn, remember, and use.
+
+Keeping the same menu order is an example of internal consistency because students can rely on the same navigation structure each time they use the application. Another example is to keep the primary action button in the same position and use the same terminology. For instance, course registration, appointment booking, and resource request forms should all use a clear "Submit" or "Confirm" button instead of mixing labels such as "Done", "Go", and "OK" for the same kind of action.
+
+Related material:
+- [[file:../03_ConceptualPrototypingAndPracticalGuide/main.org::*Consistency:][Consistency]]
+- [[file:../03_ConceptualPrototypingAndPracticalGuide/main.org::*Shneiderman's Eight Golden Rules:][Shneiderman's Eight Golden Rules]]
+- [[file:../03_ConceptualPrototypingAndPracticalGuide/main.org::*Stive for consistency:][Strive for consistency]]
+
+*** (d)
+If designers integrate XIPU AI (a chatbot) into the application, what type of inter- [10]
+action does this represent? Next, please discuss the pros and cons of this interaction
+type, and list examples of how these advantages and disadvantages might apply to
+the designed application
+**** Sol.
+This represents conversing interaction because students interact with the system through natural language, similar to a conversation with another person.
+
+Advantages:
+1. Familiar and comfortable: students can ask questions in ordinary language, such as "How do I register for CPT208?" or "When is Professor Li available?"
+2. Good for novices: new students may not know where a function is located, so a chatbot can guide them to course registration, learning resources, or appointment booking.
+3. Flexible for information services: the chatbot can combine information from different services, for example explaining a timetable clash and suggesting available alternatives.
+
+Disadvantages:
+1. Misunderstanding may occur: the chatbot may parse ambiguous input incorrectly, such as "drop AI" meaning dropping an AI course or asking XIPU AI to stop.
+2. Reliability and trust issues: if the chatbot gives outdated course rules or appointment information, students may make serious academic mistakes.
+3. Recovery and transparency are needed: students may not know what the chatbot can do, so the app should show suggested prompts, confirm important actions, and provide links to official pages or human support.
+
+Related material:
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*Interaction Types（交互类型）][Interaction Types]]
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*2. Conversing（对话式交互）][Conversing]]
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*Choosing an Interaction Type（选择交互类型）][Choosing an Interaction Type]]
+
+* Page 3
+Human-Centric Computing
+** Question 2 Prototype (30 marks)
+Imagine you are part of a design team creating a mobile application to support student
+well-being on campus. The app includes features such as mood tracking, access to mental
+health resources, booking counseling sessions, and sending reminders for healthy habits
+(e.g., hydration, breaks, sleep). Your team is now moving into the prototyping phase.
+*** (a)
+During the initial design phase, your group chooses to use prototypes to evaluate [10]
+user feelings. Please address which prototyping aim does this approach represent,
+and what are its key benefits? Then, please suggest which tool would you select for
+this purpose, and how would you use it to achieve your goal?
+**** Sol.
+The aim is to use prototyping as a bridge between ideation and testing, especially to evaluate user experience and emotional response before full implementation. A prototype turns the abstract idea of a student well-being app into a tangible experience that can be evaluated, tested, and refined.
+
+Key benefits:
+1. It supports evaluation and feedback, which are central to interaction design.
+2. Stakeholders and students can see and interact with the idea instead of only reading a document.
+3. The team can communicate around the same concrete artifact and reduce misunderstanding.
+4. Designers can test assumptions early and cheaply before expensive development.
+5. Prototypes encourage reflection and help the team choose between alternatives.
+
+I would use a clickable Figma prototype supported by scenario-based tasks. Figma is suitable because it can show the main mobile screens, visual layout, navigation, and interaction feedback without implementing the final system. To evaluate user feelings, I would create realistic scenarios such as "record today's mood", "find a counselling resource", and "book a counselling session". Students would perform these tasks while I observe hesitation, confusion, and emotional reactions, then complete a short questionnaire and interview about whether the app feels supportive, private, trustworthy, and not stressful.
+
+Related material:
+- [[file:../05_PrototypingFidelity/main.org::*What is Prototype Actually?（Prototype 到底是什么）][What is Prototype Actually]]
+- [[file:../05_PrototypingFidelity/main.org::*Why Prototype?（为什么要做 Prototype）][Why Prototype]]
+- [[file:../05_PrototypingFidelity/main.org::*Achieving Prototyping Goals（达成原型目标）][Achieving Prototyping Goals]]
+
+*** (b) Please list the five common dimensions of prototyping fidelity. Next, please select (10]
+the most important dimension for this application’s design, define it, and explain
+how you would determine its fidelity level, with examples
+**** Sol.
+The five common dimensions are:
+
+1. Visual fidelity: how realistic the prototype looks in terms of layout, colour, typography, icons, and visual hierarchy.
+2. Interaction fidelity: how realistically users can tap, navigate, enter data, receive feedback, and recover from errors.
+3. Breadth fidelity: how much of the product scope is covered, such as whether mood tracking, resources, booking, reminders, and profile pages are all represented.
+4. Depth fidelity: how much functionality is implemented inside one selected feature, such as whether counselling booking includes slot selection, confirmation, validation, and cancellation.
+5. Content fidelity: how realistic and contextual the content is, such as mood labels, mental health advice, counselling descriptions, and reminder messages.
+
+For this well-being application, I think content fidelity is especially important. The key user response depends on whether the advice, mood options, and mental health resources feel realistic, sensitive, and trustworthy. Placeholder text such as "Lorem ipsum" would not allow students to judge whether the app is helpful or emotionally appropriate.
+
+I would determine the fidelity level based on the hypothesis being tested. In early structure testing, content could be medium fidelity: realistic mood categories, sample advice, and a few representative counselling resources. When testing the advice feature or user feelings, content fidelity should be high: advice should be written in clear, supportive language, include realistic campus resources, avoid harmful or judgmental wording, and show appropriate escalation such as "contact counselling service" for severe stress. Visual fidelity can remain moderate at first so users focus on whether the support content is understandable and trustworthy.
+
+Related material:
+- [[file:../05_PrototypingFidelity/main.org::*Five Dimensions in Prototyping（五个原型维度）][Five Dimensions in Prototyping]]
+- [[file:../05_PrototypingFidelity/main.org::*Visual Fidelity（视觉保真度）][Visual Fidelity]]
+- [[file:../05_PrototypingFidelity/main.org::*Interaction Fidelity（交互保真度）][Interaction Fidelity]]
+- [[file:../05_PrototypingFidelity/main.org::*Breadth Fidelity（广度保真度）][Breadth Fidelity]]
+- [[file:../05_PrototypingFidelity/main.org::*Depth Fidelity（深度保真度）][Depth Fidelity]]
+- [[file:../05_PrototypingFidelity/main.org::*Content Fidelity（内容保真度）][Content Fidelity]]
+
+*** (c)
+The application’s key function is to provide advice student under pressure. To (10]
+design this feature, please select a prototyping tool/method and briefly introduce
+it. Then, discuss its pros and cons for this use case, and outline your prototyping
+process — how would you design and test it
+**** Sol.
+I would select the Wizard-of-Oz prototyping method. In a Wizard-of-Oz prototype, users believe they are interacting with an intelligent system, but a human operator secretly provides some or all of the system responses. This is useful when the final AI advice system is difficult, risky, or expensive to implement early.
+
+For this use case, Wizard-of-Oz is suitable because the key feature is giving advice to students under pressure. The team needs to learn what kind of advice students expect, whether the wording feels supportive, and when the system should recommend human help, before building a real AI model.
+
+Advantages:
+1. It can simulate intelligent advice without implementing a full AI system.
+2. It allows quick testing of different response styles, such as calm guidance, practical steps, or referral to counselling.
+3. It helps reveal hidden requirements, such as privacy concerns, need for emergency support, or dislike of overly generic advice.
+
+Disadvantages:
+1. It has low autonomy because a human operator is controlling the system.
+2. It may not reflect the speed, accuracy, or failure cases of the final AI system.
+3. There are ethical issues because users should be debriefed after the study and sensitive mental health data must be handled carefully.
+
+Process:
+1. Define the goal: test whether students under pressure feel the advice is understandable, supportive, trustworthy, and safe.
+2. Prepare scenarios, for example "I am stressed before an exam", "I cannot sleep", and "I missed a deadline".
+3. Build a simple chat prototype in Figma or a web mock-up with realistic opening prompts and response areas.
+4. Prepare response scripts for the human operator, including supportive wording, practical advice, campus resources, and escalation rules for serious cases.
+5. Recruit representative students, obtain informed consent, and explain that the study evaluates a prototype.
+6. Ask students to complete advice-seeking tasks while the operator provides responses behind the scenes.
+7. Collect quantitative data such as task completion, time, satisfaction ratings, and perceived helpfulness, and qualitative data from think-aloud comments and interviews.
+8. Analyse misunderstandings, emotional reactions, trust issues, and repeated requests, then refine the advice flow, content, and safety mechanisms.
+
+Related material:
+- [[file:../02_Prototyping/main.org::*Quick Start: Quick and Dirty Arsenal][Quick and Dirty Arsenal]]
+- [[file:../05_PrototypingFidelity/main.org::*Other Dimensions（其他维度）][Other Dimensions]]
+- [[file:../05_PrototypingFidelity/main.org::*Important Lessons（重要教训）][Important Lessons]]
+
+* Page 4
+Human-Centric Computing
+** Question 3 Evaluation (30 marks)
+You are working on a new educational app called LearnSmart aimed at improving math
+skills for high school students. The company wants to evaluate the effectiveness of
+LearnSmart compared to a traditional classroom setting. You are tasked with designing
+a systematic evaluation using experimental design.
+*** (a)
+How can you apply quantitative and qualitative methods in the evaluation? Name [15]
+a typical example for each and compare and contrast the differences. Give specific
+details to explain how the two methods can be used in the given context.
+**** Sol.
+Quantitative methods collect numerical data that can be statistically analysed. A typical example is a controlled test using pre-test and post-test math scores, task accuracy, completion time, error rate, and satisfaction ratings. In this context, students can take the same difficulty level of math assessment before and after using LearnSmart or attending a traditional classroom session. The researcher can calculate improvement scores, means, standard deviations, and use a t-test to compare the two conditions. A Likert-scale satisfaction questionnaire can also produce numerical ratings such as ease of learning, confidence, motivation, and overall satisfaction.
+
+Qualitative methods collect textual or verbal data that explain users' reasons, feelings, and experiences. A typical example is a semi-structured interview after the learning session. Students can be asked what helped them understand math concepts, where they felt confused, whether feedback from LearnSmart was useful, and why they preferred or disliked the app compared with classroom teaching. Open-ended questionnaire comments can also be coded into themes such as "clear feedback", "too much content", "teacher explanation is better", or "more motivating".
+
+The two methods are different but complementary. Quantitative data is easier to compare across groups and can show whether LearnSmart improves performance or satisfaction significantly. However, it may not explain why the result happened. Qualitative data provides deeper reasons and examples, but it is harder to analyse statistically and usually uses fewer participants. A good evaluation should combine them: use test scores and rating scales to measure improvement and satisfaction, then use interviews or open comments to explain the numbers and identify design improvements.
+
+Related material:
+- [[file:../11_FieldStudyAndAnalytics/main.org::*Quantitative vs Qualitative Questions][Quantitative vs Qualitative Questions]]
+- [[file:../11_FieldStudyAndAnalytics/main.org::*Quantitative vs Qualitative Analysis][Quantitative vs Qualitative Analysis]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Quantitative Performance Measures（量化表现指标）][Quantitative Performance Measures]]
+- [[file:../04_HeuristicEvaluationQuestionnairAndInterview/QuestionnairInterview.org::*Questionnair vs Interview][Questionnaire vs Interview]]
+
+*** (b)
+Your team plans to conduct an experimental study to evaluate if LearnSmart leads [15]
+to better math skills and higher student satisfaction compared to traditional class-
+room instruction. Identify the independent variable(s) and dependent variable(s)
+in this experiment. What are the null hypotheses? Provi detailed experimen-
+tal plan that describes your preparations, the experi tings, what students
+need to do, how to collect, analyze, and interp&a.
+
+**** Sol.
+*Independent and dependent variables*
+The independent variable is the learning method or experimental condition:
+1. LearnSmart educational app.
+2. Traditional classroom instruction.
+
+The dependent variables are:
+1. Math skill improvement, measured by post-test score or gain score from pre-test to post-test.
+2. Student satisfaction, measured by a Likert-scale questionnaire after the learning activity.
+Optional dependent variables include task accuracy, time to solve math problems, number of errors, confidence, motivation, and perceived workload.
+
+*Null hypotheses*
+H0-1: There is no difference in math skill improvement between students who use LearnSmart and students who receive traditional classroom instruction.
+
+H0-2: There is no difference in student satisfaction between students who use LearnSmart and students who receive traditional classroom instruction.
+
+*Experimental plan*
+1. Preparation: define the hypotheses, choose the same math topic for both conditions, prepare equivalent pre-test and post-test questions, prepare the LearnSmart version, classroom teaching materials, satisfaction questionnaire, consent form, and data recording sheet. Run a pilot study to check timing, question difficulty, app stability, and questionnaire clarity.
+2. Participants: recruit representative high school students with similar math background. Collect basic demographic and prior achievement information. Randomly assign students to the LearnSmart group or the classroom group. A between-subjects design is suitable because each student experiences only one condition, avoiding learning and order effects between the two teaching methods.
+3. Experimental setting: use controlled settings as much as possible. Both groups should study the same topic for the same duration, with similar difficulty, same pre-test and post-test time limits, and similar environmental conditions. The LearnSmart group uses the app on provided devices or controlled computers. The classroom group receives normal teacher-led instruction with the same learning objectives.
+4. Procedure: greet participants, introduce the study, obtain informed consent, explain that participation is voluntary, and give a pre-test. Then students complete the assigned learning activity. The LearnSmart group uses app lessons, exercises, hints, and feedback. The classroom group attends a traditional lesson and completes equivalent practice. After the activity, all students take the post-test and complete the satisfaction questionnaire. A short interview or open-ended question can be added to collect qualitative explanations.
+5. Data collection: collect pre-test score, post-test score, improvement score, task accuracy, time to solve problems if relevant, LearnSmart log data, satisfaction ratings, and qualitative comments.
+6. Analysis: calculate sample size, mean, and standard deviation for each dependent variable in each condition. Compare improvement scores and satisfaction ratings between the LearnSmart and classroom groups using an appropriate t-test. If pre-test differences exist, compare gain scores or use pre-test score as a control. Code qualitative comments into themes to explain why students felt satisfied or dissatisfied.
+7. Interpretation: if LearnSmart has significantly higher improvement and satisfaction, reject the relevant null hypotheses and conclude that LearnSmart performed better under these study conditions. If there is no statistically significant difference, fail to reject the null hypotheses and conclude that the study does not provide enough evidence that LearnSmart is better. When interpreting results, consider reliability, validity, ecological validity, bias, and scope, because a controlled experiment may not fully represent long-term classroom use.
+
+Related material:
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experimental Design（实验设计）][Experimental Design]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Independent Variable（自变量）][Independent Variable]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Dependent Variable（因变量）][Dependent Variable]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Null Hypothesis / H0（零假设）][Null Hypothesis]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experimental Designs（实验设计类型）][Experimental Designs]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experimental Design Lifecycle（实验设计生命周期）][Experimental Design Lifecycle]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experiment Procedure（实验数据收集流程）][Experiment Procedure]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Statistical Analysis（统计分析）][Statistical Analysis]]

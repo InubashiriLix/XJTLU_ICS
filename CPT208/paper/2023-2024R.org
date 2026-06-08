@@ -1,0 +1,112 @@
+#+title: 2023-2024R
+#+source_pdf: [[file:pdf/2023-2024R.pdf][pdf/2023-2024R.pdf]]
+#+startup: overview
+
+* Page 1
+Module Code          Examiner         Academic Unit           Tel
+
+                CPT208                Yue Li         Computing           3223
+
+                     2 nd Semester, 2023/24 Resit Examination
+                             Human-Centric Computing
+                               Time Allowed: 2 Hours
+
+   Instructions to Candidates
+
+  1. This is an open-book examination with invigilation. You are allowed to take one-page
+     notes with you. Please complete the assessment independently and honestly.
+
+  2. Total marks available are 100.
+
+  3. This exam consists      three questions. The mark allocated for each question is
+     indicated at the end of the question.
+
+  4. Answer ALL questions. There is NO penalty for providing a wrong answer.
+
+  5. Only English solutions are accepted. Answer should be written in the answer booklet
+     provided. Clearly indicate the question numbers before your solutions. Submit your
+     notes together with your answer booklet. Make sure your writings are clear to read.
+
+  6. All materials must       returned to the exam supervisor upon completion of the exam.
+     Failure to do so will be deemed academic misconduct and will be dealt with accordingly.
+
+CPT208 - 2023/24 - 2 nd Semester - Resit Examination
+
+* Page 2
+Human-Centric Computing
+
+** Question 1    Discovering Requirements and Design               (40 marks)
+   As the lead designer for a startup aiming to create a mobile health application
+   to facilitate patient-physician communication, you are charged with guiding your team
+   through the human-centred design process. The app should enable patients to schedule
+   appointments, chat with their healthcare providers, keep track of their medical history,
+   and receive health tips.
+
+*** (a) Describe the four phases of the design process from the problem space to the design        [10]
+        space. Please specify the key activities and goals to be accomplished within each
+        phase to ref ne the app.
+
+*** (b) Identify and explain three design principles that are critical to consider while design-   [12]
+        ing the interface and interactions for the mobile health application. Provide specif c
+        examples of how each principle applies to the specif c aspects of the application you
+        are developing.
+
+*** (c) Discuss three dif erent strategies you would employ to recruit participants for user        [9]
+        research and usability testing of the mobile health application. Consider the target
+        user group for this health app, explain how you ensure a diverse and representative
+        sample of participants.
+
+*** (d) Explain why diversity and inclusiveness are critical when designing the mobile              [9]
+        health application. Describe three methods you would employ to ensure the ap-
+        plication is accessible to users with dif erent types of disabilities.
+
+CPT208 - 2023/24 - 2 nd Semester - Resit Examination                                Page 2 of 4
+
+* Page 3
+Human-Centric Computing
+
+** Question 2    Prototyping     (30 marks)
+   You are part of a design team tasked with creating a Virtual Reality (VR) application
+   to help students in the Architectural Design programme visualise and interact with
+   their work. The application aims to enhance their learning experience by providing an
+   immersive experience of the three-dimensional representations of architectural models.
+   Your role is to lead the prototyping phase of this human-centred design project.
+
+*** (a) In the context of the VR application for architectural design, list two benef ts and    [10]
+        two drawbacks of starting with low-f delity prototypes. At what point in the design
+        process would you transition from low-f delity to high-f delity prototyping, and why?
+
+*** (b) Discuss the importance of involving various stakeholders (i.e., architectural stu-      [10]
+        dents, professors, and industry professionals) during the prototyping phases. What
+        kinds of roles do they play in the design and Will you seek for dif erent feedback
+        from them? Please give specif c examples.
+
+*** (c) Draw a storyboard with three scenarios to show the common usage of this appli-          [10]
+        cation. What are the advantages of storyboard during the prototyping of the VR
+        application for architectural students?
+
+CPT208 - 2023/24 - 2 nd Semester - Resit Examination                             Page 3 of 4
+
+* Page 4
+Human-Centric Computing
+
+** Question 3    Evaluation    (30 marks)
+   You work for a company that develops the note-taking app, GoodNote. Now the company
+   is planning to launch a new version called SuperNote, and you are asked to systemati-
+   cally evaluate the two apps using experimental design.
+
+*** (a) How can you apply quantitative and qualitative methods in the evaluation? Name        [15]
+        a typical example for each and compare and contrast the dif erences. Give specif c
+        details to explain how the two methods can be used in the given context.
+
+*** (b) Your team plans to use an experimental study to investigate whether the note-taking   [15]
+        eﬀiciency and user experience with the new version have been improved. What are
+        the independent variable(s) and dependent variable(s) in this experiment? What
+        are the null hypotheses? Provide a detailed experimental plan that describes your
+        preparations, the experimental settings, what users need to do, how to collect,
+        analyse and interpret the data.
+
+                            ——— End of Questions ———
+
+CPT208 - 2023/24 - 2 nd Semester - Resit Examination                           Page 4 of 4
+

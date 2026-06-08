@@ -1,0 +1,258 @@
+#+title: 2024-2025R
+#+source_pdf: [[file:pdf/2024-2025R.pdf][pdf/2024-2025R.pdf]]
+#+startup: overview
+
+
+* Question 1 Discovering Requirements and Design (40 marks)
+You are the lead designer for a new mobile application called Library+, which aims to
+enhance students' experience with the university library. The app will allow
+students to search and reserve books, locate study spaces, receive personalized recom-
+mendations, get real-time updates about book availability, and interact with librarians
+through a live chat feature. Your team is following a human-centred design approach.
+Answer the following questions based on this scenario.
+** (a)
+Describe the three principles of user-centered process in interaction design. Select [10]
+one principle and explain its importance in human-centered design, and also specify
+how to apply it in designing Library+.
+*** Sol:
+The three principles of a user-centered approach are:
+
+1. Early focus on users and tasks: designers should study real users, their goals, tasks, behaviours, characteristics, activities, environment, and context of use.
+2. Empirical measurement: designers should observe, record, and analyse users' reactions and performance instead of relying only on assumptions.
+3. Iterative design: when problems are found, designers should improve the design and test again.
+   
+I would select early focus on users and tasks as the most important principle for Library+. It is important because library users are diverse: undergraduate students, postgraduate students, domestic students, international students, frequent library users, and students who only use the library during exam periods may have different needs. If designers do not study these users early, they may design around wrong assumptions, such as assuming all students know how book reservations or study-space booking work.
+
+To apply this principle, the team should interview and observe representative students and librarians before deciding the design. For example, designers can observe how students currently search for books, ask them how they find available study spaces during busy periods, and interview international students about difficulties with library terminology. The findings can become requirements such as bilingual search terms, clear reservation status, real-time seat availability, and a visible live-chat entry point.
+
+Related material:
+- [[file:../01_DiscoveringRequirements/main.org::*User-Centered Approach][User-Centered Approach]]
+- [[file:../01_DiscoveringRequirements/main.org::*Early Focus on Users and Tasks][Early Focus on Users and Tasks]]
+- [[file:../01_DiscoveringRequirements/main.org::*Empirical Measurement][Empirical Measurement]]
+- [[file:../01_DiscoveringRequirements/main.org::*The Process of Interaction Design][The Process of Interaction Design]]
+  
+** (b)
+Please describe what is persona, and why it is important in human-centered design. [10]
+Then, please identity and describe one typical persona for Library+.
+*** Sol:
+A persona is a fictional but research-based description of a typical user. It is not an idealised user or a random imagined character. A persona normally includes name, background, user characteristics, goals, needs, behaviours, frustrations, and context of use.
+
+Personas are important because they help the design team remember who they are designing for. They make abstract user requirements more concrete, support user-centered design decisions, and help the team communicate user needs consistently. For example, instead of saying "students need search", the team can ask whether a specific persona can find and reserve a book before an assignment deadline.
+
+Example persona for Library+:
+
+Name: Sara Ahmed.
+
+Background: Sara is a first-year international undergraduate student at XJTLU. She often studies in the library after class and needs English-language academic resources for coursework.
+
+User characteristics: she is comfortable with mobile apps but is not familiar with XJTLU library rules, book locations, or study-space booking procedures.
+
+Goals: find required reading materials quickly, reserve books before they are borrowed by others, locate a quiet study space, and ask librarians questions without needing to visit the front desk.
+
+Behaviours: she searches for books on her phone, checks availability before going to the library, studies during evenings, and uses chat when instructions are unclear.
+
+Pain points: library terminology is sometimes confusing, book location information is hard to interpret, available study spaces are difficult to find during exam weeks, and she is unsure whom to ask for help.
+
+Design implications: Library+ should provide clear search filters, bilingual or plain-language labels, maps from book location to shelf area, real-time study-space availability, and a visible live-chat feature.
+
+Related material:
+- [[file:../01_DiscoveringRequirements/main.org::*Personas][Personas]]
+- [[file:../01_DiscoveringRequirements/main.org::*Why Use Personas?][Why Use Personas]]
+- [[file:../01_DiscoveringRequirements/main.org::*What is a Persona?][What is a Persona]]
+  
+*** (c)
+It is critical to serve both domestic and internatio efits in XJTLU. Please [10]
+demonstrate what is inclusiveness in human- esign and why it is impor-
+tant. Then, please explain how Library+ sho designed to ensure the inclu-
+siveness for all students.
+**** Sol:
+Inclusiveness in human-centered design means making products and services that accommodate the widest possible number of people. Inclusive design does not assume one average user. It provides a flexible range of ways to participate, so users with different languages, cultures, abilities, devices, and levels of experience can still use the product.
+
+Inclusiveness is important for Library+ because XJTLU students include domestic and international students, novice and experienced library users, students with different English levels, and students with permanent, temporary, or situational impairments. If the design only fits one group, some students may be excluded from core library services such as reserving books or locating study spaces.
+
+Library+ should ensure inclusiveness in several ways:
+
+1. Recognize exclusion: conduct research with both domestic and international students, first-year and senior students, students with accessibility needs, and librarians. This helps the team notice barriers such as unfamiliar terminology, small touch targets, or unclear reservation rules.
+2. Support language and terminology diversity: use plain English, consistent icons, searchable help, and where appropriate bilingual labels for key actions such as search, reserve, renew, cancel, and study-space booking.
+3. Provide accessible interaction: use readable text, sufficient contrast, large touch targets, screen-reader friendly labels, and clear feedback for reservation success or failure.
+4. Provide flexible ways to get help: students should be able to use FAQ, live chat, search suggestions, maps, and librarian contact options instead of relying on one single path.
+5. Solve for one, extend to many: designing clear shelf-navigation instructions for new international students also helps domestic students who are new to a library area.
+
+Related material:
+- [[file:../03_ConceptualPrototypingAndPracticalGuide/main.org::*Design: Universal vs Inclusive][Universal vs Inclusive Design]]
+- [[file:../03_ConceptualPrototypingAndPracticalGuide/main.org::*Accessibility vs Inclusiveness][Accessibility vs Inclusiveness]]
+- [[file:../03_ConceptualPrototypingAndPracticalGuide/main.org::*Designing of Inclusive Principles][Inclusive Design Principles]]
+
+*** (d)
+Define what interface means in interaction design. Specifically, for Library+, please [10]
+identify three appropriate interfaces and justify why each is suitable, then
+describe their ideal design implementations and provide concrete examples for each.
+**** Sol:
+In interaction design, an interface is the form of the system that supports the user's interaction. Interaction describes what the user is doing, while interface describes the kind of interface used to support that interaction, such as a mobile interface, graphical interface, touch interface, voice interface, or smart interface.
+
+Three appropriate interface types for Library+ are:
+
+1. Mobile interface. Library+ is a mobile application, so students should be able to use it while moving around campus or inside the library. The design should consider small screens, limited attention, and touch accuracy. For example, the home page should show key actions such as "Search books", "Reserve", "Find study space", and "Ask librarian" with large touch targets.
+2. Graphical and touchscreen interface. Searching books, viewing maps, checking availability, and reserving rooms are visual tasks. A graphical touchscreen interface is suitable because students can tap, swipe, filter, and inspect information directly. For example, book results should show title, author, location, availability, and a clear reserve button; the study-space map should let users tap a floor or seat area.
+3. Smart interface. Library+ includes personalized recommendations and real-time updates, which require a context-aware and data-driven interface. The app can adapt to user history and current library data. For example, it can recommend books related to a student's previous searches, notify a student when a reserved book becomes available, or suggest a less crowded study area.
+
+These interface types should be designed with visibility, feedback, and consistency. Students should always know where they are, what actions are available, and whether a reservation or update has succeeded.
+
+Related material:
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*Interaction and Interface（交互与界面）][Interaction and Interface]]
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*20 Interface Types Covered][20 Interface Types]]
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*6. Mobile Interfaces（移动界面）][Mobile Interfaces]]
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*10. Touchscreens（触摸屏界面）][Touchscreens]]
+- [[file:../10_InterfacesAndReserachCOnsiderations/main.org::*20. Smart Interfaces（智能界面）][Smart Interfaces]]
+
+* Page 3
+** Question 2 Prototyping (30 marks)
+You are part of a design team developing FitU, a mobile application designed to support
+student fitness training on campus. Key features include personalized workout sugges-
+tions, gym check-ins, hydration reminders, and sleep tracking. Your team has entered
+the prototyping phase and is focused on delivering a user-centered experience.
+*** (a)
+Please describe what is storyboard and how it could be helpful in the design process [10]
+of FitU. Then, please use this tool to draw four scenarios for FitU.
+**** Sol:
+A storyboard is a low-fidelity prototyping method that shows a sequence of user situations and interactions, usually as simple panels or sketches. It is useful because it tells a story about the user's journey instead of only showing isolated screens. In early design, it helps designers explore scenarios, communicate ideas with stakeholders, identify missing requirements, and discuss whether the app fits the user's real context.
+
+For FitU, a storyboard can show four key scenarios:
+
+1. Personalized workout suggestion.
+   Panel 1: A student opens FitU after class.
+   Panel 2: FitU shows a workout suggestion based on the student's goal, previous workouts, and available time.
+   Panel 3: The student reviews exercise difficulty and expected duration.
+   Panel 4: The student starts the workout and receives progress feedback.
+
+2. Gym check-in.
+   Panel 1: The student arrives at the campus gym.
+   Panel 2: The student taps "Check in" or scans a QR code.
+   Panel 3: FitU confirms the check-in and shows gym rules or crowding status.
+   Panel 4: The student's workout session is added to their activity record.
+
+3. Hydration reminder.
+   Panel 1: The student is doing a workout.
+   Panel 2: FitU detects session duration or uses a scheduled reminder.
+   Panel 3: The app sends a hydration reminder with a simple action such as "I drank water".
+   Panel 4: The student confirms and continues exercising without being interrupted too much.
+
+4. Sleep tracking and recovery advice.
+   Panel 1: The student checks sleep data in the morning.
+   Panel 2: FitU shows sleep duration and quality.
+   Panel 3: The app explains that poor sleep may affect training.
+   Panel 4: FitU recommends a lighter workout or rest day.
+
+Related material:
+- [[file:../02_Prototyping/main.org::*Quick Start: Quick and Dirty Arsenal][Quick and Dirty Arsenal]]
+- [[file:../05_PrototypingFidelity/main.org::*How to Use Prototyping（如何使用 Prototype）][How to Use Prototyping]]
+- [[file:../05_PrototypingFidelity/main.org::*Achieving Prototyping Goals（达成原型目标）][Achieving Prototyping Goals]]
+
+*** (b)
+Define what is visual fidelity in prototyping and discuss two reasons why using (10]
+high-fidelity visual prototypes might not be appropriate during early design stages.
+Then, regarding the FitU application, please provide and justify one example of a
+feature that would benefit from high-fidelity visual prototyping, and one example
+where low-fidelity visual prototyping would be more appropriate.
+**** Sol:
+Visual fidelity refers to how realistic the prototype looks in terms of layout, colour, typography, icons, spacing, visual hierarchy, and overall appearance.
+
+High-fidelity visual prototypes may not be appropriate in early design for two reasons:
+
+1. They are expensive and time-consuming. Early design should explore concepts, structure, and task flow quickly. Spending too much time on colours, icons, and detailed layout can slow down learning.
+2. They may direct feedback to the wrong issues. When a prototype looks finished, users may comment on colours, fonts, or polish instead of the core concept, navigation, or task logic.
+
+For FitU, the sleep tracking dashboard would benefit from high visual fidelity at a later stage. Students need to interpret charts, sleep stages, colour coding, and recommendation cards. High visual fidelity is useful for testing readability, visual hierarchy, accessibility, and whether the data display is understandable.
+
+A low-fidelity visual prototype is more appropriate for the early workout suggestion flow. At the beginning, the team should test whether students understand the steps: set goal, receive recommendation, adjust difficulty, start workout, and review progress. Simple paper sketches or wireframes are enough because the key question is the flow and concept, not the final visual style.
+
+Related material:
+- [[file:../05_PrototypingFidelity/main.org::*Visual Fidelity（视觉保真度）][Visual Fidelity]]
+- [[file:../05_PrototypingFidelity/main.org::*Why should designers not always use high-fidelity prototypes?][Why not always use high-fidelity prototypes]]
+- [[file:../05_PrototypingFidelity/main.org::*Important Lessons（重要教训）][Important Lessons]]
+
+*** (c) 
+Identify and briefly explain the two fundamental aspects of effective screen design. [10]
+For each aspect you identified, please describe specifically how it should be imple-
+mented in the FitU mobile application.
+**** Sol:
+Two fundamental aspects of effective screen design are:
+
+1. Splitting functions across screens. Designers need to decide how many steps each screen should contain and how tasks should be divided across screens. Each screen should usually support a clear part of the task, but too many simple screens can make the process slow and frustrating.
+2. Designing individual screens. Designers need to decide the layout inside each screen, including white space, grouping, information density, visual hierarchy, physical proximity, and salient points.
+
+For FitU, splitting functions across screens should follow student fitness tasks. The workout feature could use separate but connected screens: goal selection, workout recommendation, exercise details, active workout tracking, and summary. Hydration reminders should not require a long flow; a notification and one-tap confirmation are enough. Sleep tracking should separate detailed history from the simple daily summary so students are not overloaded.
+
+For individual screen design, FitU should group related information and make the next action visually clear. On the active workout screen, current exercise, timer, progress, pause button, and next exercise should be visible. The hydration reminder should use a clear message, a large "Done" button, and avoid covering critical workout information. The sleep screen should balance charts and text explanations so students can understand the data without reading too much.
+
+Related material:
+- [[file:../05_PrototypingFidelity/main.org::*Concrete Design（具体设计）][Concrete Design]]
+- [[file:../05_PrototypingFidelity/main.org::*screen design（屏幕设计）][Screen Design]]
+- [[file:../05_PrototypingFidelity/main.org::*information display（信息展示）][Information Display]]
+
+* Page 4
+Human-Centric Computing
+** Question 3 Evaluation (30 marks)
+You are part of a team developing a fitness tracking app called FitTrack. The company
+wants to assess user engagement and satisfaction with the app compared to a competitor
+app called HealthMate. You are asked to systematically evaluate the two apps
+using experimental design.
+*** (a)
+How can you apply quantitative and qualitative methods in the evaluation? Name [15]
+a typical example for each and compare and contrast the differences. Give specific
+details to explain how the two methods can be used in the given context.
+**** Sol:
+Quantitative methods collect numerical data that can be statistically analysed. A typical example is collecting app usage logs and satisfaction ratings. In this context, researchers can measure engagement using number of sessions, active days, workouts recorded, completed fitness goals, reminder response rate, and average time spent in the app. Satisfaction can be measured using a Likert-scale questionnaire such as SUS or CSUQ-style items about ease of use, confidence, usefulness, comfort, and overall satisfaction. The team can report means and standard deviations for FitTrack and HealthMate and compare the two apps statistically.
+
+Qualitative methods collect textual or verbal data to explain users' experiences and reasons. A typical example is a semi-structured interview after participants use the apps. Users can be asked why they felt motivated or unmotivated, which reminders were helpful or annoying, whether workout suggestions felt personal, and what made them prefer FitTrack or HealthMate. Open-ended questionnaire comments can also be coded into themes such as "clear progress display", "too many reminders", "better workout suggestions", or "privacy concern".
+
+The two methods are different but complementary. Quantitative data is easier to compare across groups and can show whether FitTrack has higher engagement or satisfaction. However, numbers alone may not explain why users behave that way. Qualitative data gives richer explanations and helps identify design improvements, but it is harder to generalize statistically. A good evaluation should combine both: use logs and rating scales to measure engagement and satisfaction, then use interviews or open comments to explain the results.
+
+Related material:
+- [[file:../11_FieldStudyAndAnalytics/main.org::*Quantitative vs Qualitative Questions][Quantitative vs Qualitative Questions]]
+- [[file:../11_FieldStudyAndAnalytics/main.org::*Quantitative vs Qualitative Analysis][Quantitative vs Qualitative Analysis]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Usability Questionnaires（可用性问卷）][Usability Questionnaires]]
+- [[file:../04_HeuristicEvaluationQuestionnairAndInterview/QuestionnairInterview.org::*Questionnair vs Interview][Questionnaire vs Interview]]
+
+*** (b)
+Your team plans to conduct an experimental study to determine if user engage- [15]
+ment and satisfaction with FitTrack are significantly higher than with HealthMate.
+Identify the independent variable(s) and dependent variable(s) in this experiment.
+What are the null hypotheses? Provide a detailed exp 1%.1 plan that describes
+your preparations, the experimental settings, what u \e o do, how to collect,
+analyze, and interpret the data.
+**** Sol:
+*Independent and dependent variables*
+The independent variable is the app condition:
+1. FitTrack.
+2. HealthMate.
+
+The dependent variables are:
+1. User engagement, measured by app log data such as active days, number of sessions, workouts recorded, goal completion rate, feature usage, and reminder response rate.
+2. User satisfaction, measured by a Likert-scale questionnaire after the study.
+Optional dependent variables include task completion rate, time to complete fitness tracking tasks, perceived usefulness, motivation, and perceived workload.
+
+*Null hypotheses*
+H0-1: There is no difference in user engagement between FitTrack and HealthMate.
+
+H0-2: There is no difference in user satisfaction between FitTrack and HealthMate.
+
+*Experimental plan*
+1. Preparation: define the hypotheses, decide the study duration, prepare comparable versions of FitTrack and HealthMate, define engagement metrics, prepare consent forms, questionnaires, interview questions, and logging tools. Run a pilot study to check that app logs, reminders, and questionnaires work correctly.
+2. Participants: recruit representative student users who are interested in fitness tracking. Collect basic information such as fitness experience, phone type, and prior use of fitness apps. Randomly assign participants to the FitTrack group or the HealthMate group. A between-subjects design is suitable for a longer engagement study because each participant uses only one app, avoiding order effects and cross-app learning.
+3. Experimental setting: ask both groups to use their assigned app for the same period, for example one week, under similar instructions. All participants should receive the same task goals, such as recording workouts, responding to hydration reminders, checking progress, and reviewing recommendations. If a lab session is included, the room, device setup, task order, and time limit should be controlled.
+4. Procedure: greet participants, introduce the study, obtain informed consent, install or provide the assigned app, give a short training task, and ask participants to use the app during the study period. At the end, participants complete a satisfaction questionnaire and optionally join a short interview.
+5. Data collection: collect app logs for engagement, questionnaire scores for satisfaction, and qualitative comments from interviews or open-ended questions. Keep data anonymous and collect only necessary data.
+6. Analysis: calculate sample size, mean, and standard deviation for each dependent variable in both groups. Compare FitTrack and HealthMate using appropriate statistical tests, such as an independent-samples t-test for engagement and satisfaction scores. Qualitative comments should be coded into themes to explain why one app was more engaging or satisfying.
+7. Interpretation: if FitTrack has significantly higher engagement or satisfaction, reject the relevant null hypothesis and conclude that FitTrack performs better for that dependent variable under the study conditions. If the difference is not statistically significant, fail to reject the null hypothesis. When interpreting the result, consider reliability, validity, ecological validity, bias, and scope, because a one-week student study may not represent all long-term users.
+
+Related material:
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experimental Design（实验设计）][Experimental Design]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Independent Variable（自变量）][Independent Variable]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Dependent Variable（因变量）][Dependent Variable]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Null Hypothesis / H0（零假设）][Null Hypothesis]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Between-subjects Design（组间设计）][Between-subjects Design]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experimental Design Lifecycle（实验设计生命周期）][Experimental Design Lifecycle]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Experiment Procedure（实验数据收集流程）][Experiment Procedure]]
+- [[file:../09_UsabilityTesting&ExperimentDesign/main.org::*Statistical Analysis（统计分析）][Statistical Analysis]]
+- [[file:../11_FieldStudyAndAnalytics/main.org::*Analytics（分析）][Analytics]]

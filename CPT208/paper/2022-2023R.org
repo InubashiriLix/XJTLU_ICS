@@ -1,0 +1,77 @@
+#+title: 2022-2023R
+#+source_pdf: [[file:pdf/2022-2023R.pdf][pdf/2022-2023R.pdf]]
+#+startup: overview
+
+
+
+* Question 1   Design     (40 marks)
+** (a)
+What are the four phases of the double diamond of design?          Please draw the    [10]
+diagram. Is interaction design a linear process or an iterative process? Discuss how
+you have followed this in your group project. Give specif c examples.
+
+** (b)
+Identify three design principles. For each design principle, give a specif c example    [9]
+of ‘bad design’ and explain how it violates the design principle.
+
+** (c) 
+XJTLU is planning to design a seat reservation system for students to book self-       [12]
+study seats in the library. Who should be involved in the design? Are they users
+or stakeholders? What is the dif erence between users and stakeholders? To what
+degrees can users be involved in interaction design? What are the advantages and
+disadvantages?
+
+** (d)
+Name three interface types that you have used. What kind of interface did your          [9]
+group project mainly designed for? Explain why you designed that way and how it
+is dif erent from or similar to the other two by giving specif c examples.
+
+
+
+* Question 2   Prototyping      (30 marks)
+** (a)
+What does f delity mean in a prototype? Please list the advantages for high- and      [10]
+low-f delity prototypes respectively.
+
+** (b)
+Please list the f ve dimensions in measuring the f delity of prototypes. How will     [10]
+you design low-f delity and high-f delity prototypes in each of the f ve dimensions
+for a social media application?
+
+** (c)
+Please describe what is wizard-of-oz tool/method in prototyping. What are its        [10]
+advantage and disadvantage? Imagine you are designing an AI-based chatting sys-
+tem, how would you use it to test the prototype? Please provide the answer in
+detailed steps.
+
+CPT208/22/23/S2/Resit                                                         Page 3 of 4
+
+
+* Question 3   Evaluation    (30 marks)
+
+** (a)
+Suppose you work for the XJTLU sports centre to help them redesign the WeChat          [10]
+mini-program, aiming to support the students and staf members to better make use
+of the sports centre facilities and training courses. How will you discover potential
+requirements? What data gathering techniques you plan to use? Please give specif c
+examples to explain how you plan to do it.
+
+** (b)
+After several weeks of hard work, your team has developed XJTLU Sports Cen-             [10]
+tre Mini-program 2.0. Now you want to use an experimental study to investigate
+whether the user experience with the app have been improved. What are the in-
+dependent variable and dependent variable in this experiment? What is the null
+hypothesis? Provide a detailed experimental plan that describes your preparations,
+the experimental settings, what users need to do, how to collect, analyse and inter-
+pret the data.
+
+** (c)
+The new design of the XJTLU Sports Centre Mini-program has been a great success        [10]
+and well received among students and staf members. For the next step, you are
+asked to design a Security function which is for the teacher and security staf on
+duty to use during the patrol. They need to walk around the sports centre to check
+out dif erent rooms and areas, and to check in at specif c check-in points. How
+can you obtain in-depth understanding about their requirements? What, where,
+when and how can you evaluate your design? Please provide as many details and
+examples as you can, and make it clear if you are making assumptions and claims.
+

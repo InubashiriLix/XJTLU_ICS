@@ -1,0 +1,62 @@
+#+title: 2023-2024F
+#+source_pdf: [[file:pdf/2023-2024F.pdf][pdf/2023-2024F.pdf]]
+#+startup: overview
+
+* Question 1    Discovering Requirements and Design          (40 marks)
+Imagine you are tasked with designing a mobile banking app for senior citizens,
+adopting a user-centred approach. Based on the given context, answer the questions
+below. Note that your answers should be closely related to the given context.
+
+*** (a) 
+Outline a data collection plan detailing the methods you would use to gather user   [10]
+requirements and justify your choices.
+
+*** (b)
+Discuss how you will carry out the design and the practical issues you may en-      [10]
+counter. Please give specif c examples.
+
+*** (c)
+Please create a persona for this app. How does the persona help the design?         [10]
+
+*** (d)
+What types of interactions and interfaces will you adopt in the design? Please      [10]
+justify your answers using specif c examples.
+
+** Question 2    Prototype      (30 marks)
+Imagine you are part of a design team for a university-based mobile application that
+assists students in better organising their schedules. Your team has already de-
+vised initial prototypes for key features such as personalised calendar, task prioritisation,
+and study habit monitoring.
+
+** (a)
+Highlight the main characteristics/advantages of using prototyping in human-centred        [10]
+computing design. Take one key feature listed above for example, elaborate how
+prototyping aids the design.
+
+** (b)
+What is Minimal Viable Prototyping (MVP)? Please identify its four core charac-            [10]
+teristics. Please use specif c examples about the mobile application to illustrate its
+advantages.
+
+** (c)
+In your own opinion, what is the most appropriate prototyping tool to use for              [10]
+this application design? Taking one key feature for example, explain how the pro-
+totyping tool could be used in the design and discuss its benef ts and potential
+drawbacks.
+
+
+* Question 3    Evaluation     (30 marks)
+You are an expert user experience researcher and need to evaluate a f tness tracking
+wearable device targeted at novice users.
+** (a)
+What is heuristic evaluation? Explain its advantages and problems in evaluat-         [15]
+ing this design. Discuss the dif erences between heuristic evaluation and usability
+testing.
+
+** (b)
+Identify another two types of evaluation methods that are applicable to this study.   [15]
+What are their dif erences and similarities? Select one evaluation method that you
+f nd more appropriate, explain why, and describe how you plan to implemented it
+in detail with specif c examples.
+
+
