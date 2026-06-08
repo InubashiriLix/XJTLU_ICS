@@ -1,0 +1,769 @@
+* 09 Usability Testing & Experimental Design（可用性测试与实验设计）
+
+** Lecture Overview
+这节课主要讲 evaluation（评估）、usability testing（可用性测试）和 experimental design（实验设计）。
+Learning outcomes:
+- Understand the why, what, where and when of evaluation.
+- Introduce different types of evaluation methods.
+- Discuss practical challenges of evaluation.
+- Explain how to do usability testing.
+- Outline the basics of experimental design.
+本讲核心：
+- Evaluation 是 iterative design（迭代设计）中的持续过程。
+- Usability testing 用 typical users（典型用户）完成 typical tasks（典型任务）来检查系统是否 usable（可用）。
+- Experimental design 用 hypothesis（假设）和 variables（变量）来验证设计效果。
+- Statistical analysis（统计分析）用于判断结果是否 reliable（可靠）和 significant（显著）。
+
+** Coursework Feedback（课程项目反馈）
+*** Poster Presentation Feedback
+这部分偏 coursework，不是主要考试理论，但可以用于 portfolio 和 evaluation report。
+好的做法：
+- 用 related work（相关研究）和 data collection results（数据收集结果）解释 project motivation（项目动机）。
+- 用 triangulation（三角验证）支持你的设计理由。
+- 分析 existing products（现有产品）。
+- 用 interviews（访谈）和 questionnaires（问卷）理解 design requirements（设计需求）。
+- 明确 user group characteristics（用户群体特征），例如 age、gender、education background、technical capacity。
+- 用 persona（用户画像）帮助说明用户细节。
+- 用 figures and tables（图和表）展示结果，注意字体和颜色清晰。
+Your data should support your arguments and design ideas. Presenting data without interpretation or discussion is not meaningful.
+你的数据应该支持你的论点和设计想法。只展示数据但不解释，是没有意义的。
+*** Data Reporting
+Use appropriate values to report data, such as means and standard deviations.
+报告数据时应使用合适的数值，例如 mean（平均值）和 standard deviation / SD（标准差）。
+Scale questions often provide more information than yes/no questions.
+量表题通常比 yes/no 问题提供更多信息。
+#+begin_example
+Bad:
+80% users like our prototype.
+
+Better:
+The prototype received a high usability rating (M=4.20, SD=0.63), suggesting that most participants found it easy to use.
+#+end_example
+
+** Evaluation（评估）
+*** Why, What, Where, and When to Evaluate
+Iterative design and evaluation is a continuous process.
+迭代设计和评估是一个持续过程。
+*** Why（为什么评估）
+Why: To check users' requirements and confirm that users can utilize the product and that they like it.
+评估是为了检查 users' requirements（用户需求），确认用户能否使用产品，以及是否喜欢产品。
+Evaluation is used to check users' requirements and confirm whether users can use and accept the product.
+评估用于检查用户需求，并确认用户是否能使用和接受产品。
+*** What（评估什么）
+可以评估：
+- conceptual model（概念模型）
+- early prototypes（早期原型）
+- subsequent prototypes（后续原型）
+- more complete prototypes（更完整原型）
+- finished product（最终产品）
+- competitors' products（竞品）
+Designers can evaluate conceptual models, prototypes at different stages, finished products, and competitors' products.
+设计者可以评估概念模型、不同阶段的原型、最终产品和竞品。
+*** Where（在哪里评估）
+评估场景：
+- natural settings（自然环境）
+- in-the-wild settings（真实开放环境）
+- laboratory settings（实验室环境）
+Evaluation can take place in natural settings, in-the-wild settings, or laboratory settings.
+评估可以在自然环境、真实开放环境或实验室中进行。
+*** When（什么时候评估）
+评估时间：
+- throughout design（贯穿设计过程）
+- after product launch（产品发布后）
+- finished products can inform new products（评估成品可以帮助设计新产品）
+Evaluation should happen throughout the design process, and finished products can also be evaluated to inform future products.
+评估应贯穿整个设计过程，最终产品也可以被评估，以帮助未来产品设计。
+*** Evaluation 考试答案
+Evaluation is a continuous part of iterative design. It is used to check users' requirements and confirm whether users can use and accept the product. Designers can evaluate conceptual models, prototypes at different stages, finished products, and competitors' products. Evaluation can take place in natural, in-the-wild, or laboratory settings, and it should happen throughout the design process as well as after product launch.
+评估是 iterative design（迭代设计）中的持续部分。它用于检查用户需求，并确认用户是否能使用和接受产品。设计者可以评估概念模型、不同阶段的原型、最终产品和竞品。评估可以在自然环境、真实开放环境或实验室中进行，并且应该贯穿设计过程，也可以在产品发布后进行。
+
+** HCI Research Methods and Measurement（HCI 研究方法与测量）
+*** Early HCI Measurement
+Early HCI research measurements were based on human performance, especially task-based performance.
+早期 HCI 研究主要基于 human performance（人的表现），尤其是 task-based performance（基于任务的表现）。
+常见问题：
+- How fast could someone complete a task?
+- How many tasks were completed successfully?
+- How many errors were made?
+常见 measurement（测量指标）：
+- time performance（任务时间）
+- task correctness / accuracy（任务正确性 / 准确率）
+- error rate（错误率）
+- time to learn（学习时间）
+- retention over time（长期保持程度）
+- user satisfaction（用户满意度）
+Early HCI evaluation focused on task-based human performance, such as task completion time, task accuracy, error rate, learnability, retention, and user satisfaction.
+早期 HCI 评估关注基于任务的人类表现，例如任务完成时间、准确率、错误率、易学性、长期保持程度和用户满意度。
+*** Micro-HCI and Macro-HCI
+Micro-HCI 关注具体任务表现：
+- time performance
+- task correctness / accuracy
+- error rate
+- time to learn
+- retention over time
+- user satisfaction
+Macro-HCI 关注更大的社会和体验层面：
+- motivation（动机）
+- collaboration（协作）
+- social participation（社会参与）
+- trust（信任）
+- empathy（共情）
+The old computing is about what computers can do, the new computing is about what people can do.
+旧计算关注电脑能做什么，新计算关注人能做什么。
+Micro-HCI focuses on task-level performance, while Macro-HCI considers broader human and social outcomes, such as motivation, collaboration, trust, empathy, and social participation.
+Micro-HCI 关注任务层面的表现，而 Macro-HCI 关注更广泛的人和社会结果，例如动机、协作、信任、共情和社会参与。
+
+** Types of Evaluation Methods（评估方法类型）
+*** Three Evaluation Settings
+1. Controlled settings that directly involve users
+   受控环境，直接涉及用户。
+   - usability lab（可用性实验室）
+   - research lab（研究实验室）
+2. Natural settings involving users
+   自然环境，涉及真实用户。
+   - online communities（在线社区）
+   - products used in public places（公共场所产品）
+   - in-the-wild settings（真实开放环境）
+3. Settings that do not directly involve users
+   不直接涉及用户。
+   - consultants critique prototypes（顾问评审原型）
+   - researchers model predicted success（研究者建模预测成功程度）
+*** Methods and Settings
+| Method | Controlled settings | Natural settings | Without users |
+|--------+---------------------+------------------+---------------|
+| Observing | yes | yes | no |
+| Asking users | yes | yes | no |
+| Asking experts | possible | possible | yes |
+| Testing | yes | no | no |
+| Modeling | no | no | yes |
+Examples:
+- Controlled settings: usability testing, experimental design
+- Natural settings: field study
+- Without users: heuristic evaluation, analytics, A/B testing, predictive models
+*** 考试答案
+Evaluation methods can be classified by setting. Controlled settings involve users in a controlled environment, such as usability labs. Natural settings involve users in real contexts, such as field studies or in-the-wild settings. Some methods do not directly involve users, such as heuristic evaluation, analytics, A/B testing, and predictive models.
+评估方法可以按场景分类。受控环境是在实验室等可控制条件下让用户参与；自然环境是在真实场景中观察用户；不直接涉及用户的方法包括 heuristic evaluation、analytics、A/B testing 和 predictive models。
+
+** Practical Challenges of Evaluation（评估的实际挑战）
+*** Participants' Consent（参与者同意）
+Participants need to be told:
+- why the evaluation is being done（为什么做评估）
+- what they will be asked to do（他们需要做什么）
+- what rights they have（他们有什么权利）
+Informed consent forms provide this information and act as a contract between participants and researchers.
+知情同意书提供这些信息，并像参与者与研究者之间的合同。
+通常需要审批：
+- informed consent form（知情同意书）
+- evaluation process（评估流程）
+- data analysis（数据分析）
+- data storage methods（数据存储方式）
+可能审批机构：
+- Institutional Review Board / IRB（机构审查委员会）
+- XJTLU University Ethics Committee / UEC（西浦大学伦理委员会）
+Participants must be informed about why the evaluation is being conducted, what they will be asked to do, and what rights they have. Informed consent forms provide this information and act as a contract between participants and researchers.
+参与者必须知道评估目的、需要做什么以及自己的权利。知情同意书提供这些信息，并作为参与者与研究者之间的协议。
+*** Interpreting Data（解释数据）
+解释 evaluation data（评估数据）时，要考虑：
+1. Reliability（可靠性）
+   Does the method produce the same results on separate occasions?
+   这个方法在不同时间是否能产生相同结果？
+2. Validity（有效性）
+   Does the method measure what it is intended to measure?
+   这个方法是否真的测到了它想测的东西？
+3. Ecological validity（生态有效性）
+   Does the environment of the evaluation distort the results?
+   评估环境是否扭曲了结果？
+4. Biases（偏差）
+   Are there biases that distort the results?
+   是否有偏差导致结果失真？
+5. Scope（适用范围）
+   How generalizable are the results?
+   结果能推广到多大范围？
+记忆：
+- Reliability = 测得稳不稳
+- Validity = 测得准不准
+- Ecological validity = 环境是否真实
+- Bias = 结果有没有被带偏
+- Scope = 结果能不能推广
+When interpreting evaluation data, researchers should consider reliability, validity, ecological validity, biases, and scope. Reliability asks whether the method produces consistent results. Validity asks whether the method measures what it intends to measure. Ecological validity asks whether the evaluation environment distorts the results. Bias concerns factors that may distort data, and scope concerns how generalizable the results are.
+解释评估数据时，研究者应考虑可靠性、有效性、生态有效性、偏差和适用范围。可靠性关注结果是否稳定，有效性关注是否测到了目标内容，生态有效性关注评估环境是否扭曲结果，偏差关注数据是否被带偏，适用范围关注结论能否推广。
+
+** Usability Testing（可用性测试）
+*** Definition
+Usability testing involves recording the performance of typical users doing typical tasks.
+可用性测试记录 typical users（典型用户）完成 typical tasks（典型任务）时的表现。
+It usually happens in controlled settings.
+它通常发生在 controlled settings（受控环境）中。
+*** What Happens in Usability Testing
+Usability testing usually includes:
+- users are observed and timed（观察用户并计时）
+- data is recorded on video（视频记录数据）
+- key presses are logged（记录按键）
+- performance times are calculated（计算任务时间）
+- errors are identified and explained（识别并解释错误）
+- user satisfaction is evaluated using questionnaires and interviews（用问卷和访谈评估满意度）
+- field observations may provide contextual understanding（现场观察可补充上下文理解）
+*** 考试答案
+Usability testing involves recording the performance of typical users doing typical tasks, usually in a controlled setting. Users are observed and timed, and data may be recorded through video and key logging. The data is used to calculate performance times, identify and explain errors, and evaluate user satisfaction through questionnaires or interviews.
+可用性测试通常在受控环境中记录典型用户完成典型任务的表现。研究者观察用户、计时，并可能用视频和按键日志记录数据。这些数据用于计算任务时间、识别错误，并通过问卷或访谈评估用户满意度。
+*** Quantitative Performance Measures（量化表现指标）
+常见 quantitative performance measures：
+- number of users successfully completing the task（成功完成任务的用户数量）
+- time to complete task（完成任务时间）
+- time to complete task after time away from task（离开一段时间后再次完成任务的时间）
+- number and type of errors per task（每个任务的错误数量和类型）
+- number of errors per unit of time（单位时间内错误数量）
+- number of navigations to online help or manuals（查看帮助文档次数）
+- number of users making a particular type of error（犯某类错误的用户数量）
+Quantitative performance measures in usability testing include task success, task completion time, error rate, number and type of errors, use of help or manuals, and the number of users making a particular type of error.
+可用性测试中的量化表现指标包括任务成功率、任务完成时间、错误率、错误数量和类型、使用帮助文档的次数，以及犯某类错误的用户数量。
+*** Usability Testing Conditions（可用性测试条件）
+典型条件：
+- usability lab or controlled space（可用性实验室或受控空间）
+- representative users（代表性用户）
+- representative tasks（代表性任务）
+- 5-10 users typically selected（通常选择 5-10 个用户）
+- tasks usually around 30 minutes（任务通常约 30 分钟）
+- test conditions same for every participant（每个参与者测试条件相同）
+- informed consent form explains procedures and ethical issues（知情同意书说明流程和伦理问题）
+*** How Many Participants Is Enough?
+参与者数量取决于：
+- schedule for testing（测试日程）
+- availability of participants（参与者可用性）
+- cost of running tests（测试成本）
+通常：
+- 5-10 participants
+- some experts argue testing should continue until no new insights are gained
+- 有些专家认为应测试到没有新发现为止
+Usability testing usually selects representative users and representative tasks. Typically, 5-10 users are selected, tasks last around 30 minutes, and test conditions should be the same for every participant. The exact number depends on schedule, participant availability, and cost.
+可用性测试通常选择代表性用户和代表性任务。一般选择 5-10 个用户，任务大约 30 分钟，并保持每个参与者的测试条件一致。具体人数取决于时间安排、参与者可用性和成本。
+
+** Usability Questionnaires（可用性问卷）
+*** CSUQ（Computer System Usability Questionnaire）
+CSUQ = Computer System Usability Questionnaire（计算机系统可用性问卷）。
+CSUQ 测量：
+- ease of use（易用性）
+- effectiveness（有效性）
+- efficiency（效率）
+- comfort（舒适度）
+- learnability（易学性）
+- error recovery（错误恢复）
+- information clarity（信息清晰度）
+- screen organization（屏幕信息组织）
+- interface pleasantness（界面愉悦度）
+- function completeness（功能完整性）
+- overall satisfaction（总体满意度）
+CSUQ is an established usability questionnaire that measures users' satisfaction with system usability, including ease of use, efficiency, error recovery, information clarity, interface pleasantness, and overall satisfaction.
+CSUQ 是成熟的可用性问卷，用于测量用户对系统可用性的满意度，包括易用性、效率、错误恢复、信息清晰度、界面愉悦度和总体满意度。
+*** SUS（System Usability Score）
+SUS = System Usability Score（系统可用性评分）。
+SUS 有 10 个问题，包含正向题和反向题。
+SUS 常见测量方向：
+- frequent use（是否愿意经常使用）
+- complexity（是否不必要地复杂）
+- ease of use（是否容易使用）
+- technical support（是否需要技术人员支持）
+- function integration（功能是否整合良好）
+- consistency（一致性）
+- learnability（是否容易学习）
+- cumbersome use（是否笨重难用）
+- confidence（使用信心）
+- preparation needed（使用前是否需要学很多东西）
+*** SUS Calculation（SUS 计算）
+步骤：
+1. Convert responses to numbers.
+   - Strongly Disagree = 1
+   - Strongly Agree = 5
+2. For odd-numbered questions:
+   - score = response - 1
+3. For even-numbered questions:
+   - score = 5 - response
+4. Add all adjusted scores.
+5. Multiply total by 2.5.
+6. Report as SUS score, not percentage.
+Interpretation:
+- SUS score above 68 = above average
+- SUS score below 68 = below average
+- better interpretation can use percentile ranking（百分位排名）
+*** SUS 考试答案
+SUS is a standardized questionnaire for measuring system usability. Responses are converted to numbers from 1 to 5. For odd-numbered questions, subtract 1 from the response. For even-numbered questions, subtract the response from 5. Add the adjusted scores and multiply the total by 2.5 to obtain a SUS score between 0 and 100. The score should be reported as a SUS score, not as a percentage. A score above 68 is usually considered above average.
+SUS 是标准化系统可用性问卷。回答先转换成 1 到 5。奇数题用回答值减 1，偶数题用 5 减回答值。把调整后的分数相加再乘以 2.5，得到 0 到 100 的 SUS score。它应该叫 SUS score，不是百分比。通常 68 分以上算高于平均水平。
+*** More Established Questionnaires（其他成熟问卷）
+- QUIS: Questionnaire for User Interface Satisfaction
+- SUMI: Software Usability Measurement Inventory
+- VisAwi: Visual Aesthetics of Website Inventory
+- NASA TLX: NASA Task Load Index
+Established questionnaires such as QUIS, SUMI, VisAwi, and NASA TLX can be used to measure user interface satisfaction, software usability, website aesthetics, and task load.
+成熟问卷如 QUIS、SUMI、VisAwi 和 NASA TLX 可以用来测量界面满意度、软件可用性、网站美学和任务负荷。
+
+** Usability Testing vs Experiments（可用性测试 vs 实验）
+*** Relationship
+Usability testing is applied experimentation.
+可用性测试是一种 applied experimentation（应用型实验）。
+Usability testing:
+Developers check that the system is usable by the intended user population by collecting data about participants' performance on prescribed tasks.
+开发者通过收集参与者在规定任务上的表现数据，检查目标用户群体是否能使用系统。
+Experiments:
+Experiments test hypotheses to discover new knowledge by investigating the relationship between two or more variables.
+实验通过研究两个或多个 variables（变量）之间的关系来测试 hypothesis（假设）并发现新知识。
+*** Comparison
+| 项目 | Usability Testing | Experiments for Research |
+|------+-------------------+--------------------------|
+| 目的 | improve products | discover knowledge |
+| 参与者 | few participants | many participants |
+| 结果用途 | inform design | validate statistically |
+| 可复现性 | usually not completely replicable | must be replicable |
+| 控制条件 | controlled as much as possible | strongly controlled |
+| 流程 | procedure planned | experimental design |
+| 报告对象 | developers | scientific community |
+*** 考试答案
+Usability testing is used to improve products. It usually involves fewer participants, planned procedures, and conditions controlled as much as possible. The results inform design and are reported to developers. Experiments for research aim to discover knowledge. They usually involve more participants, require strongly controlled and replicable conditions, and validate results statistically for the scientific community.
+可用性测试的目标是改进产品，通常参与者较少，流程提前规划，条件尽量控制，结果用于指导设计并报告给开发者。研究型实验的目标是发现知识，通常需要更多参与者、更强控制、更高可复现性，并通过统计方法验证结果。
+
+** Experimental Design（实验设计）
+*** Experiments（实验）
+Experiments:
+- test hypothesis（测试假设）
+- predict the relationship between two or more variables（预测两个或多个变量之间的关系）
+- manipulate independent variable（操控自变量）
+- measure dependent variable（测量因变量）
+- usually have one or two independent variables（通常有一到两个自变量）
+- should be statistically validated and replicable（需要统计验证且可复现）
+*** Independent Variable（自变量）
+Independent variable is manipulated by the researcher.
+自变量是研究者主动操控的变量。
+例子：
+#+begin_example
+Compare two AR prototypes:
+Postcard AR vs CubeMuseum AR
+
+Independent variable:
+prototype type
+#+end_example
+*** Dependent Variable（因变量）
+Dependent variable is influenced by the independent variable.
+因变量是受到自变量影响、被研究者测量的结果。
+例子：
+#+begin_example
+Dependent variable:
+user motivation
+#+end_example
+*** 考试答案
+An experiment tests a hypothesis and investigates the relationship between variables. The independent variable is manipulated by the researcher, while the dependent variable is measured and is expected to be influenced by the independent variable. Experimental results should be statistically validated and replicable.
+实验用于测试假设并研究变量之间的关系。自变量由研究者操控，因变量是被测量的结果，并被认为会受到自变量影响。实验结果应该经过统计验证并具有可复现性。
+
+** Research Hypotheses（研究假设）
+*** Definition
+A hypothesis is a precise problem statement that can be directly tested through an empirical investigation.
+Hypothesis（假设）是一个可以通过 empirical investigation（实证研究）直接测试的精确问题陈述。
+Hypothesis 不是随便猜，而是可以被数据测试的陈述。
+*** Null Hypothesis / H0（零假设）
+Null hypothesis typically states that there is no difference between experimental treatments.
+零假设通常表示不同实验条件之间没有差异。
+模板：
+#+begin_example
+H0: There is no difference in [dependent variable] between [condition A] and [condition B].
+#+end_example
+*** Alternative Hypothesis / H1（备择假设）
+Alternative hypothesis is mutually exclusive with the null hypothesis.
+备择假设和零假设互斥，通常表示存在差异。
+模板：
+#+begin_example
+H1: There is a difference in [dependent variable] between [condition A] and [condition B].
+#+end_example
+*** Goal of Experiment
+The goal of an experiment is to find statistical evidence to reject the null hypothesis in order to support the alternative hypothesis.
+实验目标是找到统计证据来 reject H0（拒绝零假设），从而支持 H1（备择假设）。
+*** General Example
+#+begin_example
+H0:
+There is no difference in academic performance between students who are in a relationship and those who are not.
+
+H1:
+There is a difference in academic performance between students who are in a relationship and those who are not.
+#+end_example
+*** AR Prototype Example
+Goal:
+To investigate which AR prototype can better motivate users in learning cultural heritage.
+Independent variable:
+- two AR prototypes
+- Postcard AR
+- CubeMuseum AR
+Dependent variable:
+- user motivation
+Hypotheses:
+#+begin_example
+H0:
+There is no difference in user motivation between Postcard AR and CubeMuseum AR.
+
+H1:
+There is a difference in user motivation between Postcard AR and CubeMuseum AR.
+#+end_example
+*** 考试答案
+An experiment normally starts with a research hypothesis. A hypothesis is a precise problem statement that can be directly tested through empirical investigation. The null hypothesis usually states that there is no difference between experimental conditions, while the alternative hypothesis states that there is a difference. The goal is to find statistical evidence to reject the null hypothesis and support the alternative hypothesis.
+实验通常从研究假设开始。假设是可以通过实证研究直接测试的精确问题陈述。零假设通常表示不同实验条件之间没有差异，而备择假设表示存在差异。实验目标是找到统计证据拒绝零假设，并支持备择假设。
+
+** Experimental Designs（实验设计类型）
+*** Between-subjects Design（组间设计）
+Between-subjects design:
+- different participants（不同参与者）
+- participants are randomly allocated to experimental conditions（参与者随机分配到不同实验条件）
+例子：
+#+begin_example
+Group A uses system A.
+Group B uses system B.
+Different people experience different conditions.
+#+end_example
+Advantages:
+- no order effects（没有顺序效应）
+Disadvantages:
+- many subjects needed（需要更多参与者）
+- individual differences are a problem（个体差异可能影响结果）
+*** Within-subjects Design（组内设计）
+Within-subjects design:
+- same participants（相同参与者）
+- all participants appear in both conditions（所有参与者体验所有条件）
+例子：
+#+begin_example
+The same participant uses system A and system B.
+Each participant experiences all conditions.
+#+end_example
+Advantages:
+- fewer individuals needed（需要更少参与者）
+- no individual differences（减少个体差异影响）
+Disadvantages:
+- order effects（顺序效应）
+- counterbalancing needed（需要平衡顺序）
+*** Between vs Within
+| Design | Advantages | Disadvantages |
+|--------+------------+---------------|
+| Between-subjects | No order effects | Many subjects needed; individual differences |
+| Within-subjects | Fewer individuals; no individual differences | Counterbalancing needed because of ordering effects |
+*** 考试答案
+A between-subjects design uses different participants for different experimental conditions. Its advantage is that there are no order effects, but it requires more participants and individual differences can affect the results. A within-subjects design uses the same participants in all conditions. It requires fewer participants and reduces individual differences, but it may suffer from ordering effects, so counterbalancing is needed.
+组间设计让不同参与者体验不同条件，优点是没有顺序效应，但需要更多人，且个体差异可能影响结果。组内设计让同一批参与者体验所有条件，优点是人数较少且减少个体差异，但可能有顺序效应，所以需要 counterbalancing。
+*** Good Practices（实验好实践）
+**** Counterbalancing（平衡顺序）
+Counterbalancing condition orders through a Latin Square Design.
+用 Latin Square Design（拉丁方设计）平衡实验条件顺序。
+例子：
+#+begin_example
+A B C D
+D A B C
+C D A B
+B C D A
+#+end_example
+作用：
+- reduce ordering effects（减少顺序效应）
+- reduce learning effect（减少学习效应）
+- reduce fatigue effect（减少疲劳效应）
+**** Training Time（训练时间）
+Provide sufficient training time for users to get acquainted with a system to eliminate the learning effect.
+给用户足够训练时间，让他们熟悉系统，减少 learning effect（学习效应）。
+**** Session Length（实验时长）
+A single experiment session should be 60-90 minutes or shorter.
+单次实验最好 60-90 分钟或更短。
+*** Good Practices 考试答案
+Good experimental practice includes counterbalancing condition orders, for example through a Latin Square Design, to reduce ordering effects. Researchers should also provide sufficient training time to reduce learning effects. A single experiment session should usually be 60-90 minutes or shorter to avoid fatigue.
+好的实验实践包括通过 Latin Square Design 平衡条件顺序，以减少顺序效应。研究者也应该提供足够训练时间，减少学习效应。单次实验通常应控制在 60-90 分钟或更短，以避免疲劳。
+
+** Experimental Design Lifecycle（实验设计生命周期）
+*** Lifecycle
+1. Identify a research hypothesis.
+2. Specify the design of the study.
+3. Run a pilot study to test the design, the system, and the study instruments.
+4. Recruit participants.
+5. Run the actual data collection sessions.
+6. Analyze the data.
+7. Report the results.
+中文：
+1. 确定研究假设。
+2. 指定研究设计。
+3. 做 pilot study（试点研究）测试设计、系统和研究工具。
+4. 招募参与者。
+5. 进行正式数据收集。
+6. 分析数据。
+7. 报告结果。
+*** 考试答案
+The experimental design lifecycle begins with identifying a research hypothesis and specifying the study design. Researchers then run a pilot study to test the design, system, and instruments before recruiting participants and collecting data. After the actual data collection sessions, the data is analyzed and the results are reported.
+实验设计生命周期先确定研究假设并指定研究设计。之后通过 pilot study 测试实验设计、系统和研究工具，再招募参与者并进行正式数据收集。最后分析数据并报告结果。
+
+** Experiment Procedure（实验数据收集流程）
+*** Procedure
+1. Preparation（准备）
+2. Greet participants（问候参与者）
+3. Introduce the purpose of the study and the procedures（介绍研究目的和流程）
+4. Get consent（取得同意）
+5. Assign participants to a specific experiment condition（分配参与者到实验条件）
+6. Training task(s)（训练任务）
+7. Actual task(s)（正式任务）
+8. Participants answer questionnaires, if any（填写问卷，如有）
+9. Debriefing session（总结说明）
+10. Payment, if any（支付报酬，如有）
+*** 考试答案
+During data collection, researchers prepare the session, greet participants, introduce the purpose and procedure of the study, obtain informed consent, assign participants to experimental conditions, provide training tasks, run the actual tasks, ask participants to complete questionnaires if needed, conduct a debriefing session, and provide payment if applicable.
+在数据收集阶段，研究者先准备实验，问候参与者，介绍研究目的和流程，取得知情同意，然后把参与者分配到实验条件，提供训练任务，执行正式任务，必要时填写问卷，最后进行 debriefing，并在需要时支付报酬。
+
+** Statistical Analysis（统计分析）
+*** Basic Terms（基础术语）
+**** Sample Size（样本量）
+Sample size = number of observations or participants.
+样本量就是数据点或参与者数量。
+Excel:
+#+begin_example
+=COUNT(B2:B11)
+#+end_example
+**** Mean（平均值）
+Mean = average value.
+平均值表示总体评分水平。
+Excel:
+#+begin_example
+=AVERAGE(B2:B11)
+#+end_example
+**** Standard Deviation / SD（标准差）
+Standard deviation shows how spread out the data is.
+标准差表示数据离散程度。
+Excel:
+#+begin_example
+=STDEV.S(B2:B11)
+#+end_example
+解释：
+- Mean high = overall score is high（整体评分高）
+- Mean low = overall score is low（整体评分低）
+- SD high = opinions are diverse（意见分歧大）
+- SD low = opinions are consistent（意见较一致）
+*** Comparing Two Samples（比较两个样本）
+比较两组数据时，通常关注：
+- whether the means are different（均值是否不同）
+- whether the SDs are different（离散程度是否不同）
+- whether the difference is statistically significant（差异是否统计显著）
+课件提到：
+- F-test to check variances（用 F-test 检查方差）
+- t-test to compare means（用 t-test 比较均值）
+*** Statistical Result Presentation（统计结果表达）
+**** Significant Difference（有显著差异）
+#+begin_quote
+There is a statistically significant difference in user motivation between Postcard AR (M=3.04, SD=0.87) and CubeMuseum AR (M=4.32, SD=0.94), t(30)=-4.001, p<0.001.
+#+end_quote
+中文：
+Postcard AR 和 CubeMuseum AR 在 user motivation 上存在统计显著差异。
+**** No Significant Difference（无显著差异）
+#+begin_quote
+There is no statistically significant difference in user motivation between Postcard AR and CubeMuseum AR, t(30)=-0.740, p=0.465.
+#+end_quote
+中文：
+Postcard AR 和 CubeMuseum AR 在 user motivation 上没有统计显著差异。
+*** Reporting M and SD
+M = mean（平均值）
+SD = standard deviation（标准差）
+不要只写：
+#+begin_example
+CubeMuseum AR is better.
+#+end_example
+应该写：
+#+begin_example
+CubeMuseum AR had a higher user motivation score (M=4.32, SD=0.94) than Postcard AR (M=3.04, SD=0.87).
+#+end_example
+*** 考试答案
+Basic statistical analysis often includes sample size, mean, and standard deviation. Sample size can be calculated with COUNT, mean with AVERAGE, and standard deviation with STDEV.S in Excel. When comparing two samples, researchers may use an F-test to check variances and a t-test to examine whether the difference between means is statistically significant. Results should be reported with means, standard deviations, test statistics, and p-values when appropriate.
+基础统计分析通常包括样本量、平均值和标准差。Excel 中可以用 COUNT 计算样本量，用 AVERAGE 计算平均值，用 STDEV.S 计算样本标准差。比较两组样本时，可以先用 F-test 检查方差，再用 t-test 判断均值差异是否显著。报告结果时应尽量给出 mean、SD、统计量和 p-value。
+
+** Future Evaluation Study（未来评估研究怎么写）
+*** Questions to Answer
+未来写 evaluation study 时，要回答：
+1. Why, what, where, and when to evaluate?
+   为什么评估？评估什么？在哪里评估？什么时候评估？
+2. What type of evaluation method is used?
+   评估方法属于哪类？
+   - controlled setting
+   - natural setting
+   - without users
+3. What exact evaluation method is used?
+   具体使用什么方法？
+   - usability testing
+   - experimental study
+   - field study
+   - heuristic evaluation
+   - questionnaire
+   - interview
+   - analytics
+4. How will data be collected, analyzed, and interpreted?
+   数据如何收集、分析和解释？
+*** Evaluation Plan Template
+#+begin_example
+Why:
+To check whether users can complete the main task and whether the prototype supports their needs.
+What:
+An interactive prototype of the main application flow.
+Where:
+A controlled usability testing setting.
+During the prototype iteration stage before final implementation.
+Method:
+Usability testing with representative users.
+Data:
+Task completion rate, time on task, number of errors, SUS score, and short interview feedback.
+Analysis:
+Calculate mean, standard deviation, and identify major usability problems from observation and user comments.
+#+end_example
+
+** One-page Memory Version（一页速记版）
+*** Evaluation
+Evaluation 是 iterative design 的持续部分。
+Why:
+- check requirements
+- confirm users can use and accept the product
+What:
+- conceptual model
+- prototypes
+- finished product
+- competitors
+Where:
+- natural settings
+- in-the-wild settings
+- laboratory settings
+When:
+- throughout design
+- after product launch
+*** Measurement
+Task-based performance:
+- time performance
+- task correctness / accuracy
+- error rate
+- time to learn
+- retention over time
+- user satisfaction
+Macro-HCI:
+- motivation
+- collaboration
+- social participation
+- trust
+- empathy
+*** Evaluation Methods
+Controlled settings:
+- usability testing
+- experimental design
+Natural settings:
+- field study
+Without users:
+- heuristic evaluation
+- analytics
+- A/B testing
+- predictive models
+*** Practical Challenges
+Consent:
+- participants know purpose, tasks, and rights
+- informed consent form acts as a contract
+Interpreting data:
+- reliability = 稳不稳
+- validity = 准不准
+- ecological validity = 环境真不真
+- bias = 有没有偏差
+- scope = 能不能推广
+*** Usability Testing
+Definition:
+- record performance of typical users doing typical tasks
+Data:
+- task success
+- task time
+- error rate
+- help navigation
+- satisfaction
+Conditions:
+- controlled space
+- representative users
+- representative tasks
+- 5-10 users
+- same test conditions
+- informed consent
+*** SUS
+Calculation:
+- odd questions: response - 1
+- even questions: 5 - response
+- total × 2.5 = SUS score
+- SUS score, not percentage
+- above 68 = above average
+*** Usability Testing vs Experiments
+Usability testing:
+- improve products
+- few participants
+- inform design
+- report to developers
+Experiments:
+- discover knowledge
+- many participants
+- statistically validated
+- replicable
+- scientific report
+*** Experimental Design
+Experiment:
+- tests hypothesis
+- investigates relationship between variables
+Independent variable:
+- manipulated by researcher
+Dependent variable:
+- measured result
+- influenced by independent variable
+*** Hypotheses
+H0:
+There is no difference in [dependent variable] between [condition A] and [condition B].
+H1:
+There is a difference in [dependent variable] between [condition A] and [condition B].
+Goal:
+- reject H0
+- support H1
+*** Between vs Within
+Between-subjects:
+- different participants
+- no order effects
+- more participants needed
+- individual differences problem
+Within-subjects:
+- same participants
+- fewer participants needed
+- reduced individual differences
+- order effects problem
+- counterbalancing needed
+*** Good Practices
+- counterbalancing / Latin Square
+- enough training time
+- one session 60-90 minutes or shorter
+*** Experimental Lifecycle
+hypothesis
+→ study design
+→ pilot study
+→ recruit participants
+→ data collection
+→ analyze data
+→ report results
+*** Data Collection Procedure
+preparation
+→ greet participants
+→ introduce study
+→ get consent
+→ assign condition
+→ training task
+→ actual task
+→ questionnaire
+→ debriefing
+→ payment
+*** Statistics
+Sample size:
+#+begin_example
+=COUNT()
+#+end_example
+Mean:
+#+begin_example
+=AVERAGE()
+#+end_example
+SD:
+#+begin_example
+=STDEV.S()
+#+end_example
+Compare two samples:
+- F-test for variance
+- t-test for mean difference
+Report:
+- M
+- SD
+- t
+- p
