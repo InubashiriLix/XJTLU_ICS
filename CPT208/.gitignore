@@ -1,0 +1,22 @@
+# Generated PDFs and candidate build output
+cheatsheet/*.pdf
+cheatsheet/CPT208-two-sided-candidate.org
+
+# LaTeX / Pandoc temporary files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Local editor / OS noise
+*~
+*.swp
+.DS_Store
