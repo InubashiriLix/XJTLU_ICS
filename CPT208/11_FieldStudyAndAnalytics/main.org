@@ -1,0 +1,707 @@
+* 11 Field Study and Analytics（现场研究与分析）
+
+** Lecture Overview
+本章主要讲 natural settings（自然环境）和 without direct user involvement（不直接涉及用户）的 evaluation methods（评估方法）。
+Learning outcomes:
+- To plan and carry out an observation.
+- Understand the use of a field study.
+- Explain the role of analytics in evaluation.
+- Describe how A/B testing is used in evaluation.
+- Understand the use of predictive models.
+本章核心：
+- Observation（观察）可以是 direct observation（直接观察）或 indirect observation（间接观察）。
+- Field study（现场研究）在 natural settings（自然环境）中理解用户真实行为。
+- Analytics（分析）通过软件自动记录用户活动。
+- A/B testing（A/B 测试）是大规模实验，用两个版本比较用户表现。
+- Predictive models（预测模型）不用直接找用户，而是用公式预测用户表现。
+
+** Knowledge Check（知识检查）
+*** Questionnaire vs Interview
+Questionnaire（问卷）更可能出现：
+- rating scale（评分量表）
+- Likert scale（李克特量表）
+- written comments（书面评论）
+- fixed response format（固定回答格式）
+Interview（访谈）更可能出现：
+- oral question（口头问题）
+- follow-up question（追问）
+- “Can you tell me about it?”
+- more flexible answer（更灵活的回答）
+例子：
+- “Overall, I found this module a valuable learning experience. 1 2 3 4 5”
+  - Questionnaire
+- “Do you have any suggestions or comments? Can you tell me about it?”
+  - Interview
+*** Quantitative vs Qualitative Questions
+Quantitative question（量化问题）：
+- produces numbers（产生数字）
+- can calculate mean / SD（可以算平均值和标准差）
+- example: 1-5 rating scale
+Qualitative question（质性问题）：
+- produces words / comments（产生文字或评论）
+- explains reasons（解释原因）
+- example: open-ended comments
+例子：
+- “Rate your learning experience from 1 to 5.”
+  - Quantitative
+- “Please write your comments.”
+  - Qualitative
+*** Quantitative vs Qualitative Analysis
+Quantitative analysis（量化分析）：
+- uses numbers
+- reports M / SD / N
+- example: M=4.10, SD=1.00
+Qualitative analysis（质性分析）：
+- uses quotes
+- identifies themes（主题）
+- explains meaning
+Mixed analysis（混合分析）：
+- qualitative coding can still report counts
+- example: students concerned about assessment (N=11)
+考试句：
+Quantitative questions and analysis produce numerical data, such as ratings, means, and standard deviations. Qualitative questions and analysis produce textual data, such as comments, quotes, and themes.
+量化问题和分析产生数字数据，例如评分、平均值和标准差。质性问题和分析产生文本数据，例如评论、引用和主题。
+
+** Recap: Evaluation Methods（评估方法回顾）
+*** Three Evaluation Settings
+Evaluation methods can be grouped into:
+- controlled settings（受控环境）
+- natural settings（自然环境）
+- without users / without direct involvement of users（不直接涉及用户）
+Examples:
+| Setting | Methods |
+|---------+---------|
+| Controlled settings | usability testing, experimental design |
+| Natural settings | field study |
+| Without direct users | heuristic evaluation, analytics, A/B testing, predictive models |
+考试句：
+Evaluation methods can be classified into controlled settings, natural settings, and methods without direct user involvement. Usability testing and experimental design are controlled methods, field study is a natural setting method, and heuristic evaluation, analytics, A/B testing, and predictive models can be used without direct user involvement.
+评估方法可以分为受控环境、自然环境和不直接涉及用户的方法。可用性测试和实验设计属于受控方法，现场研究属于自然环境方法，启发式评估、分析、A/B 测试和预测模型可以不直接涉及用户。
+
+** Observations（观察）
+*** Observation Types（观察类型）
+Observation（观察）主要分为：
+- Direct observation（直接观察）
+  - in the field（现场 / 自然环境）
+  - in controlled environments（受控环境）
+- Indirect observation（间接观察）
+  - diaries（日记）
+  - interaction logging（交互日志）
+  - web analytics（网页分析）
+  - videos / photos collected remotely（远程视频或照片）
+考试句：
+Observation can be direct or indirect. Direct observation involves watching users in the field or in controlled environments. Indirect observation tracks users' activities through diaries, interaction logs, web analytics, videos, photos, or other recorded data.
+观察可以分为直接观察和间接观察。直接观察是在现场或受控环境中观察用户；间接观察通过日记、交互日志、网页分析、视频、照片或其他记录数据追踪用户活动。
+*** Direct Observation in the Field（现场直接观察）
+现场直接观察有三个核心问题：
+- The person: Who?
+  - 谁在参与？
+- The place: Where?
+  - 在哪里发生？
+- The thing: What?
+  - 他们在做什么？
+考试句：
+Direct observation in the field focuses on the person, the place, and the thing: who is involved, where the activity happens, and what is being done.
+现场直接观察关注人、地点和事情：谁参与、在哪里发生、正在做什么。
+*** Observation Framework / Robson 2014（观察框架）
+Robson 的观察框架包括：
+- Space
+  - What is the physical space like and how is it laid out?
+  - 物理空间是什么样？如何布局？
+- Actors
+  - What are the names and relevant details of the people involved?
+  - 涉及哪些人？他们有什么相关信息？
+- Activities
+  - What are the actors doing and why?
+  - 参与者在做什么？为什么做？
+- Objects
+  - What physical objects are present?
+  - 有哪些物理对象？
+- Acts
+  - What are specific individual actions?
+  - 有哪些具体个人动作？
+- Events
+  - Is what you observe part of a special event?
+  - 观察内容是否属于某个特殊事件？
+- Time
+  - What is the sequence of events?
+  - 事件顺序是什么？
+- Goals
+  - What are the actors trying to accomplish?
+  - 参与者想完成什么目标？
+- Feelings
+  - What is the mood of the group and individuals?
+  - 群体和个人的情绪如何？
+考试句：
+Robson's observation framework guides researchers to observe space, actors, activities, objects, acts, events, time, goals, and feelings.
+Robson 的观察框架帮助研究者观察空间、参与者、活动、物体、动作、事件、时间、目标和情绪。
+*** Planning Direct Observation in the Field
+设计 field observation 时要考虑：
+- how involved the researcher will be
+  - researcher 是 passive observer（被动观察者）还是 active participant（主动参与者）
+- how to gain acceptance
+  - 如何获得被观察者接受
+- how to handle sensitive topics
+  - 如何处理 culture（文化）、private spaces（私人空间）等敏感问题
+- how to collect data
+  - collect what data（收集什么数据）
+  - use what equipment（用什么设备）
+  - when to stop observing（什么时候停止观察）
+考试句：
+When planning direct observation in the field, researchers need to decide their level of involvement, how to gain acceptance, how to handle sensitive topics, what data to collect, what equipment to use, and when to stop observing.
+计划现场直接观察时，研究者需要决定参与程度、如何获得接受、如何处理敏感话题、收集什么数据、使用什么设备，以及何时停止观察。
+
+** Ethnography（民族志）
+*** Definition
+Ethnography is a philosophy with a set of techniques that include participant observation and interviews.
+Ethnography（民族志）是一种研究哲学和方法组合，包括 participant observation（参与式观察）和 interviews（访谈）。
+核心特点：
+- ethnographers immerse themselves in the culture they study
+  - 研究者沉浸到被研究的文化中
+- participation is the key
+  - 参与是关键
+- richer and more detailed than other methods
+  - 比其他方法更丰富、更细致
+- expensive and challenging
+  - 成本高，也更有挑战
+考试句：
+Ethnography is a research approach in which researchers immerse themselves in the culture they study, using techniques such as participant observation and interviews. It provides rich and detailed data but is expensive and challenging.
+民族志是一种研究方法，研究者沉浸在被研究文化中，并使用参与式观察和访谈等技术。它能提供丰富细致的数据，但成本高且具有挑战。
+*** More on Ethnography
+民族志还需要注意：
+- co-operation of observed people is required
+  - 需要被观察者合作
+- informants are useful
+  - informants（信息提供者）很有用
+- data analysis is continuous
+  - 数据分析是持续的
+- questions get refined as understanding grows
+  - 随着理解加深，研究问题会被不断细化
+- reports usually contain examples
+  - 报告通常包含具体例子
+考试句：
+In ethnography, cooperation from the people being observed is required, informants can be useful, data analysis is continuous, and research questions are refined as understanding grows.
+在民族志中，被观察者的合作很重要，信息提供者很有用，数据分析是持续的，研究问题会随着理解加深而不断细化。
+*** Online Ethnography（在线民族志）
+Online ethnography 也叫：
+- virtual ethnography（虚拟民族志）
+- online ethnography（在线民族志）
+- netnography（网络民族志）
+特点：
+- studies online and offline activity
+  - 研究线上和线下活动
+- online interaction differs from face-to-face interaction
+  - 线上互动不同于面对面互动
+- virtual worlds have persistence
+  - 虚拟世界具有物理世界没有的 persistence（持久性）
+- ethical considerations are different
+  - 伦理考虑不同
+- presentation of results is different
+  - 结果呈现方式不同
+考试句：
+Online ethnography studies online and offline activities in digital environments. It differs from face-to-face ethnography because online interaction has different norms, virtual worlds can be persistent, and ethical issues and result presentation may be different.
+在线民族志研究数字环境中的线上和线下活动。它不同于面对面民族志，因为线上互动有不同规范，虚拟世界具有持久性，伦理问题和结果呈现也不同。
+
+** Observation Data and Materials（观察数据与材料）
+*** Materials That Might Be Collected
+观察中可能收集：
+- activity or job descriptions（活动或工作描述）
+- rules and procedures（规则和流程）
+- descriptions of activities observed（被观察活动描述）
+- recordings of talk（对话录音）
+- informal interviews（非正式访谈）
+- diagrams of physical layout（物理布局图）
+- photographs of artifacts（物件照片）
+- videos of artifacts（物件视频）
+- descriptions of artifacts（物件描述）
+- workflow diagrams（工作流图）
+- process maps（流程图）
+考试句：
+Observation studies may collect activity descriptions, rules and procedures, recordings, informal interviews, layout diagrams, photos, videos, workflow diagrams, and process maps.
+观察研究可以收集活动描述、规则流程、录音、非正式访谈、布局图、照片、视频、工作流图和流程图。
+*** Direct Observation in a Controlled Environment
+受控环境中的直接观察常用：
+- think aloud technique（出声思考法）
+Think aloud means:
+- users say what they are thinking while doing the task
+- researcher observes their reasoning, confusion, and decision-making
+考试句：
+Think aloud is a technique used in controlled observation where participants verbalize their thoughts while performing tasks, helping researchers understand their reasoning, confusion, and decision-making.
+出声思考法是受控观察中的技术，参与者在执行任务时说出自己的想法，帮助研究者理解他们的推理、困惑和决策过程。
+*** Indirect Observation（间接观察）
+Indirect observation tracks users' activities.
+间接观察追踪用户活动。
+常见方式：
+- diaries（日记）
+- interaction logs（交互日志）
+- web analytics（网页分析）
+- video（视频）
+- audio（音频）
+- photos（照片）
+- notes（笔记）
+考试句：
+Indirect observation tracks users' activities using diaries, interaction logs, web analytics, and recorded media such as video, audio, photos, and notes.
+间接观察使用日记、交互日志、网页分析以及视频、音频、照片和笔记等记录媒介追踪用户活动。
+*** Example: Train Ticket Purchasing
+研究 train ticket purchasing experience 可以选择：
+- 12306 online observation
+  - observe user search behavior
+  - record time spent
+  - note errors and confusion
+  - collect interaction logs
+  - use think aloud if controlled
+- train station field observation
+  - observe ticket machine use
+  - observe queues and help-seeking
+  - note physical environment
+  - record user flow
+  - conduct short informal interviews
+考试句：
+To study train ticket purchasing, researchers could observe users online using 12306 or in the train station. Online observation may focus on search behavior, errors, time, and interaction logs, while field observation may focus on queues, ticket machines, physical layout, user flow, and help-seeking behavior.
+研究购票体验时，研究者可以观察用户使用 12306，也可以在车站现场观察。线上观察可关注搜索行为、错误、时间和交互日志；现场观察可关注排队、售票机、物理布局、用户流和求助行为。
+
+** Field Study（现场研究）
+*** Definition
+Field studies are done in natural settings.
+Field study（现场研究）在 natural settings（自然环境）中进行。
+“In the wild” means prototypes being used freely in natural settings.
+“In the wild” 指 prototype 在自然环境中被用户自由使用。
+Field studies seek to understand:
+- what users do naturally
+- how technology impacts users
+- how technology fits into real routines
+现场研究在产品设计中用于：
+- identify opportunities for new technology（发现新技术机会）
+- determine design requirements（确定设计需求）
+- decide how to introduce new technology（决定如何引入新技术）
+- evaluate technology in use（评估使用中的技术）
+考试句：
+Field studies are conducted in natural settings to understand what users do naturally and how technology impacts them. They are used to identify opportunities for new technology, determine design requirements, decide how to introduce technology, and evaluate technology in use.
+现场研究在自然环境中进行，用于理解用户自然行为以及技术如何影响用户。它可以发现新技术机会、确定设计需求、决定如何引入技术，并评估使用中的技术。
+*** Field Study Example: Painpad
+Painpad 是一个 keypad device（键盘设备），用于监测 patients' pain（病人疼痛）。
+背景：
+- monitoring patients' pain is a challenge for physicians
+- Painpad was usability tested in lab first
+- then brought into two UK hospitals
+- goal was to understand use in natural environment and hospital routines
+考试句：
+Painpad was first usability tested in the lab and then evaluated in two hospitals through field studies. The goal was to understand how it was used in the natural environment and as part of hospital routines.
+Painpad 先在实验室进行可用性测试，然后在两家医院做现场研究。目标是理解它在自然环境和医院日常流程中的真实使用方式。
+*** Painpad Data Collection and Participants
+Painpad study 数据：
+- two studies in two hospitals
+- 54 people involved
+- 13 males and 41 females
+- hospital stay ranged from 1 to 7 days
+- mean stay was 2-3 days
+- age ranged from 32 to 88
+- mean age 64.6
+- median age 64.5
+数据收集：
+- patients used Painpad after surgery
+- patients were prompted to report pain every two hours
+- nurses also collected pain scores
+- one hospital used user-satisfaction survey
+- Painpad was rated on a 1-5 Likert scale
+- privacy was an important concern
+*** Painpad Data Analysis and Presentation
+收集了三类数据：
+- satisfaction with Painpad from questionnaire responses
+- patients' compliance with the two-hour routine
+- comparison between Painpad data and nurse-collected data
+结果：
+- satisfaction with Painpad was 4.63 on Likert scale
+- compliance was mixed
+- some patients liked it
+- some disliked or did not notice the prompts
+- patients recorded more scores with Painpad than through nurses
+考试句：
+The Painpad field study collected questionnaire satisfaction data, patients' compliance with the two-hour reporting routine, and a comparison between Painpad scores and nurse-collected scores. The results showed high satisfaction, mixed compliance, and more pain scores recorded through Painpad than through nurses.
+Painpad 现场研究收集了问卷满意度、两小时疼痛报告流程的遵从情况，以及 Painpad 数据和护士收集数据的比较。结果显示满意度高、遵从情况混合，并且 Painpad 记录的疼痛分数多于护士记录。
+
+** Without Direct User Involvement（不直接涉及用户）
+*** Meaning
+“Without users” 更准确地说是 without direct involvement of users（不直接涉及用户）。
+三类方法：
+- experts' knowledge codified in heuristics
+  - heuristic evaluation
+  - walkthroughs
+- data collected remotely
+  - analytics
+  - A/B testing
+- models that predict users' performance
+  - predictive modeling
+考试句：
+Methods without users are more precisely methods without direct user involvement. They include expert-based methods such as heuristic evaluation and walkthroughs, remote data methods such as analytics and A/B testing, and predictive models that estimate user performance.
+“不涉及用户”的方法更准确地说是不直接涉及用户。它们包括基于专家的方法，如启发式评估和走查；远程数据方法，如分析和 A/B 测试；以及预测用户表现的模型。
+
+** Analytics（分析）
+*** Definition
+Analytics records users' actions automatically through software.
+Analytics（分析）通过软件自动记录用户行为。
+可以记录：
+- key presses（按键）
+- mouse or pointing device movements（鼠标或指针移动）
+- time spent searching a web page（搜索网页所花时间）
+- time spent looking at help systems（查看帮助系统时间）
+- task flow through software modules（任务在软件模块中的流动）
+- screen time（屏幕时间）
+- movement in a virtual environment（虚拟环境中的移动）
+考试句：
+Analytics involves automatically recording users' actions through software, such as key presses, mouse movements, time spent on pages, task flow, screen time, and movement in virtual environments.
+Analytics 通过软件自动记录用户行为，例如按键、鼠标移动、页面停留时间、任务流、屏幕时间和虚拟环境中的移动。
+*** Advantages and Disadvantages of Analytics
+优点：
+- unobtrusive if system performance is not affected
+  - 如果不影响系统性能，它对用户干扰小
+- large volumes of data can be logged automatically
+  - 可以自动记录大量数据
+- data can be analyzed using visualization and other tools
+  - 可用可视化和其他工具分析数据
+缺点：
+- ethical concerns if users do not know they are observed
+  - 如果用户不知道被观察，会产生伦理问题
+考试句：
+Analytics is useful because it can unobtrusively collect large volumes of user activity data automatically. However, it raises ethical concerns if data is collected without users' knowledge or consent.
+Analytics 有用是因为它可以低干扰地自动收集大量用户活动数据。但如果在用户不知情或未同意的情况下收集数据，就会产生伦理问题。
+
+** Web Analytics（网页分析）
+*** Definition
+Web analytics is a form of interaction logging that analyzes users' activities on websites.
+Web analytics（网页分析）是一种 interaction logging（交互日志），用于分析用户在网站上的活动。
+设计者用它来：
+- improve design（改进设计）
+- track user activities（追踪用户活动）
+- see how many people visit the site（查看访问人数）
+- see how long users stay（查看停留时间）
+- see where users go（查看用户路径）
+- get the big picture of site performance（理解网站整体表现）
+考试句：
+Web analytics is a form of interaction logging that tracks users' activities on websites. It helps designers understand how many people visit the site, how long they stay, where they go, and how the site performs overall.
+网页分析是一种交互日志，用于追踪用户在网站上的活动。它帮助设计者理解访问人数、用户停留时间、用户去向和网站整体表现。
+*** Key Web Analytics Questions
+分析网站数据时可以问：
+- How many people visited the site?
+- What did users look at during their average time on the site?
+- What is the bounce rate?
+- Which devices were used?
+- Which language groups were largest?
+- What can the bounce rate say about each group?
+*** Bounce Rate（跳出率）
+Bounce rate refers to the percentage of visitors who view just one page of a site.
+Bounce rate（跳出率）是只浏览一个页面就离开网站的访问者比例。
+用途：
+- indicates whether users continue exploring the site
+- helps identify poor landing pages
+- may show content mismatch or navigation problems
+- useful for website evaluation
+考试句：
+Bounce rate is the percentage of visitors who view only one page of a website. It is useful because it can indicate whether users continue exploring the site or leave immediately, which may reveal problems with content, navigation, or user expectations.
+跳出率是只浏览一个页面就离开网站的访问者比例。它有用是因为它能显示用户是否继续探索网站，或是否立刻离开，从而反映内容、导航或用户期望的问题。
+*** Other Analytics Tools
+常见 analytics tools：
+- Moz Analytics
+  - search marketing, social media marketing, brand activity, links, content marketing
+- TruSocialMetrics
+  - social media metrics and marketing ROI
+- Clicky
+  - real-time analytics and individual visitor actions
+- KISSmetrics
+  - what visitors do before, during, and after buying
+- Crazy Egg
+  - visitor clicks and click heat maps
+- ClickTale
+  - mouse movement, scrolling, and heat map reports
+考试句：
+Analytics tools such as Google Analytics, Clicky, Crazy Egg, and ClickTale can track visits, clicks, scrolling, mouse movement, demographics, and user behavior patterns to support website design and usability evaluation.
+Google Analytics、Clicky、Crazy Egg 和 ClickTale 等分析工具可以追踪访问、点击、滚动、鼠标移动、人口统计信息和用户行为模式，以支持网站设计和可用性评估。
+
+** A/B Testing（A/B 测试）
+*** Definition
+A/B testing is a large-scale experiment comparing two versions of a design.
+A/B testing（A/B 测试）是比较两个设计版本的大规模实验。
+特点：
+- large-scale experiment（大规模实验）
+- thousands of participants or more（数千甚至更多参与者）
+- evaluates websites, applications, or mobile apps（评估网站、应用或移动应用）
+- often used for social media design changes（常用于社交媒体设计变化）
+- compares two groups of users on two versions of a design（比较两组用户在两个版本上的表现）
+伦理问题：
+- may create ethical dilemmas if users do not know they are part of the test
+- 如果用户不知道自己参与测试，可能产生伦理困境
+考试句：
+A/B testing is a large-scale experiment that compares how two groups of users perform on two versions of a design. It is often used to evaluate design changes on websites, mobile apps, and social media applications, but it may raise ethical issues if users do not know they are part of the test.
+A/B 测试是一种大规模实验，比较两组用户在两个设计版本上的表现。它常用于评估网站、移动应用和社交媒体应用中的设计变化，但如果用户不知道自己参与测试，可能产生伦理问题。
+*** A/B Testing Variables
+以 Learning Mall login page 为例：
+Independent variable（自变量）：
+- design version
+- existing design vs new design
+Dependent variable（因变量）可以是：
+- login success rate（登录成功率）
+- time to login（登录时间）
+- error rate（错误率）
+- click-through rate（点击率）
+- conversion rate（转化率）
+- user satisfaction（用户满意度）
+Hypothesis 示例：
+#+begin_example
+H0:
+There is no difference in login success rate between the existing login page and the new login page.
+
+H1:
+There is a difference in login success rate between the existing login page and the new login page.
+#+end_example
+Design type:
+- usually between-subjects design
+- different users see different versions
+- avoids same user being affected by seeing both versions
+Ethics:
+- inform users when possible
+- avoid harm
+- protect privacy
+- do not manipulate sensitive outcomes
+- collect only necessary data
+考试句：
+In an A/B test of a login page, the independent variable is the design version, such as the existing design and the new design. The dependent variables may include login success rate, time to login, error rate, click-through rate, or user satisfaction. A/B testing is usually a between-subjects design because different users are assigned to different versions.
+在登录页面的 A/B 测试中，自变量是设计版本，例如旧设计和新设计。因变量可以包括登录成功率、登录时间、错误率、点击率或用户满意度。A/B 测试通常是组间设计，因为不同用户被分配到不同版本。
+*** Example: Video Cover and Title
+视频标题和封面也可以做 evaluation。
+方式一：
+- prototyping + A/B testing
+- 做多个封面或标题版本
+- 在线投放并比较点击率
+方式二：
+- prototyping + questionnaire evaluation
+- 做多个标题和封面
+- 让用户问卷评价吸引力、清楚程度、点击意愿
+考试句：
+Video covers and titles can be evaluated through prototyping and A/B testing by comparing click-through rates, or through prototyping and questionnaire evaluation by asking users to rate attractiveness, clarity, and willingness to click.
+视频封面和标题可以通过原型加 A/B 测试比较点击率，也可以通过原型加问卷评估吸引力、清楚程度和点击意愿。
+
+** Predictive Modeling（预测模型）
+*** Definition
+Predictive models evaluate products or designs without directly involving users.
+Predictive models（预测模型）可以在不直接涉及用户的情况下评估产品或设计。
+特点：
+- less expensive than user testing（比用户测试成本低）
+- use formulas to derive measures of user performance（用公式推导用户表现指标）
+- suitable for predictable tasks（适合可预测任务）
+- limited usefulness for open-ended or complex behavior（对开放复杂行为作用有限）
+适合系统：
+- voicemail systems（语音信箱系统）
+- smartphones（智能手机）
+- dedicated mobile devices（专用移动设备）
+考试句：
+Predictive models use formulas to estimate user performance without directly involving users. They are less expensive than user testing, but their usefulness is mainly limited to systems with predictable tasks.
+预测模型使用公式在不直接涉及用户的情况下估计用户表现。它比用户测试便宜，但主要适用于任务可预测的系统。
+*** Fitts' Law（费茨定律）
+**** Definition
+Fitts' Law predicts the time to point at an object using a device as a function of the distance to the target and the target size.
+Fitts' Law（费茨定律）根据目标距离和目标大小预测用户指向目标所需的时间。
+公式：
+#+begin_example
+T = k log2(D / S + 1.0)
+#+end_example
+where:
+- T = time to move the pointer to a target
+  - 指针移动到目标所需时间
+- D = distance between pointer and target
+  - 指针和目标之间的距离
+- S = size of the target
+  - 目标大小
+- k = constant of approximately 200 ms/bit
+  - 常数，约 200 ms/bit
+**** Meaning
+Fitts' Law 说明：
+- the further away the object, the longer it takes to point to it
+  - 目标越远，指向它所需时间越长
+- the smaller the object, the longer it takes to point to it
+  - 目标越小，指向它所需时间越长
+- the bigger the target, the easier and quicker it is to reach
+  - 目标越大，越容易越快点击
+**** Design Use
+Fitts' Law 可帮助设计者决定：
+- where to locate physical or digital buttons
+  - 按钮放在哪里
+- what size to make them
+  - 按钮做多大
+- how close together to put them
+  - 按钮之间放多近
+适合评估：
+- smartphones
+- handheld devices
+- mobile devices
+- keypress sequences
+- screen object positions
+考试句：
+Fitts' Law predicts pointing time based on target distance and target size. The farther and smaller the target is, the longer it takes to reach. Designers can use Fitts' Law to decide button size, button location, and spacing between objects on a screen.
+费茨定律根据目标距离和目标大小预测指向时间。目标越远、越小，到达时间越长。设计者可以用它决定按钮大小、位置和屏幕对象之间的间距。
+
+** Summary（总结）
+*** Main Points
+本章总结：
+- Inspections can evaluate requirements, mockups, functional prototypes, or systems.
+- User testing and heuristic evaluation may reveal different usability problems.
+- Walkthroughs are fine-grained focused methods for evaluating small product parts.
+- Analytics collects data about user activity on a website or product.
+- A/B testing is a form of large-scale experiment.
+- Fitts' Law predicts expert, error-free performance for clearly defined tasks with limited key presses.
+- Field studies evaluate technology in natural settings.
+- Ethnography gives rich data but is expensive and challenging.
+考试句：
+Field studies are conducted in natural settings to understand real user behavior and technology use. Analytics and A/B testing collect user activity data remotely, while predictive models such as Fitts' Law estimate user performance without direct user involvement. These methods complement usability testing and heuristic evaluation because they reveal different aspects of user experience.
+现场研究在自然环境中进行，用于理解真实用户行为和技术使用。Analytics 和 A/B 测试远程收集用户活动数据，而 Fitts' Law 等预测模型在不直接涉及用户的情况下估计用户表现。这些方法补充了可用性测试和启发式评估，因为它们揭示用户体验的不同方面。
+
+** Exam Answer Templates（考试答案模板）
+*** 1. Explain observation types.
+Observation can be direct or indirect. Direct observation involves watching users in the field or in controlled environments. Indirect observation tracks users' activities through diaries, interaction logs, web analytics, videos, photos, or other recorded data. Observation helps researchers understand what users do, where they do it, who is involved, and what goals they try to accomplish.
+观察可以分为直接观察和间接观察。直接观察是在现场或受控环境中观察用户。间接观察通过日记、交互日志、网页分析、视频、照片或其他记录数据追踪用户活动。观察帮助研究者理解用户做什么、在哪里做、谁参与以及他们想完成什么目标。
+*** 2. Explain field study.
+Field studies are conducted in natural settings to understand what users do naturally and how technology impacts them. They are used to identify opportunities for new technology, determine design requirements, decide how to introduce technology, and evaluate technology in use. Compared with lab studies, field studies provide more realistic context but are harder to control.
+现场研究在自然环境中进行，用于理解用户自然行为以及技术如何影响用户。它可以发现新技术机会、确定设计需求、决定如何引入技术，并评估使用中的技术。与实验室研究相比，现场研究情境更真实，但更难控制。
+*** 3. Explain ethnography.
+Ethnography is a research approach in which researchers immerse themselves in the culture they study, using participant observation and interviews. Participation is key, and data analysis is continuous. Ethnography provides rich and detailed data, but it is expensive, time-consuming, and challenging.
+民族志是一种研究方法，研究者沉浸在被研究文化中，使用参与式观察和访谈。参与是关键，数据分析是持续进行的。民族志能提供丰富细致的数据，但成本高、耗时且具有挑战。
+*** 4. Explain analytics in evaluation.
+Analytics automatically records users' actions through software, such as key presses, mouse movements, time spent on pages, task flow, screen time, and movement in virtual environments. It can collect large volumes of data unobtrusively and help designers understand how products are used. However, analytics raises ethical concerns if data is collected without users' knowledge or consent.
+Analytics 通过软件自动记录用户行为，例如按键、鼠标移动、页面停留时间、任务流、屏幕时间和虚拟环境中的移动。它可以低干扰地收集大量数据，并帮助设计者理解产品如何被使用。但如果在用户不知情或未同意的情况下收集数据，会产生伦理问题。
+*** 5. Explain web analytics and bounce rate.
+Web analytics is a form of interaction logging that analyzes users' activities on websites. It helps designers understand how many people visit the site, how long they stay, where they go, and how the website performs overall. Bounce rate is the percentage of visitors who view only one page of a website. A high bounce rate may indicate that users cannot find relevant content, navigation is poor, or the site does not match user expectations.
+网页分析是一种交互日志，用于分析用户在网站上的活动。它帮助设计者理解访问人数、停留时间、用户路径和网站整体表现。跳出率是只浏览一个页面就离开网站的访问者比例。高跳出率可能说明用户找不到相关内容、导航差或网站不符合用户期望。
+*** 6. Explain A/B testing.
+A/B testing is a large-scale experiment that compares how two groups of users perform on two versions of a design. It is often used to evaluate changes in websites, mobile apps, and social media applications. The independent variable is the design version, and the dependent variable may be click-through rate, conversion rate, error rate, task success, or user satisfaction. A/B testing may raise ethical issues if users do not know they are part of the experiment.
+A/B 测试是一种大规模实验，比较两组用户在两个设计版本上的表现。它常用于评估网站、移动应用和社交媒体应用中的设计变化。自变量是设计版本，因变量可以是点击率、转化率、错误率、任务成功率或用户满意度。如果用户不知道自己参与实验，A/B 测试可能产生伦理问题。
+*** 7. Explain predictive models and Fitts' Law.
+Predictive models use formulas to estimate user performance without directly involving users. They are less expensive than user testing, but they are mainly useful for predictable tasks. Fitts' Law is a predictive model that estimates pointing time based on target distance and target size. It shows that farther and smaller targets take longer to reach, so designers can use it to decide button size, button location, and spacing.
+预测模型使用公式在不直接涉及用户的情况下估计用户表现。它比用户测试便宜，但主要适用于可预测任务。Fitts' Law 是一种预测模型，根据目标距离和目标大小估计指向时间。它说明目标越远、越小，到达时间越长，因此设计者可以用它决定按钮大小、位置和间距。
+*** 8. Compare field study, analytics, A/B testing, and predictive models.
+Field study involves observing users in natural settings and provides realistic contextual understanding. Analytics collects user activity data automatically and remotely. A/B testing compares two design versions at large scale. Predictive models use formulas to estimate user performance without directly involving users. These methods answer different evaluation questions and can complement each other.
+现场研究在自然环境中观察用户，提供真实情境理解。Analytics 自动远程收集用户活动数据。A/B 测试大规模比较两个设计版本。预测模型使用公式在不直接涉及用户的情况下估计用户表现。这些方法回答不同评估问题，并可以相互补充。
+
+** One-page Memory Version（一页速记版）
+*** Observation
+Types:
+- direct observation
+- indirect observation
+Direct observation:
+- in the field
+- in controlled environments
+Indirect observation:
+- diaries
+- interaction logs
+- web analytics
+- video / audio / photos / notes
+Field observation:
+- Who?
+- Where?
+- What?
+Robson framework:
+- space
+- actors
+- activities
+- objects
+- acts
+- events
+- time
+- goals
+- feelings
+*** Ethnography
+Ethnography:
+- participant observation
+- interviews
+- immerse in culture
+- participation is key
+- rich and detailed
+- expensive and challenging
+Online ethnography:
+- virtual / online / netnography
+- online and offline activity
+- virtual worlds are persistent
+- different ethics
+*** Field Study
+Field study:
+- natural settings
+- understand natural user behavior
+- understand technology impact
+Used to:
+- identify opportunities
+- determine requirements
+- introduce technology
+- evaluate technology in use
+Painpad:
+- two hospitals
+- 54 people
+- satisfaction 4.63
+- mixed compliance
+- more pain scores recorded through Painpad than nurses
+*** Without Direct User Involvement
+Methods:
+- heuristic evaluation
+- walkthroughs
+- analytics
+- A/B testing
+- predictive models
+*** Analytics
+Records:
+- key presses
+- mouse movement
+- page time
+- help system time
+- task flow
+- screen time
+- virtual movement
+Advantages:
+- unobtrusive
+- large data
+Disadvantage:
+- ethical concerns
+*** Web Analytics
+Tracks:
+- visits
+- time on site
+- where users go
+- devices
+- language groups
+- bounce rate
+Bounce rate:
+- percentage of visitors viewing only one page
+*** A/B Testing
+A/B testing:
+- large-scale experiment
+- two design versions
+- two user groups
+- often between-subjects
+IV:
+- design version
+DV:
+- click-through rate
+- conversion rate
+- error rate
+- task success
+- satisfaction
+Ethics:
+- users may not know they are tested
+*** Predictive Modeling
+Predictive models:
+- formulas
+- no direct users
+- cheaper than user testing
+- useful for predictable tasks
+Fitts' Law:
+T = k log2(D / S + 1.0)
+T:
+- pointing time
+D:
+- distance to target
+S:
+- target size
+Meaning:
+- farther target = slower
+- smaller target = slower
+- bigger target = faster
+Design use:
+- button size
+- button location
+- spacing
