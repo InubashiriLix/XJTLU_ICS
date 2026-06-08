@@ -1,0 +1,570 @@
+* Prototyping（原型）
+
+** Definition
+A prototype is an early model or representation of a product designed to test an idea or function before committing to full production. It transforms abstract concepts into tangible experiences that can be evaluated, tested, and refined.
+*Prototype（原型）* 是正式开发前的早期模型，用来测试 idea（想法）或者 function（功能）。
+
+*** 它的核心作用是：
+#+begin_example
+abstract concepts（抽象概念）
+→ tangible experience（可体验的东西）
+→ evaluated / tested / refined（评估 / 测试 / 改进）
+#+end_example
+
+在 design thinking（设计思维）里：
+Prototyping is the bridge between ideation and testing.
+原型是 ideation（想法生成）和 testing（测试）之间的桥。
+
+** What is Prototype Actually?（Prototype 到底是什么）
+Prototype 不是最终产品的半成品。
+更准确地说，它是：
+- thinking and learning tool（思考和学习工具）
+- bridge between abstract requirements and tangible testable experience（抽象需求和可测试体验之间的桥）
+- ambiguity reducer（减少歧义的工具）
+- communication tool（沟通工具）
+- assumption testing tool（测试假设的工具）
+A prototype is not just a stepping stone to the final product. It is a tool for thinking and learning. It helps designers bridge abstract requirements and tangible testable experiences, reduce ambiguity, communicate with stakeholders, and test assumptions before full implementation.
+Prototype 的重点不是“做一个看起来像最终产品的东西”，而是：
+用最低成本把想法变成可以讨论、可以测试、可以推翻的东西。
+
+** Why Prototype?（为什么要做 Prototype）
+1. Evaluation and feedback are central to interaction design.
+   evaluation（评估）和 feedback（反馈）是 interaction design 的核心。
+2. Stakeholders can see, hold, and interact with a prototype.
+   stakeholder 看原型比看文档更容易理解。
+3. Team members can communicate effectively.
+   团队可以围绕同一个具体对象讨论。
+4. Designers can test out ideas.
+   设计者可以低成本测试想法。
+5. It encourages reflection.
+   原型会逼你反思设计是否真的合理。
+6. Prototypes answer questions and support choosing between alternatives.
+   原型能回答问题，也能帮助比较 alternative designs（备选方案）。
+
+*** Switch Mindset（转换心态）
+开发里最贵的事情不是失败，而是： Building the wrong thing perfectly.
+把错误的东西做得很完美，才是最贵的。 
+Prototype 把心态从： I know it works. 变成： Let's test what works.
+- fail fast and cheaply（快速、低成本失败）
+- lower the stakes（降低试错成本）
+- separate ego from design（不要把设计失败当成人失败）
+
+** Characteristics of Prototyping（原型的特征）
+*** 1. Goal-Oriented（目标导向）
+A good prototype is built to answer a specific question.
+好的 prototype 必须服务于一个具体问题。
+Question: Can users find the Submit button?
+Prototype: Make a simple form page and ask users to submit it.
+
+*** 2. Disposable and Flexible（可丢弃且灵活）
+The true value lies in the knowledge gained, not the artifact itself.
+Prototype 的价值在于学到了什么，而不是原型本身。
+如果测试后发现方向错了，就应该愿意 throw it away（扔掉）。
+
+*** 3. Iterative（迭代）
+Prototype is not a one-and-done process.
+create prototype → test → collect feedback → reflect → refine → test again
+Prototype 是不断测试和改进的循环过程。
+
+** Prototype as a Tool（Prototype 作为工具）
+*** 核心句
+We often do not know what we want until we see what we do not want.
+很多时候，用户不知道自己想要什么，直到他看到一个不想要的东西。
+Prototype 可以：
+1. Elicit actionable feedback（引出可执行反馈）
+2. Reveal hidden requirements（暴露隐藏需求）
+3. Bypass imagination（绕过纯脑补）
+*** 例子
+直接问： What do you want from this system?
+用户可能答不上来。
+给用户看 prototype：
+- Here is the project list.
+- Here is the apply button.
+- Here is the application status page.
+- Where do you feel confused?
+用户就能给具体反馈。
+
+** How to Use Prototyping（如何使用 Prototype）
+*** 1. Understanding and Ideation（理解与构思）
+早期 prototype 用来探索问题和生成想法。
+- Embrace ambiguity（接受模糊性）
+- 早期原型是用来问问题，不是给最终答案。
+- Keep flexible（保持灵活）
+- 不要太早纠结颜色、字体、像素级细节。
+- Generate variants（生成多个版本）
+- 做不同 feature versions 来探索 solution space（方案空间）。
+*** User-centered process（用户中心过程）
+Prototype 支持 user-centered design（用户中心设计），因为它可以：
+- reduce false assumptions（减少错误假设）
+- build empathy（建立共情）
+- let users react to concrete ideas（让用户对具体想法反馈）
+- empathy map（共情地图）
+- user journey map（用户旅程图）
+- storyboard（故事板）
+- scenario（场景）
+
+** Communication（沟通）
+Prototype 是沟通工具，不只是测试工具。
+Designers should tailor the prototype presentation to different stakeholders because different stakeholders care about different aspects of the design.
+展示 prototype 时要根据 stakeholder 调整重点，因为不同利益相关者关心的设计方面不同。
+*** Tailor to the audience（根据受众调整）
+不同 stakeholders（利益相关者）关心不同内容。
+- Executives / managers: 关心整体流程、项目范围、价值。
+- Developers: 关心功能逻辑、edge cases、数据流、错误状态。
+- Users: 关心是否能完成任务、是否容易理解。
+- Teachers / markers: 关心是否体现 HCI concepts、user-centered process、evaluation evidence。
+
+** Consensus（形成共识）
+Prototype helps a team form consensus and reduces misunderstanding.
+Prototype 让团队对着同一个具体对象讨论，而不是每个人脑子里想一个不同版本。
+- 没有 prototype 时： 每个人都以为自己懂了，但其实想的东西不一样。
+- 有 prototype 后：
+  - 这个按钮是不是太隐蔽？
+  - 这个流程是不是太长？
+  - 这个状态反馈够不够清楚？
+  - 这个页面是不是信息太多？
+
+** Stakeholders（利益相关者）
+不同 stakeholders 关心不同 aspect（方面）。
+- Investor: 关心 potential / value / market。
+- Developer: 关心 technical feasibility / logic / edge cases。
+- User: 关心 usability / task completion / comfort。
+- Teacher: 关心 HCI concepts / process / evidence。
+同一个 prototype，面对不同 stakeholders，要强调不同信息。
+
+** Focus（聚焦反馈）
+Prototype makes discussion focused.
+没有 prototype 时，反馈可能很虚：
+I think it is not good. I feel it should be better. Users may not like it.
+有 prototype 后，反馈更具体：
+- The Apply button is hard to notice.
+- The status label is confusing.
+- The navigation flow has too many steps.
+- The filter position is not obvious.
+Prototype 可以限制 reflection range（反思范围）。
+
+** Test and Reflection（测试与反思）
+*** Define clear metrics（定义清楚指标）
+测试前要明确测什么。
+常见 metrics（指标）：
+- task success rate（任务成功率）
+- time on task（任务耗时）
+- error rate（错误率）
+- number of hesitations（犹豫次数）
+- completion path（完成路径）
+坏测试： Do you like this app?
+好测试： Please find a project and submit an application.
+然后观察：
+用户是否成功？ 用了多久？ 在哪里卡住？ 点错了几次？
+
+*** Observe behavior（观察行为）
+Prototype testing should use clear metrics and observe real user behaviour. Designers should not rely only on what users say, because users' behaviour may reveal problems that their comments do not mention.
+原型测试要定义清楚指标，并观察真实用户行为。不能只听用户说什么，因为用户行为经常能暴露他们没说出来的问题。
+用户说的话不一定可靠，行为更重要。
+用户可能说： It is fine.
+但实际行为可能是： 找不到按钮 反复返回 停顿很久 点错页面 不知道下一步做什么
+
+** Others' Comments（其他人的反馈）
+Prototype 也可以给以下人看：
+- teammates（队友）
+- peers（同学）
+- teachers（老师）
+- developers（开发者）
+- stakeholders（利益相关者）
+不同人会从不同角度发现问题。
+
+** Achieving Prototyping Goals（达成原型目标）
+*** 1. Align purpose and project stage（目的与阶段匹配）
+Prototype 的形式要匹配当前项目阶段。
+早期：paper sketch wireframe storyboard low-fidelity prototype
+适合测试： concept structure flow user needs basic task logic
+后期： clickable Figma high-fidelity prototype coded prototype
+适合测试： visual details interaction details error handling realistic task flow accessibility
+*** 2. Avoid the polish trap（避免打磨陷阱）
+Polish trap 指：
+明明只是想测试概念，却花太多时间打磨视觉细节。
+问题：
+- 用户开始评价颜色、字体、图标
+- 原本要测试的 flow / structure / concept 被忽略
+- 团队浪费时间
+
+*** 3. Foster a learning culture（建立学习文化）
+Prototype 的目标不是证明自己正确，而是学习。
+即使 prototype 证明方案不行，也有价值，因为它让团队低成本发现：
+这个功能没人要 这个流程用户看不懂 这个交互方式不自然 这个假设不成立
+
+** Prototyping 考场万能答案
+*** Question: What is a prototype and why is it useful?
+Prototype 是正式开发前的早期模型，用来测试想法或功能。它把抽象概念变成可以看、可以操作、可以评估、可以修改的体验。
+A prototype is an early model or representation of a product designed to test an idea or function before full production. It transforms abstract concepts into tangible experiences that can be evaluated, tested, and refined.
+Prototype 有用是因为它能帮助沟通、评估、反馈和反思。Stakeholders 更容易理解可以操作的原型，而不是抽象文档。团队也可以围绕原型形成共识，减少误解。原型还能帮助设计者测试假设、比较多个方案，并在正式开发前低成本发现问题。
+Prototypes are useful because they support communication, evaluation, feedback, and reflection. Stakeholders can see and interact with a prototype more easily than with a document, and team members can use it to build consensus and reduce ambiguity. Prototypes also help designers test assumptions, compare alternatives, and learn from early failure before committing to expensive implementation.
+
+** What is Fidelity?（Fidelity 是什么）
+Fidelity in prototyping refers to how closely a prototype represents the final product. However, fidelity should be understood as a spectrum and a multi-dimensional measurement system rather than a simple low-fidelity versus high-fidelity classification.
+*Fidelity（保真度）* 指 prototype 在多大程度上接近最终产品。
+Fidelity 不是 low-fidelity 和 high-fidelity 的简单二分，而是一个 spectrum（连续光谱）和 multi-dimensional measurement system（多维度测量系统）。
+这个是低保真还是高保真？ 更应该问： 它在哪些维度上保真度高？ 它在哪些维度上保真度低？ 它现在想测试什么？
+
+** Why fidelity matters?（为什么 Fidelity 重要）
+如果 fidelity 说不清楚，会出现这些问题：
+1. imprecise language wastes time 语言不精确会浪费时间
+2. false validation 可能错误验证了不该验证的东西
+3. premature over-engineering 太早过度工程化，浪费工作量
+4. wrong feedback 用户可能评价错重点
+*** 核心理解
+A prototype can be low fidelity in most dimensions, but high fidelity in one crucial dimension.
+一个 prototype 可以整体很粗糙，但在某个关键维度上必须很真实，才能公平测试那个问题。
+*** 例子
+如果你测试 AI recommendation（AI 推荐）是否有用：
+- Visual fidelity: 可以很低。
+- Interaction fidelity: 可以一般。
+- Content fidelity: 必须高，因为用户要根据推荐内容判断它是否合理。
+
+* Five Dimensions in Prototyping（五个原型维度）
+L6 里最重要的是这五个：
+1. Visual fidelity
+2. Interaction fidelity
+3. Breadth fidelity
+4. Depth fidelity
+5. Content fidelity
+
+** Visual Fidelity（视觉保真度）
+*** 英文考试答案
+Visual fidelity refers to how realistic the prototype looks in terms of visual interface or physical appearance. In early stages, visual fidelity is often kept low so users focus on actions, procedures, and concepts rather than visual details. In later stages, higher visual fidelity may be needed to test accessibility, touch targets, readability, and visual details.
+*Visual fidelity（视觉保真度）* 问的是： How real does it look? 也就是： 这个 prototype 看起来有多像最终产品？
+
+它关注：
+1. layout（布局）
+2. color（颜色）
+3. typography（字体）
+4. spacing（间距）
+5. icons（图标）
+6. visual hierarchy（视觉层级）
+7. physical appearance（物理外观）
+
+*** Early stage（早期）
+早期通常故意保持低 visual fidelity。
+原因： When something looks done, users may think it is done.
+中文： 当一个东西看起来完成了，用户会以为它真的完成了。
+结果用户会开始评价： 颜色 字体 图标 阴影 圆角 视觉风格
+但你真正想测的可能是： concept structure flow procedure task logic
+
+*** Later stage（后期）
+后期可以提高 visual fidelity，用来测试：
+-  accessibility（可访问性） readability（可读性） touch target（触控区域） visual hierarchy（视觉层级） final look and feel（最终视觉体验）
+
+** Interaction Fidelity（交互保真度）
+*** 英文考试答案
+Interaction fidelity refers to the degree of exactness with which real-world interactions are reproduced. A prototype with high interaction fidelity allows users to click, tap, swipe, navigate, and receive feedback in a way that feels similar to the final product.
+
+*** 中文解释
+*Interaction fidelity（交互保真度）* 问的是： How real does it feel?
+也就是： 用户操作起来有多像真实产品？
+它关注： clicking（点击） tapping（轻触） swiping（滑动） dragging（拖拽） navigation（导航） transitions（页面跳转） feedback（反馈） input and response（输入与响应）
+低 visual + 高 interaction:
+黑白 wireframe，但可以点击、跳转、返回、提交。
+高 visual + 低 interaction:
+看起来很漂亮，但只是静态图片，不能操作。
+所以： 看起来真实 ≠ 用起来真实。
+
+** Breadth Fidelity（广度保真度）
+*** 英文考试答案
+Breadth fidelity refers to the scope of features available in a prototype. It asks whether the prototype represents the whole product or only a small part of it.
+
+*** 中文解释
+*Breadth fidelity（广度保真度）* 问的是： To what degree is this the whole or just a part?
+也就是： 这个 prototype 覆盖了多少产品范围？
+它关注： scope of features（功能范围） number of screens（页面数量） entry points（入口） exit points（出口） major navigation areas（主要导航区域）
+*** 例子
+一个电商 prototype 如果包括：
+Home Search Results Product Page Cart Checkout Profile Wishlist Order History
+那它 breadth 比较高。
+
+** Horizontal Prototyping（横向原型）
+A horizontal prototype is broad but shallow. It models the surface layer of many parts of the interface, allowing users to navigate through major screens and evaluate the overall information architecture and navigation structure. However, specific functions are usually not fully implemented.
+*Horizontal prototype（横向原型）* 是： broad but shallow（广但浅）。
+它覆盖很多页面，但每个功能都不深。
+特点：
+-覆盖很多主要页面
+- 用户可以浏览整体结构
+- 可以测试 navigation（导航）
+- 可以测试 information architecture（信息架构）
+- 但具体功能通常不能真的执行
+*** 适合测试
+- navigation structure（导航结构）
+- categorization（分类）
+- information architecture / IA（信息架构）
+- stakeholder alignment（利益相关者对齐）
+- overall scope（整体范围）
+*** 例子
+项目申请系统 horizontal prototype：
+Login Project List Project Detail My Applications Profile Admin Dashboard
+这些页面都能点进去，但 Apply 不一定真的提交数据。
+
+** Depth Fidelity（深度保真度）
+Depth fidelity refers to the degree of functionality within a single feature. It asks how much real functionality is implemented inside a selected part of the product.
+*Depth fidelity（深度保真度）* 问的是：
+At a given level of breadth, how deep is the functionality?
+也就是： 在某个功能内部，它做得有多完整？
+
+它关注：
+- functional detail（功能细节）
+- validation（验证）
+- error states（错误状态）
+- backend logic（后端逻辑）
+- database interaction（数据库交互）
+- whether a real task can be completed（任务是否能真实完成）
+*** 例子
+Voice assistant 只做 weather domain（天气领域）：
+低 depth: 只能问当前温度。
+中 depth: 能问主要城市天气。
+高 depth: 能问任何天气相关问题，并得到合理回答。
+
+** Vertical Prototyping（纵向原型）
+A vertical prototype is narrow but deep. It focuses on one or a few features in detail and may implement the flow from the user interface to backend logic or database interaction. It is useful for testing complex tasks, technical feasibility, and error recovery.
+
+*Vertical prototype（纵向原型）* 是： narrow but deep（窄但深）。
+它只做少数功能，但做得比较完整。
+特点：
+- 覆盖范围小
+- 功能深度高
+- 用户可以完成复杂任务
+- 可以测试真实逻辑、错误处理、技术可行性
+
+*** 适合测试
+- complex task usability（复杂任务可用性）
+- technical feasibility（技术可行性）
+- error recovery states（错误恢复状态）
+- high-risk flows（高风险流程）
+*** 例子
+项目申请系统 vertical prototype：
+只实现 Apply Project 流程：
+Project Detail → Click Apply → Fill note → Submit → Validation → Success / Error state → Application status update
+其他页面可以不完整。
+
+** Breadth vs Depth（广度 vs 深度）
+*** 简单对比
+| 类型 | 特点 | 适合测试 |
+|------+------|----------|
+| Horizontal prototype | broad but shallow（广但浅） | navigation / IA / scope |
+| Vertical prototype | narrow but deep（窄但深） | complex task / feasibility / error recovery |
+
+Horizontal prototype 广但浅，覆盖很多页面但功能不深，适合测试导航和信息架构。Vertical prototype 窄但深，只做一个或几个关键功能，但实现更完整，适合测试复杂任务、技术可行性和错误恢复。
+A horizontal prototype is broad but shallow. It covers many parts of the interface but provides limited functionality, making it useful for testing navigation and information architecture. A vertical prototype is narrow but deep. It focuses on one or a few features in detail, making it useful for testing complex tasks, technical feasibility, and error recovery.
+
+** Content Fidelity（内容保真度）
+Content fidelity refers to the degree of realism of the content used in a prototype. Realistic and contextual content is important because users' feedback can be affected by fake names, placeholder text, or irrelevant data. When content is central to the task, higher content fidelity is needed.
+*Content fidelity（内容保真度）* 问的是：
+How real is the stuff and is it contextual to the user?
+也就是： prototype 里的内容有多真实？它是否符合用户的真实场景？
+它关注：
+- real data（真实数据）
+- realistic names（真实或合理的名字）
+- real text（真实文案）
+- domain-specific content（领域相关内容）
+- contextual relevance（上下文相关性）
+*** 例子
+坏例子： 做严肃招聘 app，但候选人名字写 SpongeBob。
+问题： 用户可能无法认真判断内容是否合理。 用户反馈会被假内容干扰。
+*** Lorem Ipsum 的问题
+Lorem ipsum（占位文本）可能干扰用户。
+如果测试目标是 layout（布局），占位文本可能可以用。
+但如果测试目标是 information understanding（信息理解），就不能用假文本。
+
+** Other Dimensions（其他维度）
+*** Autonomy（自主性）
+Autonomy 指 prototype 是否能独立运行。
+High autonomy: prototype 可以自己运行，不需要人控制。
+Low autonomy: prototype 需要研究者在背后操作。
+例子：
+Wizard-of-Oz: 用户以为系统自动响应， 实际上背后是人在操作。 所以 autonomy 较低。
+
+*** Platform（平台）
+Platform 指 prototype 运行在 interim platform（临时平台）还是 final platform（最终平台）。
+Interim platform: Figma / paper / InVision / Balsamiq / mock tool
+Final platform: 真实 app / web frontend / mobile device / coded system
+
+** Important Lessons（重要教训）
+
+*** 1. Do not prototype multiple dimensions at once
+同时提高多个 fidelity dimensions 会很慢、很贵、很复杂。 所以需要： modularity of prototyping（模块化原型）
+一次重点测试一个或少数几个维度。
+
+*** 2. Each tool has strengths and weaknesses
+不同工具适合不同维度。
+- Paper prototype:
+  适合低成本测试 structure / flow。
+- Figma:
+  适合 visual fidelity + interaction fidelity。
+- Wizard-of-Oz:
+  适合测试智能系统的 user expectation 和 interaction。
+- Coded prototype:
+  适合 depth fidelity / technical feasibility / real data。
+
+*** 3. Choose fidelity based on hypothesis
+先问： What do we need to learn right now?
+我们现在最需要验证什么？
+然后再决定哪个维度需要高保真。
+
+** Concrete Design（具体设计）
+*** 英文考试答案
+Concrete design focuses on more detailed issues of interface design. It moves from what the system does to how the user interacts with the system.
+*** 中文解释
+*Concrete design（具体设计）* 是从 conceptual design（概念设计）进入具体界面设计。
+区别：
+- Conceptual design: What the system does. 系统做什么。
+- Concrete design: How the user interacts. 用户如何具体交互。
+  it focus on
+  1. menu design（菜单设计）
+     Menu design involves structuring navigation choices into appropriate formats such as dropdowns, accordions, tabs, or mega-menus. Designers should consider menu length and depth, item order, grouping categories, terminology, the number of menus, and physical constraints such as mobile screen size.
+     *Menu design（菜单设计）* 是把 navigation choices（导航选项）组织成合适的格式。
+     dropdowns（下拉菜单） accordions（折叠菜单） mega-menus（大型菜单） tabs（标签页） sidebars（侧边栏）
+     设计菜单时要问：
+     1. How long/deep is the menu? 菜单多长、多深？
+     2. In what order will the items appear? 菜单项按什么顺序出现？
+     3. When to use sub-menus or dialog boxes? 什么时候用子菜单或弹窗？
+     4. What categories will group menu items? 用什么分类组织菜单项？
+     5. How many menus will there be? 需要多少个菜单？
+     6. What terminology should be used? 菜单术语怎么写？
+     7. How to accommodate physical constraints? 如何适配手机等物理限制？
+  2. icon design（图标设计）
+     - *Icon design（图标设计）* 是用 visual metaphors（视觉隐喻）快速传达功能。
+       Icon design uses visual metaphors to communicate functionality quickly. Good icons should be simple, recognizable, and based on existing traditions or standards. Because icon meanings can be cultural and context sensitive, designers should avoid excessive detail and add text labels when recognition is uncertain.
+     - 好图标要做到：
+       simple（简单） recognizable（可识别） standard-based（基于已有标准） not too detailed（不要太多细节）
+     - labelled when uncertain（不确定时加文字标签）
+       Icon meaning is cultural and context sensitive.
+       图标含义受文化和语境影响。
+       所以不确定用户能不能懂时，加 label（文字标签）。
+       垃圾桶 = 删除 放大镜 = 搜索 齿轮 = 设置 信封 = 邮件 购物车 = 购物
+  3. screen design（屏幕设计）
+     Screen design includes deciding how to split functions across screens and how to design individual screens. Designers should use task analysis to decide whether each screen should contain a single step or multiple related interactions. Individual screens should balance white space and information density, group related items together, and draw user attention to salient points using colour, motion, boxing, or physical proximity.
+     - *Screen design（屏幕设计）* 包括两个问题：
+       1. How to split functions across screens 功能如何分布到不同屏幕
+       2. Individual screen design 单个屏幕如何布局
+     - Splitting functions across screen: Task Analysis
+       1. Each screen contains a single simple step? 每个屏幕是否只包含一个简单步骤？
+       2. Will too many simple screens cause frustration? 太多简单页面会不会让用户烦？
+       3. Should information remain available across screens? 相关信息是否需要一直可见？
+     - Individual Screen Design:
+       1. white space（留白）
+       2. grouping（分组）
+       3. physical proximity（物理接近性）
+       4. boxes / lines / colors（盒子、线条、颜色）
+       5. salient points（显著点）
+          Salient point 是用户应该优先注意的重点。
+          color（颜色） motion（运动） boxing（框选） size（大小） position（位置）
+       6. overcrowding（过度拥挤）
+       7. contrast（对比）
+          Animation is powerful but can be distracting.
+  4. information display（信息展示）
+     Information display should ensure that relevant information is available when users need it. Different types of information may require different display formats, and consistency between paper displays and screen data entry can reduce users' cognitive load and errors.
+     *Information display（信息展示）* 关注如何展示信息。
+     1. Relevant information available at all times 相关信息应该在需要时保持可见
+     2. Different information needs different displays 不同类型的信息需要不同展示方式
+     3. Consistency between paper display and screen data entry 纸面信息和屏幕输入保持一致
+     如果用户填写表单时需要参考订单编号， 订单编号应该保持可见，而不是藏在上一页。
+     如果纸质表格字段顺序是： Name → ID → Department
+     屏幕输入也最好保持类似顺序，减少认知负担。
+
+
+** Prototype Fidelity 考场万能答案
+
+*** Question: Explain fidelity in prototyping.
+Fidelity in prototyping refers to how closely a prototype represents the final product. However, fidelity should be understood as a spectrum and a multi-dimensional measurement system rather than a simple low-fidelity versus high-fidelity classification. A prototype may have high fidelity in one dimension but low fidelity in another.
+
+Important dimensions include visual fidelity, interaction fidelity, breadth fidelity, depth fidelity, and content fidelity. Visual fidelity concerns how realistic the prototype looks. Interaction fidelity concerns how realistic it feels to use. Breadth fidelity concerns how much of the product scope is covered. Depth fidelity concerns how much functionality is implemented within a selected feature. Content fidelity concerns how realistic and contextual the prototype content is.
+Prototype fidelity 指原型在多大程度上接近最终产品。但它不应该被简单理解成低保真 vs 高保真，而应该理解成多维度的连续光谱。一个原型可以在某个维度上很高保真，在另一个维度上很低保真。
+重要维度包括 visual fidelity、interaction fidelity、breadth fidelity、depth fidelity 和 content fidelity。Visual 关注看起来是否真实；Interaction 关注操作感觉是否真实；Breadth 关注覆盖了多少产品范围；Depth 关注某个功能内部实现得多深；Content 关注内容是否真实并符合用户场景。
+
+*** Question: Compare horizontal and vertical prototypes.
+A horizontal prototype is broad but shallow. It models the surface layer of many parts of the interface, allowing users to navigate through major screens and evaluate the overall information architecture and navigation structure. However, specific functions may not be fully implemented.
+
+A vertical prototype is narrow but deep. It focuses on one or a few features in detail and may implement the flow from the user interface to backend logic or database interaction. It is useful for testing complex tasks, technical feasibility, and error recovery.
+Horizontal prototype 广但浅，展示许多界面的表层，用户可以浏览主要页面，用来评估信息架构和导航结构，但具体功能通常不完整。
+Vertical prototype 窄但深，只聚焦一个或少数几个功能，但实现得更完整，可能从前端做到后端逻辑或数据库。它适合测试复杂任务、技术可行性和错误恢复。
+
+*** Question: Why should designers not always use high-fidelity prototypes?
+Designers should not always use high-fidelity prototypes because high fidelity can be expensive and time-consuming. If visual fidelity is raised too early, users may think the design is already finished and focus on colours, fonts, and visual details instead of structure, flow, or concepts. The level of fidelity should match the project stage and the hypothesis being tested. Sometimes a low-fidelity prototype is more effective because it directs feedback to the intended design issues.
+设计者不应该总是使用高保真原型，因为高保真原型耗时耗钱。如果太早提高视觉保真度，用户可能以为设计已经完成，并开始评价颜色、字体等视觉细节，而不是结构、流程或概念。保真度应该匹配项目阶段和当前要测试的假设。有时低保真原型更有效，因为它能把反馈引导到真正想测试的问题上。
+
+** One-page Memory Version（一页速记版）
+#+begin_example
+Prototype:
+正式开发前的早期模型，用来测试想法、收集反馈、减少误解。
+
+Prototype value:
+thinking and learning
+bridge abstract requirements and tangible experience
+reduce ambiguity
+support communication
+support testing and reflection
+help choose between alternatives
+
+Characteristics:
+goal-oriented
+disposable and flexible
+iterative
+
+Use prototype for:
+understanding and ideation
+communication
+consensus
+stakeholder discussion
+focused feedback
+test and reflection
+
+Achieve goals:
+align purpose and project stage
+avoid polish trap
+foster learning culture
+
+Fidelity:
+不是 low/high 二分，而是 spectrum + multiple dimensions。
+
+Five dimensions:
+Visual = how real does it look?
+Interaction = how real does it feel?
+Breadth = how much scope is covered?
+Depth = how much functionality inside one feature?
+Content = how real and contextual is the content?
+
+Horizontal prototype:
+broad but shallow
+test navigation / information architecture / scope
+
+Vertical prototype:
+narrow but deep
+test complex task / technical feasibility / error recovery
+
+Other dimensions:
+Autonomy = operates alone or needs supervision
+Platform = interim or final implementation
+
+Important lesson:
+Do not raise all fidelity dimensions at once.
+Choose fidelity based on the hypothesis.
+
+Concrete design:
+from what the system does
+to how the user interacts
+
+Menu design:
+menu depth, order, grouping, terminology, physical constraints
+
+Icon design:
+simple, recognizable, standard-based, label when uncertain
+
+Screen design:
+split functions across screens
+balance white space and density
+group related items
+draw attention to salient points
+
+Information display:
+keep relevant information available
+use suitable display for different information
+maintain consistency between paper and screen data entry
+#+end_example
+
