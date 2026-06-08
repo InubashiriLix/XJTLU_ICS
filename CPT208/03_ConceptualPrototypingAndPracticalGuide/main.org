@@ -1,0 +1,170 @@
+* Intro 
+** Defining Disability in HCI (Human Computer Interaction)
+- The medical Model: Historicallly viewed disability strictly as a person health condition or deficit to be ccured by doctors
+- The Social Model: It states disability is a mismatched interaction btween a person and a unaccommodating env;
+*** classes of Impairment:
+- Permanent: such as long-term wheelchair user
+- Temporary: after an accident or illness
+- Situational: noisy enviornemnt that making people deaf
+
+** Design: Universal vs Inclusive
+- Universal Design:
+  strives to create a single optimal solution that works for everyone uniformly.
+- Inclusive Design:
+  providing a flexible range of ways to participate
+
+** Accessibility vs Inclusiveness
+- Accessibility: the extent to which an interactive product is accessible by as many people as possible
+- Inclusiveness: making products and services that accommodate the widest possible number of people 
+
+** Designing of Inclusive Principles 
+*** Principles:
+1. Recognize Execlusion: don't be bounded by bias
+2. Solve for One, Extend to Many:
+   designing an interface specifically for someone with a permanent 
+3. Learn from Diversity:
+   Placing Deiverse users at the center of your design and testing process is absolute non-negotiable
+
+** Design Principles:
+- _what is_ Design Principles: Generalizable abstrations for thinking about different aspects of design
+- _where_ are they come from: Derive from a mix of
+  - theory-based knowledge
+  - experience
+  - common-sense
+- Importance (what it guides):
+  1. guide decision
+     use the visiility, feeddback, consistency, congnitive load is better;
+     Desing principles guide decision by providing an objective framework, instead of relying only on subjective preference
+  2. Evaluate Quality
+     e.g. if a button like commit is hidden in depth, then we can say that it conflict with visibility, feedback, Error handling / Contraints, Consistency;
+     Design principle cna be used to evalutate deisgn quality and identify usability problems before user testing
+  3. Ensure standardization
+     e.g. if a application's ui is poor like the return button is on right up, the return botton of page B is on left up, then the user will be in pain using that app;
+     Design priciples ensure standardization by maintaining a consistence across different parts of a system or related platforms
+
+*** Visibility:
+important functions and the system status can be viewed by user
+- e.g user knows which page he is, what he should do next, and how he should perform next ste, and what's current step.
+visibility means important functions and system status should be visible to users, so that users can understand what actions are available and what to do next;
+
+*** Feedback:
+feedback means the system should provide immediate and appropriate response to user actions, so user know whether theiractions has been received, processed or completed
+- e.g. user submit something, when uploadding, the page show a progress bar, and after done, the page will show something to notify user;
+- template for analysis problem: the design lacks of feedback because after clicking hte button, uyser receive no indication that the system is processing hte request;
+
+*** Constraints:
+Constrains restrict the possible actions user can perform, They help prevent users from choosing invalid options or making serious errors.
+- e.g. when submit the form, if all the item that must be filled is not filled, then the submit button should not be pressed, we disable it and set it gray color.
+
+*** Consistency:
+Silimar operations and similar elements should be used for similar tasks; consistent interfacces are easier to learn and see.
+- e.g. for the same kind submit operation, the button are in the same position and all named with "Submit" instead of divierse name like "submit", "done", "confirm"
+- template: Consistenccy means similar operations, elements, and terminology should be used for similar tasks.
+  It reduces users' learning burden and make the interface easier to learn and use.
+- for the design like keymaps, Althought consistent shortcust are easier to learn, conflicts occur when multiple commands start with same letter. Designers may need to use different key combination, which breaks consistency and increase users' learning burden.
+**** Internal Consistency:
+Internal consistency means operations behave the same withing an application
+- e.g, in the same app, all the return button has the same position. all the list item will enter detail page if clicked. all the error inform are in the same style;
+- template: Internal consistency refers to desgining operations and interface element to behave the same within the same application or system;
+**** External Consistency:
+External consistency refers to consistency across different applications, device or real-world conventions. It allows users to transfer prior from one system to another;
+- e.g. user are common with icon's meaning in the real work: the bin icon menas bin or delete operation. the mail icon means msg box.
+
+*** Affordance:
+Affordance is phsical or digital properties of an object that show users what actions are possible
+- e.g. when the door come into your sight, you'll know that it can be open or close. for button, you know you can click it. for a slide bar, you can draw it.
+- e.g. but if a door can not be open is placed on the page, or a unclickable button but seems is enabled, that is a corruption of Affordance.
+- template: Affordance refers to the properties of an object that suggest what actions are possible. A good affordance helps usersa understand how to interact with an object without extra explanation
+**** Mental Model:
+Affordance is related to users' mental models because users interpret possible actions based on their previous experience and expectations.
+- simple exp: user regard a button or a text with blue underline can be click, it is all the user's common sense of shit.
+- bad example: (highly similar with affordance): the trash bin icon is archieve instead of delete
+**** Virtual Affordance:
+The icon may be understandable to experienced users, but novice users may not know what actions they afford if there aer no labes or clear signifier
+whether UI element be understanded depends on whether user can recognize that it can be operate
+**** Signifier:
+signfier means the visual hints that tell user where to operate and how to operate.
+- difference with Affordance: 
+  - Affordance: what this shit can do,.
+  - Signifier: the hint telling user waht this shit can do.
+  - e.g. for an button, the button itself is a afford clicking, and the shade, text, color, border of this button is the signifier
+
+*** Perceived Affordance
+In digital interfaces, affordances are often perceived affordances because screen objects do not have real physical affordances. Users understand possible actions through learned conventions and visual cues.
+
+*** Mapping:
+Mapping = releationship between controls and their effects
+
+* Shneiderman's Eight Golden Rules:
+1. Strive for consistency: 保持一致
+2. Enable frequent users to use shortcuts: 给熟练用户快捷键
+3. Offer infromative feedback: 操作后给反馈
+4. Design dialog to yield closure: 一个流程后要有明确结果
+5. Offer simple error handling: 简单的错误处理
+6. Permit easy reversal of actios: 操作能撤销
+7. Support internal locus of control: 给用户自己在操作系统的感觉
+8. Reduce short-term memory load: 别让用户记太多东西
+
+** Stive for consistency:
+Consistency means similar situations should reuiqre similar sequence of acctions, and the same terminology, and virtual styles should be used throughout the interface. This reducces learning burden and 
+makes te system easier to use
+- internal: Similar objects should have same *workflow/process*, *functionality*, *appearance*, *terminology*. external: the objects target function should be similar with real world conventions
+- example: All delete acctions should use th esame trash and confirmation process.
+** Enable frequent users to use shortcust
+Export uses should be able to use shortcust or automation to speed up interactions
+Frequent uses should be allowed to use shortccust, such as keyboard shortcuts, hidden expert commands, or automation, because they want to reduce the number of interacctions and increase the pace of interaction;
+** Offer informative feedback.
+Every user acction should receive appropriate and meaninigful system feedback
+should give user feedback.
+** Design dialog to yield closure
+a task should have a clear begining, middle, end, and once comelete, the user should be notify as "completed"
+** Offer simple error handling
+The system should prevent serious errors and provide clear recovery instructions when errors occur.
+the system should avoid user making serious error. if serious error happend, then the system should detect error, and provide simple, comprehensible handling machism;
+e.g. return "Password must contain at least 8 characters" instead of just 443 error code page.
+** permiet easy reversal of actions
+User should be able to undo mistakes, reducing anxiety and encouraging exploration
+permit user to withdraw actions, reduce user's concernings.
+** Support internal locus of control
+Users should feel incotrol of the system. the ssytem should respond to user actions a dn avoid unexpected behavious.
+Supporting internal locus of control means users should feel that they are in charge of the system. The system should respond to users' actions rather than forcing users to respond to unexpected system behaviour. This follows the principle of least surprise.
+- e.g. bad example: the system redirect to unknown page, shocking user.
+** Reduce short-term memeory load
+Interfaces should be simple and support ercognittion over recall, so user do not need to remember too much information.
+better recognition over recall: recognition means user can know what hte item once notice that. while recalling means user have to recall a long term of cmd code to operate
+
+* Alternative designs
+Alternative designs are different possible solutions to the same design problem. Considering alternatives helps designers avoid sticking to the first workable idea and identify better designs.
+** Divergenet Thinking
+Divergent thinking expands the design space by generating many different ideas without immediate judgment. 
+** Convergent Thinking
+Convergent thinking then evaluates, combines, and eliminates alternatives based on design principles and user needs to select a better solution.
+** Where the alternatives comes from?
+1. one's own creativity
+2. user researchs
+3. perspectives from different people
+4. the ideas raise from different users
+5. evolution of product 
+6. reference of other similar products
+7. reference to different product in different areas
+** Method for Generating Alternatives:
+- BrainStorm:
+  Brainstorming is an unstructured rapid ideation method. Criticism is deferred, and quantity is encouraged over immediate feasibility to generate creative ideas.
+- CrazyEight:
+  Crazy Eights is a design sprint method where participants sketch eight different design alternatives in eight minutes. It forces designers to move beyond their first obvious idea.
+- Morphological Analysis:
+  Morphological analysis breaks a product into essential attributes and recombines them in different ways to generate unexpected alternative concepts.
+- Balancing constraints nad trade-offs
+  When choosing among alternatives, designers need to balance constraints and trade-offs such as cost, time, technical feasibility, usability, accessibility, and user needs.
+** Evaluating the Alternative:
+*** Heruristic Evaluation
+Heuristic evaluation means designers evaluate alternatives against established design principles, such as visibility, feedback, and consistency, to eliminate objectively poor designs before user testing.
+eValuating using the principles like 
+- Visibility, Feedback, Consistency, Constraints, Affrodance
+*** A/B Testing:
+A/B testing deploys two alternative designs to different user groups and uses quantitative data, such as click-through rate or task completion rate, to choose the better design.
+*** Qualitative User Feedback
+involves showing prototyps to user and asking why they prefer one alternatives over another, It provides deeper insight that quatitiative data along cannot explain
+
+
+
