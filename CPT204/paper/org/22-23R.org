@@ -1,0 +1,27 @@
+* Part B. Coding Questions
+
+** Question 1: Coding 1
+
+Complete the overridden method void addLast(T item).
+
+It is a method of the class DelimitedARDeque, a subclass of an iterable ARDeque.
+
+It adds an item at the back of the object of DelimitedARDeque,
+
+but it will throw an IllegalArgumentException if the item already occurs in it more than once.
+Test case:
+
+#+begin_src java
+DelimitedARDeque<String> dd = new DelimitedARDeque<>();
+dd.addLast("a");
+dd.addLast("b");
+dd.addLast("a");
+dd.printDeque();
+#+end_src
+
+** Question 2: Coding 2
+Complete the method boolean equals(Object that) of an iterable ARDeque that overrides the one in Object.
+To be the same, they must be of the same size, and must share at most 2 different items at the same position.
+Suppose [] is an ARDeque. Then:
+[1, 2, 3, 4].equals([1, 2, 5, 6]) -> true
+[1, 2, 3, 4].equals([1, 4, 2, 3]) -> ohf false

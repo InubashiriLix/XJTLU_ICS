@@ -1,0 +1,33 @@
+* OOP Thinking:
+** Immutable Class
+- all data fields are private
+- Provide no mutator (set) methods
+- _Provide no accessor (get) methods that would return a reference to a mutable data field object_
+
+** Scope of Variables
+1. The scope of a local variable starts from its declaration and continues to the end of the block that contains the variable;
+   - Also a local variable mustbe initialzied explicitly before it can be used
+   - Data Field can be declard anywhere inside a class;
+2. Data Field Variable can be declared anywhrer inside a class
+   - The scope of instance and static variables is the entire class!
+   - Initialzied with default values
+
+** This:
+- the this keyword is the name of a reference that referes to an object itself 
+- Common uses of the this keyword:
+  1. Reference a class' hidden data field
+  2  To enable a constructor to invoke another constrcutor of the same class at the first statement in the constructor.
+** Class Abstraction:
+*Separate class Implementation from the use of the class* (API)
+
+- The creator of the class provides a description of the class and let te user know how the class can be used;
+- The user does not need to knwo ho the class is implemented: it is encapsulated (private field and only the public API is used)
+
+** String
+strings are located on the heap
+since strings are used frequently, Java provides a shorthand initializer for creating a string: 
+#+BEGIN_src java
+String message = "Welcome to Java";
+#+END_src
+- String Interning is a method of storing only one copy of each distinct compiling time constant /explicit string in the source code stored in a string intern pool 
+- if we use the new operator, then a new object is creteed in the heap

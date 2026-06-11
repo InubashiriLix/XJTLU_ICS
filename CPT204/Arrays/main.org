@@ -1,0 +1,17 @@
+* Array
+Am Array si a data structure that represents a collection of the same type of data;
+** Pass By Value
+java use pass by value to pass arguments to a method
+- for a param of an array type, the value of the parameter contains a refereence to an array; this refrence is passed by the method.
+- Any changes to hte array that occur inside the method body will affect origtinal array that was passed as the argument.
+- Different from a parameter of a primitive type value where the actual value is passed
+- Changing the value of the local parameter insde the method does not affect the value of the varible outside the method
+
+** Heap Segment
+The JVM storews array and objects in an area of memory called heap, which is used for dynamic memory allocation where blocks of memeory are alloccated and freed in an arbitrary order;
+
+* Objecct-Oriented Programming Concepts
+- An object represents an entity in the real world that can be distinctly identified from a class/templates of objects with common properties.
+- An object has a unique state and behavior:  
+  - the state of an object consists of a set of data fields (properties) with their current values
+  - the behavior of an object is defined by a set of instance methods

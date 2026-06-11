@@ -1,0 +1,6 @@
+
+CompileFlags:
+  Add:
+    - "-I./include"
+    - "-D__KERNEL__"
+    - "-DMODULE"

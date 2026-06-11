@@ -1,9 +1,21 @@
+import java.util.Collections;
+
+import ComparableTest.Person.Student;
+import IterableTest.Chronos;
+import IterableTest.Insertion;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.printf("Hello and welcome!\n");
+        Insertion insertion = new Insertion(
+                new Chronos[] { new Chronos(1, 30), new Chronos(2, 45), new Chronos(0, 15) });
 
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("i = " + i);
+        Collections.sort(insertion, Chronos.BY_TOTAL_MINUTES);
+
+        for (Chronos shit : insertion) {
+            // shit.titik();
+            System.out.println(shit);
         }
+
+        Student.main(args);
     }
 }
