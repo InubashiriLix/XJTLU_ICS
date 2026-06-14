@@ -1,0 +1,41 @@
+* Question 1
+** A): Consider the following code fragment:
+#+BEGIN_src lua
+for i = 1, n do
+    for j = i, 2 * i do
+        print("foobar")
+    end
+end
+#+END_src
+*** Let T(n) denote the number of times 'foobar' is printed as function of n.
+express T(n) as a summation (actually two nested summations)
+T(n) = sum(i=1 to n)sum(j=i to 2i) 1
+*** Simplify the summation and give thw worst-case runing time using big-O notation
+T(n) = sum(i=1 to n)sum(j=i to 2i) 1 = sum(i=1 to n)(i + 1)
+= sum(i=1 to n)i + sum(i=1 to n)1
+= n(n+1)/2 + n = (n^2 + 3n) / 2
+Therefore, T(n) is O(n^2)
+worst case running time is O(n^2)
+
+** B): The processing time of a sorting algorithm is described by the following recurrence equation (c is a positive constant)
+T(n) = 3T(n/3) + 2cn
+T(1) = 0
+*** solve this equation to derive an explicit formula for T(n) assuming n=3m and verify the Big-O complexity of the algorithm
+using the Master Theorem: a = 3, b = 3, f(n) = 2cn
+n^log_b(a) = n^log_3(3) = n
+f(n) = θ(n^(log_b(a)))
+since f(n) = Θ(n) is polynomially equal to n^log_b(a) = n,
+therefore case 2 of Master Theorem applies, T(n) = θ(n^log_b(a) log n) = Θ(n log n)
+
+* Question 2:
+** A): Consider a binary heap, Print the keys as encounter in a preorder travel. Is the output sorted? Justify your answer
+No, the output is not sorted. A binary heap is a complete binary tree that satisfies the heap pr
+properity: for a max heap, each parent node is greater than or equal to its children; for a min heap, each parent node is less than or equal to its children. However, the keys in a binary heap are not necessarily arranged in sorted order. In a preorder traversal, we visit the root node first, then recursively visit the left subtree and finally the right subtree. This means that we will encounter the keys in the order they are stored in the binary heap, which may not be sorted. For example, in a max heap, the largest key will be at the root, but the other keys may be arranged in any order in the left and right subtrees. Therefore, the output of a preorder traversal of a binary heap is not guaranteed to be sorted.
+
+** B):
+Convert an array [8, 19, 56, 88, 13, 5, 3, 33, 66, 40] into a max heap H. Draw the initail array and the percolation steps fo creating the maximum heap.
+
+* Question 3:
+Use the folowing graph for this problem:
+
+
