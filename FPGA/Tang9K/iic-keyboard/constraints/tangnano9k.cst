@@ -1,0 +1,30 @@
+# Tang Nano 9K Pin Constraints
+# Keyboard I2C driver: SCL (1kHz), SDA, LED indicators
+
+IO_LOC "clk" 52;
+IO_PORT "clk" PULL_MODE=UP;
+
+IO_LOC "led[0]" 10;
+IO_LOC "led[1]" 11;
+IO_LOC "led[2]" 13;
+IO_LOC "led[3]" 14;
+IO_LOC "led[4]" 15;
+IO_LOC "led[5]" 16;
+
+# I2C pins
+IO_LOC "scl" 40;
+IO_LOC "sda" 41;
+IO_LOC "int_n" 42;
+IO_PORT "scl" PULL_MODE=UP;
+IO_PORT "sda" PULL_MODE=UP;
+
+# 3x3 keyboard matrix
+IO_LOC "col_out[0]" 33;
+IO_LOC "col_out[1]" 34;
+IO_LOC "col_out[2]" 35;
+IO_LOC "row_in[0]"  36;
+IO_LOC "row_in[1]"  37;
+IO_LOC "row_in[2]"  38;
+IO_PORT "row_in[0]" PULL_MODE=UP;
+IO_PORT "row_in[1]" PULL_MODE=UP;
+IO_PORT "row_in[2]" PULL_MODE=UP;
