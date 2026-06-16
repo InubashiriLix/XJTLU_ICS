@@ -63,6 +63,40 @@ make sram
 make flash
 ```
 
+## Simulation Flow
+
+Generate missing testbench templates for every RTL module:
+
+```sh
+make sim-init
+```
+
+List modules that can get generated testbenches:
+
+```sh
+make sim-list
+```
+
+Run one testbench and generate a VCD waveform:
+
+```sh
+make sim MODULE=board_button
+```
+
+Open the waveform with GTKWave:
+
+```sh
+make wave MODULE=board_button
+```
+
+Run every existing `tb/*_tb.v` testbench:
+
+```sh
+make sim-all
+```
+
+Generated simulation outputs are written under `sim/` and are ignored by git.
+
 `make flash` uses `--unprotect-flash --skip-reset` by default. The unprotect step
 helps when the SPI flash refuses erase/write commands, while skip-reset avoids a
 known failure mode where Gowin flash programming finishes successfully and then

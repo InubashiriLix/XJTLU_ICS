@@ -4,8 +4,8 @@ module pwm #(
     parameter integer PERIOD_COUNT = CLOCK_HZ / PWM_HZ,
     parameter integer COUNT_WIDTH  = $clog2(PERIOD_COUNT + 1)
 ) (
-    input  wire                   clk,
-    input  wire                   rst_n,
+    input wire clk,
+    input wire rst_n,
 
     input  wire [COUNT_WIDTH-1:0] duty_i,
     output wire                   pwm_o

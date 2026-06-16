@@ -15,11 +15,13 @@ DEVICE := GW1NZ-LV1QN48C6/I5
 
 OSS_CAD_SUITE ?= /opt/oss-cad-suite
 OPENFPGALOADER ?= openFPGALoader
+PYTHON ?= python3
 
 RTL_DIR := rtl
 TB_DIR := tb
 FILELIST_DIR := filelist
 CONSTRAINT_DIR := constraints
+SIM_DIR := sim
 
 SRC := $(shell find $(RTL_DIR) -type f \( -name '*.v' -o -name '*.sv' \) 2>/dev/null | sort)
 CST := $(CONSTRAINT_DIR)/tangnano1k.cst
@@ -36,6 +38,12 @@ FLASH_RESET_LOG := $(BUILD)/openfpgaloader-flash-reset.log
 SRAM_FLAGS ?=
 FLASH_FLAGS ?= --unprotect-flash --skip-reset
 FLASH_RESET_FLAGS ?=
+MODULE ?= $(TOP)
+SIM_MODULE := $(MODULE)
+SIM_TB := $(TB_DIR)/$(SIM_MODULE)_tb.v
+SIM_VVP := $(SIM_DIR)/$(SIM_MODULE)_tb.vvp
+SIM_VCD := $(SIM_DIR)/$(SIM_MODULE).vcd
+FORCE ?= 0
 
 # Only affects commands launched by make.
 # It does NOT modify your global fish/zsh/bash environment.
@@ -54,7 +62,7 @@ GREEN := \033[1;32m
 YELLOW := \033[1;33m
 RED := \033[1;31m
 
-.PHONY: all help init check print-env format lint synth pnr pack detect detect-flash sram flash flash-reset clean distclean gitignore editorconfig filelist
+.PHONY: all help init check print-env format lint sim-init sim-list sim sim-all wave synth pnr pack detect detect-flash sram flash flash-reset clean distclean gitignore editorconfig filelist
 
 all: init check $(BITSTREAM)
 > @printf "$(GREEN)[DONE]$(RESET) Build finished: $(BITSTREAM)\n"
@@ -81,6 +89,11 @@ help:
 > @printf "  make print-env     打印当前 Makefile 环境 / Print build environment\n"
 > @printf "  make format        用 4 spaces 格式化 RTL / Format RTL with 4 spaces\n"
 > @printf "  make lint          运行 verible-verilog-lint / Run linter\n"
+> @printf "  make sim-init      为 RTL 模块生成缺失的 tb/*_tb.v / Generate missing testbenches\n"
+> @printf "  make sim-list      列出可生成 testbench 的模块 / List RTL modules\n"
+> @printf "  make sim MODULE=x  编译并运行 tb/x_tb.v，生成 sim/x.vcd / Run simulation\n"
+> @printf "  make wave MODULE=x 运行仿真并打开 GTKWave / Run simulation and open waveform\n"
+> @printf "  make sim-all       运行所有 tb/*_tb.v / Run all testbenches\n"
 > @printf "  make               生成 $(BITSTREAM)\n"
 > @printf "  make detect        检测 JTAG 上的 FPGA / Detect FPGA over JTAG\n"
 > @printf "  make detect-flash  检测 FPGA 和 Flash / Detect FPGA and Flash\n"
@@ -199,11 +212,11 @@ check:
 >     fi; \
 > done; \
 > printf "\n$(BLUE)[INFO]$(RESET) Checking optional commands\n"; \
-> for tool in verilator; do \
+> for tool in verilator iverilog vvp gtkwave; do \
 >     if command -v "$$tool" >/dev/null 2>&1; then \
 >         printf "  $(GREEN)OK$(RESET)   %-24s %s\n" "$$tool" "$$(command -v "$$tool")"; \
 >     else \
->         printf "  $(YELLOW)WARN$(RESET) %-24s optional, useful for stronger lint/sim\n" "$$tool"; \
+>         printf "  $(YELLOW)WARN$(RESET) %-24s optional, useful for simulation\n" "$$tool"; \
 >     fi; \
 > done; \
 > if [ "$$missing" -ne 0 ]; then \
@@ -275,6 +288,74 @@ lint: init
 > command -v verible-verilog-lint >/dev/null; \
 > verible-verilog-lint --rules_config_search $(SRC); \
 > printf "$(GREEN)[DONE]$(RESET) Verible lint passed\n"
+
+# =========================
+# Simulation
+# =========================
+
+sim-init: filelist
+> @trap 'printf "$(RED)[FAIL]$(RESET) Testbench generation failed\n"' ERR; \
+> force_arg=""; \
+> if [ "$(FORCE)" = "1" ]; then \
+>     force_arg="--force"; \
+> fi; \
+> command -v "$(PYTHON)" >/dev/null; \
+> "$(PYTHON)" tools/gen_tb.py \
+>     --rtl-dir "$(RTL_DIR)" \
+>     --tb-dir "$(TB_DIR)" \
+>     --sim-dir "$(SIM_DIR)" \
+>     $$force_arg
+
+sim-list:
+> @command -v "$(PYTHON)" >/dev/null; \
+> "$(PYTHON)" tools/gen_tb.py --rtl-dir "$(RTL_DIR)" --tb-dir "$(TB_DIR)" --sim-dir "$(SIM_DIR)" --list
+
+sim: sim-init
+> @trap 'printf "$(RED)[FAIL]$(RESET) Simulation failed for MODULE=$(SIM_MODULE)\n"' ERR; \
+> if [ ! -f "$(SIM_TB)" ]; then \
+>     printf "$(RED)[FAIL]$(RESET) Missing testbench: $(SIM_TB)\n"; \
+>     printf "Run: make sim-init\n"; \
+>     exit 1; \
+> fi; \
+> mkdir -p "$(SIM_DIR)"; \
+> command -v iverilog >/dev/null; \
+> command -v vvp >/dev/null; \
+> printf "$(BLUE)[INFO]$(RESET) Compiling simulation: $(SIM_MODULE)\n"; \
+> iverilog -g2012 -Wall -s "$(SIM_MODULE)_tb" -o "$(SIM_VVP)" "$(SIM_TB)" -f "$(FILELIST)"; \
+> printf "$(BLUE)[INFO]$(RESET) Running simulation: $(SIM_VVP)\n"; \
+> vvp "$(SIM_VVP)"; \
+> if [ -f "$(SIM_VCD)" ]; then \
+>     printf "$(GREEN)[DONE]$(RESET) Waveform generated: $(SIM_VCD)\n"; \
+> else \
+>     printf "$(YELLOW)[WARN]$(RESET) Expected waveform was not found: $(SIM_VCD)\n"; \
+> fi
+
+sim-all: sim-init
+> @trap 'printf "$(RED)[FAIL]$(RESET) sim-all failed\n"' ERR; \
+> found=0; \
+> for tb in "$(TB_DIR)"/*_tb.v; do \
+>     if [ ! -e "$$tb" ]; then \
+>         continue; \
+>     fi; \
+>     found=1; \
+>     module=$${tb##*/}; \
+>     module=$${module%_tb.v}; \
+>     printf "\n$(BOLD)==> MODULE=$$module$(RESET)\n"; \
+>     "$(MAKE)" --no-print-directory sim MODULE="$$module"; \
+> done; \
+> if [ "$$found" -eq 0 ]; then \
+>     printf "$(YELLOW)[WARN]$(RESET) No testbenches found under $(TB_DIR)/\n"; \
+> fi
+
+wave: sim
+> @trap 'printf "$(RED)[FAIL]$(RESET) GTKWave failed for MODULE=$(SIM_MODULE)\n"' ERR; \
+> command -v gtkwave >/dev/null; \
+> if [ ! -f "$(SIM_VCD)" ]; then \
+>     printf "$(RED)[FAIL]$(RESET) Missing waveform: $(SIM_VCD)\n"; \
+>     exit 1; \
+> fi; \
+> printf "$(BLUE)[INFO]$(RESET) Opening waveform: $(SIM_VCD)\n"; \
+> gtkwave "$(SIM_VCD)" >/dev/null 2>&1 &
 
 # =========================
 # Build flow
