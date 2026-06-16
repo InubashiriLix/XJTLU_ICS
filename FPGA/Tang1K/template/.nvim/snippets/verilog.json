@@ -1,0 +1,179 @@
+{
+  "Module skeleton": {
+    "prefix": "mod",
+    "description": "Basic Verilog module",
+    "body": [
+      "module ${1:top} (",
+      "    input  wire ${2:clk},",
+      "    output wire ${3:led}",
+      ");",
+      "",
+      "    ${0:// logic here}",
+      "",
+      "endmodule"
+    ]
+  },
+
+  "Tang Nano 9K blink top": {
+    "prefix": "top9k",
+    "description": "Tang Nano 9K 6 LED blink top module",
+    "body": [
+      "module top (",
+      "    input  wire       clk,  // 24MHz",
+      "    output wire [5:0] led",
+      ");",
+      "",
+      "    reg [23:0] counter = 24'd0;",
+      "",
+      "    always @(posedge clk) begin",
+      "        counter <= counter + 1'b1;",
+      "    end",
+      "",
+      "    // Tang Nano 9K onboard LEDs are usually active-low",
+      "    assign led = ~counter[23:18];",
+      "",
+      "endmodule"
+    ]
+  },
+
+  "Always posedge": {
+    "prefix": "alw",
+    "description": "Clocked always block",
+    "body": ["always @(posedge ${1:clk}) begin", "    ${0:// logic}", "end"]
+  },
+
+  "Synchronous reset block": {
+    "prefix": "srst",
+    "description": "Clocked always block with synchronous reset",
+    "body": [
+      "always @(posedge ${1:clk}) begin",
+      "    if (${2:rst}) begin",
+      "        ${3:signal} <= ${4:0};",
+      "    end else begin",
+      "        ${0:// logic}",
+      "    end",
+      "end"
+    ]
+  },
+
+  "Asynchronous active-low reset block": {
+    "prefix": "arst",
+    "description": "Clocked always block with async active-low reset",
+    "body": [
+      "always @(posedge ${1:clk} or negedge ${2:rst_n}) begin",
+      "    if (!${2:rst_n}) begin",
+      "        ${3:signal} <= ${4:0};",
+      "    end else begin",
+      "        ${0:// logic}",
+      "    end",
+      "end"
+    ]
+  },
+
+  "Combinational always": {
+    "prefix": "comb",
+    "description": "Combinational always block",
+    "body": ["always @(*) begin", "    ${0:// combinational logic}", "end"]
+  },
+
+  "Assign": {
+    "prefix": "ass",
+    "description": "Continuous assignment",
+    "body": ["assign ${1:out} = ${0:expr};"]
+  },
+
+  "Register declaration": {
+    "prefix": "reg",
+    "description": "Register declaration",
+    "body": ["reg [${1:WIDTH}-1:0] ${2:signal};"]
+  },
+
+  "Wire declaration": {
+    "prefix": "wire",
+    "description": "Wire declaration",
+    "body": ["wire [${1:WIDTH}-1:0] ${2:signal};"]
+  },
+
+  "Counter": {
+    "prefix": "cnt",
+    "description": "Simple counter",
+    "body": [
+      "reg [${1:23}:0] ${2:counter} = 24'd0;",
+      "",
+      "always @(posedge ${3:clk}) begin",
+      "    ${2:counter} <= ${2:counter} + 1'b1;",
+      "end"
+    ]
+  },
+
+  "PWM": {
+    "prefix": "pwm",
+    "description": "Simple PWM generator",
+    "body": [
+      "reg [${1:7}:0] ${2:pwm_cnt} = 8'd0;",
+      "",
+      "always @(posedge ${3:clk}) begin",
+      "    ${2:pwm_cnt} <= ${2:pwm_cnt} + 1'b1;",
+      "end",
+      "",
+      "assign ${4:pwm_out} = (${2:pwm_cnt} < ${5:duty});"
+    ]
+  },
+
+  "Two flip-flop synchronizer": {
+    "prefix": "sync2",
+    "description": "2-flop synchronizer for async input",
+    "body": [
+      "reg ${1:signal}_meta = 1'b0;",
+      "reg ${1:signal}_sync = 1'b0;",
+      "",
+      "always @(posedge ${2:clk}) begin",
+      "    ${1:signal}_meta <= ${3:signal_async};",
+      "    ${1:signal}_sync <= ${1:signal}_meta;",
+      "end"
+    ]
+  },
+
+  "Module instance": {
+    "prefix": "inst",
+    "description": "Named port module instance",
+    "body": [
+      "${1:module_name} ${2:u_module_name} (",
+      "    .${3:clk}(${3:clk}),",
+      "    .${4:rst}(${4:rst})",
+      ");"
+    ]
+  },
+
+  "Testbench skeleton": {
+    "prefix": "tb",
+    "description": "Simple Verilog testbench",
+    "body": [
+      "`timescale 1ns / 1ps",
+      "",
+      "module ${1:top_tb};",
+      "",
+      "    reg clk = 1'b0;",
+      "    reg rst = 1'b1;",
+      "",
+      "    always #${2:20} clk = ~clk;",
+      "",
+      "    initial begin",
+      "        $dumpfile(\"${1:top_tb}.vcd\");",
+      "        $dumpvars(0, ${1:top_tb});",
+      "",
+      "        #${3:100};",
+      "        rst = 1'b0;",
+      "",
+      "        #${4:1000};",
+      "        $finish;",
+      "    end",
+      "",
+      "    ${5:top} dut (",
+      "        .clk(clk)",
+      "    );",
+      "",
+      "endmodule"
+    ]
+  }
+}

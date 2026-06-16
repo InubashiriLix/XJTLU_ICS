@@ -1,0 +1,32 @@
+Tang Nano 1K pinout ASCII
+Top = USB-C side, Bottom = FPC/edge side
+
+Special / config pins:
+  Left : GCLKT_0, READY, DONE, SO, MCLK, GCLKT_3
+  Right: JTAG_SEL, MODE1, MCS_N, MI
+
++------+------------------------------++------------------------------+
+| Row  | LEFT header                  || RIGHT header                 |
+|      | L-ALT       L-IO       IC#   || IC#    R-IO       R-ALT      |
++------+------------------------------++------------------------------+
+| 01   | KEY_A       IOR10B     13    || 44     IOT13A     KEY_B      |
+| 02   | 5V          5V         --    || --     GND        GND        |
+| 03   | 5V          5V         --    || --     GND        GND        |
+| 04   | GND         GND        --    || --     3V3        3V3        |
+| 05   | GND         GND        --    || --     3V3        3V3        |
+| 06   | XTAL_27M    IOT10A     47    || 30     BL_IO27    BL702-GPIO |
+| 07   |             IOT12B     45    || 29     BL_IO26    BL702-GPIO |
+| 08   |             IOT12A     46    || 26     BL_IO23    BL702-GPIO |
+| 09   | LED_G       IOR3A      11    || 40     IOT16A     PSRAM_D0   |
+| 10   | LED_R       IOR2A      09    || 41     IOT15B     PSRAM_D3   |
+| 11   | LED_B       IOR2B      10    || 38     IOT17A     PSRAM_D2   |
+| 12   | B4          IOR8A      24    || 39     IOT16B     PSRAM_D1   |
+| 13   | B3          IOR8B      23    || 42     IOT14B     PSRAM_CE   |
+| 14   | B2          IOR9A      22    || 35     IOT17B     R0         |
+| 15   | G5          IOR6H      18    || 34     IOR3B      R1         |
+| 16   | G4          IOR6G      17    || 20     IOR10A     B1         |
+| 17   | G3          IOR6F      16    || 19     IOR6J      B0         |
+| 18   | G2          IOR6D      15    || 29     IOR6E      R4         |
+| 19   | G1          IOR7A      27    || 30     IOR6C      R3         |
+| 20   | G0          IOR6I      28    || 31     IOR6A      R2         |
++------+------------------------------++------------------------------+

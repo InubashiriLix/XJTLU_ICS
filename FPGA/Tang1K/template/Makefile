@@ -14,14 +14,28 @@ FAMILY := GW1NZ-1
 DEVICE := GW1NZ-LV1QN48C6/I5
 
 OSS_CAD_SUITE ?= /opt/oss-cad-suite
+OPENFPGALOADER ?= openFPGALoader
 
-SRC := $(shell find src -type f \( -name '*.v' -o -name '*.sv' \) 2>/dev/null | sort)
-CST := constraints/tangnano1k.cst
+RTL_DIR := rtl
+TB_DIR := tb
+FILELIST_DIR := filelist
+CONSTRAINT_DIR := constraints
+
+SRC := $(shell find $(RTL_DIR) -type f \( -name '*.v' -o -name '*.sv' \) 2>/dev/null | sort)
+CST := $(CONSTRAINT_DIR)/tangnano1k.cst
+FILELIST := $(FILELIST_DIR)/rtl.f
 
 BUILD := build
 JSON := $(BUILD)/$(TOP).json
 PNR_JSON := $(BUILD)/$(TOP)_pnr.json
 BITSTREAM := $(BUILD)/$(TOP).fs
+SRAM_LOG := $(BUILD)/openfpgaloader-sram.log
+FLASH_LOG := $(BUILD)/openfpgaloader-flash.log
+FLASH_RESET_LOG := $(BUILD)/openfpgaloader-flash-reset.log
+
+SRAM_FLAGS ?=
+FLASH_FLAGS ?= --unprotect-flash --skip-reset
+FLASH_RESET_FLAGS ?=
 
 # Only affects commands launched by make.
 # It does NOT modify your global fish/zsh/bash environment.
@@ -40,7 +54,7 @@ GREEN := \033[1;32m
 YELLOW := \033[1;33m
 RED := \033[1;31m
 
-.PHONY: all help init check print-env format lint synth pnr pack sram flash clean distclean gitignore editorconfig
+.PHONY: all help init check print-env format lint synth pnr pack detect detect-flash sram flash flash-reset clean distclean gitignore editorconfig filelist
 
 all: init check $(BITSTREAM)
 > @printf "$(GREEN)[DONE]$(RESET) Build finished: $(BITSTREAM)\n"
@@ -57,8 +71,9 @@ help:
 > @printf "  2. make format     格式化 Verilog，4 spaces / Format RTL with 4 spaces\n"
 > @printf "  3. make lint       Verilog lint / Run Verible lint\n"
 > @printf "  4. make            综合 + 布局布线 + 打包 / Synthesis + PnR + pack\n"
-> @printf "  5. make sram       下载到 SRAM，断电丢失 / Program SRAM, volatile\n"
-> @printf "  6. make flash      烧录到 Flash，断电保留 / Program Flash, persistent\n\n"
+> @printf "  5. make detect     检测 FPGA / Detect FPGA\n"
+> @printf "  6. make sram       下载到 SRAM，断电丢失 / Program SRAM, volatile\n"
+> @printf "  7. make flash      烧录到 Flash，默认跳过尾部 reset / Program Flash, skip final reset\n\n"
 > @printf "$(BOLD)Targets:$(RESET)\n"
 > @printf "  make help          显示此帮助 / Show this help\n"
 > @printf "  make init          生成 .gitignore 和 .editorconfig / Generate project helper files\n"
@@ -67,10 +82,14 @@ help:
 > @printf "  make format        用 4 spaces 格式化 RTL / Format RTL with 4 spaces\n"
 > @printf "  make lint          运行 verible-verilog-lint / Run linter\n"
 > @printf "  make               生成 $(BITSTREAM)\n"
+> @printf "  make detect        检测 JTAG 上的 FPGA / Detect FPGA over JTAG\n"
+> @printf "  make detect-flash  检测 FPGA 和 Flash / Detect FPGA and Flash\n"
 > @printf "  make sram          下载 bitstream 到 SRAM / Load to SRAM\n"
-> @printf "  make flash         烧录 bitstream 到 Flash / Flash permanently\n"
+> @printf "  make flash         烧录 bitstream 到 Flash，使用 $(FLASH_FLAGS) / Flash permanently\n"
+> @printf "  make flash-reset   烧录 Flash，并执行 loader 默认尾部流程 / Flash with loader default reset flow\n"
 > @printf "  make clean         删除 build/ / Remove build artifacts\n"
 > @printf "  make distclean     删除 build/ 和临时波形 / Remove generated artifacts\n"
+> @printf "  make filelist      重新生成 RTL filelists / Regenerate RTL filelists\n"
 > @printf "  make gitignore     重新生成 .gitignore / Regenerate .gitignore\n"
 > @printf "  make editorconfig  重新生成 .editorconfig / Regenerate .editorconfig\n\n"
 
@@ -78,17 +97,17 @@ help:
 # Init files
 # =========================
 
-init: .gitignore .editorconfig
+init: .gitignore .editorconfig filelist
 > @printf "$(GREEN)[DONE]$(RESET) Project helper files are ready\n"
 
 .gitignore:
 > @printf "$(BLUE)[INFO]$(RESET) Generating .gitignore\n"; \
 > { \
 >     printf '%s\n' '# Build artifacts'; \
->     printf '%s\n' 'build/'; \
+>     printf '%s\n' '/build/'; \
 >     printf '%s\n' ''; \
 >     printf '%s\n' '# Simulation artifacts'; \
->     printf '%s\n' 'sim/'; \
+>     printf '%s\n' '/sim/'; \
 >     printf '%s\n' '*.vcd'; \
 >     printf '%s\n' '*.fst'; \
 >     printf '%s\n' '*.gtkw'; \
@@ -96,7 +115,6 @@ init: .gitignore .editorconfig
 >     printf '%s\n' '# FPGA bitstreams / reports'; \
 >     printf '%s\n' '*.fs'; \
 >     printf '%s\n' '*.bit'; \
->     printf '%s\n' '*.json'; \
 >     printf '%s\n' '*.rpt'; \
 >     printf '%s\n' '*.log'; \
 >     printf '%s\n' ''; \
@@ -136,6 +154,17 @@ editorconfig:
 > @rm -f .editorconfig
 > @$(MAKE) --no-print-directory .editorconfig
 
+filelist:
+> @printf "$(BLUE)[INFO]$(RESET) Generating RTL filelists\n"; \
+> mkdir -p "$(FILELIST_DIR)"; \
+> : > "$(FILELIST)"; \
+> : > verible.filelist; \
+> if [ -n "$(SRC)" ]; then \
+>     printf '%s\n' $(SRC) > "$(FILELIST)"; \
+>     printf '%s\n' $(SRC) > verible.filelist; \
+> fi; \
+> printf "$(GREEN)[DONE]$(RESET) RTL filelists generated\n"
+
 # =========================
 # Environment check
 # =========================
@@ -144,7 +173,7 @@ check:
 > @missing=0; \
 > printf "$(BLUE)[INFO]$(RESET) Checking project files\n"; \
 > if [ -z "$(SRC)" ]; then \
->     printf "  $(RED)MISS$(RESET) RTL source files under src/\n"; \
+>     printf "  $(RED)MISS$(RESET) RTL source files under $(RTL_DIR)/\n"; \
 >     missing=1; \
 > else \
 >     printf "  $(GREEN)OK$(RESET)   RTL sources: $(SRC)\n"; \
@@ -200,15 +229,26 @@ print-env:
 > @printf "  FAMILY        = $(FAMILY)\n"
 > @printf "  DEVICE        = $(DEVICE)\n"
 > @printf "  OSS_CAD_SUITE = $(OSS_CAD_SUITE)\n"
+> @printf "  OPENFPGALOADER= $(OPENFPGALOADER)\n"
+> @printf "  RTL_DIR       = $(RTL_DIR)\n"
+> @printf "  TB_DIR        = $(TB_DIR)\n"
+> @printf "  FILELIST_DIR  = $(FILELIST_DIR)\n"
+> @printf "  CONSTRAINT_DIR= $(CONSTRAINT_DIR)\n"
 > @printf "  SRC           = $(SRC)\n"
 > @printf "  CST           = $(CST)\n"
+> @printf "  FILELIST      = $(FILELIST)\n"
 > @printf "  BUILD         = $(BUILD)\n"
 > @printf "  BITSTREAM     = $(BITSTREAM)\n"
+> @printf "  SRAM_LOG      = $(SRAM_LOG)\n"
+> @printf "  FLASH_LOG     = $(FLASH_LOG)\n"
+> @printf "  SRAM_FLAGS    = $(SRAM_FLAGS)\n"
+> @printf "  FLASH_FLAGS   = $(FLASH_FLAGS)\n"
+> @printf "  FLASH_RESET_FLAGS = $(FLASH_RESET_FLAGS)\n"
 > @printf "\n"
 > @printf "  yosys         = $$(command -v yosys 2>/dev/null || true)\n"
 > @printf "  nextpnr       = $$(command -v nextpnr-himbaechel 2>/dev/null || true)\n"
 > @printf "  gowin_pack    = $$(command -v gowin_pack 2>/dev/null || true)\n"
-> @printf "  openFPGALoader= $$(command -v openFPGALoader 2>/dev/null || true)\n"
+> @printf "  openFPGALoader= $$(command -v "$(OPENFPGALOADER)" 2>/dev/null || true)\n"
 
 # =========================
 # Quality
@@ -218,7 +258,7 @@ format: init
 > @trap 'printf "$(RED)[FAIL]$(RESET) Format failed\n"' ERR; \
 > printf "$(BLUE)[INFO]$(RESET) Formatting RTL with 4 spaces\n"; \
 > if [ -z "$(SRC)" ]; then \
->     printf "$(RED)[FAIL]$(RESET) No RTL source files found under src/\n"; \
+>     printf "$(RED)[FAIL]$(RESET) No RTL source files found under $(RTL_DIR)/\n"; \
 >     exit 1; \
 > fi; \
 > command -v verible-verilog-format >/dev/null; \
@@ -229,7 +269,7 @@ lint: init
 > @trap 'printf "$(RED)[FAIL]$(RESET) Lint failed\n"' ERR; \
 > printf "$(BLUE)[INFO]$(RESET) Running Verible lint\n"; \
 > if [ -z "$(SRC)" ]; then \
->     printf "$(RED)[FAIL]$(RESET) No RTL source files found under src/\n"; \
+>     printf "$(RED)[FAIL]$(RESET) No RTL source files found under $(RTL_DIR)/\n"; \
 >     exit 1; \
 > fi; \
 > command -v verible-verilog-lint >/dev/null; \
@@ -279,17 +319,50 @@ $(BITSTREAM): $(PNR_JSON)
 # Program board
 # =========================
 
+detect:
+> @trap 'printf "$(RED)[FAIL]$(RESET) FPGA detect failed\n"' ERR; \
+> printf "$(BLUE)[INFO]$(RESET) Detecting FPGA with openFPGALoader\n"; \
+> "$(OPENFPGALOADER)" -b "$(BOARD)" --detect; \
+> printf "$(GREEN)[DONE]$(RESET) FPGA detect finished\n"
+
+detect-flash:
+> @trap 'printf "$(RED)[FAIL]$(RESET) Flash detect failed\n"' ERR; \
+> printf "$(BLUE)[INFO]$(RESET) Detecting FPGA and Flash with openFPGALoader\n"; \
+> "$(OPENFPGALOADER)" -b "$(BOARD)" --detect -f; \
+> printf "$(GREEN)[DONE]$(RESET) Flash detect finished\n"
+
 sram: all
 > @trap 'printf "$(RED)[FAIL]$(RESET) SRAM programming failed\n"' ERR; \
+> mkdir -p "$(BUILD)"; \
 > printf "$(BLUE)[INFO]$(RESET) Programming SRAM with openFPGALoader\n"; \
-> openFPGALoader -b "$(BOARD)" "$(BITSTREAM)"; \
+> "$(OPENFPGALOADER)" -b "$(BOARD)" $(SRAM_FLAGS) "$(BITSTREAM)" 2>&1 | tee "$(SRAM_LOG)"; \
+> if grep -Eq '(^|[[:space:]])(FAIL|Fail)([[:space:]]|$$)' "$(SRAM_LOG)"; then \
+>     printf "$(RED)[FAIL]$(RESET) openFPGALoader reported failure; see $(SRAM_LOG)\n"; \
+>     exit 1; \
+> fi; \
 > printf "$(GREEN)[DONE]$(RESET) SRAM programmed. This will be lost after power off.\n"
 
 flash: all
 > @trap 'printf "$(RED)[FAIL]$(RESET) Flash programming failed\n"' ERR; \
+> mkdir -p "$(BUILD)"; \
 > printf "$(BLUE)[INFO]$(RESET) Programming Flash with openFPGALoader\n"; \
-> openFPGALoader -b "$(BOARD)" -f "$(BITSTREAM)"; \
+> "$(OPENFPGALOADER)" -b "$(BOARD)" -f $(FLASH_FLAGS) "$(BITSTREAM)" 2>&1 | tee "$(FLASH_LOG)"; \
+> if grep -Eq '(^|[[:space:]])(FAIL|Fail)([[:space:]]|$$)' "$(FLASH_LOG)"; then \
+>     printf "$(RED)[FAIL]$(RESET) openFPGALoader reported failure; see $(FLASH_LOG)\n"; \
+>     exit 1; \
+> fi; \
 > printf "$(GREEN)[DONE]$(RESET) Flash programmed. This should persist after power cycle.\n"
+
+flash-reset: all
+> @trap 'printf "$(RED)[FAIL]$(RESET) Flash programming with reset failed\n"' ERR; \
+> mkdir -p "$(BUILD)"; \
+> printf "$(BLUE)[INFO]$(RESET) Programming Flash with openFPGALoader default reset flow\n"; \
+> "$(OPENFPGALOADER)" -b "$(BOARD)" -f $(FLASH_RESET_FLAGS) "$(BITSTREAM)" 2>&1 | tee "$(FLASH_RESET_LOG)"; \
+> if grep -Eq '(^|[[:space:]])(FAIL|Fail)([[:space:]]|$$)' "$(FLASH_RESET_LOG)"; then \
+>     printf "$(RED)[FAIL]$(RESET) openFPGALoader reported failure; see $(FLASH_RESET_LOG)\n"; \
+>     exit 1; \
+> fi; \
+> printf "$(GREEN)[DONE]$(RESET) Flash programmed with loader default reset flow.\n"
 
 # =========================
 # Clean
