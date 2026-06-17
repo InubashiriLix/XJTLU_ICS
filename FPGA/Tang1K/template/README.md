@@ -119,3 +119,24 @@ fastest way to reset the host controller and FTDI state.
   - `_o` output
   - `_io` inout
   - `_n` active low，低有效
+
+## Tool Chain
+
+### 综合， 布局布线， 生成bitstream
+
+使用make命令自动化执行：
+
+- Verilog RTL -> yosys (用于综合Verilog)
+- Json netlist -> nextpnr-himbaechel (Gowin FPGA的布局布线工具)
+- Routed Json -> gowin_pack (生成bitstream)
+
+### 下载到板子上
+
+主要使用openFPGALoader工具，通过Jtag接口将生成的bitstream烧录到SPI flash中，或者直接烧录到SRAM中进行测试。
+`make sram / flash`
+
+### 仿真看波形
+
+- 编译testbench + RTL: iverilog
+- vvp: 运行仿真
+- gtkwave: 查看波形

@@ -13,7 +13,7 @@ module pwm_tb;
     reg [COUNT_WIDTH-1:0] duty_i = 0;
     wire pwm_o;
 
-    always #5 clk = ~clk;
+    always #2 clk = ~clk;
 
     pwm #(
         .CLOCK_HZ(CLOCK_HZ),
