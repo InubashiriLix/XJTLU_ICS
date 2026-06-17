@@ -17,3 +17,7 @@
 .DS_Store
 *.swp
 *.swo
+
+# AI
+.codex/
+.agents/
