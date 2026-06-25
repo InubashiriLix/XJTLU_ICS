@@ -1,0 +1,48 @@
+Tang Nano 9K ASCII Pinout
+View: board front side, USB-C on top, HDMI on bottom.
+
+Legend:
+  [B1] BANK1, Vio=3.3V
+  [B2] BANK2, Vio=3.3V
+  [B3] BANK3, Vio=1.8V
+  [PWR] power pin
+  [GND] ground pin
+
+                        ┌──────────── USB-C ─────────────────┐
+                        │             TANG NANO 9K           │
+                        │        front view / component side │
+                        │                                    │
+        LEFT HEADER     │                                    │     RIGHT HEADER
+        top -> bottom   │                                    │     top -> bottom
+                        │                                    │
+┌─────┬──────┬────────┬──────┬────────────┬─────────────┐  ┌─────┬──────┬────────┬──────┬────────────┬─────────────┐
+│ Row │Bank  │ FPGA IO│ IC#  │ Onboard    │ Special     │  │ Row │Bank  │ FPGA IO│ IC#  │ Onboard    │ Special     │
+├─────┼──────┼────────┼──────┼────────────┼─────────────┤  ├─────┼──────┼────────┼──────┼────────────┼─────────────┤
+│ L01 │[B2]  │ IOB31B │  38  │ TF_CS      │             │  │ R01 │[B1]  │ IOR5A  │  63  │ RGB_INIT   │             │
+│ L02 │[B2]  │ IOB31A │  37  │ TF_MOSI    │             │  │ R02 │[B3]  │ IOT8A  │  86  │ RGB_BL     │             │
+│ L03 │[B2]  │ IOB29B │  36  │ TF_SCLK    │ GCLKC_4     │  │ R03 │[B3]  │ IOT8B  │  85  │            │             │
+│ L04 │[B2]  │ IOB33A │  39  │ TF_MISO    │             │  │ R04 │[B3]  │ IOT10A │  84  │            │             │
+│ L05 │[B2]  │ IOB8A  │  25  │            │             │  │ R05 │[B3]  │ IOT10B │  83  │            │             │
+│ L06 │[B2]  │ IOB8B  │  26  │            │             │  │ R06 │[B3]  │ IOT11A │  82  │            │             │
+│ L07 │[B2]  │ IOB11A │  27  │            │             │  │ R07 │[B3]  │ IOT11B │  81  │            │             │
+│ L08 │[B2]  │ IOB11B │  28  │            │             │  │ R08 │[B3]  │ IOT12A │  80  │            │             │
+│ L09 │[B2]  │ IOB13A │  29  │            │             │  │ R09 │[B3]  │ IOT12B │  79  │            │             │
+│ L10 │[B2]  │ IOB13B │  30  │            │             │  │ R10 │[B1]  │ IOT37A │  77  │ SPILCD_MO  │             │
+│ L11 │[B2]  │ IOB23A │  33  │ RGB_DE     │             │  │ R11 │[B1]  │ IOT37B │  76  │ SPILCD_CK  │             │
+│ L12 │[B2]  │ IOB23B │  34  │ RGB_VS     │             │  │ R12 │[B1]  │ IOT38A │  75  │ RGB_R3     │ HDMI_D2P    │
+│ L13 │[B2]  │ IOB33B │  40  │ RGB_HS     │             │  │ R13 │[B1]  │ IOT38B │  74  │ RGB_R4     │ HDMI_D2N    │
+│ L14 │[B2]  │ IOB29A │  35  │ RGB_CK     │ GCLKT_4     │  │ R14 │[B1]  │ IOT39A │  73  │ RGB_R5     │ HDMI_D1P    │
+│ L15 │[B2]  │ IOB41A │  41  │ RGB_B7     │             │  │ R15 │[B1]  │ IOT39B │  72  │ RGB_R6     │ HDMI_D1N    │
+│ L16 │[B2]  │ IOB41B │  42  │ RGB_B6     │             │  │ R16 │[B1]  │ IOT41A │  71  │ RGB_R7     │ HDMI_D0P    │
+│ L17 │[B1]  │ IOR17B │  51  │ RGB_B5     │ GCLKC_3     │  │ R17 │[B1]  │ IOT41B │  70  │ RGB_G2     │ HDMI_D0N    │
+│ L18 │[B1]  │ IOR15B │  53  │ RGB_B4     │             │  │ R18 │[PWR] │ 5V     │      │            │             │
+│ L19 │[B1]  │ IOR15A │  54  │ RGB_B3     │             │  │ R19 │[B1]  │ IOR24B │  48  │ SPILCD_CS  │             │
+│ L20 │[B1]  │ IOR14B │  55  │ RGB_G7     │             │  │ R20 │[B1]  │ IOR24A │  49  │ SPILCD_RS  │             │
+│ L21 │[B1]  │ IOR14A │  56  │ RGB_G6     │             │  │ R21 │[B2]  │ IOB15A │  31  │ RGB_INIT   │             │
+│ L22 │[B1]  │ IOR13A │  57  │ RGB_G5     │             │  │ R22 │[B2]  │ IOB15B │  32  │ RGB_INIT   │             │
+│ L23 │[B1]  │ IOT42B │  68  │ RGB_G4     │ HDMI_CKN    │  │ R23 │[GND] │ GND    │      │            │             │
+│ L24 │[B1]  │ IOT42A │  69  │ RGB_G3     │ HDMI_CKP    │  │ R24 │[PWR] │ 3V3    │      │            │             │
+└─────┴──────┴────────┴──────┴────────────┴─────────────┘  └─────┴──────┴────────┴──────┴────────────┴─────────────┘
+                        │                                    │
+                        │                                    │
+                        └──────────── HDMI ──────────────────┘

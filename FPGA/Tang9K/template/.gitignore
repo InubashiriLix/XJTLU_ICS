@@ -1,0 +1,23 @@
+# Build artifacts
+/build/
+
+# Simulation artifacts
+/sim/
+*.vcd
+*.fst
+*.gtkw
+
+# FPGA bitstreams / reports
+*.fs
+*.bit
+*.rpt
+*.log
+
+# Editor / OS
+.DS_Store
+*.swp
+*.swo
+
+# AI
+.codex/
+.agents/

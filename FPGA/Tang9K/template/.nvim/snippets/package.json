@@ -1,0 +1,15 @@
+{
+  "name": "tang9k-verilog-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "verilog",
+        "path": "./verilog.json"
+      },
+      {
+        "language": "systemverilog",
+        "path": "./verilog.json"
+      }
+    ]
+  }
+}

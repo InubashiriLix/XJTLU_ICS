@@ -1,0 +1,18 @@
+IO_LOC "clk" 52;
+IO_PORT "clk" PULL_MODE=UP;
+
+IO_LOC "led[0]" 10;
+IO_LOC "led[1]" 11;
+IO_LOC "led[2]" 13;
+IO_LOC "led[3]" 14;
+IO_LOC "led[4]" 15;
+IO_LOC "led[5]" 16;
+
+IO_LOC "tmds_data_p[0]" 71;
+IO_LOC "tmds_data_n[0]" 70;
+IO_LOC "tmds_data_p[1]" 73;
+IO_LOC "tmds_data_n[1]" 72;
+IO_LOC "tmds_data_p[2]" 75;
+IO_LOC "tmds_data_n[2]" 74;
+IO_LOC "tmds_clk_p" 69;
+IO_LOC "tmds_clk_n" 68;

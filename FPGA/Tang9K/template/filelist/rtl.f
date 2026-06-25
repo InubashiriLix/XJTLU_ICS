@@ -1,0 +1,13 @@
+rtl/common/axis_bram_fifo.v
+rtl/common/bram_fifo.v
+rtl/common/pwm.v
+rtl/common/uart_rx.v
+rtl/common/uart_tx.v
+rtl/dvc/board_button.v
+rtl/dvc/board_hdmi/board_hdmi.sv
+rtl/dvc/board_hdmi/pattern_gen.sv
+rtl/dvc/board_hdmi/tmds_encoder.sv
+rtl/dvc/board_hdmi/tmds_serializer.sv
+rtl/dvc/board_hdmi/video_timing.sv
+rtl/dvc/board_led.v
+rtl/top.v
