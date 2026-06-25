@@ -13,6 +13,7 @@ module top (
     localparam integer RstCntMax = 1_000_000;
     reg [19:0] rst_cnt = 19'b0;
 
+
     board_button #(
         .COUNT_WIDTH(20),
         .COUNT_MAX  (1_000_000)  // 1_000_000 * 37ns = 37ms debounce time
@@ -31,6 +32,17 @@ module top (
         .led_ctrl(led),
         .toggle_led_color(btn_pressed)
     );
+
+    // axis_bram_fifo #(
+    //     .CLK_HZ(27_000_000),
+    //     .DATA_WIDTH(1),
+    //     .DEPTH(128)
+    // ) (
+    //     .clk(clk),
+    //     .s_axis_tvalid_i(btn_pressed),
+    //     .s_axis_tready_o(),
+    //
+    // )
 
     // delay and reset after system power on.
     always @(posedge clk) begin

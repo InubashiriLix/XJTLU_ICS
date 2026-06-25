@@ -77,7 +77,7 @@ module uart_tx #(
                             state <= StStop;
                         end else begin
                             bit_idx <= bit_idx + 1'b1;
-                            tx_o <= tx_data_buf[bit_idx + 1'b1];
+                            tx_o <= tx_data_buf[bit_idx+1'b1];
                         end
                     end else begin
                         baud_cnt <= baud_cnt + 1'b1;

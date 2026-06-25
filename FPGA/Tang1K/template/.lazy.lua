@@ -34,7 +34,7 @@ return {
 			servers = {
 				verible = {
 					cmd = { "verible-verilog-ls", "--rules_config_search" },
-					filetypes = { "verilog" },
+					filetypes = { "verilog", "systemverilog" },
 					on_attach = function(client, bufnr)
 						client.server_capabilities.documentFormattingProvider = false
 						client.server_capabilities.documentRangeFormattingProvider = false

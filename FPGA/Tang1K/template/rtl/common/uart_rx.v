@@ -60,7 +60,7 @@ module uart_rx #(
             case (state)
                 StIdle: begin
                     baud_cnt <= {BAUD_CNT_WIDTH{1'b0}};
-                    bit_idx <= 3'b0;
+                    bit_idx  <= 3'b0;
 
                     if (!rx_sync) begin
                         state <= StStart;
@@ -89,7 +89,7 @@ module uart_rx #(
 
                         if (bit_idx == 3'd7) begin
                             bit_idx <= 3'd0;
-                            state <= StStop;
+                            state   <= StStop;
                         end else begin
                             bit_idx <= bit_idx + 1'b1;
                         end
@@ -104,7 +104,7 @@ module uart_rx #(
                         state <= StIdle;
 
                         if (rx_sync) begin
-                            rx_data_o <= rx_data;
+                            rx_data_o  <= rx_data;
                             rx_valid_o <= 1'b1;
                         end else begin
                             frame_error_o <= 1'b1;
