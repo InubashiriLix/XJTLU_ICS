@@ -2,12 +2,12 @@ module board_hdmi #(
     parameter integer CLK_HZ = 27_000_000,
     parameter integer DISP_HZ = 60,
     // horizontal, this part should depend by user themself
-    parameter integer H_ACTIVATE = 720,
+    parameter integer H_ACTIVE = 720,
     parameter integer H_FRONT_PORCH = 16,
     parameter integer H_SYNC_PULSE = 62,
     parameter integer H_BACK_PORCH = 60,
     // vertical
-    parameter integer V_ACTIVATE = 480,
+    parameter integer V_ACTIVE = 480,
     parameter integer V_FRONT_PORCH = 9,
     parameter integer V_SYNC_PULSE = 6,
     parameter integer V_BACK_PORCH = 30
@@ -22,8 +22,8 @@ module board_hdmi #(
     output wire [2:0] tmds_data_n
 );
 
-    localparam integer HorizontalTotal = H_ACTIVATE + H_FRONT_PORCH + H_SYNC_PULSE + H_BACK_PORCH;
-    localparam integer VerticalTotal = V_ACTIVATE + V_FRONT_PORCH + V_SYNC_PULSE + V_BACK_PORCH;
+    localparam integer HorizontalTotal = H_ACTIVE + H_FRONT_PORCH + H_SYNC_PULSE + H_BACK_PORCH;
+    localparam integer VerticalTotal = V_ACTIVE + V_FRONT_PORCH + V_SYNC_PULSE + V_BACK_PORCH;
     localparam integer PixelClkHz = DISP_HZ * HorizontalTotal * VerticalTotal;
     localparam integer PixelClkHz5x = PixelClkHz * 5;
     localparam integer PllIdivSel = 0, PllFbdivSel = 0, PllOdivSel = 16;
@@ -130,12 +130,12 @@ module board_hdmi #(
     wire active;
 
     video_timing #(
-        .H_ACTIVE(H_ACTIVATE),
+        .H_ACTIVE(H_ACTIVE),
         .H_FRONT_PORCH(H_FRONT_PORCH),
         .H_SYNC_PULSE(H_SYNC_PULSE),
         .H_BACK_PORCH(H_BACK_PORCH),
 
-        .V_ACTIVE(V_ACTIVATE),
+        .V_ACTIVE(V_ACTIVE),
         .V_FRONT_PORCH(V_FRONT_PORCH),
         .V_SYNC_PULSE(V_SYNC_PULSE),
         .V_BACK_PORCH(V_BACK_PORCH)
@@ -154,8 +154,8 @@ module board_hdmi #(
     wire [7:0] rgb_b;
 
     pattern_gen #(
-        .X_ACTIVE(H_ACTIVATE),
-        .Y_ACTIVE(V_ACTIVATE),
+        .X_ACTIVE(H_ACTIVE),
+        .Y_ACTIVE(V_ACTIVE),
         .X_WIDTH(HWidth),
         .Y_WIDTH(VWidth),
         .BOX_START_X(100),

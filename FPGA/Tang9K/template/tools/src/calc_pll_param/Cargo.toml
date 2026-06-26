@@ -1,0 +1,7 @@
+[package]
+name = "calc_pll_param"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+strum = { version = "0.28.0", features = ["derive"] }
