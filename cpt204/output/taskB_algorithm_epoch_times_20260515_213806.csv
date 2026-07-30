@@ -1,0 +1,221 @@
+experiment,algorithm,epoch,time_ns,average_time_ns,precompute_time_ns,same_route_costs
+Task B shortest path,Linear Dijkstra,1,43523846,18155073,0,true
+Task B shortest path,Linear Dijkstra,2,19284492,18155073,0,true
+Task B shortest path,Linear Dijkstra,3,19752343,18155073,0,true
+Task B shortest path,Linear Dijkstra,4,16729149,18155073,0,true
+Task B shortest path,Linear Dijkstra,5,16883209,18155073,0,true
+Task B shortest path,Linear Dijkstra,6,16644179,18155073,0,true
+Task B shortest path,Linear Dijkstra,7,16501300,18155073,0,true
+Task B shortest path,Linear Dijkstra,8,17061625,18155073,0,true
+Task B shortest path,Linear Dijkstra,9,16905802,18155073,0,true
+Task B shortest path,Linear Dijkstra,10,17026369,18155073,0,true
+Task B shortest path,Linear Dijkstra,11,20258687,18155073,0,true
+Task B shortest path,Linear Dijkstra,12,16043497,18155073,0,true
+Task B shortest path,Linear Dijkstra,13,15770935,18155073,0,true
+Task B shortest path,Linear Dijkstra,14,15800340,18155073,0,true
+Task B shortest path,Linear Dijkstra,15,15805810,18155073,0,true
+Task B shortest path,Linear Dijkstra,16,16032347,18155073,0,true
+Task B shortest path,Linear Dijkstra,17,15788007,18155073,0,true
+Task B shortest path,Linear Dijkstra,18,15809487,18155073,0,true
+Task B shortest path,Linear Dijkstra,19,15730509,18155073,0,true
+Task B shortest path,Linear Dijkstra,20,15749534,18155073,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),1,4820880,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),2,4717996,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),3,4101434,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),4,2241622,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),5,1526755,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),6,1563806,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),7,1540331,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),8,1533298,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),9,1477674,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),10,1570659,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),11,1758823,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),12,1534330,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),13,1541112,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),14,1517458,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),15,1483774,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),16,1503963,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),17,1487631,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),18,1541183,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),19,1494715,2022420,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),20,1490968,2022420,0,true
+Task B shortest path,Bidirectional Dijkstra,1,16300502,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,2,7074925,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,3,6446542,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,4,7438951,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,5,8516821,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,6,4251699,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,7,2263774,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,8,2175197,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,9,2015577,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,10,2109203,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,11,1989837,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,12,2094746,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,13,2027158,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,14,2112008,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,15,2107039,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,16,2122788,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,17,2131234,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,18,2240821,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,19,2109704,3987348,0,true
+Task B shortest path,Bidirectional Dijkstra,20,2218438,3987348,0,true
+Task B shortest path,SPFA,1,14647258,5109693,0,true
+Task B shortest path,SPFA,2,6216268,5109693,0,true
+Task B shortest path,SPFA,3,4006797,5109693,0,true
+Task B shortest path,SPFA,4,3916828,5109693,0,true
+Task B shortest path,SPFA,5,3793374,5109693,0,true
+Task B shortest path,SPFA,6,4284600,5109693,0,true
+Task B shortest path,SPFA,7,3903302,5109693,0,true
+Task B shortest path,SPFA,8,3852065,5109693,0,true
+Task B shortest path,SPFA,9,3881400,5109693,0,true
+Task B shortest path,SPFA,10,7767109,5109693,0,true
+Task B shortest path,SPFA,11,3817751,5109693,0,true
+Task B shortest path,SPFA,12,3816448,5109693,0,true
+Task B shortest path,SPFA,13,4115101,5109693,0,true
+Task B shortest path,SPFA,14,5009505,5109693,0,true
+Task B shortest path,SPFA,15,4900671,5109693,0,true
+Task B shortest path,SPFA,16,4841498,5109693,0,true
+Task B shortest path,SPFA,17,4959521,5109693,0,true
+Task B shortest path,SPFA,18,4781386,5109693,0,true
+Task B shortest path,SPFA,19,4775304,5109693,0,true
+Task B shortest path,SPFA,20,4907684,5109693,0,true
+Task B shortest path,Unweighted BFS (approximate),1,2157493,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),2,2056473,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),3,2059639,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),4,2024183,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),5,1941237,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),6,948707,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),7,781202,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),8,704918,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),9,662468,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),10,678107,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),11,650075,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),12,694177,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),13,705529,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),14,673067,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),15,649713,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),16,724214,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),17,570564,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),18,601083,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),19,544516,1023124,0,false
+Task B shortest path,Unweighted BFS (approximate),20,635127,1023124,0,false
+Task B shortest path,A* Landmark,1,2976396,1194153,18002718,true
+Task B shortest path,A* Landmark,2,1404065,1194153,18002718,true
+Task B shortest path,A* Landmark,3,1372786,1194153,18002718,true
+Task B shortest path,A* Landmark,4,1364811,1194153,18002718,true
+Task B shortest path,A* Landmark,5,1608960,1194153,18002718,true
+Task B shortest path,A* Landmark,6,1413151,1194153,18002718,true
+Task B shortest path,A* Landmark,7,1398374,1194153,18002718,true
+Task B shortest path,A* Landmark,8,1429162,1194153,18002718,true
+Task B shortest path,A* Landmark,9,1398284,1194153,18002718,true
+Task B shortest path,A* Landmark,10,1609491,1194153,18002718,true
+Task B shortest path,A* Landmark,11,1073903,1194153,18002718,true
+Task B shortest path,A* Landmark,12,1072460,1194153,18002718,true
+Task B shortest path,A* Landmark,13,981950,1194153,18002718,true
+Task B shortest path,A* Landmark,14,842647,1194153,18002718,true
+Task B shortest path,A* Landmark,15,745263,1194153,18002718,true
+Task B shortest path,A* Landmark,16,728242,1194153,18002718,true
+Task B shortest path,A* Landmark,17,718383,1194153,18002718,true
+Task B shortest path,A* Landmark,18,670011,1194153,18002718,true
+Task B shortest path,A* Landmark,19,615229,1194153,18002718,true
+Task B shortest path,A* Landmark,20,459495,1194153,18002718,true
+Task B shortest path,Greedy Best-First Landmark (approximate),1,1357336,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),2,690421,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),3,575474,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),4,526381,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),5,451640,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),6,407647,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),7,559674,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),8,505502,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),9,390957,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),10,358795,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),11,390145,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),12,401536,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),13,316186,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),14,325483,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),15,373884,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),16,444116,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),17,356912,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),18,482539,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),19,275038,471821,18002718,false
+Task B shortest path,Greedy Best-First Landmark (approximate),20,246765,471821,18002718,false
+Task B shortest path,A* Learned Heuristic (experimental),1,1165114,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),2,751605,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),3,574151,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),4,551478,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),5,465005,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),6,477849,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),7,650335,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),8,1034900,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),9,861753,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),10,838139,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),11,639975,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),12,459155,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),13,473221,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),14,455528,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),15,474985,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),16,552852,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),17,499982,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),18,488790,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),19,470957,616355,52638033,true
+Task B shortest path,A* Learned Heuristic (experimental),20,441331,616355,52638033,true
+Task B shortest path,Greedy Best-First Learned (experimental),1,223742,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),2,112683,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),3,111640,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),4,97143,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),5,122892,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),6,107111,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),7,106771,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),8,94578,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),9,95380,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),10,103495,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),11,106190,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),12,98446,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),13,108515,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),14,95270,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),15,106471,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),16,97444,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),17,108114,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),18,96793,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),19,93967,109411,52638033,false
+Task B shortest path,Greedy Best-First Learned (experimental),20,101581,109411,52638033,false
+Task B shortest path,Q-Learning Routing (experimental),1,174729,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),2,50565,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),3,51206,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),4,76233,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),5,66055,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),6,52930,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),7,65263,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),8,58280,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),9,58831,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),10,56506,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),11,55294,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),12,56616,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),13,83708,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),14,63369,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),15,54202,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),16,53902,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),17,55524,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),18,54262,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),19,59822,65092,224887982,true
+Task B shortest path,Q-Learning Routing (experimental),20,54553,65092,224887982,true
+Task B shortest path,Bellman-Ford,1,31288271,10768989,0,true
+Task B shortest path,Bellman-Ford,2,16444533,10768989,0,true
+Task B shortest path,Bellman-Ford,3,10104712,10768989,0,true
+Task B shortest path,Bellman-Ford,4,10256488,10768989,0,true
+Task B shortest path,Bellman-Ford,5,10731894,10768989,0,true
+Task B shortest path,Bellman-Ford,6,10183430,10768989,0,true
+Task B shortest path,Bellman-Ford,7,10316481,10768989,0,true
+Task B shortest path,Bellman-Ford,8,12188407,10768989,0,true
+Task B shortest path,Bellman-Ford,9,11109244,10768989,0,true
+Task B shortest path,Bellman-Ford,10,9564946,10768989,0,true
+Task B shortest path,Bellman-Ford,11,9564455,10768989,0,true
+Task B shortest path,Bellman-Ford,12,9440030,10768989,0,true
+Task B shortest path,Bellman-Ford,13,7934645,10768989,0,true
+Task B shortest path,Bellman-Ford,14,7926459,10768989,0,true
+Task B shortest path,Bellman-Ford,15,7637886,10768989,0,true
+Task B shortest path,Bellman-Ford,16,7827132,10768989,0,true
+Task B shortest path,Bellman-Ford,17,8846512,10768989,0,true
+Task B shortest path,Bellman-Ford,18,8203291,10768989,0,true
+Task B shortest path,Bellman-Ford,19,7715712,10768989,0,true
+Task B shortest path,Bellman-Ford,20,8095267,10768989,0,true

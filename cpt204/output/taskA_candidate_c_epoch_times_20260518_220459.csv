@@ -1,0 +1,101 @@
+dataset,algorithm,epoch,time_ns,average_time_ns
+Candidate C,Bubble Sort,1,2786591,771445
+Candidate C,Bubble Sort,2,1275002,771445
+Candidate C,Bubble Sort,3,1080180,771445
+Candidate C,Bubble Sort,4,587528,771445
+Candidate C,Bubble Sort,5,894797,771445
+Candidate C,Bubble Sort,6,696841,771445
+Candidate C,Bubble Sort,7,688114,771445
+Candidate C,Bubble Sort,8,585053,771445
+Candidate C,Bubble Sort,9,569996,771445
+Candidate C,Bubble Sort,10,568543,771445
+Candidate C,Bubble Sort,11,730353,771445
+Candidate C,Bubble Sort,12,603318,771445
+Candidate C,Bubble Sort,13,551371,771445
+Candidate C,Bubble Sort,14,560858,771445
+Candidate C,Bubble Sort,15,568253,771445
+Candidate C,Bubble Sort,16,564846,771445
+Candidate C,Bubble Sort,17,554347,771445
+Candidate C,Bubble Sort,18,533949,771445
+Candidate C,Bubble Sort,19,522117,771445
+Candidate C,Bubble Sort,20,506849,771445
+Candidate C,Quick Sort,1,1593772,825148
+Candidate C,Quick Sort,2,952805,825148
+Candidate C,Quick Sort,3,869851,825148
+Candidate C,Quick Sort,4,829146,825148
+Candidate C,Quick Sort,5,889417,825148
+Candidate C,Quick Sort,6,1166010,825148
+Candidate C,Quick Sort,7,1309665,825148
+Candidate C,Quick Sort,8,1590947,825148
+Candidate C,Quick Sort,9,1022283,825148
+Candidate C,Quick Sort,10,1084879,825148
+Candidate C,Quick Sort,11,1089587,825148
+Candidate C,Quick Sort,12,1021452,825148
+Candidate C,Quick Sort,13,1029817,825148
+Candidate C,Quick Sort,14,549848,825148
+Candidate C,Quick Sort,15,287071,825148
+Candidate C,Quick Sort,16,250624,825148
+Candidate C,Quick Sort,17,248440,825148
+Candidate C,Quick Sort,18,237540,825148
+Candidate C,Quick Sort,19,237170,825148
+Candidate C,Quick Sort,20,242639,825148
+Candidate C,Merge Sort,1,872355,286593
+Candidate C,Merge Sort,2,307179,286593
+Candidate C,Merge Sort,3,261514,286593
+Candidate C,Merge Sort,4,219937,286593
+Candidate C,Merge Sort,5,236147,286593
+Candidate C,Merge Sort,6,241798,286593
+Candidate C,Merge Sort,7,320062,286593
+Candidate C,Merge Sort,8,239243,286593
+Candidate C,Merge Sort,9,193619,286593
+Candidate C,Merge Sort,10,206343,286593
+Candidate C,Merge Sort,11,191855,286593
+Candidate C,Merge Sort,12,213255,286593
+Candidate C,Merge Sort,13,205891,286593
+Candidate C,Merge Sort,14,190553,286593
+Candidate C,Merge Sort,15,217493,286593
+Candidate C,Merge Sort,16,264379,286593
+Candidate C,Merge Sort,17,370767,286593
+Candidate C,Merge Sort,18,253369,286593
+Candidate C,Merge Sort,19,344378,286593
+Candidate C,Merge Sort,20,381737,286593
+Candidate C,Intro Sort,1,814769,371149
+Candidate C,Intro Sort,2,395082,371149
+Candidate C,Intro Sort,3,308181,371149
+Candidate C,Intro Sort,4,312038,371149
+Candidate C,Intro Sort,5,425688,371149
+Candidate C,Intro Sort,6,331103,371149
+Candidate C,Intro Sort,7,360407,371149
+Candidate C,Intro Sort,8,407264,371149
+Candidate C,Intro Sort,9,318780,371149
+Candidate C,Intro Sort,10,385314,371149
+Candidate C,Intro Sort,11,366689,371149
+Candidate C,Intro Sort,12,308250,371149
+Candidate C,Intro Sort,13,310846,371149
+Candidate C,Intro Sort,14,388419,371149
+Candidate C,Intro Sort,15,311376,371149
+Candidate C,Intro Sort,16,320023,371149
+Candidate C,Intro Sort,17,338307,371149
+Candidate C,Intro Sort,18,391245,371149
+Candidate C,Intro Sort,19,307520,371149
+Candidate C,Intro Sort,20,321686,371149
+Candidate C,Hybrid Adaptive Sort,1,669711,262200
+Candidate C,Hybrid Adaptive Sort,2,389211,262200
+Candidate C,Hybrid Adaptive Sort,3,429315,262200
+Candidate C,Hybrid Adaptive Sort,4,329040,262200
+Candidate C,Hybrid Adaptive Sort,5,399300,262200
+Candidate C,Hybrid Adaptive Sort,6,319732,262200
+Candidate C,Hybrid Adaptive Sort,7,287141,262200
+Candidate C,Hybrid Adaptive Sort,8,223784,262200
+Candidate C,Hybrid Adaptive Sort,9,202314,262200
+Candidate C,Hybrid Adaptive Sort,10,172399,262200
+Candidate C,Hybrid Adaptive Sort,11,198548,262200
+Candidate C,Hybrid Adaptive Sort,12,177198,262200
+Candidate C,Hybrid Adaptive Sort,13,166538,262200
+Candidate C,Hybrid Adaptive Sort,14,186405,262200
+Candidate C,Hybrid Adaptive Sort,15,219697,262200
+Candidate C,Hybrid Adaptive Sort,16,197255,262200
+Candidate C,Hybrid Adaptive Sort,17,169273,262200
+Candidate C,Hybrid Adaptive Sort,18,164725,262200
+Candidate C,Hybrid Adaptive Sort,19,176808,262200
+Candidate C,Hybrid Adaptive Sort,20,165607,262200

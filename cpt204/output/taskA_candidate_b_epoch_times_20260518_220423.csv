@@ -1,0 +1,101 @@
+dataset,algorithm,epoch,time_ns,average_time_ns
+Candidate B,Bubble Sort,1,8516136,2024355
+Candidate B,Bubble Sort,2,3027649,2024355
+Candidate B,Bubble Sort,3,5778946,2024355
+Candidate B,Bubble Sort,4,1274080,2024355
+Candidate B,Bubble Sort,5,1252700,2024355
+Candidate B,Bubble Sort,6,1227844,2024355
+Candidate B,Bubble Sort,7,1217926,2024355
+Candidate B,Bubble Sort,8,1354129,2024355
+Candidate B,Bubble Sort,9,1368956,2024355
+Candidate B,Bubble Sort,10,1353096,2024355
+Candidate B,Bubble Sort,11,1528271,2024355
+Candidate B,Bubble Sort,12,1355511,2024355
+Candidate B,Bubble Sort,13,1623778,2024355
+Candidate B,Bubble Sort,14,1432043,2024355
+Candidate B,Bubble Sort,15,1239325,2024355
+Candidate B,Bubble Sort,16,1220090,2024355
+Candidate B,Bubble Sort,17,1382972,2024355
+Candidate B,Bubble Sort,18,1447802,2024355
+Candidate B,Bubble Sort,19,1447892,2024355
+Candidate B,Bubble Sort,20,1437964,2024355
+Candidate B,Quick Sort,1,139057,58232
+Candidate B,Quick Sort,2,80700,58232
+Candidate B,Quick Sort,3,48801,58232
+Candidate B,Quick Sort,4,49352,58232
+Candidate B,Quick Sort,5,39292,58232
+Candidate B,Quick Sort,6,75239,58232
+Candidate B,Quick Sort,7,71642,58232
+Candidate B,Quick Sort,8,68988,58232
+Candidate B,Quick Sort,9,39573,58232
+Candidate B,Quick Sort,10,38431,58232
+Candidate B,Quick Sort,11,38802,58232
+Candidate B,Quick Sort,12,38351,58232
+Candidate B,Quick Sort,13,43520,58232
+Candidate B,Quick Sort,14,38721,58232
+Candidate B,Quick Sort,15,38421,58232
+Candidate B,Quick Sort,16,73646,58232
+Candidate B,Quick Sort,17,91169,58232
+Candidate B,Quick Sort,18,73486,58232
+Candidate B,Quick Sort,19,38942,58232
+Candidate B,Quick Sort,20,38521,58232
+Candidate B,Merge Sort,1,1117540,937703
+Candidate B,Merge Sort,2,1483979,937703
+Candidate B,Merge Sort,3,930584,937703
+Candidate B,Merge Sort,4,942857,937703
+Candidate B,Merge Sort,5,920686,937703
+Candidate B,Merge Sort,6,875471,937703
+Candidate B,Merge Sort,7,870452,937703
+Candidate B,Merge Sort,8,863019,937703
+Candidate B,Merge Sort,9,879910,937703
+Candidate B,Merge Sort,10,900919,937703
+Candidate B,Merge Sort,11,922779,937703
+Candidate B,Merge Sort,12,907822,937703
+Candidate B,Merge Sort,13,954538,937703
+Candidate B,Merge Sort,14,864341,937703
+Candidate B,Merge Sort,15,876433,937703
+Candidate B,Merge Sort,16,836139,937703
+Candidate B,Merge Sort,17,963996,937703
+Candidate B,Merge Sort,18,842470,937703
+Candidate B,Merge Sort,19,965920,937703
+Candidate B,Merge Sort,20,834216,937703
+Candidate B,Intro Sort,1,380024,245914
+Candidate B,Intro Sort,2,331755,245914
+Candidate B,Intro Sort,3,374995,245914
+Candidate B,Intro Sort,4,334219,245914
+Candidate B,Intro Sort,5,359095,245914
+Candidate B,Intro Sort,6,360618,245914
+Candidate B,Intro Sort,7,311928,245914
+Candidate B,Intro Sort,8,263658,245914
+Candidate B,Intro Sort,9,232651,245914
+Candidate B,Intro Sort,10,217753,245914
+Candidate B,Intro Sort,11,193729,245914
+Candidate B,Intro Sort,12,155408,245914
+Candidate B,Intro Sort,13,210129,245914
+Candidate B,Intro Sort,14,172850,245914
+Candidate B,Intro Sort,15,159525,245914
+Candidate B,Intro Sort,16,154656,245914
+Candidate B,Intro Sort,17,137665,245914
+Candidate B,Intro Sort,18,196013,245914
+Candidate B,Intro Sort,19,170125,245914
+Candidate B,Intro Sort,20,201493,245914
+Candidate B,Hybrid Adaptive Sort,1,426380,249166
+Candidate B,Hybrid Adaptive Sort,2,401503,249166
+Candidate B,Hybrid Adaptive Sort,3,406934,249166
+Candidate B,Hybrid Adaptive Sort,4,252929,249166
+Candidate B,Hybrid Adaptive Sort,5,228924,249166
+Candidate B,Hybrid Adaptive Sort,6,248650,249166
+Candidate B,Hybrid Adaptive Sort,7,221210,249166
+Candidate B,Hybrid Adaptive Sort,8,242228,249166
+Candidate B,Hybrid Adaptive Sort,9,230487,249166
+Candidate B,Hybrid Adaptive Sort,10,209989,249166
+Candidate B,Hybrid Adaptive Sort,11,218235,249166
+Candidate B,Hybrid Adaptive Sort,12,231308,249166
+Candidate B,Hybrid Adaptive Sort,13,210710,249166
+Candidate B,Hybrid Adaptive Sort,14,201213,249166
+Candidate B,Hybrid Adaptive Sort,15,217503,249166
+Candidate B,Hybrid Adaptive Sort,16,211692,249166
+Candidate B,Hybrid Adaptive Sort,17,220248,249166
+Candidate B,Hybrid Adaptive Sort,18,206964,249166
+Candidate B,Hybrid Adaptive Sort,19,201082,249166
+Candidate B,Hybrid Adaptive Sort,20,195131,249166

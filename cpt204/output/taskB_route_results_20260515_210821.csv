@@ -1,0 +1,5 @@
+case,description,start,destination,waypoints,reachable,total_cost,path
+Case 1,From the 1st selected location in Dataset A to itself,L0001,L0001,None,true,0.0,L0001
+Case 2,From the 1st selected location in Dataset A to the 10th selected location in Dataset A,L0001,L0010,None,true,27.0,L0001 -> L0340 -> L0339 -> L0895 -> L0894 -> L0082 -> L0284 -> L0010
+Case 3,"From the 1st selected location in Dataset A to the 1st selected location in Dataset B, via the 5th selected location in Dataset B",L0001,L0101,L0105,true,39.0,L0001 -> L0340 -> L0339 -> L0247 -> L0017 -> L0128 -> L0107 -> L0106 -> L0105 -> L0106 -> L0107 -> L0108 -> L0827 -> L0996 -> L0101
+Case 4,"From the 1st selected location in Dataset A to the 1st selected location in Dataset C, via the 5th selected location in Dataset B and the 5th selected location in Dataset C",L0001,L0201,L0105 -> L0205,true,48.0,L0001 -> L0340 -> L0339 -> L0247 -> L0017 -> L0128 -> L0107 -> L0106 -> L0105 -> L0106 -> L0107 -> L0108 -> L0243 -> L0242 -> L0241 -> L0385 -> L0205 -> L0201

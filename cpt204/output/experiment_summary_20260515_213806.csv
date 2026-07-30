@@ -1,0 +1,21 @@
+task,dataset_or_experiment,algorithm,epochs,average_time_ns,precompute_time_ns,same_route_costs,source_file
+Task A Sorting,Candidate A,Bubble Sort,20,90064,0,,taskA_candidate_a_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate A,Quick Sort,20,1514151,0,,taskA_candidate_a_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate A,Merge Sort,20,135670,0,,taskA_candidate_a_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate B,Bubble Sort,20,1404271,0,,taskA_candidate_b_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate B,Quick Sort,20,33591,0,,taskA_candidate_b_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate B,Merge Sort,20,633467,0,,taskA_candidate_b_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate C,Bubble Sort,20,558851,0,,taskA_candidate_c_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate C,Quick Sort,20,575050,0,,taskA_candidate_c_epoch_times_20260515_213804.csv
+Task A Sorting,Candidate C,Merge Sort,20,554216,0,,taskA_candidate_c_epoch_times_20260515_213804.csv
+Task B Shortest Path,Task B shortest path,Linear Dijkstra,20,18155073,0,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Heap Dijkstra (PriorityQueue),20,2022420,0,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Bidirectional Dijkstra,20,3987348,0,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,SPFA,20,5109693,0,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Unweighted BFS (approximate),20,1023124,0,false,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,A* Landmark,20,1194153,18002718,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Greedy Best-First Landmark (approximate),20,471821,18002718,false,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,A* Learned Heuristic (experimental),20,616355,52638033,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Greedy Best-First Learned (experimental),20,109411,52638033,false,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Q-Learning Routing (experimental),20,65092,224887982,true,taskB_algorithm_epoch_times_20260515_213806.csv
+Task B Shortest Path,Task B shortest path,Bellman-Ford,20,10768989,0,true,taskB_algorithm_epoch_times_20260515_213806.csv

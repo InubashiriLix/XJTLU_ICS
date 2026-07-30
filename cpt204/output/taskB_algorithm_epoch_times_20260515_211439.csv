@@ -1,0 +1,81 @@
+experiment,algorithm,epoch,time_ns,average_time_ns,precompute_time_ns,same_route_costs
+Task B shortest path,Linear Dijkstra,1,47507750,19749192,0,true
+Task B shortest path,Linear Dijkstra,2,22021240,19749192,0,true
+Task B shortest path,Linear Dijkstra,3,22806079,19749192,0,true
+Task B shortest path,Linear Dijkstra,4,20373855,19749192,0,true
+Task B shortest path,Linear Dijkstra,5,18269328,19749192,0,true
+Task B shortest path,Linear Dijkstra,6,17871699,19749192,0,true
+Task B shortest path,Linear Dijkstra,7,17484040,19749192,0,true
+Task B shortest path,Linear Dijkstra,8,20088598,19749192,0,true
+Task B shortest path,Linear Dijkstra,9,17138048,19749192,0,true
+Task B shortest path,Linear Dijkstra,10,17986266,19749192,0,true
+Task B shortest path,Linear Dijkstra,11,18061337,19749192,0,true
+Task B shortest path,Linear Dijkstra,12,17276007,19749192,0,true
+Task B shortest path,Linear Dijkstra,13,17079016,19749192,0,true
+Task B shortest path,Linear Dijkstra,14,16509894,19749192,0,true
+Task B shortest path,Linear Dijkstra,15,17276518,19749192,0,true
+Task B shortest path,Linear Dijkstra,16,17719542,19749192,0,true
+Task B shortest path,Linear Dijkstra,17,17119142,19749192,0,true
+Task B shortest path,Linear Dijkstra,18,17803150,19749192,0,true
+Task B shortest path,Linear Dijkstra,19,17883592,19749192,0,true
+Task B shortest path,Linear Dijkstra,20,16708758,19749192,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),1,6469351,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),2,7073530,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),3,5566671,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),4,2465326,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),5,1560380,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),6,1534662,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),7,2042860,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),8,1827474,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),9,1899931,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),10,1625063,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),11,1451776,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),12,2422205,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),13,2525319,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),14,1915609,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),15,1738246,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),16,2732529,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),17,2168648,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),18,2364667,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),19,2007733,2650162,0,true
+Task B shortest path,Heap Dijkstra (PriorityQueue),20,1611267,2650162,0,true
+Task B shortest path,A* Landmark,1,3232282,1298820,17136654,true
+Task B shortest path,A* Landmark,2,1816413,1298820,17136654,true
+Task B shortest path,A* Landmark,3,3377095,1298820,17136654,true
+Task B shortest path,A* Landmark,4,1733226,1298820,17136654,true
+Task B shortest path,A* Landmark,5,1482945,1298820,17136654,true
+Task B shortest path,A* Landmark,6,1338322,1298820,17136654,true
+Task B shortest path,A* Landmark,7,1370823,1298820,17136654,true
+Task B shortest path,A* Landmark,8,1329626,1298820,17136654,true
+Task B shortest path,A* Landmark,9,1498474,1298820,17136654,true
+Task B shortest path,A* Landmark,10,1531467,1298820,17136654,true
+Task B shortest path,A* Landmark,11,1167109,1298820,17136654,true
+Task B shortest path,A* Landmark,12,581405,1298820,17136654,true
+Task B shortest path,A* Landmark,13,407167,1298820,17136654,true
+Task B shortest path,A* Landmark,14,566478,1298820,17136654,true
+Task B shortest path,A* Landmark,15,850072,1298820,17136654,true
+Task B shortest path,A* Landmark,16,1279201,1298820,17136654,true
+Task B shortest path,A* Landmark,17,623595,1298820,17136654,true
+Task B shortest path,A* Landmark,18,700009,1298820,17136654,true
+Task B shortest path,A* Landmark,19,447353,1298820,17136654,true
+Task B shortest path,A* Landmark,20,643353,1298820,17136654,true
+Task B shortest path,Bellman-Ford,1,26967020,10661268,0,true
+Task B shortest path,Bellman-Ford,2,16081537,10661268,0,true
+Task B shortest path,Bellman-Ford,3,10504015,10661268,0,true
+Task B shortest path,Bellman-Ford,4,11483251,10661268,0,true
+Task B shortest path,Bellman-Ford,5,11370037,10661268,0,true
+Task B shortest path,Bellman-Ford,6,10888830,10661268,0,true
+Task B shortest path,Bellman-Ford,7,11628995,10661268,0,true
+Task B shortest path,Bellman-Ford,8,10737105,10661268,0,true
+Task B shortest path,Bellman-Ford,9,10201615,10661268,0,true
+Task B shortest path,Bellman-Ford,10,9964809,10661268,0,true
+Task B shortest path,Bellman-Ford,11,10402775,10661268,0,true
+Task B shortest path,Bellman-Ford,12,7393523,10661268,0,true
+Task B shortest path,Bellman-Ford,13,7878828,10661268,0,true
+Task B shortest path,Bellman-Ford,14,8994210,10661268,0,true
+Task B shortest path,Bellman-Ford,15,9449648,10661268,0,true
+Task B shortest path,Bellman-Ford,16,7416367,10661268,0,true
+Task B shortest path,Bellman-Ford,17,7817853,10661268,0,true
+Task B shortest path,Bellman-Ford,18,9049744,10661268,0,true
+Task B shortest path,Bellman-Ford,19,7836047,10661268,0,true
+Task B shortest path,Bellman-Ford,20,7159161,10661268,0,true

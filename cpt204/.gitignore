@@ -1,0 +1,34 @@
+# Java compiled files
+*.class
+out/
+bin/
+build/
+target/
+
+# IDE/editor
+.idea/
+.vscode/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs/temp
+*.log
+*.tmp
+
+# Large final submission files
+*.mp4
+
+# Keep generated outputs optional
+# output/*.csv
+# output/*.txt
+
+.envrc
+/TaskC_Figures_Output
+/class diagrams
+/output/screenshots
+/sc
+/report/figures
+/CW3_Reference.docx
