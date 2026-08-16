@@ -1,0 +1,8 @@
+env: 
+    - teal version 0.24.8
+    - luarock 3.13.0
+    - lsp: teal-language-server
+
+note: 
+    temporiaily deprecated, currently the lsp and document are poor
+
