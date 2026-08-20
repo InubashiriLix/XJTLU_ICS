@@ -1,0 +1,77 @@
+---
+BasedOnStyle: LLVM
+Language: Cpp
+
+###################################
+# indent
+###################################
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 0
+AccessModifierOffset: -4
+NamespaceIndentation: All
+FixNamespaceComments: false
+
+###################################
+# braces / line break
+###################################
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: false
+  AfterEnum: true
+  AfterFunction: false
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+###################################
+# short things
+###################################
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+
+###################################
+# alignment
+###################################
+AlignConsecutiveMacros: AcrossEmptyLines
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
+
+###################################
+# pointer / reference
+###################################
+DerivePointerAlignment: false
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+###################################
+# wrapping
+###################################
+BinPackArguments: false
+BinPackParameters: false
+PackConstructorInitializers: NextLine
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+
+###################################
+# switch / include / misc
+###################################
+IndentCaseLabels: true
+SortIncludes: false
+SpaceBeforeCpp11BracedList: true
+Cpp11BracedListStyle: true

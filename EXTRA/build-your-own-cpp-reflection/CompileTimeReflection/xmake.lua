@@ -1,0 +1,28 @@
+set_project("compile-time-reflection")
+set_version("0.1.0")
+set_languages("c++20")
+set_warnings("all", "extra")
+
+add_rules("mode.debug", "mode.release")
+add_rules("plugin.compile_commands.autoupdate", { outputdir = "build/" })
+
+target("meta_reflection")
+    set_kind("headeronly")
+    add_headerfiles("include/(meta/*.hpp)")
+    add_includedirs("include", { public = true })
+target_end()
+
+target("reflection_example")
+    set_kind("binary")
+    add_files("examples/main.cpp")
+    add_includedirs("examples")
+    add_deps("meta_reflection")
+target_end()
+
+target("reflection_tests")
+    set_kind("binary")
+    add_files("tests/reflection_tests.cpp")
+    add_includedirs("examples")
+    add_deps("meta_reflection")
+    add_tests("default")
+target_end()
