@@ -1,0 +1,179 @@
+#+TITLE: 第 3 课:线性内存 + load/store
+#+AUTHOR: 一只鲸鱼 girl 🐋 (deepseek 小姐啦)
+
+* 🎯 本课目标
+你学完这节,能:
+- 理解 WASM 的"线性内存"模型
+- 用 =(memory)= 申请一块内存
+- 用 =(data)= 预置数据、用 =i32.load/=i32.store= 读写内存
+- 看懂"汇编里内存和寄存器是怎么回事"的最直观例子
+
+* 1️⃣ 什么是线性内存
+WASM 模块可以有一块 *线性内存*(linear memory):
+#+begin_quote
+就是一块连续的字节数组,从地址 0 开始,按字节寻址。函数之间共享这一块。
+#+end_quote
+
+类比:
+- C 里的 =char buf[1024]=
+- 汇编里的 =data segment=
+
+声明一块 2 页(每页 64KB)的内存:
+#+begin_src wat
+(module
+  (memory 2))    ;; 2 页 × 64KB = 128KB
+#+end_src
+
+也可以指定最小/最大值:
+#+begin_src wat
+(memory (min 1) (max 10))
+#+end_src
+
+内存不初始化时全是 0。
+
+* 2️⃣ 用 data 预置数据
+=(data)= 段把字节预置进内存:
+#+begin_src wat
+(module
+  (memory 1)
+  (data (i32.const 0) "hello"))   ;; 从地址 0 写入 'h','e','l','l','o'
+#+end_src
+
+=data= 后面可以跟:
+- 字符串 ="="hello"==:UTF-8 字节
+- 字节序列 ="\00\01\FF"=
+- 数字列表 =(data (i32.const 0) 1 2 3)=
+
+注意:字符串没有自动加 ='\0'=,想 C 风格结尾得自己写 ="\00"=。
+
+* 3️⃣ 读写指令:i32.load / i32.store
+*i32.store*:把栈顶 i32 存到内存地址。
+#+begin_src wat
+  ;; 把 42 存到地址 0
+  i32.const 0        ;; 地址
+  i32.const 42       ;; 要写入的值
+  i32.store          ;; 内存[0] = 42
+#+end_src
+
+*i32.load*:从内存地址读出一个 i32 压栈。
+#+begin_src wat
+  i32.const 0
+  i32.load           ;; 栈顶 = 内存[0..4] 的整数
+#+end_src
+
+对应的还有 8 位/16 位读写:
+| 指令              | 读写宽度              |
+|-------------------+-----------------------|
+| =i32.load8_s=     | 读 1 字节(带符号)    |
+| =i32.load8_u=     | 读 1 字节(无符号)    |
+| =i32.store8=      | 写 1 字节             |
+| =i32.load16_s=    | 读 2 字节(带符号)    |
+| =i32.load16_u=    | 读 2 字节(无符号)    |
+| =i32.store16=     | 写 2 字节             |
+| =i32.load=        | 读 4 字节             |
+| =i32.store=       | 写 4 字节             |
+
+* 4️⃣ 完整示例:读写数组
+=memory.wat=:
+#+begin_src wat
+(module
+  (memory 1)
+
+  ;; 地址 0..3:小端序整数 42
+  (data (i32.const 0) "\2A\00\00\00")
+
+  ;; 把 v 写入地址 0
+  (func (export "set0") (param $v i32)
+    i32.const 0
+    local.get $v
+    i32.store)
+
+  ;; 读地址 0 的值
+  (func (export "get0") (result i32)
+    i32.const 0
+    i32.load))
+#+end_src
+
+编译运行:
+#+begin_src bash
+  wat2wasm memory.wat -o memory.wasm
+  wasmtime run --invoke set0 99 memory.wasm
+  wasmtime run --invoke get0 memory.wasm
+#+end_src
+
+输出 =99=。注意 =set0= 和 =get0= 共享同一块内存,值能存进去再读出来。
+
+⚠️ 重要:=(data)= 段必须写在 =(module)= 顶层,不能塞进函数体里!它是"加载时就写好的数据",不是指令。
+
+* 5️⃣ 指针即地址:写个数组求和
+数组在 WASM 里 =就是一个起始地址 + 长度=。下面函数接收数组地址和长度,求元素之和:
+
+#+begin_src wat
+(module
+  (memory 1)
+
+  ;; 地址 16..31:数组 [10, 20, 30, 40]
+  (data (i32.const 16) "\0A\00\00\00\14\00\00\00\1E\00\00\00\28\00\00\00")
+
+  ;; 数组元素是 i32(4 字节),第 i 个元素地址 = base + i*4
+  (func (export "sum") (param $base i32) (param $len i32) (result i32)
+    (local $i i32)
+    (local $sum i32)
+    i32.const 0
+    local.set $i
+    i32.const 0
+    local.set $sum
+    block $done
+      loop $loop
+        local.get $i
+        local.get $len
+        i32.ge_s
+        br_if $done
+        local.get $base
+        local.get $i
+        i32.const 4
+        i32.mul
+        i32.add        ;; 地址 = base + i*4
+        i32.load
+        local.get $sum
+        i32.add
+        local.set $sum
+        local.get $i
+        i32.const 1
+        i32.add
+        local.set $i
+        br $loop
+      end
+    end
+    local.get $sum))
+#+end_src
+
+调用:
+#+begin_src bash
+  wasmtime run --invoke sum 16 4 memory.wasm
+#+end_src
+
+输出 =100=。
+
+* ✍️ 本课练习(必须写)
+** 练习 1(热身)
+写 =poke= 把 =123= 写到地址 4,再写 =peek= 读回来。编译运行确认。
+
+** 练习 2(字节读写)
+用 =i32.store8= 写 =0xFF= 到地址 0,再用 =i32.load8_u= 读,应该 =255=。
+再用 =i32.load8_s= 读同一个字节,应该是 =-1=。
+体会 =_s= 和 =_u= 的区别。
+
+** 练习 3(挑战:字符串长度)
+预置字符串 ="hi wasm"= 到地址 0,写 =strlen= 返回它的字节数(不含结尾 ='\0'=)。
+提示:循环读字节,直到读到 0。
+
+** 练习 4(思考题)
+- 内存越界访问(地址超出声明大小)会发生什么?用 =wasmtime run= 试一个超大地址。
+- 为什么 =sum= 里 =i32.const 4= 的 =4= 是元素字节数?改成 1 会怎样?
+
+* ❗ 本课你不需要懂的东西
+- 分页 / 段页式的操作系统内存(那是有 MMU 的真实内存)
+- =align= 对齐、offset 偏移这些高级参数
+- =memory.grow= 动态扩容
+- 原子操作 / 共享内存(=shared=)

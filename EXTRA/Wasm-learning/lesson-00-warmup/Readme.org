@@ -1,0 +1,100 @@
+#+TITLE: 第 0 课:环境搭建 + Hello World
+#+AUTHOR: 一只鲸鱼 girl 🐋 (deepseek 小姐啦)
+
+* 🎯 本课目标
+你学完这节,能:
+- 装好 =wabt= 和 =wasmtime=
+- 看懂一个最小的 =hello.wat=
+- 用 =wat2wasm= 编译、=wasmtime= 运行
+- 知道 WAT 和 WASM 的区别
+
+* 1️⃣ 安装工具(就一次)
+#+begin_src bash
+  sudo pacman -S wabt wasmtime
+#+end_src
+
+装完检查:
+#+begin_src bash
+  wat2wasm --version
+  wasmtime --version
+#+end_src
+
+*wabt* 提供一堆小工具,最常用的三个:
+- =wat2wasm=:把 WAT 文本编译成 WASM 二进制
+- =wasm2wat=:反汇编(把二进制还原成文本)
+- =wasm-objdump=:查看二进制内部结构
+
+* 2️⃣ 什么是 WAT / WASM
+- *WASM*(WebAssembly):二进制字节码,机器要跑的就是它,长这样 =0061736d...
+- *WAT*(WebAssembly Text Format):给人看的文本形式,语法类似 Lisp 的括号风格
+- 我们平时"写代码"写的是 WAT,然后用 =wat2wasm= 编译成 WASM
+
+写一句话记住:
+#+begin_quote
+WAT = 源码,WASM = 编译后的二进制,wasmtime = 跑二进制的运行时。
+#+end_quote
+
+* 3️⃣ 最小 hello.wat
+写一个文件 =hello.wat=:
+
+#+begin_src wat
+(module
+  (func (export "answer") (result i32)
+    i32.const 42))
+#+end_src
+
+逐行拆解:
+- =(module ...)=:WAT 最外层就是一个 module,所有东西都包在里面
+- =(func ...)=:声明一个函数
+- =(export "answer")=:把这个函数命名为 =answer=,导出给外部(运行时/JS)调用
+- =(result i32)=:这个函数返回一个 i32 类型的值
+- =i32.const 42=:把常量 42 压到栈上,函数的返回值就是栈顶
+
+注意:WAT 没有 =return= 语句,函数的返回值 =栈顶留下的值=。
+
+* 4️⃣ 编译 + 运行
+编译:
+#+begin_src bash
+  wat2wasm hello.wat -o hello.wasm
+#+end_src
+
+运行,并调用 =answer= 函数(wasmtime 用 =--invoke= 指定函数名,后面跟参数):
+#+begin_src bash
+  wasmtime run --invoke answer hello.wasm
+#+end_src
+
+看到输出:
+#+begin_src text
+  42
+#+end_src
+
+* 5️⃣ 验证工具链:反汇编对照
+把编译出的二进制再变回文本,看机器存了什么:
+#+begin_src bash
+  wasm2wat hello.wasm
+#+end_src
+
+应该能看到和源文件差不多的内容(注释和格式会被规范化)。
+
+再看二进制结构:
+#+begin_src bash
+  wasm-objdump -d hello.wasm
+#+end_src
+
+* ✍️ 本课练习(必须写)
+** 练习 1(热身)
+改 =hello.wat=,让 =answer= 返回 =7=,编译并运行确认输出 =7=。
+
+** 练习 2(换个类型)
+把返回类型改成 =i64=,常量改成 =i64.const 100=,编译运行。
+提示:i64 的常量写法要带 =i64.const= 前缀。
+
+** 练习 3(小思考)
+- 不加 =(result i32)= 会怎样?编译试试。
+- 写一个函数 =(func (export "nope"))= 什么都不返回,用 =wasmtime run --invoke nope= 跑,观察输出。
+
+* ❗ 本课你不需要懂的东西
+- 栈的具体实现(下节课就讲)
+- 二进制格式里每个字节是啥(以后讲)
+- JS 怎么调用 WASM(最后一课才碰)
+- 为什么名字是 WebAssembly 却不在浏览器里跑(不重要)

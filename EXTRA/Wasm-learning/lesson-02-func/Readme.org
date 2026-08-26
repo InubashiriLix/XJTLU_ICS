@@ -1,0 +1,198 @@
+#+TITLE: 第 2 课:函数 + 局部变量 + 控制流
+#+AUTHOR: 一只鲸鱼 girl 🐋
+
+* 🎯 本课目标
+你学完这节,能:
+- 写带参数和返回值的函数
+- 用 =local= 声明局部变量
+- 用 =if=、=block=、=loop= 写分支和循环
+- 写出阶乘这类真正的"程序"
+
+* 1️⃣ 函数带参数和返回值
+上节课函数里只有 =i32.const=,没有输入。给函数加参数:
+
+#+begin_src wat
+(module
+  (func (export "add2") (param $a i32) (param $b i32) (result i32)
+    local.get $a
+    local.get $b
+    i32.add))
+#+end_src
+
+- =(param $a i32)=:声明参数 =a=,类型 =i32=。=$a= 是名字,方便阅读
+- =(result i32)=:返回值类型
+- =local.get $a=:把参数 =a= 的值压到栈上
+
+调用它(带参数):
+#+begin_src bash
+  wasmtime run --invoke add2 3 4 func.wasm
+#+end_src
+
+输出 =7=。=--invoke= 后面的数字按函数参数顺序传进去。
+
+* 2️⃣ 局部变量 local
+参数也是局部变量的一种。真正的 =local= 用 =(local)= 声明:
+
+#+begin_src wat
+(module
+  (func (export "sum") (param $n i32) (result i32)
+    (local $acc i32)
+    local.get $n
+    local.set $acc       ;; 把 n 存进 acc
+    local.get $acc))
+#+end_src
+
+三个最常用的局部变量指令:
+| 指令                     | 作用                      |
+|--------------------------+---------------------------|
+| =local.get $x=           | 把 x 的值压栈(读取)     |
+| =local.set $x=           | 弹栈顶,存进 x(写入)     |
+| =local.tee $x=           | 存进 x 同时保留栈顶(高级) |
+
+注意:参数和局部变量可以 =local.get= / =local.set=,但常量不能存。
+
+* 3️⃣ 分支:if / else
+WAT 的 =if= 和普通语言不太一样,它是 *带栈的*:
+
+#+begin_src wat
+(module
+  (func (export "abs") (param $x i32) (result i32)
+    local.get $x
+    i32.const 0
+    i32.lt_s           ;; x < 0 吗?压 true/false(1/0)
+    if (result i32)
+      i32.const 0
+      local.get $x
+      i32.sub           ;; 0 - x = -x
+    else
+      local.get $x
+    end))
+#+end_src
+
+写法要点:
+- 先 =压入一个 i32 条件值=(非 0 为真)
+- 再写 =if=,后面跟 =(result i32)= 因为两个分支都要返回 i32
+- =else= 分支可选,最后 =end= 收尾
+- 每个分支的栈必须对上,这是 WAT 的"类型检查"精神
+
+常用比较指令(=i32=版本):
+| 指令           | 含义        |
+|----------------+-------------|
+| =i32.lt_s=     | <(有符号)  |
+| =i32.gt_s=     | >          |
+| =i32.le_s=     | <=         |
+| =i32.ge_s=     | >=         |
+| =i32.eq=       | ==         |
+| =i32.ne=       | !=         |
+
+* 4️⃣ 循环:loop + br
+WASM 没有 =for= 关键字,循环用 =block/loop + br= 手动搭:
+
+- =block=:定义一块代码,可以用 =br= 跳出去(像 break)
+- =loop=:定义一块可以反复执行的代码
+- =br 0=:跳到最近层的开头 / 结尾
+
+最简单的死循环结构:
+#+begin_src wat
+(module
+  (func (export "forever") (result i32)
+    i32.const 0
+    loop $again
+      br $again        ;; 跳回 loop 开头 → 死循环
+    end
+    i32.const 1))
+#+end_src
+
+这个会真的死循环(别跑它!)。真正有用的是 =br_if=:条件成立才跳。
+
+写一个 =count_to= 从 1 加到 n:
+#+begin_src wat
+(module
+  (func (export "count") (param $n i32) (result i32)
+    (local $i i32)
+    (local $sum i32)
+    i32.const 0
+    local.set $i
+    i32.const 0
+    local.set $sum
+    block $done
+      loop $again
+        local.get $i
+        local.get $n
+        i32.ge_s        ;; i >= n ?
+        br_if $done     ;; 是 → 跳出 loop,进 block 之后
+        local.get $i
+        local.get $sum
+        i32.add
+        local.set $sum  ;; sum += i
+        local.get $i
+        i32.const 1
+        i32.add
+        local.set $i    ;; i += 1
+        br $again       ;; 回 loop
+      end
+    end
+    local.get $sum))
+#+end_src
+
+* 5️⃣ 完整示例:阶乘 factorial
+=func.wat=:
+#+begin_src wat
+(module
+  (func (export "fact") (param $n i32) (result i32)
+    (local $i i32)
+    (local $acc i32)
+    i32.const 1
+    local.set $acc
+    i32.const 1
+    local.set $i
+    block $done
+      loop $loop
+        local.get $i
+        local.get $n
+        i32.gt_s
+        br_if $done
+        local.get $acc
+        local.get $i
+        i32.mul
+        local.set $acc
+        local.get $i
+        i32.const 1
+        i32.add
+        local.set $i
+        br $loop
+      end
+    end
+    local.get $acc))
+#+end_src
+
+编译运行:
+#+begin_src bash
+  wat2wasm func.wat -o func.wasm
+  wasmtime run --invoke fact 5 func.wasm
+#+end_src
+
+输出 =120=。
+
+* ✍️ 本课练习(必须写)
+** 练习 1(热身)
+写 =max= 函数,接收两个 i32,返回较大的那个。
+提示:用 =i32.gt_s= + =if=。
+
+** 练习 2(循环累加)
+写 =sum_to= 接收 =n=,返回 =1+2+...+n=。
+提示:就是上面 =count= 的改版,从 1 累加到 n。
+
+** 练习 3(挑战:斐波那契)
+写 =fib= 接收 =n=,返回第 n 个斐波那契数(fib(1)=1, fib(2)=1, fib(3)=2...)。
+提示:循环里维护两个局部变量 =prev= 和 =curr=,每轮推进一次。
+
+** 练习 4(思考题)
+- =i32.lt_s= 和 =i32.lt_u= 有什么区别?负数时选哪个?
+- 为什么 =if= 的分支要对齐返回类型?试试把 =abs= 的 =else= 分支删掉会怎样。
+
+* ❗ 本课你不需要懂的东西
+- =br_table= 多路跳转(switch 的底层)
+- =select= 指令(三目运算符)
+- 递归调用、函数指针
+- 尾调用优化(tail call)

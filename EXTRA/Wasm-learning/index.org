@@ -1,0 +1,58 @@
+#+TITLE: WASM Fast Learning
+#+AUTHOR: 一只鲸鱼 girl 🐋 (deepseek 小姐啦)
+
+* 这是什么
+- 一份快速上手的 WASM / WAT 入门教程,写给想学汇编又怕被平台差异恶心到的你;
+- 教程为个人学习用途,由 AI 生成,是"快速通道",不追求面面俱到;
+- 前置知识:会一点 C/Rust 或者任何一种命令行的感觉就够了,不要求会 JS。
+
+* 为什么用 WASM 学"汇编"
+- 普通汇编:ARM / x86 / RISC-V 指令集差异巨大,换平台就要换脑子;
+- WASM:只有一种指令集,浏览器 / node / wasmtime 全都跑,跨平台零切换成本;
+- 是"阉割版汇编":没有寄存器、没有标志位、没有 syscall,但栈 / 控制流 / 内存 / 函数这些核心概念一应俱全;
+- 学完 WAT 再上真汇编(推荐 RISC-V),转换成本很低。
+
+* 工具链
+#+begin_src bash
+  sudo pacman -S wabt wasmtime
+#+end_src
+
+- =wabt=:wat2wasm(编译)/ wasm2wat(反汇编)/ wasm-objdump(看结构)/ wasm-interp(解释执行)
+- =wasmtime=:纯 CLI 运行时,直接跑编译好的 =*.wasm= 或 =*.wat=
+
+* 课程目录
+** Lesson 0: 环境搭建 + Hello World
+第 0 课:能跑起来
+[[./lesson-00-warmup/Readme.org][tutorial link]]
+[[./lesson-00-warmup/hello.wat][hello.wat 示例]]
+
+** Lesson 1: 栈机 + 数值 + 算术
+第 1 课:WASM 的灵魂——栈
+[[./lesson-01-stack/Readme.org][tutorial link]]
+[[./lesson-01-stack/arith.wat][arith.wat 示例]]
+
+** Lesson 2: 函数 + 局部变量 + 控制流
+第 2 课:有函数就能写程序了
+[[./lesson-02-func/Readme.org][tutorial link]]
+[[./lesson-02-func/func.wat][func.wat 示例]]
+
+** Lesson 3: 线性内存 + load/store
+第 3 课:真正的"内存"
+[[./lesson-03-memory/Readme.org][tutorial link]]
+[[./lesson-03-memory/memory.wat][memory.wat 示例]]
+
+** Lesson 4: 导入导出 + 与宿主互调
+第 4 课:让 WASM 和外界打交道
+[[./lesson-04-export/Readme.org][tutorial link]]
+[[./lesson-04-export/export.wat][export.wat 示例]]
+
+* 学习建议
+- 每一课动手敲,别只看;
+- 每课都有练习,写完用 =wat2wasm= 编译、=wasmtime= 跑;
+- 用 =wasm2wat= 反向拆解自己写的 =*.wasm=,看看机器怎么存你的代码;
+- 卡住了很正常,这是栈机,和你想的"顺序执行"不一样。
+
+* TODO 后续
+- 和 JS / Rust 互调的实际例子(用 wasm-pack 编译 Rust);
+- 二进制格式(.wasm 文件怎么编码的)深挖;
+- 接 RISC-V 真汇编入门。

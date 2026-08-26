@@ -1,0 +1,149 @@
+#+TITLE: 第 4 课:导入导出 + 与宿主互调
+#+AUTHOR: 一只鲸鱼 girl 🐋 (deepseek 小姐啦)
+
+* 🎯 本课目标
+你学完这节,能:
+- 理解 WASM 模块和外界的边界(导出 = export,导入 = import)
+- 用 =(import)= 从外部拿函数
+- 用 =(export)= 把自己的函数交出去
+- 用 wasmtime 的命令行做一次真正的"宿主 ↔ WASM"对话
+
+* 1️⃣ WASM 不是孤岛
+WASM 模块本身:
+- *不能*打印、不能读文件、不能访问网络
+- 只能做纯计算 + 操作自己的线性内存
+
+那怎么对外交流?两个门:
+- *导出 export*:把自己的函数、内存、全局变量交出去,让宿主(JS / wasmtime / Rust)调用
+- *导入 import*:声明"我需要外部给我一个函数",宿主把它接进来
+
+这一课我们把两扇门都打开。
+
+* 2️⃣ 导出 export:你已经会了
+第 0 课开始我们就一直在用:
+#+begin_src wat
+(module
+  (func (export "add2") (param $a i32) (param $b i32) (result i32)
+    local.get $a
+    local.get $b
+    i32.add))
+#+end_src
+
+=(export "名字")= 放在函数声明里,等价于模块层写:
+#+begin_src wat
+(module
+  (func $add2 ...)
+  (export "add2" (func $add2)))
+#+end_src
+
+除了函数,还能导出:
+| 东西       | 语法                                    |
+|------------+-----------------------------------------|
+| 函数       | =(export "f" (func $f))=               |
+| 内存       | =(export "mem" (memory $mem))=         |
+| 全局变量   | =(export "g" (global $g))=             |
+
+内存导出很常用:宿主直接读写你模块的整块内存。
+
+* 3️⃣ 导入 import:要别人的东西
+声明一个从外部导入的函数 =(import "模块名" "函数名" ...)=:
+#+begin_src wat
+(module
+  (import "env" "print_i32" (func $print (param i32)))
+  (func (export "run")
+    i32.const 7
+    call $print))     ;; 调用导入的函数
+#+end_src
+
+- ="env"= 是宿主提供的"命名空间"(类似 C 里的库名)
+- =print_i32= 是函数名
+- 导入的函数用 =call= 调用,和普通函数一样
+
+也可以导入内存、全局变量:
+#+begin_src wat
+(import "env" "memory" (memory 1))
+(import "env" "count" (global i32))
+#+end_src
+
+* 4️⃣ 让 wasmtime 当宿主:一个会打印的模块
+wasmtime 命令行自带几个可导入的宿主函数,最常用的是 =env.print_i32= 和 =env.print_str=。
+
+完整的 =export.wat=(导入打印,导出计算函数):
+#+begin_src wat
+(module
+  ;; 从宿主导入打印函数
+  (import "env" "print_i32" (func $print (param i32)))
+  (import "env" "print_str" (func $print_str (param i32) (param i32)))
+
+  (memory (export "mem") 1)
+
+  ;; 一段字符串放内存里
+  (data (i32.const 0) "hello from wasm")
+
+  ;; 导出:打印一个整数
+  (func (export "say_num") (param $n i32)
+    local.get $n
+    call $print)
+
+  ;; 导出:打印内存里的字符串
+  (func (export "say_hi")
+    i32.const 0      ;; 字符串起始地址
+    i32.const 14     ;; 字符串长度("hello from wasm" 是 14 个字符)
+    call $print_str)
+
+  ;; 导出:简单加法,顺便打印过程
+  (func (export "add_and_print") (param $a i32) (param $b i32) (result i32)
+    (local $t i32)
+    local.get $a
+    local.get $b
+    i32.add
+    local.tee $t      ;; 结果存进 $t 同时留在栈上
+    call $print
+    local.get $t))
+#+end_src
+
+编译运行:
+#+begin_src bash
+  wat2wasm export.wat -o export.wasm
+  wasmtime run --invoke say_hi export.wasm
+  wasmtime run --invoke say_num 5 export.wasm
+  wasmtime run --invoke add_and_print 3 4 export.wasm
+#+end_src
+
+预期输出:
+#+begin_src text
+  hello from wasm
+  5
+  7
+  7
+#+end_src
+
+看 =add_and_print=:用 =local.tee $t= 把结果同时存进局部变量并留在栈上,这样又能打印又能当返回值。这是栈机上很实用的技巧。
+
+* 5️⃣ 内存导出有什么用
+宿主能直接读写导出的内存,不用绕函数。典型用法:WASM 把计算结果写进内存,JS 直接读字节数组,零拷贝、飞快。
+
+现在你先体会 =内存 = 共享的字节区= 就行,真正的 JS/Rust 互调例子在 TODO 里。
+
+* ✍️ 本课练习(必须写)
+** 练习 1(热身)
+写模块:导入 =env.print_i32=,导出 =twice= 接收 =n=,打印 =n*2= 并返回它。
+
+** 练习 2(字符串)
+把内存里写 =string in wasm=,导出 =print_str2= 调用 =env.print_str= 打印它。
+注意先数清楚字符串长度再传给 =print_str=。
+
+** 练习 3(挑战:打印两数之和的流程)
+导出 =report(a,b)=:打印 a,打印 b,打印 a+b,返回 a+b。
+用 =env.print_i32=,分三行输出。
+
+** 练习 4(思考题)
+- 为什么 WASM 不直接内置 =print=?想想"纯计算 + 边界明确"的设计哲学。
+- 如果 =import= 的名字写错了(比如 ="env"="foo"=),=wasmtime= 会报什么错?
+- 用 =wasmtime run --list-funcs export.wasm= 看看能列出哪些导出函数。
+
+* ❗ 本课你不需要懂的东西
+- JS / Rust 具体的宿主实现(下阶段再碰)
+- =start= 段、=func.ref= 这些高级导出
+- WASI(WebAssembly System Interface,文件/网络的系统调用)—— 这是进阶题
+- 内存共享多线程(wait/notify)
