@@ -10,13 +10,13 @@
 
 * 1️⃣ 安装工具(就一次)
 #+begin_src bash
-  sudo pacman -S wabt wasmtime
+sudo pacman -S wabt wasmtime
 #+end_src
 
 装完检查:
 #+begin_src bash
-  wat2wasm --version
-  wasmtime --version
+wat2wasm --version
+wasmtime --version
 #+end_src
 
 *wabt* 提供一堆小工具,最常用的三个:
@@ -39,8 +39,8 @@ WAT = 源码,WASM = 编译后的二进制,wasmtime = 跑二进制的运行时。
 
 #+begin_src wat
 (module
-  (func (export "answer") (result i32)
-    i32.const 42))
+(func (export "answer") (result i32)
+i32.const 42))
 #+end_src
 
 逐行拆解:
@@ -55,30 +55,30 @@ WAT = 源码,WASM = 编译后的二进制,wasmtime = 跑二进制的运行时。
 * 4️⃣ 编译 + 运行
 编译:
 #+begin_src bash
-  wat2wasm hello.wat -o hello.wasm
+wat2wasm hello.wat -o hello.wasm
 #+end_src
 
 运行,并调用 =answer= 函数(wasmtime 用 =--invoke= 指定函数名,后面跟参数):
 #+begin_src bash
-  wasmtime run --invoke answer hello.wasm
+wasmtime run --invoke answer hello.wasm
 #+end_src
 
 看到输出:
 #+begin_src text
-  42
+42
 #+end_src
 
 * 5️⃣ 验证工具链:反汇编对照
 把编译出的二进制再变回文本,看机器存了什么:
 #+begin_src bash
-  wasm2wat hello.wasm
+wasm2wat hello.wasm
 #+end_src
 
 应该能看到和源文件差不多的内容(注释和格式会被规范化)。
 
 再看二进制结构:
 #+begin_src bash
-  wasm-objdump -d hello.wasm
+wasm-objdump -d hello.wasm
 #+end_src
 
 * ✍️ 本课练习(必须写)
