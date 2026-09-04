@@ -1,0 +1,13 @@
+.xmake/
+build/
+compile_commands.json
+
+# Linux Kbuild/xmake 可能生成的中间文件
+*.o
+*.ko
+*.mod
+*.mod.c
+*.order
+*.symvers
+.*.cmd
+

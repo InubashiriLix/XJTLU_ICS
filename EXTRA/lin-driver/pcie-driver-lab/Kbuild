@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+obj-m := pcie_lab.o
+pcie_lab-y := src/pcie_lab.o
+
+ccflags-y += -DPCIE_LAB_VENDOR_ID=$(PCI_VENDOR_ID)
+ccflags-y += -DPCIE_LAB_DEVICE_ID=$(PCI_DEVICE_ID)
+
