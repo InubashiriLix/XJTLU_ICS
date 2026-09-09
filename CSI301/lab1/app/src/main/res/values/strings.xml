@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Simple Counter</string>
+    <string name="instructions">Tap the button to count. Reset to start again.</string>
+    <string name="initial_count">0</string>
+    <string name="add_one">Add 1</string>
+    <string name="reset">Reset</string>
+</resources>
