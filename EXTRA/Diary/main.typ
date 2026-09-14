@@ -1,9 +1,11 @@
 #import "lib/layout.typ": diary
+
 #import "entries/Prologue.typ" as prologue
 #import "entries/2026-09.typ" as september
+#import "entries/2026-08.typ" as august
 
-#let entries = prologue.entries + september.entries
-#let comments = prologue.comments + september.comments
+#let entries = prologue.entries + september.entries + august.entries
+#let comments = prologue.comments + september.comments + august.comments
 
 #diary(
   entries,
