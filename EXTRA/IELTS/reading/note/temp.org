@@ -1,0 +1,93 @@
+* READING 
+** target: 7+: 30-32, which means I can only have 10 mistakes in total, 
+55 minutes, I have only 1.5m/question.
+if counting the mistakes cuased by pressures. then I can only have 5 mistakes in total
+** question format
+*** Filling Works (simple)
+- select the correct answer from the list of options
+- fill the answer in the blank space
+*** True/False/Not Give (simple)
+*** Heading Matching (hard)
+match the headings to the paragraphs, from A to ...
+*** Selecting Correct Answer  
+single selection / multiple selections
+**** Relation Matching
+matching the perspective to the right person
+time ...
+**** Matching Sentence: 
+given the front part of a sentence, match the rest of the sentence to it
+**** Matching Paragraph:
+match the information with the right paragraph
+** Learning Tasks: 
+*** 考点题: 538, centered words
+task: remember all
+"538" page 1 - 16: word, meaning and synonym
+打卡版: same.
+*** page 173: synonyms in the real question
+*** page 33: all the common words about several topics
+task: can recognize all 
+*** record the unknown word in the reading tests
+only record the words realated with the quesion
+
+** ABC localization: 数大特怪
+**** A: number like percentage, ratio, money etc.
+***** some number will be replace by synonyms
+- 50%: a half
+- 25%: a quarter
+- 20%: a fifth / one fifth
+***** Time:
+10 years: a decade
+5 years: half a decade
+100 years: a century
+1000 years: a millennium ( millennia if plural )
+1998: in the 20th century / in the 1990s
+***** times
+2x: twice / double
+3x: triple
+**** B: Proper noun.
+**** Special words / symbols:
+italic, bold, double quotes symbols, brackets, etc.
+**** strange words: 
+like shinbashira
+
+*** Normal Words:
+n. 唯一性
+- Modifiers: 将修饰性的词汇和其修饰的词汇放在一起
+n > v > adj > adv
+*** Causality: 
+- Coordinating Conjunctions:
+  and / or / as weel as / not only ... but also ... / on the one hand ... on the other hand ... /
+  neither ... nor ... /
+  besides / other than / in addition to / apart from.
+- reason:
+  becase / since / as / in that 既然 / thanks to / owing to / due to / because of / as a result of / result from / attribute to /
+- result: 
+  therefore / so / as a result / thus / hence / consequently / lead to / result in / cause / trigger / prompt
+- resemblance:
+  like / as ... as / the same as / similarly / be simliar to / compare to 
+- contrast:
+  more less than, the most / least 
+- nagators:
+  no / not / never / withoug / seldom / hardly / merely ...
+  un / dis / in / im / mis / non- / -less / over- / under- / anti- / counter- / de-
+  instaed of, rather than, too ... to ... / avoid / prevent / deny / limit / control / reduce
+- double negatives:
+  e.g. not impossible
+
+** Synomym replacement:
+- synomyms: same
+  precise = exact
+- double negative: avoid dying out = manage to survive
+- explannation: 
+  pruify = the removal of bugs from water
+- abstract in question, detailed in the context:
+  climate change  = floods, droughts(干旱), hurricanes(飓风), 
+  produce = crops, vegetables
+** General outline annotation method:
+1. the locatilized words in the question and context
+2. the original reference words in the context
+3. sign the question mark beside the original words
+
+
+
+

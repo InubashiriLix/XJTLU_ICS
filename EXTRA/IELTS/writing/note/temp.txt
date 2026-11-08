@@ -1,0 +1,45 @@
+some of points before +1 has been lost cause' I'm not lestening.
+TODO: review and complete
+
++1. score: 
+    two classes
+    - small article: range(1, 9) / 3
+      diagram articles
+      mail articles
+    - long article: 2 * range(1, 9) / 3
+      topic centered
+      it is suggested that the score of small article should lower then lower than the long article's by 0.5 score
+
++2. dimension of judging score:
+- long article: (no small point score like 0.5)
+  1. Task Response: 
+    anser the question precisely and fully.
+    demostrate a clear structure through layout of paragraphs and sentences
+    ( the point is to show your logic. )
+
+  2. Chherence (连贯/衔接)
+    the article should be conherent and conhesive.
+    1. the logic of article should be consistent 
+       the internal logic of article should be step by step like A = A1 + A2 + A3 + A4 
+    2. using cohesive devices to connect sentences and paragraphs
+        - replacing
+        - TODO: note
+  3. Lexical Resource
+    - TODO: note
+  4. Grammatical Range & Accuracy
+     the words you use should be accurate and appropriate in garmmary and meaning.
+
++3: THE SCORE OF JUDGING WRITING: 
+    WRITING SCORE = MIN(
+        Task Response score,
+        Chherence score,
+        Lexical Resource score,
+        Grammatical Range & Accuracy score
+    ) 
+
+    A good strategy is 
+    - Task Response score: 7
+    - Chherence score: 7
+    - Lexical Resource score: 6+
+    - Grammatical Range & Accuracy score: 6+
+
